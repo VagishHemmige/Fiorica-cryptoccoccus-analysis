@@ -6,7 +6,7 @@ Status: draft. Not locked.
 
 This document is the authoritative specification of the study's scientific objectives, population, definitions, estimands and statistical methods. `ARCHITECTURE.md` documents the implementation, `AGENTS.md` the working conventions, and GitHub Issues the open decisions and implementation status. Neither file supersedes this plan.
 
-The analysis rebuilds a published study [@fiorica2025] with the usRds package. **Its purpose is to exercise the package, not to reproduce the published estimates.** Each definition below follows the paper and its Supplementary Table 1 unless a decision issue says otherwise. Where the paper is silent, the plan records the gap as an open decision rather than adopting the legacy code's choice unexamined. How each step maps to usRds is in `references/usrds-coverage.md`.
+The analysis replicates a published study [@fiorica2025] as the paper describes it, using the usRds package for every step the package can do. **The paper and its Supplementary Table 1 are the specification.** The original analysis was run in Stata, and that code is no longer available; a later R Markdown reconstruction (2025-03-25) is used only as secondary evidence of how a step may have been done. Where the paper is silent, the plan records an open decision rather than adopting the reconstruction's choice unexamined. The published estimates are a reference point, not a target. How each step maps to usRds is in `references/usrds-coverage.md`.
 
 Reporting will follow STROBE [@vonelm2007strobe] and RECORD [@benchimol2015record]. The reporting map in §12 links each checklist item to a section of this plan.
 
@@ -133,7 +133,7 @@ The USRDS data use agreement governs. No cell, count or percentage that disclose
 - Immunosuppression during the index stay is not captured.
 - Stepwise selection gives optimistic P values and unstable selection; the results are exploratory.
 - Medicare-primary restriction limits generalisability.
-- Differences from the published estimates may come from the data release, the order of exclusions, or the open decisions above. They are reported as package-coverage findings, not corrections.
+- Differences from the published estimates may come from the data release, the order of exclusions, the open decisions above, or details of the original Stata code that the paper does not report. They are reported as such, not as corrections to the paper.
 
 ## 12. Reporting map
 

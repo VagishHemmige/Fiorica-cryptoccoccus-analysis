@@ -1,9 +1,9 @@
 # usRds coverage of the Fiorica et al. 2025 analysis
 
-This document maps each step of the published analysis [@fiorica2025] to the usRds functions that do it, or records that none does. It is the working list for the project's goal: every step either runs through usRds or has a recorded gap.
+This document maps each step of the published analysis [@fiorica2025], as the paper describes it, to the usRds functions that do it, or records that none does. It is the working list for the project's goal: replicate the paper's methods, with every step either running through usRds or recorded as a gap.
 
 - **Package version examined:** usRds 0.1.0, commit `3f63750` (default branch, 2026-11-09). Read from source; not run, because R is not installed in the environment where this was written. Re-check against the installed version before relying on any row.
-- **Sources compared:** the paper's Methods; Supplementary Table 1 (code lists); and the legacy analysis Rmd dated 2025-03-25, which is not in this repository (see "Provenance" below).
+- **Sources compared:** the paper's Methods and Supplementary Table 1 (code lists), which are the specification; and the legacy Rmd dated 2025-03-25, the maintainer's best reconstruction of the original Stata analysis (secondary evidence only; not in this repository, see "Provenance" below). Where this document says "the legacy Rmd does X", it describes the reconstruction, not necessarily what the published analysis did.
 - **Status key.** **Covered:** a usRds function does the step as the plan needs. **Partial:** a function exists but lacks something the step needs. **Gap:** no usRds function; currently done with hand-written code. **To verify:** behaviour that needs checking against the Researcher's Guide or by running the function on synthetic data.
 
 The plan governs what each step must do. This document records only how the package meets it. Open choices are linked to their decision issues.
@@ -98,7 +98,7 @@ The legacy Rmd counts `HSSURG1`–`HSSURG25` matches against the supplement's li
 
 `get_PS_ICD(cryptococcus_codes, years)` and `get_IN_ICD(...)` give every claim date, to compare with the first transplant date from step 3. Covered.
 
-The legacy filter appears to keep the opposite group from the one the paper describes ([#4](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/4)). **Limit:** claims are searched only for the years mapped; pre-2006 claims are not in the paper's window.
+The legacy Rmd's filter appears to keep the opposite group from the one the paper describes; the paper's rule governs ([#4](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/4)). **Limit:** claims are searched only for the years mapped; pre-2006 claims are not in the paper's window.
 
 ### 11. Prior hospitalization for transplant complications
 
@@ -167,5 +167,5 @@ To be opened in usRds only with the maintainer's approval. Each would get a matc
 ## Provenance
 
 - Fiorica et al. 2025 [@fiorica2025], Methods, Tables 1–2, Figures 1–3, and Supplementary Table 1 (open access, PMC12089938).
-- Legacy analysis Rmd, "Cryptococcus 2025-2-25", file dated 2025-03-25, supplied by Vagish Hemmige on 2026-11-09. It is not committed here because it contains a machine-specific path; whether to add it (with the path removed) is a pending setup item.
+- Legacy analysis Rmd, "Cryptococcus 2025-2-25", file dated 2025-03-25, supplied by Vagish Hemmige on 2026-11-09. It is his best reconstruction in R of the original analysis, which was run in Stata; the Stata code is no longer available. It is not committed here because it contains a machine-specific path; whether to add it (with the path removed) is a pending setup item.
 - usRds source at commit `3f63750`.
