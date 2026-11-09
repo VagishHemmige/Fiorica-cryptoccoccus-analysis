@@ -1,0 +1,48 @@
+# R and RStudio
+.Rproj.user/
+.Rhistory
+.RData
+*.RData
+.Ruserdata
+.httr-oauth
+.DS_Store
+
+# Quarto. docs/ is the local render; a GitHub Actions workflow renders the
+# site and publishes it to the gh-pages branch, so docs/ is not tracked.
+/docs/
+/.quarto/
+**/*.quarto_ipynb
+
+# Credentials
+.Renviron
+.env
+*.pem
+*.key
+
+# Data files. USRDS and Medicare data live outside the repository and are
+# located through usRds; this is a safety net, not access control.
+/data-raw/
+*.csv
+*.xlsx
+*.xls
+*.rds
+*.rda
+*.sas7bdat
+*.sas7bcat
+*.xpt
+*.dta
+*.sav
+*.parquet
+*.feather
+*.arrow
+*.fst
+
+# Outputs, ignored until USRDS review before publication clears them
+# (AGENTS.md, "Outputs"). Removing these lines does not track tables saved as
+# .csv or .rds: the data-format patterns above still hide those, so cleared
+# tables need their own exceptions.
+/figures/
+/tables/
+
+# Approved public or synthetic files: add narrow exceptions here, never a whole format.
+# !tests/fixtures/synthetic_cohort.csv
