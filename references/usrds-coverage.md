@@ -26,8 +26,8 @@ The plan governs what each step must do. This document records only how the pack
 | 12 | Medicare as primary payer (variation only) | `verify_medicare_primary()` | Covered; not used in the main analysis ([#3](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/3)) |
 | 13 | UNOS registration variables (BMI, pretransplant dialysis, HIV, CMV, rejection) | `load_usrds_file("txunos_trr_ki")`, `("txunos_trr_kp")` | Partial |
 | 14 | UNOS follow-up rejection | `load_usrds_file("txfuunos_ki")`, `("txfuunos_kp")` | Partial |
-| 15 | Immunosuppression from UNOS records | `load_usrds_file("txirunos")` | Partial ([#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2)) |
-| 16 | Immunosuppression from HCPCS claims | `get_PS_HCPCS()`, `get_IN_HCPCS()` | Covered ([#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2)) |
+| 15 | Immunosuppression from UNOS records (at transplant and first follow-up) | `load_usrds_file("txirunos")`, `("txifunos")` | Partial ([#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2)) |
+| 16 | Immunosuppression from HCPCS claims (not used) | `get_PS_HCPCS()`, `get_IN_HCPCS()` | Covered; not used in the main analysis ([#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2)) |
 | 17 | Age, region and division | none for state to Census region | Gap (small) |
 | 18 | 6-month mortality and Kaplan–Meier | `create_usrds_cohort()`, `add_cohort_event()`, `finalize_usrds_cohort()` | Covered |
 | 19 | Logistic regression, Table 1, figures | outside usRds's scope | Not applicable |
@@ -117,11 +117,16 @@ These load with `load_usrds_file()`. Kidney-alone and kidney–pancreas recipien
 
 ### 15. Immunosuppression from UNOS records ([#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2))
 
-`txirunos` loads with `load_usrds_file()`. The legacy Rmd maps `RX_CD` codes and misspelled free text (`DRUG_CD_OSTXT`) to drug classes. **Gap:** a verified `RX_CD`-to-class crosswalk shipped as package data, from Appendix C, so projects don't re-derive it. The free-text clean-up is study-specific and stays here.
+Decided in [#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2): immunosuppression at transplant from `TXIRUNOS` and at the first follow-up from `TXIFUNOS` ("Immunosuppression at Follow-up – UNOS", Appendix B 2024), which the legacy Rmd never loads. Both should load with `load_usrds_file()`. **To verify:**
+
+- that the file mapper finds `txifunos`;
+- the join keys: the legacy Rmd joins `TXIRUNOS` to the registration on `TRR_ID`, but the 2024 layout has encrypted keys (`TRR_ID_CODE`; `TRRFU_ID_CODE` linking `TXIFUNOS` to the follow-up reports), so key names depend on the release.
+
+The legacy Rmd maps `RX_CD` codes and misspelled free text (`DRUG_CD_OSTXT`) to drug classes. **Gap:** a verified `RX_CD`-to-class crosswalk shipped as package data, from Appendix C, so projects don't re-derive it. The free-text clean-up is study-specific and stays here.
 
 ### 16. Immunosuppression from HCPCS claims ([#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2))
 
-`get_PS_HCPCS(c("J7502", "J7515", "J7516", "J7503", "J7507", "J7508", "J7525"), years)`, plus `get_IN_HCPCS()` for institutional lines. Covered. The package maps Part D files (a `PDE` file list exists internally) but has no Part D extractor. If [#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2) brings oral tacrolimus from Part D into scope, that is a gap.
+Not used in the main analysis ([#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2)), but kept in the assessment because the maintainer may revisit it (billing data may be the gold standard). `get_PS_HCPCS(c("J7502", "J7515", "J7516", "J7503", "J7507", "J7508", "J7525"), years)`, plus `get_IN_HCPCS()` for institutional lines. Covered. The package maps Part D files (a `PDE` file list exists internally) but has no Part D extractor. Part D is out of scope ([#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2)); if oral tacrolimus from Part D is ever brought in, that is a gap.
 
 ### 17. Age, region and division
 

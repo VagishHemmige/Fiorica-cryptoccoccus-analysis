@@ -10,8 +10,9 @@
 #     diabetes codes; by a later decision (2026-11-09) the stems are open
 #     prefixes, as in the supplement;
 #   - cyclosporine and tacrolimus HCPCS codes appear only in the supplement;
-#     they are kept, marked as such, until issue #2 settles how
-#     immunosuppression is measured.
+#     immunosuppression comes from the UNOS records instead (issue #2), so
+#     they are not used, but are kept, marked, because the maintainer may
+#     revisit billing data as the source.
 # The reconstruction's IRIS list and its principal-diagnosis cryptococcosis
 # list are not used by the paper's analyses and are not included.
 #
@@ -1386,7 +1387,7 @@ code_lists <- code_lists %>%
   bind_rows(diabetes_prefix_codes, cirrhosis_addition_codes, vp_shunt_codes) %>%
   mutate(
     source = case_when(
-      code_type == "hcpcs" ~ "supplement (pending issue #2)",
+      code_type == "hcpcs" ~ "supplement (not used; issue #2)",
       .default = source
     )
   )

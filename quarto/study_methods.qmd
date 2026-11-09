@@ -39,7 +39,9 @@ Characteristics come from three places:
 - **USRDS and UNOS transplant records:** transplant history, BMI, pretransplant dialysis, HIV and CMV status, rejection;
 - **earlier hospitalizations:** transplant complications.
 
-**Decision pending:** whether immunosuppressive drugs are measured from UNOS records, from billing codes, or both ([#2](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/2)); and which procedure code system to use ([#5](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/5)).
+Immunosuppressive drugs come from the transplant registry records (UNOS) held in USRDS, at transplant and at the first follow-up visit after transplant, as the paper's Methods describe. The paper also mentions billing codes; those may be revisited as the source ([#2](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/2)).
+
+**Decision pending:** whether physician (CPT) billing codes for procedures are used as well as the hospital's ICD procedure codes ([#5](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/5)).
 
 **Specified in:** [§5](analysis-plan.qmd#5-exposure-index-event-and-covariates).
 

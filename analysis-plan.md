@@ -57,7 +57,7 @@ The paper does not state the order of step 6 relative to the others. The order a
 
 **Index event and time zero:** admission date (`CLM_FROM`) of the index hospitalization. Overlapping or contiguous hospitalization records are one stay; the stay ends at the last record's `CLM_THRU`.
 
-**Code lists:** from the 2025-03-25 reconstruction of the original analysis, by the maintainer's decision (2026-11-09, [#8](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/8)), rather than from Supplementary Table 1 [@fiorica2025]. The two are identical except for diabetes and the cyclosporine and tacrolimus HCPCS codes, which only the supplement lists and which stay pending [#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2). After checking every code against the official code sets, three corrections were made (maintainer's decision, 2026-11-09): diabetes stems match as open prefixes, as in the supplement, because the reconstruction's enumeration (stem plus at most two digits) misses most ICD-10-CM diabetes codes; ICD-9-CM 456.20 is added to cirrhosis, missing from both sources; and a ventriculoperitoneal shunt list is rebuilt (below). Codes are written without decimals and match exactly, except the diabetes prefixes. ICD-9-CM applies to inpatient stays discharged before 2015-10-01 and ICD-10-CM/PCS to those discharged on or after it, following CMS's discharge-date rule; for the hospitalization files the discharge date is `CLM_THRU`. Lists are kept in code with their provenance (`references/usrds-coverage.md`).
+**Code lists:** from the 2025-03-25 reconstruction of the original analysis, by the maintainer's decision (2026-11-09, [#8](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/8)), rather than from Supplementary Table 1 [@fiorica2025]. The two are identical except for diabetes and the cyclosporine and tacrolimus HCPCS codes, which only the supplement lists and which are not used, because immunosuppression comes from the UNOS records ([#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2)). After checking every code against the official code sets, three corrections were made (maintainer's decision, 2026-11-09): diabetes stems match as open prefixes, as in the supplement, because the reconstruction's enumeration (stem plus at most two digits) misses most ICD-10-CM diabetes codes; ICD-9-CM 456.20 is added to cirrhosis, missing from both sources; and a ventriculoperitoneal shunt list is rebuilt (below). Codes are written without decimals and match exactly, except the diabetes prefixes. ICD-9-CM applies to inpatient stays discharged before 2015-10-01 and ICD-10-CM/PCS to those discharged on or after it, following CMS's discharge-date rule; for the hospitalization files the discharge date is `CLM_THRU`. Lists are kept in code with their provenance (`references/usrds-coverage.md`).
 
 | Concept | Codes |
 |---|---|
@@ -87,9 +87,12 @@ The paper does not state the order of step 6 relative to the others. The order a
 **Immunosuppression:**
 
 - antithymocyte globulin, alemtuzumab, anti-IL-2 receptor antibody, tacrolimus, cyclosporine, mycophenolate, mTOR inhibitors, azathioprine, steroids;
-- measured at transplant registration and at follow-up.
+- measured from the UNOS records in the USRDS transplant files, not Medicare drug claims (decided in [#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2)):
+  - **at transplant:** `TXIRUNOS`, linked to the recipient registration (`TXUNOS_TRR_KI`/`_KP`);
+  - **at first follow-up:** `TXIFUNOS`, from the earliest follow-up report (`TXFUUNOS_KI`/`_KP`, earliest `FUDATE`), whether or not it precedes the index admission, as the paper's Methods describe ("the first post-transplant visit"). Under OPTN rules this is normally the 6-month report. A drug counts at follow-up if it is current maintenance at that visit (`RXMNTCUR`);
+- drug classes come from `RX_CD` and `DRUG_CD_OSTXT`, using the reconstruction's mapping.
 
-**Open:** UNOS records, HCPCS claims or both, and which follow-up record counts ([#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2)).
+The paper's Discussion refers to a "1-year follow-up", and its Methods and Limitations say the drugs came from "billing codes"; the plan follows the Methods' time point and the UNOS records. The maintainer notes that billing data may be the gold standard, so this choice may be revisited ([#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2)).
 
 ## 6. Comparator or matching
 
