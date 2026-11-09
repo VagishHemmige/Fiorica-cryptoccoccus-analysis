@@ -12,7 +12,7 @@ Reporting will follow STROBE [@vonelm2007strobe] and RECORD [@benchimol2015recor
 
 ## 1. Objective
 
-- **Primary:** estimate all-cause mortality within 6 months of the index cryptococcosis hospitalization among adult kidney transplant recipients with Medicare as primary payer, 2006–2016.
+- **Primary:** estimate all-cause mortality within 6 months of the index cryptococcosis hospitalization among adult kidney transplant recipients hospitalized under Medicare, 2006–2016.
 - **Secondary:**
   - describe time from kidney transplant to the index hospitalization;
   - estimate the association of clinical, transplant and immunosuppression characteristics with 6-month mortality.
@@ -48,9 +48,10 @@ Source population: recipients of a kidney or kidney–pancreas transplant in the
 4. Exclude people with any cryptococcosis claim before their first kidney transplant or before 2006-01-01. **Open:** which claim sources count and how many claims are required ([#4](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/4)).
 5. Keep each person's first remaining cryptococcosis hospitalization (the index hospitalization).
 6. Restrict to age 18–90 years on the index admission date.
-7. Restrict to Medicare as primary payer. **Open:** over what window ([#3](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/3)).
 
-The paper does not state the order of steps 6 and 7 relative to the others. The order above puts claim-based exclusions first, so each later step's denominator is a set of people with an index hospitalization.
+No separate Medicare-primary restriction is applied. The paper describes the cohort as recipients "with Medicare as their primary insurance coverage" but gives no window or method, and the index hospitalization is itself a Medicare-paid record. The plan therefore treats Medicare-primary status as a consequence of the data source rather than an applied exclusion (decided in [#3](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/3)). An explicit restriction is described as a variation in §9.
+
+The paper does not state the order of step 6 relative to the others. The order above puts claim-based exclusions first, so each later step's denominator is a set of people with an index hospitalization.
 
 ## 5. Exposure, index event and covariates
 
@@ -121,7 +122,9 @@ Not applicable. Comparisons are between people who died within 6 months and thos
 
 ## 9. Sensitivity analyses
 
-None are prespecified. Comparing index-hospitalization sources (§3, [#1](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/1)) would test the package's claims route against the hospitalization-file route, if a decider adopts that option.
+**Variation: explicit Medicare-primary restriction.** One way the study could have been done differently is to require Medicare as primary payer from the payer history file (for example on the index admission date, for 365 days before it, or from first transplant to admission), with `usRds::verify_medicare_primary()`. This tests whether recipients with another primary payer, but a Medicare-paid index stay, change the estimates; it adds a flowchart step the paper does not show ([#3](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/3)).
+
+No other sensitivity analyses are prespecified. Comparing index-hospitalization sources (§3, [#1](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/1)) would test the package's claims route against the hospitalization-file route, if a decider adopts that option.
 
 ## 10. Disclosure control
 
@@ -132,7 +135,7 @@ The USRDS data use agreement governs. No cell, count or percentage that disclose
 - Case and CM definitions use diagnosis codes, without microbiological confirmation.
 - Immunosuppression during the index stay is not captured.
 - Stepwise selection gives optimistic P values and unstable selection; the results are exploratory.
-- Medicare-primary restriction limits generalisability.
+- Restriction to Medicare-paid hospitalizations limits generalisability, and Medicare-primary status is assumed rather than verified (§4).
 - Differences from the published estimates may come from the data release, the order of exclusions, the open decisions above, or details of the original Stata code that the paper does not report. They are reported as such, not as corrections to the paper.
 
 ## 12. Reporting map

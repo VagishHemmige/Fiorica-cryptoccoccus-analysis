@@ -23,7 +23,7 @@ The plan governs what each step must do. This document records only how the pack
 | 9 | Procedures on the index stay | none for ICD procedure codes | Gap ([#5](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/5)) |
 | 10 | Exclude cryptococcosis before first transplant | `get_PS_ICD()`, `get_IN_ICD()` | Covered ([#4](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/4)) |
 | 11 | Prior hospitalization for kidney transplant complications | `get_IN_ICD()` | Covered (dates only) |
-| 12 | Medicare as primary payer | `verify_medicare_primary()` | Covered ([#3](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/3)) |
+| 12 | Medicare as primary payer (variation only) | `verify_medicare_primary()` | Covered; not used in the main analysis ([#3](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/3)) |
 | 13 | UNOS registration variables (BMI, pretransplant dialysis, HIV, CMV, rejection) | `load_usrds_file("txunos_trr_ki")`, `("txunos_trr_kp")` | Partial |
 | 14 | UNOS follow-up rejection | `load_usrds_file("txfuunos_ki")`, `("txfuunos_kp")` | Partial |
 | 15 | Immunosuppression from UNOS records | `load_usrds_file("txirunos")` | Partial ([#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2)) |
@@ -106,7 +106,7 @@ T86.10–T86.12 or 996.81 on a hospitalization before the index admission. Only 
 
 ### 12. Medicare as primary payer ([#3](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/3))
 
-`verify_medicare_primary(df, index_date = "index_admit_date", lookback_days = ...)` adds `medicare_primary_TF`. Covered. The legacy Rmd did not apply this restriction.
+The main analysis applies no Medicare-primary restriction: the paper gives no window or method, the legacy Rmd applies none, and the index stay is itself a Medicare-paid record ([#3](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/3)). The explicit restriction is a variation (plan §9): `verify_medicare_primary(df, index_date = "index_admit_date", lookback_days = ...)` adds `medicare_primary_TF`. Covered, so the function is exercised only if the variation is run.
 
 ### 13–14. UNOS registration and follow-up
 
