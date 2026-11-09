@@ -6,14 +6,17 @@
 # 2025-03-25 reconstruction Rmd, not Supplementary Table 1 of Fiorica et al.
 # 2025 (doi:10.1093/ofid/ofaf263). The two are identical code for code except:
 #   - diabetes: the reconstruction enumerates each stem (250, E08, E09, E10,
-#     E11, E13) followed by nothing, one digit or two digits, so codes longer
-#     than five characters (for example E11649) are not matched; the
-#     supplement lists the stems as open prefixes;
+#     E11, E13) followed by at most two digits, which misses most ICD-10-CM
+#     diabetes codes; by a later decision (2026-11-09) the stems are open
+#     prefixes, as in the supplement;
 #   - cyclosporine and tacrolimus HCPCS codes appear only in the supplement;
 #     they are kept, marked as such, until issue #2 settles how
 #     immunosuppression is measured.
 # The reconstruction's IRIS list and its principal-diagnosis cryptococcosis
 # list are not used by the paper's analyses and are not included.
+#
+# Checked against the official code sets (CMS files in the usRds repository,
+# data-raw/), ICD-9-CM 456.20 is added to cirrhosis (2026-11-09); see below.
 #
 # The paper reports ventriculoperitoneal (VP) shunt placement, but neither the
 # supplement nor the reconstruction lists its codes; the maintainer judged this
@@ -60,7 +63,7 @@ code_lists <- tibble::tribble(
   "acute_kidney_injury", "diagnosis", "ICD-10-CM", "N172", "exact",
   "acute_kidney_injury", "diagnosis", "ICD-10-CM", "N178", "exact",
   "acute_kidney_injury", "diagnosis", "ICD-10-CM", "N179", "exact",
-  # diabetes (stems enumerated below the table)
+  # diabetes (stems as prefixes below the table)
   "diabetes", "diagnosis", "ICD-9-CM", "3572", "exact",
   "diabetes", "diagnosis", "ICD-9-CM", "36202", "exact",
   "diabetes", "diagnosis", "ICD-9-CM", "3620", "exact",
@@ -1329,21 +1332,32 @@ code_lists <- tibble::tribble(
 ) %>%
   mutate(source = "reconstruction")
 
-## ---- code-lists-diabetes-stems
-# Diabetes stems as the reconstruction enumerates them: each stem alone, with
-# one digit, or with two digits (666 codes; none longer than five characters).
-diabetes_stem_codes <- expand_grid(
-  stem = c("250", "E08", "E09", "E10", "E11", "E13"),
-  suffix = c("", as.character(0:9), str_pad(0:99, width = 2, pad = "0"))
-) %>%
-  transmute(
-    concept = "diabetes",
-    code_type = "diagnosis",
-    code_system = if_else(str_starts(stem, "E"), "ICD-10-CM", "ICD-9-CM"),
-    code = str_c(stem, suffix),
-    match = "exact",
-    source = "reconstruction"
-  )
+## ---- code-lists-diabetes-prefixes
+# Diabetes stems as open prefixes, as Supplementary Table 1 lists them (250*,
+# E08*, E09*, E10*, E11*, E13*), so every subcode matches, including 6- and
+# 7-character ICD-10-CM codes such as E11649. The reconstruction's version
+# stopped at two extra digits and missed most ICD-10 diabetes codes.
+diabetes_prefix_codes <- tibble(
+  concept = "diabetes",
+  code_type = "diagnosis",
+  code_system = c("ICD-9-CM", rep("ICD-10-CM", 5)),
+  code = c("250", "E08", "E09", "E10", "E11", "E13"),
+  match = "prefix",
+  source = "supplement"
+)
+
+## ---- code-lists-cirrhosis-addition
+# ICD-9-CM 456.20, esophageal varices with bleeding in diseases classified
+# elsewhere: missing from both sources, which list only its counterpart 456.21
+# (without bleeding) under the 456.2 heading.
+cirrhosis_addition_codes <- tibble(
+  concept = "cirrhosis",
+  code_type = "diagnosis",
+  code_system = "ICD-9-CM",
+  code = "45620",
+  match = "exact",
+  source = "official code sets (missing from both lists)"
+)
 
 ## ---- code-lists-vp-shunt
 # Ventriculoperitoneal shunt placement: ICD-9-CM 02.34 "Ventricular shunt to
@@ -1369,7 +1383,7 @@ vp_shunt_codes <- expand_grid(
   )
 
 code_lists <- code_lists %>%
-  bind_rows(diabetes_stem_codes, vp_shunt_codes) %>%
+  bind_rows(diabetes_prefix_codes, cirrhosis_addition_codes, vp_shunt_codes) %>%
   mutate(
     source = case_when(
       code_type == "hcpcs" ~ "supplement (pending issue #2)",

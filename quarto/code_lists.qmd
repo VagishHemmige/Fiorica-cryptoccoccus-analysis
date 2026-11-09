@@ -3,7 +3,7 @@ title: "Code lists"
 format: html
 ---
 
-This script holds every diagnosis, procedure and billing code list the analysis uses. By the maintainer's decision, the lists come from the 2025-03-25 reconstruction of the original analysis rather than from Supplementary Table 1 of the paper [@fiorica2025]. The two are identical except for diabetes and the HCPCS drug codes (below).
+This script holds every diagnosis, procedure and billing code list the analysis uses. By the maintainer's decision, the lists come from the 2025-03-25 reconstruction of the original analysis rather than from Supplementary Table 1 of the paper [@fiorica2025]. The two are identical except for diabetes and the HCPCS drug codes (below). After every code was checked against the official code sets, a few corrections were made, also below.
 
 ::: {.Rcode title="Source code"}
 The full R script is available at:
@@ -31,12 +31,17 @@ All lists are in one table, `code_lists`, with one row per code. Each row has fi
 - whether the code matches **exactly** or as a **prefix**;
 - its **source**: the reconstruction, or the supplement for the HCPCS codes.
 
-Every code matches exactly. The supplement lists the diabetes categories as open prefixes (`E11*`). The reconstruction instead lists each stem alone or followed by one or two digits, so `E1122` is included but the longer `E11649` is not; the code follows the reconstruction. The cyclosporine and tacrolimus HCPCS codes appear only in the supplement, and are kept, marked as such, until [#2](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/2) settles how immunosuppression is measured. The reconstruction also has an IRIS list and a principal-diagnosis cryptococcosis list, which the paper's analyses do not use and which are left out.
+Every code matches exactly, except the diabetes stems. The reconstruction listed each diabetes stem alone or followed by one or two digits, which misses most ICD-10-CM diabetes codes (for example `E11649`). So the stems match as open prefixes, as in the supplement: `E11` matches `E1122` and `E11649` alike. ICD-9-CM 456.20 (esophageal varices with bleeding, in diseases classified elsewhere) is added to cirrhosis; both sources list only its counterpart 456.21. The cyclosporine and tacrolimus HCPCS codes appear only in the supplement, and are kept, marked as such, until [#2](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/2) settles how immunosuppression is measured. The reconstruction also has an IRIS list and a principal-diagnosis cryptococcosis list, which the paper's analyses do not use and which are left out.
 
 The paper reports ventriculoperitoneal shunt placement, but neither the supplement nor the reconstruction lists its codes, which the maintainer judged a copy/paste loss. The list is rebuilt from the official code sets: ICD-9-CM 02.34 and the nine ICD-10-PCS "Bypass Cerebral Ventricle to Peritoneal Cavity" codes. All ten are also in the neurosurgical list. That includes the three-character `B45` in the cryptococcosis list, which therefore matches only a code recorded as `B45` itself.
 
 ```{r}
-#| label: code-lists-diabetes-stems
+#| label: code-lists-diabetes-prefixes
+#| eval: false
+```
+
+```{r}
+#| label: code-lists-cirrhosis-addition
 #| eval: false
 ```
 

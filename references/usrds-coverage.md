@@ -17,7 +17,7 @@ The plan governs what each step must do. This document records only how the pack
 | 3 | Transplant history (dates, failures, count before index) | `load_usrds_file("tx")` | Partial |
 | 4 | Index cryptococcosis hospitalization (hospitalization files) | `load_usrds_file("hosp_*")` only | Gap ([#1](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/1)) |
 | 5 | Cryptococcal meningitis vs other, on the index stay | depends on step 4 | Gap |
-| 6 | Comorbidities on the index stay (AKI, diabetes, cirrhosis) | depends on step 4 (exact lists; prefix matching not needed) | Gap |
+| 6 | Comorbidities on the index stay (AKI, diabetes, cirrhosis) | depends on step 4; no prefix matching | Gap |
 | 7 | ICU admission; combining overlapping claims into one stay | none | Gap |
 | 8 | Discharge status | `apply_usrds_factors()` on the hospitalization file | To verify |
 | 9 | Procedures on the index stay | none for ICD procedure codes | Gap ([#5](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/5)) |
@@ -77,9 +77,9 @@ B45.1 or 321.0 in any diagnosis position of the index stay, including stays merg
 
 ### 6. Comorbidities on the index stay
 
-AKI and cirrhosis use exact code lists. The code lists come from the reconstruction by decision (plan §5), so diabetes is an enumerated exact list (each stem plus at most two digits) rather than the supplement's open prefixes. This replication therefore does not need prefix matching.
+AKI and cirrhosis use exact code lists. Diabetes uses open prefixes (`250*`, `E08*`–`E13*`; plan §5). The reconstruction enumerated stems plus at most two digits instead, which misses most ICD-10-CM diabetes codes; an exact-only matcher pushes code toward that kind of enumeration error. The project matches prefixes with `code_matches()` in `R/functions.R`.
 
-**Gap (not needed here):** the `get_*_ICD()` functions match exactly (`CODE %in% icd_codes`). The package builds an `icd_reference` table "so that the get_*_ICD functions can use wildcards" (`data-raw/DATASET.R`), but no exported function uses it yet. A `prefix = TRUE` option, or an `expand_icd_codes("E11", type = "dx")` helper backed by `icd_reference`, would close this.
+**Gap:** the `get_*_ICD()` functions match exactly (`CODE %in% icd_codes`). The package builds an `icd_reference` table "so that the get_*_ICD functions can use wildcards" (`data-raw/DATASET.R`), but no exported function uses it yet. A `prefix = TRUE` option, or an `expand_icd_codes("E11", type = "dx")` helper backed by `icd_reference`, would close this.
 
 ### 7. ICU admission and overlapping claims
 

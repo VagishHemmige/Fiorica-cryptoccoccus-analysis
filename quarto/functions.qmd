@@ -35,7 +35,7 @@ knitr::read_chunk("../R/functions.R")
 
 ## Matching codes
 
-`code_matches()` compares a vector of recorded codes with a code list. It handles both exact codes and prefixes. Every list in this analysis now matches exactly (the diabetes stems are enumerated, as in the reconstruction), so prefix matching is not used here; it is kept because the usRds `get_*_ICD()` functions match exactly only, and the coverage assessment records that (step 6).
+`code_matches()` compares a vector of recorded codes with a code list. It handles both exact codes and prefixes, so the diabetes stems match all their subcodes. The usRds `get_*_ICD()` functions match exactly only, which is why this exists (coverage step 6).
 
 ```{r}
 #| label: code-matches

@@ -20,11 +20,18 @@ test_that("code_matches handles exact and prefix codes", {
   )
 })
 
-test_that("diabetes codes follow the reconstruction: stem plus at most two digits", {
+test_that("diabetes stems match as open prefixes, including long ICD-10 codes", {
   diabetes <- codes_for_concept(code_lists, "diabetes")
-  expect_true(all(code_matches(c("E11", "E1122", "E0800", "25040", "2504", "3572"), diabetes)))
-  # Longer ICD-10 codes are not in the reconstruction's list
-  expect_false(any(code_matches(c("E11649", "E113291", "E12", "E1", "2410"), diabetes)))
+  expect_true(all(code_matches(
+    c("E11", "E1122", "E11649", "E113291", "E0800", "25040", "3572", "36641"),
+    diabetes
+  )))
+  expect_false(any(code_matches(c("E12", "E1", "2410", "E1500"), diabetes)))
+})
+
+test_that("cirrhosis includes 456.20 and 456.21", {
+  cirrhosis <- codes_for_concept(code_lists, "cirrhosis")
+  expect_true(all(code_matches(c("45620", "45621"), cirrhosis)))
 })
 
 test_that("VP shunt codes are the ten official placement codes, inside the neurosurgical list", {
@@ -37,12 +44,18 @@ test_that("VP shunt codes are the ten official placement codes, inside the neuro
   expect_true(all(vp %in% code_lists$code[code_lists$concept == "neurosurgical_procedure"]))
 })
 
-test_that("every code list except HCPCS and VP shunt comes from the reconstruction", {
+test_that("each code list has its recorded source", {
+  sources <- code_lists %>%
+    distinct(concept, source)
   expect_setequal(
-    unique(code_lists$source[!code_lists$concept %in% c("cyclosporine", "tacrolimus", "vp_shunt")]),
+    sources$source[sources$concept == "diabetes"],
+    c("reconstruction", "supplement")
+  )
+  expect_setequal(
+    unique(code_lists$source[!code_lists$concept %in% c("cyclosporine", "tacrolimus", "vp_shunt", "diabetes", "cirrhosis")]),
     "reconstruction"
   )
-  expect_equal(sum(code_lists$concept == "diabetes"), 670)
+  expect_equal(sum(code_lists$concept == "diabetes" & code_lists$match == "prefix"), 6)
 })
 
 test_that("codes_for_concept stops on an unknown concept", {
