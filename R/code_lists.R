@@ -1,14 +1,25 @@
-# Purpose: code lists from Supplementary Table 1 of Fiorica et al. 2025
-#   (doi:10.1093/ofid/ofaf263), as published, with decimals removed.
-# Needs: dplyr (attached by setup.R). Produces: code_lists, a tibble with one
-#   row per code. Sourced by setup.R.
+# Purpose: the diagnosis, procedure and billing code lists the analysis uses.
+# Needs: dplyr, tidyr and stringr (attached by setup.R). Produces: code_lists,
+#   a tibble with one row per code. Sourced by setup.R.
 #
-# Generated from the supplement by a one-off script, not typed by hand; edit
-# only to follow a recorded decision. code_system is inferred from the code's
-# form (ICD-10-PCS codes have 7 characters; ICD-10-CM codes start with a
-# letter) and should be checked against the official code sets before use.
-# Procedure lists are as published; see issue #5 for the open questions about
-# them (CPT vs ICD, ventriculoperitoneal shunt).
+# Source (decided by Vagish Hemmige, 2026-11-09): the code lists of the
+# 2025-03-25 reconstruction Rmd, not Supplementary Table 1 of Fiorica et al.
+# 2025 (doi:10.1093/ofid/ofaf263). The two are identical code for code except:
+#   - diabetes: the reconstruction enumerates each stem (250, E08, E09, E10,
+#     E11, E13) followed by nothing, one digit or two digits, so codes longer
+#     than five characters (for example E11649) are not matched; the
+#     supplement lists the stems as open prefixes;
+#   - cyclosporine and tacrolimus HCPCS codes appear only in the supplement;
+#     they are kept, marked as such, until issue #2 settles how
+#     immunosuppression is measured.
+# The reconstruction's IRIS list and its principal-diagnosis cryptococcosis
+# list are not used by the paper's analyses and are not included.
+#
+# The rows below were generated from the lists by a one-off script, not typed
+# by hand; edit only to follow a recorded decision. code_system is inferred
+# from each code's form (ICD-10-PCS codes have 7 characters; ICD-10-CM codes
+# start with a letter) and should be checked against the official code sets.
+# See issue #5 for the open questions about the procedure lists.
 
 ## ---- code-lists
 code_lists <- tibble::tribble(
@@ -43,13 +54,7 @@ code_lists <- tibble::tribble(
   "acute_kidney_injury", "diagnosis", "ICD-10-CM", "N172", "exact",
   "acute_kidney_injury", "diagnosis", "ICD-10-CM", "N178", "exact",
   "acute_kidney_injury", "diagnosis", "ICD-10-CM", "N179", "exact",
-  # diabetes
-  "diabetes", "diagnosis", "ICD-9-CM", "250", "prefix",
-  "diabetes", "diagnosis", "ICD-10-CM", "E08", "prefix",
-  "diabetes", "diagnosis", "ICD-10-CM", "E09", "prefix",
-  "diabetes", "diagnosis", "ICD-10-CM", "E10", "prefix",
-  "diabetes", "diagnosis", "ICD-10-CM", "E11", "prefix",
-  "diabetes", "diagnosis", "ICD-10-CM", "E13", "prefix",
+  # diabetes (stems enumerated below the table)
   "diabetes", "diagnosis", "ICD-9-CM", "3572", "exact",
   "diabetes", "diagnosis", "ICD-9-CM", "36202", "exact",
   "diabetes", "diagnosis", "ICD-9-CM", "3620", "exact",
@@ -1315,4 +1320,30 @@ code_lists <- tibble::tribble(
   "lung_procedure", "procedure", "ICD-9-CM", "3493", "exact",
   "lung_procedure", "procedure", "ICD-9-CM", "3499", "exact",
   "lung_procedure", "procedure", "ICD-9-CM", "9656", "exact"
-)
+) %>%
+  mutate(source = "reconstruction")
+
+## ---- code-lists-diabetes-stems
+# Diabetes stems as the reconstruction enumerates them: each stem alone, with
+# one digit, or with two digits (666 codes; none longer than five characters).
+diabetes_stem_codes <- expand_grid(
+  stem = c("250", "E08", "E09", "E10", "E11", "E13"),
+  suffix = c("", as.character(0:9), str_pad(0:99, width = 2, pad = "0"))
+) %>%
+  transmute(
+    concept = "diabetes",
+    code_type = "diagnosis",
+    code_system = if_else(str_starts(stem, "E"), "ICD-10-CM", "ICD-9-CM"),
+    code = str_c(stem, suffix),
+    match = "exact",
+    source = "reconstruction"
+  )
+
+code_lists <- code_lists %>%
+  bind_rows(diabetes_stem_codes) %>%
+  mutate(
+    source = case_when(
+      code_type == "hcpcs" ~ "supplement (pending issue #2)",
+      .default = source
+    )
+  )

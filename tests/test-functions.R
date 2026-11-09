@@ -3,6 +3,7 @@
 # All data here are synthetic, built in code, and not derived from any records.
 
 library(dplyr)
+library(tidyr)
 library(stringr)
 library(testthat)
 # testthat runs this file from tests/, so find the project root either way
@@ -19,10 +20,19 @@ test_that("code_matches handles exact and prefix codes", {
   )
 })
 
-test_that("diabetes prefixes from the supplement match ICD-10 subcodes", {
+test_that("diabetes codes follow the reconstruction: stem plus at most two digits", {
   diabetes <- codes_for_concept(code_lists, "diabetes")
-  expect_true(all(code_matches(c("E1122", "E0800", "25040", "3572"), diabetes)))
-  expect_false(any(code_matches(c("E12", "E1", "2410"), diabetes)))
+  expect_true(all(code_matches(c("E11", "E1122", "E0800", "25040", "2504", "3572"), diabetes)))
+  # Longer ICD-10 codes are not in the reconstruction's list
+  expect_false(any(code_matches(c("E11649", "E113291", "E12", "E1", "2410"), diabetes)))
+})
+
+test_that("every code list except the HCPCS codes comes from the reconstruction", {
+  expect_setequal(
+    unique(code_lists$source[code_lists$code_type != "hcpcs"]),
+    "reconstruction"
+  )
+  expect_equal(sum(code_lists$concept == "diabetes"), 670)
 })
 
 test_that("codes_for_concept stops on an unknown concept", {

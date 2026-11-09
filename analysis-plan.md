@@ -57,7 +57,7 @@ The paper does not state the order of step 6 relative to the others. The order a
 
 **Index event and time zero:** admission date (`CLM_FROM`) of the index hospitalization. Overlapping or contiguous hospitalization records are one stay; the stay ends at the last record's `CLM_THRU`.
 
-**Code lists:** from Supplementary Table 1 [@fiorica2025]. Matching is exact on codes without decimals, except diabetes, which matches by prefix. ICD-9-CM applies to dates before 2015-10-01 and ICD-10-CM/PCS from that date. Lists are kept in code with their provenance (`references/usrds-coverage.md`).
+**Code lists:** from the 2025-03-25 reconstruction of the original analysis, by the maintainer's decision (2026-11-09), rather than from Supplementary Table 1 [@fiorica2025]. The two are identical except for diabetes, where the reconstruction enumerates each stem followed by at most two digits instead of using open prefixes; and the cyclosporine and tacrolimus HCPCS codes, which only the supplement lists and which stay pending [#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2). Matching is exact on codes without decimals. ICD-9-CM applies to dates before 2015-10-01 and ICD-10-CM/PCS from that date. Lists are kept in code with their provenance (`references/usrds-coverage.md`).
 
 | Concept | Codes |
 |---|---|
@@ -65,8 +65,8 @@ The paper does not state the order of step 6 relative to the others. The order a
 | Cryptococcal meningitis (CM) | 321.0, B45.1 |
 | Transplant complication | 996.81, T86.10–T86.12 |
 | Acute kidney injury | 584.5–584.9, N17.0–N17.2, N17.8, N17.9 |
-| Diabetes (prefix) | 250\*, E08\*, E09\*, E10\*, E11\*, E13\*, 357.2, 362.0, 362.02, 366.41 |
-| Cirrhosis | as listed in Supplementary Table 1 (31 codes) |
+| Diabetes | 250, E08, E09, E10, E11 and E13, each alone or followed by one or two digits (so E11.649 is not included); 357.2, 362.0, 362.02, 366.41 |
+| Cirrhosis | as listed in the reconstruction and Supplementary Table 1 (31 codes, identical) |
 
 **Covariates measured on the index stay:**
 

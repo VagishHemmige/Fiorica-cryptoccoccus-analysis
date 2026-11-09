@@ -3,7 +3,7 @@ title: "Code lists"
 format: html
 ---
 
-This script holds every diagnosis, procedure and billing code list the analysis uses, taken from Supplementary Table 1 of the paper [@fiorica2025].
+This script holds every diagnosis, procedure and billing code list the analysis uses. By the maintainer's decision, the lists come from the 2025-03-25 reconstruction of the original analysis rather than from Supplementary Table 1 of the paper [@fiorica2025]. The two are identical except for diabetes and the HCPCS drug codes (below).
 
 ::: {.Rcode title="Source code"}
 The full R script is available at:
@@ -28,9 +28,15 @@ All lists are in one table, `code_lists`, with one row per code. Each row has fi
 - the **code type**: diagnosis, procedure or HCPCS;
 - the **code system**;
 - the **code**, without its decimal point;
-- whether the code matches **exactly** or as a **prefix**.
+- whether the code matches **exactly** or as a **prefix**;
+- its **source**: the reconstruction, or the supplement for the HCPCS codes.
 
-Only the diabetes categories in the supplement are marked with an asterisk, so only they match by prefix. For example, `E11` matches `E1122`. Every other code matches exactly, as published. That includes the three-character `B45` in the cryptococcosis list, which therefore matches only a code recorded as `B45` itself.
+Every code matches exactly. The supplement lists the diabetes categories as open prefixes (`E11*`). The reconstruction instead lists each stem alone or followed by one or two digits, so `E1122` is included but the longer `E11649` is not; the code follows the reconstruction. The cyclosporine and tacrolimus HCPCS codes appear only in the supplement, and are kept, marked as such, until [#2](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/2) settles how immunosuppression is measured. The reconstruction also has an IRIS list and a principal-diagnosis cryptococcosis list, which the paper's analyses do not use and which are left out. That includes the three-character `B45` in the cryptococcosis list, which therefore matches only a code recorded as `B45` itself.
+
+```{r}
+#| label: code-lists-diabetes-stems
+#| eval: false
+```
 
 The code system is inferred from each code's form: ICD-10-PCS codes have seven characters, and ICD-10-CM codes start with a letter. It should be checked against the official code sets.
 
