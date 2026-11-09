@@ -57,7 +57,7 @@ The paper does not state the order of step 6 relative to the others. The order a
 
 **Index event and time zero:** admission date (`CLM_FROM`) of the index hospitalization. Overlapping or contiguous hospitalization records are one stay; the stay ends at the last record's `CLM_THRU`.
 
-**Code lists:** from Supplementary Table 1 [@fiorica2025]. Matching is exact on codes without decimals, except diabetes, which matches by prefix. ICD-9-CM applies to dates before 2015-10-01 and ICD-10-CM/PCS from that date. Lists are kept in code with their provenance (`references/usrds-coverage.md`).
+**Code lists:** from the 2025-03-25 reconstruction of the original analysis, by the maintainer's decision (2026-11-09, [#8](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/8)), rather than from Supplementary Table 1 [@fiorica2025]. The two are identical except for diabetes and the cyclosporine and tacrolimus HCPCS codes, which only the supplement lists and which stay pending [#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2). After checking every code against the official code sets, three corrections were made (maintainer's decision, 2026-11-09): diabetes stems match as open prefixes, as in the supplement, because the reconstruction's enumeration (stem plus at most two digits) misses most ICD-10-CM diabetes codes; ICD-9-CM 456.20 is added to cirrhosis, missing from both sources; and a ventriculoperitoneal shunt list is rebuilt (below). Codes are written without decimals and match exactly, except the diabetes prefixes. ICD-9-CM applies to inpatient stays discharged before 2015-10-01 and ICD-10-CM/PCS to those discharged on or after it, following CMS's discharge-date rule; for the hospitalization files the discharge date is `CLM_THRU`. Lists are kept in code with their provenance (`references/usrds-coverage.md`).
 
 | Concept | Codes |
 |---|---|
@@ -65,15 +65,15 @@ The paper does not state the order of step 6 relative to the others. The order a
 | Cryptococcal meningitis (CM) | 321.0, B45.1 |
 | Transplant complication | 996.81, T86.10–T86.12 |
 | Acute kidney injury | 584.5–584.9, N17.0–N17.2, N17.8, N17.9 |
-| Diabetes (prefix) | 250\*, E08\*, E09\*, E10\*, E11\*, E13\*, 357.2, 362.0, 362.02, 366.41 |
-| Cirrhosis | as listed in Supplementary Table 1 (31 codes) |
+| Diabetes (prefix) | 250\*, E08\*, E09\*, E10\*, E11\*, E13\*; 357.2, 362.0, 362.02, 366.41 |
+| Cirrhosis | the 31 codes in the reconstruction and Supplementary Table 1 (identical), plus 456.20 |
 
 **Covariates measured on the index stay:**
 
 - CM vs non-CM;
 - AKI, diabetes and cirrhosis, from any diagnosis on the stay;
 - ICU admission (any ICU or CCU days);
-- procedures: lumbar puncture, other spinal, neurosurgical and lung procedures, and ventriculoperitoneal shunt. **Open:** code system and the shunt list ([#5](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/5)).
+- procedures: lumbar puncture, other spinal, neurosurgical and lung procedures, and ventriculoperitoneal shunt. The shunt list is missing from both the supplement and the reconstruction (a copy/paste loss, in the maintainer's judgment), so it is rebuilt from the official code sets: ICD-9-CM 02.34 and the nine ICD-10-PCS codes for bypass of a cerebral ventricle to the peritoneal cavity. **Open:** whether CPT codes, which the paper's text names, are used as well as ICD procedure codes ([#5](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/5)).
 
 **Covariates measured at or before time zero:**
 

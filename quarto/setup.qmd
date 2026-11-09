@@ -1,0 +1,56 @@
+---
+title: "Setup"
+format: html
+---
+
+This script attaches the packages and defines the constants every other script uses.
+
+::: {.Rcode title="Source code"}
+The full R script is available at:
+
+-   [`R/setup.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/setup.R)
+
+The code sections below are imported directly from that script when this page is rendered.
+:::
+
+```{r}
+#| include: false
+#| eval: true
+#| cache: false
+knitr::read_chunk("../R/setup.R")
+```
+
+## Packages
+
+The analysis uses the tidyverse for data handling. **usRds** is the access package for the USRDS files: it locates the files on the machine that holds them and loads or extracts from them. The [coverage assessment](usrds-coverage.qmd) records which steps it does. **flowchart** builds the cohort flow diagram (Figure 1), **survival** the Kaplan–Meier curve (Figure 2), and **labelled** the variable labels.
+
+```{r}
+#| label: load-packages
+#| eval: false
+```
+
+## Constants
+
+These are the study's fixed parameters, each tied to the section of the [analysis plan](analysis-plan.qmd) that sets it:
+
+- the admission window for the index hospitalization, 2006–2016 (§3);
+- the age range, 18 to 90 years inclusive (§4);
+- the 180-day mortality window, in which a death on day 180 counts (§7);
+- the ICD-10 transition date (§5);
+- the 2-year cut-off for time since transplant in the model (§5).
+
+Scripts use these names rather than typing the numbers again.
+
+```{r}
+#| label: define-constants
+#| eval: false
+```
+
+## Code lists
+
+The code lists are long, so they live in their own script; see [Code lists](code_lists.qmd).
+
+```{r}
+#| label: code-lists-source
+#| eval: false
+```

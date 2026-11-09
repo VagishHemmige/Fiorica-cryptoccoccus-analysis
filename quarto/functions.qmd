@@ -1,0 +1,69 @@
+---
+title: "Functions"
+format: html
+---
+
+This script defines the helper functions the analysis scripts share. Three of them do work that usRds does not yet do, and are labelled "usRds gap" in the code. The [coverage assessment](usrds-coverage.qmd) explains each gap.
+
+::: {.Rcode title="Source code"}
+The full R script is available at:
+
+-   [`R/functions.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/functions.R)
+
+This R script file is itself reliant on the following helper files:
+
+-   [`R/setup.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/setup.R)
+
+The functions are tested on synthetic data in [`tests/test-functions.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/tests/test-functions.R). The code sections below are imported directly from the script when this page is rendered.
+:::
+
+```{r}
+#| include: false
+#| eval: true
+#| cache: false
+knitr::read_chunk("../R/functions.R")
+```
+
+## Codes for a concept
+
+`codes_for_concept()` picks one concept's codes out of the `code_lists` table, and can limit them to one code type: diagnosis, procedure or HCPCS. It stops with an error if the concept name is misspelled, rather than silently returning no codes.
+
+```{r}
+#| label: codes-for-concept
+#| eval: false
+```
+
+## Matching codes
+
+`code_matches()` compares a vector of recorded codes with a code list. It handles both exact codes and prefixes, so the diabetes stems match all their subcodes. The usRds `get_*_ICD()` functions match exactly only, which is why this exists (coverage step 6).
+
+```{r}
+#| label: code-matches
+#| eval: false
+```
+
+## Searching wide code columns
+
+The USRDS hospitalization files record each stay's codes in separate columns:
+
+- the principal diagnosis, `PRIMDIAG`;
+- secondary diagnoses `HSDIAG1` onwards (10 columns before 2010, 26 from 2010);
+- procedures `HSSURG1` onwards.
+
+`flag_codes_wide()` flags each row where any of the named columns holds a listed code. It skips columns a file does not have, so the same call works on both files (coverage steps 4–6 and 9).
+
+```{r}
+#| label: flag-codes-wide
+#| eval: false
+```
+
+## Combining records into stays
+
+A single hospital stay can appear as several hospitalization records. `collapse_stays()` puts a person's records in date order. It starts a new stay only when a record's admission date falls after the latest discharge date seen so far, so the stays it builds never overlap. A record admitted on the day of the previous discharge joins the same stay. The optional `gap_days` argument also joins records that start within that many days of discharge.
+
+The function adds a stay identifier and the stay's first and last dates. The plan treats overlapping or contiguous records as one stay (§5); usRds has no equivalent (coverage step 7).
+
+```{r}
+#| label: collapse-stays
+#| eval: false
+```

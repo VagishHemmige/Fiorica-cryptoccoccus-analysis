@@ -1,0 +1,16 @@
+---
+pagetitle: "Analysis plan"
+format: html
+from: markdown+gfm_auto_identifiers
+---
+
+<!--
+This page only shows analysis-plan.md from the repository root, which is the one source:
+edit that file, not this page. Its first heading is the page title.
+
+The plan links its own sections GitHub's way (for example #3-design). Quarto's
+default heading IDs drop leading numbers (#design), so `from:` above
+gives this page GitHub-style IDs and those links work on both.
+-->
+
+{{< include ../analysis-plan.md >}}

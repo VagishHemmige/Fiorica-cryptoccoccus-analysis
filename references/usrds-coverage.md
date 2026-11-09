@@ -3,7 +3,7 @@
 This document maps each step of the published analysis [@fiorica2025], as the paper describes it, to the usRds functions that do it, or records that none does. It is the project's coverage assessment: replicating the paper's methods, how much of the work can usRds do?
 
 - **Package version examined:** usRds 0.1.0, commit `3f63750` (default branch, 2026-11-09). Read from source; not run, because R is not installed in the environment where this was written. Re-check against the installed version before relying on any row.
-- **Sources compared:** the paper's Methods and Supplementary Table 1 (code lists), which are the specification; and the legacy Rmd dated 2025-03-25, the maintainer's best reconstruction of the original Stata analysis (secondary evidence only; not in this repository, see "Provenance" below). Where this document says "the legacy Rmd does X", it describes the reconstruction, not necessarily what the published analysis did.
+- **Sources compared:** the paper's Methods and Supplementary Table 1, which are the specification (except that the code lists come from the reconstruction, by decision; plan §5); and the legacy Rmd dated 2025-03-25, the maintainer's best reconstruction of the original Stata analysis (secondary evidence only; not in this repository, see "Provenance" below). Where this document says "the legacy Rmd does X", it describes the reconstruction, not necessarily what the published analysis did.
 - **Status key.** **Covered:** a usRds function does the step as the plan needs. **Partial:** a function exists but lacks something the step needs. **Gap:** no usRds function; currently done with hand-written code. **To verify:** behaviour that needs checking against the Researcher's Guide or by running the function on synthetic data.
 
 The plan governs what each step must do. This document records only how the package meets it. Open choices are linked to their decision issues.
@@ -77,7 +77,7 @@ B45.1 or 321.0 in any diagnosis position of the index stay, including stays merg
 
 ### 6. Comorbidities on the index stay
 
-AKI and cirrhosis use exact code lists. Diabetes uses prefixes (`250*`, `E08*`–`E13*`); the legacy Rmd enumerates them by loop.
+AKI and cirrhosis use exact code lists. Diabetes uses open prefixes (`250*`, `E08*`–`E13*`; plan §5). The reconstruction enumerated stems plus at most two digits instead, which misses most ICD-10-CM diabetes codes; an exact-only matcher pushes code toward that kind of enumeration error. The project matches prefixes with `code_matches()` in `R/functions.R`.
 
 **Gap:** the `get_*_ICD()` functions match exactly (`CODE %in% icd_codes`). The package builds an `icd_reference` table "so that the get_*_ICD functions can use wildcards" (`data-raw/DATASET.R`), but no exported function uses it yet. A `prefix = TRUE` option, or an `expand_icd_codes("E11", type = "dx")` helper backed by `icd_reference`, would close this.
 
