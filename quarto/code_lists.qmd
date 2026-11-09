@@ -1,0 +1,42 @@
+---
+title: "Code lists"
+format: html
+---
+
+This script holds every diagnosis, procedure and billing code list the analysis uses, taken from Supplementary Table 1 of the paper [@fiorica2025].
+
+::: {.Rcode title="Source code"}
+The full R script is available at:
+
+-   [`R/code_lists.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/code_lists.R)
+
+It is sourced by [`R/setup.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/setup.R).
+:::
+
+```{r}
+#| include: false
+#| eval: true
+#| cache: false
+knitr::read_chunk("../R/code_lists.R")
+```
+
+## One table of codes
+
+All lists are in one table, `code_lists`, with one row per code. Each row has five fields:
+
+- the **concept** (for example `cryptococcosis` or `lumbar_puncture`);
+- the **code type**: diagnosis, procedure or HCPCS;
+- the **code system**;
+- the **code**, without its decimal point;
+- whether the code matches **exactly** or as a **prefix**.
+
+Only the diabetes categories in the supplement are marked with an asterisk, so only they match by prefix. For example, `E11` matches `E1122`. Every other code matches exactly, as published. That includes the three-character `B45` in the cryptococcosis list, which therefore matches only a code recorded as `B45` itself.
+
+The code system is inferred from each code's form: ICD-10-PCS codes have seven characters, and ICD-10-CM codes start with a letter. It should be checked against the official code sets.
+
+**Decision pending:** the procedure lists are reproduced as published, but the paper's text names CPT codes, and no ventriculoperitoneal shunt list is given ([#5](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/5)).
+
+```{r}
+#| label: code-lists
+#| eval: false
+```
