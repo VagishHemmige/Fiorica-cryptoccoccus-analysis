@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 
 This repository rebuilds the analysis in Fiorica et al. (*Open Forum Infectious Diseases* 2025; [doi:10.1093/ofid/ofaf263](https://doi.org/10.1093/ofid/ofaf263)) using the [usRds](https://github.com/VagishHemmige/usRds) package. The paper reported 6-month mortality, and the factors associated with it, among kidney transplant recipients hospitalized with cryptococcosis in USRDS data from 2006 to 2016.
 
-The goal is **package coverage, not replication of the published numbers**. Each step of the published analysis is rebuilt with usRds functions where they exist. Steps the package cannot yet do are recorded as gaps, so they can be added to usRds.
+The goal is to **replicate the analysis as the paper describes it, and assess how well usRds covers it**. Each step is rebuilt with usRds functions where they exist, and with project code where they don't; the coverage map records which. The published estimates are a reference point, not a target: the original analysis was run in Stata, and that code is no longer available.
 
 This analysis is currently in progress.
 

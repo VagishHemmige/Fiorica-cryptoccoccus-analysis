@@ -6,7 +6,7 @@ Status: draft. Not locked.
 
 This document is the authoritative specification of the study's scientific objectives, population, definitions, estimands and statistical methods. `ARCHITECTURE.md` documents the implementation, `AGENTS.md` the working conventions, and GitHub Issues the open decisions and implementation status. Neither file supersedes this plan.
 
-The analysis replicates a published study [@fiorica2025] as the paper describes it, using the usRds package for every step the package can do. **The paper and its Supplementary Table 1 are the specification.** The original analysis was run in Stata, and that code is no longer available; a later R Markdown reconstruction (2025-03-25) is used only as secondary evidence of how a step may have been done. Where the paper is silent, the plan records an open decision rather than adopting the reconstruction's choice unexamined. The published estimates are a reference point, not a target. How each step maps to usRds is in `references/usrds-coverage.md`.
+The analysis replicates a published study [@fiorica2025] as the paper describes it, using the usRds package wherever it can do a step, to assess the package's coverage. **The paper and its Supplementary Table 1 are the specification.** The original analysis was run in Stata, and that code is no longer available; a later R Markdown reconstruction (2025-03-25) is used only as secondary evidence of how a step may have been done. Where the paper is silent, the plan records an open decision rather than adopting the reconstruction's choice unexamined. The published estimates are a reference point, not a target. How each step maps to usRds is in `references/usrds-coverage.md`.
 
 Reporting will follow STROBE [@vonelm2007strobe] and RECORD [@benchimol2015record]. The reporting map in §12 links each checklist item to a section of this plan.
 
@@ -16,7 +16,7 @@ Reporting will follow STROBE [@vonelm2007strobe] and RECORD [@benchimol2015recor
 - **Secondary:**
   - describe time from kidney transplant to the index hospitalization;
   - estimate the association of clinical, transplant and immunosuppression characteristics with 6-month mortality.
-- **Methodological (this project):** run every step through usRds functions, or record the step as a package gap.
+- **Methodological (this project):** assess, step by step, whether usRds does what the paper's methods require (covered, partial or gap).
 
 All analyses are exploratory, as in the paper. No hypotheses are tested confirmatorily.
 

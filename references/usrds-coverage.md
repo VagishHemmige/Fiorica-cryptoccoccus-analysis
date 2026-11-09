@@ -1,6 +1,6 @@
 # usRds coverage of the Fiorica et al. 2025 analysis
 
-This document maps each step of the published analysis [@fiorica2025], as the paper describes it, to the usRds functions that do it, or records that none does. It is the working list for the project's goal: replicate the paper's methods, with every step either running through usRds or recorded as a gap.
+This document maps each step of the published analysis [@fiorica2025], as the paper describes it, to the usRds functions that do it, or records that none does. It is the project's coverage assessment: replicating the paper's methods, how much of the work can usRds do?
 
 - **Package version examined:** usRds 0.1.0, commit `3f63750` (default branch, 2026-11-09). Read from source; not run, because R is not installed in the environment where this was written. Re-check against the installed version before relying on any row.
 - **Sources compared:** the paper's Methods and Supplementary Table 1 (code lists), which are the specification; and the legacy Rmd dated 2025-03-25, the maintainer's best reconstruction of the original Stata analysis (secondary evidence only; not in this repository, see "Provenance" below). Where this document says "the legacy Rmd does X", it describes the reconstruction, not necessarily what the published analysis did.
@@ -151,7 +151,7 @@ These are not tied to one step, but affect several.
 
 ## Proposed usRds issues
 
-To be opened in usRds only with the maintainer's approval. Each would get a matching `usRds-gap` issue here.
+Possible follow-ups for usRds, listed so the assessment is actionable. Acting on them is outside this project's scope, and none is opened without the usRds maintainer's approval.
 
 1. Hospitalization-file diagnosis extractor with stay-level fields (step 4a).
 2. Claim key, end date and diagnosis position from `get_IN_ICD()` (step 4b).
