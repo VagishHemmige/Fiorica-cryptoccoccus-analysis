@@ -31,7 +31,9 @@ All lists are in one table, `code_lists`, with one row per code. Each row has fi
 - whether the code matches **exactly** or as a **prefix**;
 - its **source**: the reconstruction, or the supplement for the HCPCS codes.
 
-Every code matches exactly. The supplement lists the diabetes categories as open prefixes (`E11*`). The reconstruction instead lists each stem alone or followed by one or two digits, so `E1122` is included but the longer `E11649` is not; the code follows the reconstruction. The cyclosporine and tacrolimus HCPCS codes appear only in the supplement, and are kept, marked as such, until [#2](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/2) settles how immunosuppression is measured. The reconstruction also has an IRIS list and a principal-diagnosis cryptococcosis list, which the paper's analyses do not use and which are left out. That includes the three-character `B45` in the cryptococcosis list, which therefore matches only a code recorded as `B45` itself.
+Every code matches exactly. The supplement lists the diabetes categories as open prefixes (`E11*`). The reconstruction instead lists each stem alone or followed by one or two digits, so `E1122` is included but the longer `E11649` is not; the code follows the reconstruction. The cyclosporine and tacrolimus HCPCS codes appear only in the supplement, and are kept, marked as such, until [#2](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/2) settles how immunosuppression is measured. The reconstruction also has an IRIS list and a principal-diagnosis cryptococcosis list, which the paper's analyses do not use and which are left out.
+
+The paper reports ventriculoperitoneal shunt placement, but neither the supplement nor the reconstruction lists its codes, which the maintainer judged a copy/paste loss. The list is rebuilt from the official code sets: ICD-9-CM 02.34 and the nine ICD-10-PCS "Bypass Cerebral Ventricle to Peritoneal Cavity" codes. All ten are also in the neurosurgical list. That includes the three-character `B45` in the cryptococcosis list, which therefore matches only a code recorded as `B45` itself.
 
 ```{r}
 #| label: code-lists-diabetes-stems
@@ -40,7 +42,7 @@ Every code matches exactly. The supplement lists the diabetes categories as open
 
 The code system is inferred from each code's form: ICD-10-PCS codes have seven characters, and ICD-10-CM codes start with a letter. It should be checked against the official code sets.
 
-**Decision pending:** the procedure lists are reproduced as published, but the paper's text names CPT codes, and no ventriculoperitoneal shunt list is given ([#5](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/5)).
+**Decision pending:** the paper's text names CPT codes for procedures, while the lists here are ICD procedure codes ([#5](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/5)).
 
 ```{r}
 #| label: code-lists

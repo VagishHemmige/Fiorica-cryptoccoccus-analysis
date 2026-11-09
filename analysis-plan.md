@@ -73,7 +73,7 @@ The paper does not state the order of step 6 relative to the others. The order a
 - CM vs non-CM;
 - AKI, diabetes and cirrhosis, from any diagnosis on the stay;
 - ICU admission (any ICU or CCU days);
-- procedures: lumbar puncture, other spinal, neurosurgical and lung procedures, and ventriculoperitoneal shunt. **Open:** code system and the shunt list ([#5](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/5)).
+- procedures: lumbar puncture, other spinal, neurosurgical and lung procedures, and ventriculoperitoneal shunt. The shunt list is missing from both the supplement and the reconstruction (a copy/paste loss, in the maintainer's judgment), so it is rebuilt from the official code sets: ICD-9-CM 02.34 and the nine ICD-10-PCS codes for bypass of a cerebral ventricle to the peritoneal cavity. **Open:** whether CPT codes, which the paper's text names, are used as well as ICD procedure codes ([#5](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/5)).
 
 **Covariates measured at or before time zero:**
 

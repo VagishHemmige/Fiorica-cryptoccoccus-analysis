@@ -15,6 +15,12 @@
 # The reconstruction's IRIS list and its principal-diagnosis cryptococcosis
 # list are not used by the paper's analyses and are not included.
 #
+# The paper reports ventriculoperitoneal (VP) shunt placement, but neither the
+# supplement nor the reconstruction lists its codes; the maintainer judged this
+# a copy/paste loss (2026-11-09). The VP shunt list below is rebuilt from the
+# official code sets (CMS ICD-9-CM procedure files; ICD-10-PCS 2026 table
+# 0016). All ten codes are also in the neurosurgical list.
+#
 # The rows below were generated from the lists by a one-off script, not typed
 # by hand; edit only to follow a recorded decision. code_system is inferred
 # from each code's form (ICD-10-PCS codes have 7 characters; ICD-10-CM codes
@@ -1339,8 +1345,31 @@ diabetes_stem_codes <- expand_grid(
     source = "reconstruction"
   )
 
+## ---- code-lists-vp-shunt
+# Ventriculoperitoneal shunt placement: ICD-9-CM 02.34 "Ventricular shunt to
+# abdominal cavity and organs"; ICD-10-PCS "Bypass Cerebral Ventricle to
+# Peritoneal Cavity" with autologous (7), synthetic (J) or nonautologous (K)
+# substitute, by open (0), percutaneous (3) or percutaneous endoscopic (4)
+# approach. Shunt replacement (02.42) and removal (02.43) are not placement
+# and are excluded.
+vp_shunt_codes <- expand_grid(
+  approach = c("0", "3", "4"),
+  device = c("7", "J", "K")
+) %>%
+  transmute(
+    code = str_c("001", approach, "6", device, "6"),
+    code_system = "ICD-10-PCS"
+  ) %>%
+  add_row(code = "0234", code_system = "ICD-9-CM") %>%
+  mutate(
+    concept = "vp_shunt",
+    code_type = "procedure",
+    match = "exact",
+    source = "official code sets (missing from both lists)"
+  )
+
 code_lists <- code_lists %>%
-  bind_rows(diabetes_stem_codes) %>%
+  bind_rows(diabetes_stem_codes, vp_shunt_codes) %>%
   mutate(
     source = case_when(
       code_type == "hcpcs" ~ "supplement (pending issue #2)",

@@ -27,9 +27,19 @@ test_that("diabetes codes follow the reconstruction: stem plus at most two digit
   expect_false(any(code_matches(c("E11649", "E113291", "E12", "E1", "2410"), diabetes)))
 })
 
-test_that("every code list except the HCPCS codes comes from the reconstruction", {
+test_that("VP shunt codes are the ten official placement codes, inside the neurosurgical list", {
+  vp <- code_lists$code[code_lists$concept == "vp_shunt"]
   expect_setequal(
-    unique(code_lists$source[code_lists$code_type != "hcpcs"]),
+    vp,
+    c("0234", "0016076", "00160J6", "00160K6", "0016376", "00163J6",
+      "00163K6", "0016476", "00164J6", "00164K6")
+  )
+  expect_true(all(vp %in% code_lists$code[code_lists$concept == "neurosurgical_procedure"]))
+})
+
+test_that("every code list except HCPCS and VP shunt comes from the reconstruction", {
+  expect_setequal(
+    unique(code_lists$source[!code_lists$concept %in% c("cyclosporine", "tacrolimus", "vp_shunt")]),
     "reconstruction"
   )
   expect_equal(sum(code_lists$concept == "diabetes"), 670)
