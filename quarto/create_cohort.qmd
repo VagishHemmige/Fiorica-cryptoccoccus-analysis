@@ -1,0 +1,100 @@
+---
+title: "Building the cohort"
+format: html
+---
+
+This script builds the study cohort: one row per person, each with their index cryptococcosis hospitalization. It follows the steps in §4 of the [analysis plan](analysis-plan.qmd#4-study-population), and every exclusion goes through the cohort flowchart (Figure 1).
+
+::: {.Rcode title="Source code"}
+The full R script is available at:
+
+-   [`R/create_cohort.R`](/R/create_cohort.R)
+
+This R script file is itself reliant on the following helper files:
+
+-   [`R/setup.R`](/R/setup.R)
+-   [`R/functions.R`](/R/functions.R)
+
+The code sections below are imported directly from the script when this page is rendered.
+:::
+
+```{r}
+#| include: false
+#| eval: true
+#| cache: false
+knitr::read_chunk("../R/create_cohort.R")
+```
+
+## Loading the hospitalization files
+
+The cohort starts from the two USRDS hospitalization files, which hold Medicare inpatient stays (decided in [#1](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/1)). Only the dates and diagnosis columns are loaded.
+
+Factor labels are switched off, so codes stay as plain text. usRds has no function that searches these files for codes, so each file is loaded whole and searched by the project's own code. The [usRds coverage](usrds-coverage.qmd) page records this as a gap (step 4).
+
+```{r}
+#| label: cohort-load-hospitalizations
+#| eval: false
+```
+
+## Flagging cryptococcosis
+
+Each record is flagged if any of its diagnosis columns holds a cryptococcosis code from the [code lists](code_lists.qmd). The search uses each file's own diagnosis columns.
+
+```{r}
+#| label: cohort-flag-records
+#| eval: false
+```
+
+## Building stays
+
+For people with any cryptococcosis record, all their hospitalization records are combined into stays, so a code on any record of a stay counts for the whole stay. Stays admitted from 2006 to 2016 are kept.
+
+```{r}
+#| label: cohort-build-stays
+#| eval: false
+```
+
+## Transplant and birth dates
+
+Each person's first transplant date comes from the USRDS transplant file, and their date of birth from the patients file. Both are loaded only for the people found above.
+
+```{r}
+#| label: cohort-load-transplants-patients
+#| eval: false
+```
+
+## Cohort candidates
+
+One row per person, with their index stay and age. The flag for cryptococcosis before the first transplant is a placeholder that excludes no one.
+
+**Decision pending:** which claim sources, and how many claims, identify cryptococcosis before the first transplant ([#4](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/4)).
+
+```{r}
+#| label: cohort-candidates
+#| eval: false
+```
+
+## Flowchart
+
+The exclusions are applied in the plan's order, each as a flowchart step, so Figure 1 shows exactly how the cohort was reached:
+
+1. people in the transplant file;
+2. people with a cryptococcosis stay that did not end before their first transplant;
+3. people without cryptococcosis before their first transplant (pending, above);
+4. people aged 18 to 90 at index admission.
+
+The box labels are built from the study constants, so they can't fall out of step with the window or age range. The flowchart's final data is the cohort.
+
+```{r}
+#| label: cohort-flowchart
+#| eval: false
+```
+
+## Variable labels
+
+The derived variables get human-readable labels.
+
+```{r}
+#| label: cohort-labels
+#| eval: false
+```

@@ -49,7 +49,7 @@ The mapper recognises six folder names: "ESRD Core", "ESRD transplant", "ESRD ho
 
 `load_usrds_file("tx", col_select = c(USRDS_ID, TDATE, FAILDATE, TOTTX))` loads one row per transplant. The paper needs, for each patient at the index date: first transplant date, number of transplants and graft failures before the index admission, and time since the most recent transplant. The legacy Rmd pivots to wide format (`TDATE_1`… `TDATE_5`) and loops over positions.
 
-**Gap:** a long-format helper, for example `summarise_transplant_history(df, index_date)`, returning those quantities per patient. It is generally reusable: the missed-diagnosis project needs first transplant date too.
+The `patients` file also has `TX1DATE` (date of first transplant; Appendix B 2024), which could replace the minimum of `TDATE`; the cohort script uses the `tx` file, which it needs for transplant history anyway. **Gap:** a long-format helper, for example `summarise_transplant_history(df, index_date)`, returning those quantities per patient. It is generally reusable: the missed-diagnosis project needs first transplant date too.
 
 ### 4. Index cryptococcosis hospitalization ([#1](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/1))
 
@@ -63,6 +63,8 @@ Decided in [#1](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/
 
 - (a) `get_HOSP_ICD(icd_codes, years, positions = "any")`: searches `PRIMDIAG`/`HSDIAG*` with pushdown, and returns one row per stay with its key, dates, `DISCSTAT`, `ICU_DAYS` and `CCU_DAYS`.
 - (b) Alternatively, an option on `get_IN_ICD()` to return `CLM_THRU`, `SEQ_KEYC` and the diagnosis position, plus a companion that loads the claim header for a set of keys.
+
+**Found while writing the cohort script:** the two hospitalization files use `PRIMDIAG` differently (Appendix B 2024). In `hosp_to2009` it is a Y/N flag ("first diagnosis is primary") and the codes are in `HSDIAG1`–`HSDIAG10`. In `hosp_2010on` it is the principal diagnosis code. Searching `PRIMDIAG` in both, as the legacy Rmd does, is harmless but wrong in meaning. An extractor for these files (gap (a)) should hide that difference; this project handles it with per-file column lists in `R/setup.R`. Loading with default `factor_labels = TRUE` would also turn the pre-2010 flag into a factor, so the cohort script loads with `factor_labels = FALSE`.
 
 **To verify:**
 

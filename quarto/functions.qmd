@@ -67,3 +67,54 @@ The function adds a stay identifier and the stay's first and last dates. The pla
 #| label: collapse-stays
 #| eval: false
 ```
+
+## Age in years
+
+`age_in_years()` gives age at last birthday on a given date, so a person is 18 on their 18th birthday. The plan's age range, 18 to 90 years, is applied to this.
+
+```{r}
+#| label: age-in-years
+#| eval: false
+```
+
+## First transplant date
+
+`first_transplant_dates()` reduces the transplant file, which has one row per transplant, to each person's earliest transplant date. Rows without a date are ignored.
+
+```{r}
+#| label: first-transplant-dates
+#| eval: false
+```
+
+## Flagging cryptococcosis records
+
+`flag_cryptococcosis_records()` marks each hospitalization record that has a cryptococcosis code in any diagnosis column. It's told which columns to search, because the two hospitalization files differ (see [Setup](setup.qmd#hospitalization-file-columns)).
+
+```{r}
+#| label: flag-cryptococcosis-records
+#| eval: false
+```
+
+## Cryptococcosis stays
+
+`summarise_cryptococcosis_stays()` combines a person's records into stays with `collapse_stays()`. A stay counts as a cryptococcosis stay if any of its records has the code. The function keeps stays admitted within the study window, with both boundary dates included.
+
+```{r}
+#| label: summarise-cryptococcosis-stays
+#| eval: false
+```
+
+## Cohort candidates
+
+`build_cohort_candidates()` makes one row per person with a cryptococcosis stay in the window. It adds the facts the cohort flowchart filters on:
+
+- whether the person is in the transplant file;
+- their index stay: the first cryptococcosis stay that did not end before their first transplant;
+- their age on the index admission date.
+
+A stay that ends on the day of the first transplant still counts, because the plan excludes only stays that end *before* it. The function excludes no one itself; the exclusions happen in the [flowchart](create_cohort.qmd#flowchart).
+
+```{r}
+#| label: build-cohort-candidates
+#| eval: false
+```

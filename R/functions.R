@@ -90,3 +90,87 @@ collapse_stays <- function(records, gap_days = 0) {
     mutate(stay_id = str_c(USRDS_ID, "-", stay_number)) %>%
     select(-latest_thru_before, -starts_new_stay, -stay_number)
 }
+
+## ---- age-in-years
+# Completed years of age on a date (age at last birthday).
+age_in_years <- function(born, on) {
+  floor(time_length(interval(born, on), unit = "years"))
+}
+
+## ---- first-transplant-dates
+# One row per person: the date of their first transplant in the USRDS
+# transplant file. Input needs USRDS_ID and TDATE.
+first_transplant_dates <- function(transplants) {
+  transplants %>%
+    filter(!is.na(TDATE)) %>%
+    group_by(USRDS_ID) %>%
+    summarise(first_transplant_date = min(TDATE), .groups = "drop")
+}
+
+## ---- flag-cryptococcosis-records
+# Keep each hospitalization record's key fields and flag whether any of its
+# diagnosis columns holds a cryptococcosis code. `dx_columns` differs by file
+# (see setup.R).
+flag_cryptococcosis_records <- function(records, dx_columns, crypto_codes) {
+  records %>%
+    mutate(
+      cryptococcosis_record = flag_codes_wide(records, dx_columns, crypto_codes)
+    ) %>%
+    select(USRDS_ID, CLM_FROM, CLM_THRU, cryptococcosis_record)
+}
+
+## ---- summarise-cryptococcosis-stays
+# Combine records into stays (collapse_stays()) and keep the stays with a
+# cryptococcosis code on any of their records, admitted in the study window.
+# Returns one row per stay: USRDS_ID, stay_id, stay_from, stay_thru.
+summarise_cryptococcosis_stays <- function(records, window_start, window_end) {
+  records %>%
+    collapse_stays() %>%
+    group_by(USRDS_ID, stay_id, stay_from, stay_thru) %>%
+    summarise(
+      cryptococcosis_stay = any(cryptococcosis_record),
+      .groups = "drop"
+    ) %>%
+    filter(
+      cryptococcosis_stay,
+      stay_from >= window_start,
+      stay_from <= window_end
+    ) %>%
+    select(-cryptococcosis_stay)
+}
+
+## ---- build-cohort-candidates
+# One row per person with at least one cryptococcosis stay in the window,
+# with the flags the cohort flowchart filters on (plan §4):
+#   in_transplant_file: has a record in the USRDS transplant file;
+#   index_stay_id, index_admit_date, index_discharge_date: the first
+#     cryptococcosis stay that did not end before the first transplant
+#     (NA when there is none);
+#   age_at_index: completed years on the index admission date.
+build_cohort_candidates <- function(crypto_stays, first_transplants, patients) {
+  index_stays <- crypto_stays %>%
+    inner_join(first_transplants, by = "USRDS_ID", relationship = "many-to-one") %>%
+    filter(stay_thru >= first_transplant_date) %>%
+    group_by(USRDS_ID) %>%
+    slice_min(stay_from, n = 1, with_ties = FALSE) %>%
+    ungroup() %>%
+    select(
+      USRDS_ID,
+      index_stay_id = stay_id,
+      index_admit_date = stay_from,
+      index_discharge_date = stay_thru
+    )
+
+  crypto_stays %>%
+    distinct(USRDS_ID) %>%
+    left_join(first_transplants, by = "USRDS_ID", relationship = "one-to-one") %>%
+    mutate(in_transplant_file = !is.na(first_transplant_date)) %>%
+    left_join(index_stays, by = "USRDS_ID", relationship = "one-to-one") %>%
+    left_join(
+      patients %>% select(USRDS_ID, BORN),
+      by = "USRDS_ID",
+      relationship = "one-to-one"
+    ) %>%
+    mutate(age_at_index = age_in_years(BORN, index_admit_date)) %>%
+    select(-BORN)
+}

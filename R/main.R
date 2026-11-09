@@ -4,4 +4,7 @@
 
 source("R/setup.R")
 source("R/functions.R")
-# Analysis scripts are added here as they join the definitive analysis.
+
+# Cohort (plan §4)
+source("R/create_cohort.R")
+# Further analysis scripts are added here as they join the definitive analysis.
