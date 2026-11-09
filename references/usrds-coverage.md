@@ -167,5 +167,5 @@ To be opened in usRds only with the maintainer's approval. Each would get a matc
 ## Provenance
 
 - Fiorica et al. 2025 [@fiorica2025], Methods, Tables 1–2, Figures 1–3, and Supplementary Table 1 (open access, PMC12089938).
-- Legacy analysis Rmd, "Cryptococcus 2025-2-25", file dated 2025-03-25, supplied by Vagish Hemmige on 2026-11-09. It is his best reconstruction in R of the original analysis, which was run in Stata; the Stata code is no longer available. It is not committed here because it contains a machine-specific path; whether to add it (with the path removed) is a pending setup item.
+- Legacy analysis Rmd, "Cryptococcus 2025-2-25", file dated 2025-03-25, supplied by Vagish Hemmige on 2026-11-09. It is his best reconstruction in R of the original analysis, which was run in Stata; the Stata code is no longer available. By the maintainer's decision it is not kept in this repository, because of its provenance; this document describes it only where it bears on a step.
 - usRds source at commit `3f63750`.
