@@ -36,7 +36,7 @@ Retrospective cohort of kidney transplant recipients, entering at their first po
 - **Linkage:** by `USRDS_ID`, as provided by USRDS. Transplant status comes from USRDS core and UNOS files, not diagnosis codes.
 - **Secondary-data declaration:** the investigators have analysed these data before (the published study). Results from this reconstruction will be compared with the paper only to check package behaviour.
 
-**Open:** which source defines the index hospitalization and its stay-level variables: the hospitalization files or institutional claims ([#1](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/1)).
+The index hospitalization and its stay-level variables (diagnoses, procedures, ICU and CCU days, discharge status) come from the USRDS hospitalization files, `hosp_to2009` and `hosp_2010on` (decided in [#1](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/1)). These files are a subset of the institutional claims, restricted to inpatient stays without payment variables (Researcher's Guide 2024, Appendix B), so institutional claims are not used as a second source for the index stay.
 
 ## 4. Study population
 
@@ -124,7 +124,7 @@ Not applicable. Comparisons are between people who died within 6 months and thos
 
 **Variation: explicit Medicare-primary restriction.** One way the study could have been done differently is to require Medicare as primary payer from the payer history file (for example on the index admission date, for 365 days before it, or from first transplant to admission), with `usRds::verify_medicare_primary()`. This tests whether recipients with another primary payer, but a Medicare-paid index stay, change the estimates; it adds a flowchart step the paper does not show ([#3](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/3)).
 
-No other sensitivity analyses are prespecified. Comparing index-hospitalization sources (§3, [#1](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/1)) would test the package's claims route against the hospitalization-file route, if a decider adopts that option.
+No other sensitivity analyses are prespecified. A comparison of the hospitalization files with institutional claims was considered and not adopted, because the former are a subset of the latter (§3, [#1](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/1)).
 
 ## 10. Disclosure control
 

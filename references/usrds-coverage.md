@@ -15,7 +15,7 @@ The plan governs what each step must do. This document records only how the pack
 | 1 | Locate data files | `set_USRDS_wd()` (maps files on load) | Covered |
 | 2 | Demographics and death date | `load_usrds_file("patients")`, `apply_usrds_factors()` | Covered |
 | 3 | Transplant history (dates, failures, count before index) | `load_usrds_file("tx")` | Partial |
-| 4 | Index cryptococcosis hospitalization | `load_usrds_file("hosp_*")`, or `get_IN_ICD()` | Gap / Partial ([#1](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/1)) |
+| 4 | Index cryptococcosis hospitalization (hospitalization files) | `load_usrds_file("hosp_*")` only | Gap ([#1](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/1)) |
 | 5 | Cryptococcal meningitis vs other, on the index stay | depends on step 4 | Gap |
 | 6 | Comorbidities on the index stay (AKI, diabetes, cirrhosis) | depends on step 4; no prefix matching | Gap |
 | 7 | ICU admission; combining overlapping claims into one stay | none | Gap |
@@ -53,7 +53,7 @@ The mapper recognises six folder names: "ESRD Core", "ESRD transplant", "ESRD ho
 
 ### 4. Index cryptococcosis hospitalization ([#1](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/1))
 
-The legacy Rmd reads the USRDS hospitalization files (`hosp_to2009`, `hosp_2010on`) and flags a stay if `PRIMDIAG` or any `HSDIAG1`–`HSDIAG26` is in the cryptococcosis list.
+Decided in [#1](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/1): the hospitalization files (`hosp_to2009`, `hosp_2010on`), as the legacy Rmd uses. A stay is flagged if `PRIMDIAG` or any `HSDIAG` position (10 before 2010, 26 from 2010) is in the cryptococcosis list. The Researcher's Guide (2024, Appendix B) describes both files as "a subset of the data in the Institutional Claims file", inpatient stays only and without payment variables, so the institutional-claims route below is noted for completeness, not used.
 
 - **`load_usrds_file("hosp_2010on")`** works, but reads the whole file before any filtering, and the diagnosis search across wide columns is hand-written.
 - **`get_IN_ICD(icd_codes, years)`** reads the institutional diagnosis files (file roots `det<year><letter>` in the internal `IN_ICD` table) with filtering pushed down for Parquet. It returns only `USRDS_ID`, `CODE`, `CLM_FROM` and `HCFASAF`: no `CLM_THRU`, no claim key (`SEQ_KEYC`) and no diagnosis position. So a stay found this way cannot be linked to its discharge status, ICU days or procedures, and principal and secondary diagnoses cannot be told apart.
@@ -68,7 +68,8 @@ The legacy Rmd reads the USRDS hospitalization files (`hosp_to2009`, `hosp_2010o
 
 - whether the `det` files contain procedure codes as well as diagnosis codes in `CODE`, and if so how they are distinguished;
 - the SAS branch of `.load_individual_file_IN_ICD()` omits `HCFASAF`, so `establish_dx_date()` would misclassify SAS-sourced claims;
-- hospitalization file names differ by release; Appendix B for the release in use governs.
+- hospitalization file names differ by release; Appendix B for the release in use governs;
+- which files hold institutional diagnosis codes: in the 2024 layout (Appendix B), inpatient diagnosis and procedure codes are in `ip_dxp_<year>` ("Diagnosis and Procedure Details"), while `get_IN_ICD()` reads files with roots `det<year><letter>`, the name the 2024 layout uses for revenue-line details. Older releases may name files differently.
 
 ### 5. Cryptococcal meningitis on the index stay
 
