@@ -1357,7 +1357,7 @@ vp_shunt_codes <- expand_grid(
   device = c("7", "J", "K")
 ) %>%
   transmute(
-    code = str_c("001", approach, "6", device, "6"),
+    code = str_c("0016", approach, device, "6"),
     code_system = "ICD-10-PCS"
   ) %>%
   add_row(code = "0234", code_system = "ICD-9-CM") %>%
