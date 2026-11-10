@@ -79,7 +79,7 @@ The free-text table keeps the reconstruction's spellings, including the misspell
 USRDS records state of residence as a FIPS code. This table assigns each code to a Census region and division.
 
 - **The 48 contiguous states and DC** follow the Census Bureau.
-- **Alaska and Hawaii** are grouped with the territories as "Outside", as in the reconstruction. That differs from the Census Bureau and still needs confirming.
+- **Alaska and Hawaii** are grouped with the territories as "Outside", as in the reconstruction, rather than in the West as the Census Bureau does. No one is excluded by geography ([#12](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/12)).
 - **Every other valid non-state code** (territories, foreign) is "Outside". The reconstruction left some of these, such as Guam and the Virgin Islands, as missing.
 
 ```{r}
