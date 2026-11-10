@@ -22,7 +22,7 @@ https://vagishhemmige.github.io/fiorica-cryptoccoccus-analysis/
 
 - [`analysis-plan.md`](analysis-plan.md): what the analysis is meant to do
 - [`references/usrds-coverage.md`](references/usrds-coverage.md): each step of the paper mapped to usRds functions, with gaps
-- [`ARCHITECTURE.md`](ARCHITECTURE.md): how the code is organized (not yet written)
+- [`ARCHITECTURE.md`](ARCHITECTURE.md): how the code is organized
 - [`AGENTS.md`](AGENTS.md): how to work in this repository
 - [Issues](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues): open decisions and known gaps
 

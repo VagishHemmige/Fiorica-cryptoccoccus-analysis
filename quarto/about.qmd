@@ -27,13 +27,14 @@ Four documents describe the project, plus a coverage assessment:
 
 -   [**Analysis plan**](analysis-plan.qmd): *what the analysis is meant to do, and why.*
 -   [**usRds coverage**](usrds-coverage.qmd): *each step of the paper mapped to usRds functions, and what is missing.*
--   [**Architecture**](architecture.qmd): *how the code does it* (not yet written).
+-   [**Architecture**](architecture.qmd): *how the code does it.*
 -   [**AGENTS.md**](agents.qmd): *how people and AI assistants work on the project.*
 -   [**Repository blueprint**](repository-blueprint.qmd): *the layout every project of this kind starts from.*
 
 ## Pages
 
 -   [**Study design and methods**](study_methods.qmd): the study's choices in plain language.
+-   [**Building the cohort**](create_cohort.qmd): the index hospitalizations and the cohort flowchart.
 -   [**Setup**](setup.qmd): packages and shared constants.
 -   [**Code lists**](code_lists.qmd): the diagnosis, procedure and billing codes from the paper's supplement.
 -   [**Functions**](functions.qmd): helper functions, including those that fill usRds gaps.

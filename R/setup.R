@@ -32,3 +32,13 @@ years_since_transplant_cutoff <- 2
 
 ## ---- code-lists-source
 source("R/code_lists.R")
+
+## ---- define-hospitalization-columns
+# Diagnosis code columns in the two USRDS hospitalization files (Researcher's
+# Guide 2024, Appendix B). In hosp_to2009, PRIMDIAG is a Y/N flag ("first
+# diagnosis is primary"), not a code, so only HSDIAG1-HSDIAG10 hold codes; in
+# hosp_2010on, PRIMDIAG is the principal diagnosis code.
+hosp_to2009_dx_columns <- str_c("HSDIAG", 1:10)
+hosp_2010on_dx_columns <- c("PRIMDIAG", str_c("HSDIAG", 1:26))
+hosp_to2009_proc_columns <- str_c("HSSURG", 1:10)
+hosp_2010on_proc_columns <- str_c("HSSURG", 1:25)

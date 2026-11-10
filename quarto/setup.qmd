@@ -54,3 +54,17 @@ The code lists are long, so they live in their own script; see [Code lists](code
 #| label: code-lists-source
 #| eval: false
 ```
+
+## Hospitalization file columns
+
+The two USRDS hospitalization files store diagnoses differently, according to Appendix B of the Researcher's Guide (2024):
+
+- **`hosp_to2009`** holds up to 10 diagnosis codes, in `HSDIAG1`–`HSDIAG10`. Its `PRIMDIAG` is only a yes/no flag saying whether the first diagnosis is the principal one.
+- **`hosp_2010on`** holds the principal diagnosis code in `PRIMDIAG` and up to 26 more in `HSDIAG1`–`HSDIAG26`.
+
+These constants name the columns that hold codes in each file, so a search never treats the old yes/no flag as a code.
+
+```{r}
+#| label: define-hospitalization-columns
+#| eval: false
+```
