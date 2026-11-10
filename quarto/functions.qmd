@@ -242,7 +242,7 @@ These turn the USRDS codes for sex, race and Hispanic ethnicity into labels. His
 
 ## Backward elimination
 
-`backward_eliminate()` starts with every candidate and repeatedly removes the variable with the largest P value, until all remaining variables have P below 0.05. The people analysed stay the same throughout: everyone with every candidate known, as Stata does.
+`backward_eliminate()` starts with every candidate and repeatedly removes the variable with the largest P value, until all remaining variables have P below 0.05. The people analysed stay the same throughout: everyone with every candidate known, as Stata does. A variable that cannot be estimated in that group (it does not vary, or is fully determined by others) has no P value and is removed first, as Stata omits it.
 
 ```{r}
 #| label: backward-eliminate
@@ -255,5 +255,47 @@ These turn the USRDS codes for sex, race and Hispanic ethnicity into labels. His
 
 ```{r}
 #| label: hosmer-lemeshow
+#| eval: false
+```
+
+## Small-count rules for tables
+
+USRDS does not allow any count from 1 to 10 to be published, including one that can be worked out by subtraction. `count_table_cells()` lists every count behind a descriptive table, including the ones not printed (such as the number *without* a condition). `flag_small_cells()` marks the small ones and then, wherever a single hidden count could be recovered from a total, hides the next smallest count as well, repeating until nothing more changes. `suppress_table_body()` then puts "≤10" in those cells and removes the P value for that variable.
+
+```{r}
+#| label: count-table-cells
+#| eval: false
+```
+
+```{r}
+#| label: flag-small-cells
+#| eval: false
+```
+
+```{r}
+#| label: suppress-table-body
+#| eval: false
+```
+
+## Small-count rules for figures
+
+`km_reportable_times()` picks the times the survival figure can show: more than 10 people still at risk, and every count and every change between times shown either 0 or above 10. `flowchart_small_counts()` lists any flowchart box with 1 to 10 people.
+
+```{r}
+#| label: km-reportable-times
+#| eval: false
+```
+
+```{r}
+#| label: flowchart-small-counts
+#| eval: false
+```
+
+## Odds ratios
+
+`tidy_odds_ratios()` turns a fitted logistic model into odds ratios with 95% Wald confidence intervals (as Stata reports them) and readable labels.
+
+```{r}
+#| label: tidy-odds-ratios
 #| eval: false
 ```
