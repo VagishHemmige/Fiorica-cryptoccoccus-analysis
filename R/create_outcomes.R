@@ -32,6 +32,11 @@ stopifnot(nrow(analysis_data) == nrow(cohort))
 ## ---- outcomes-model-variables
 # Variables in the form the paper's model reports them: age 60 or older, more
 # than one transplant, any graft failure, and not being on tacrolimus.
+# Categories are in the paper's Table 1 order, and the first is the
+# reference: Female, White, West. The paper shows Hispanic ethnicity as one
+# yes row, so non-Hispanic is the reference; for organ and serostatus, the
+# usual category (kidney alone, negative). The paper does not name its
+# reference categories; every term in its final model is yes or no.
 model_data <- analysis_data %>%
   mutate(
     age_60_or_older = age_at_index >= age_model_cutoff,
@@ -39,8 +44,18 @@ model_data <- analysis_data %>%
     prior_graft_failure = failures_before_index > 0,
     no_tacrolimus_at_transplant = !tx_tacrolimus,
     no_tacrolimus_at_followup = !fu_tacrolimus,
-    across(c(sex, race, hispanic, region, organ, hiv_status, cmv_status), factor)
+    sex = factor(sex, levels = c("Female", "Male")),
+    race = factor(race, levels = c("White", "Black", "Other")),
+    hispanic = factor(hispanic, levels = c("Non-Hispanic", "Hispanic")),
+    region = factor(region, levels = c("West", "Midwest", "South", "Northeast", "Outside")),
+    organ = factor(organ, levels = c("Kidney", "Kidney-pancreas")),
+    hiv_status = factor(hiv_status, levels = c("Negative", "Positive")),
+    cmv_status = factor(cmv_status, levels = c("Negative", "Positive"))
   )
+# A value outside the listed categories would silently become missing
+for (variable in c("sex", "race", "hispanic", "region", "organ", "hiv_status", "cmv_status")) {
+  stopifnot(sum(is.na(model_data[[variable]])) == sum(is.na(analysis_data[[variable]])))
+}
 
 ## ---- outcomes-labels
 analysis_data <- analysis_data %>%
