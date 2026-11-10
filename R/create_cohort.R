@@ -94,7 +94,7 @@ cohort_flowchart <- cohort_candidates %>%
   ) %>%
   fc_filter(
     !is.na(index_stay_id),
-    label = "Cryptococcosis hospitalization ending on or after first transplant",
+    label = "Cryptococcosis hospitalization admitted on or after first transplant",
     show_exc = TRUE
   ) %>%
   fc_filter(

@@ -44,7 +44,7 @@ Source population: recipients of a kidney or kidney–pancreas transplant in the
 
 1. Hospitalizations with a cryptococcosis diagnosis code (§5) in any diagnosis position, admitted 2006-01-01 to 2016-12-31.
 2. Restrict to people in the transplant file.
-3. Exclude hospitalizations ending before the patient's first kidney transplant.
+3. Exclude hospitalizations admitted before the patient's first kidney transplant. A hospitalization admitted before the transplant is a cryptococcosis hospitalization claim preceding it, which the paper excludes; this includes stays that begin before the transplant and end after it (decided under [#4](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/4); the reconstruction kept such stays with time since transplant set to 0).
 4. Exclude people with any cryptococcosis claim before their first kidney transplant or before 2006-01-01. **Open:** which claim sources count and how many claims are required ([#4](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/4)).
 5. Keep each person's first remaining cryptococcosis hospitalization (the index hospitalization).
 6. Restrict to age 18–90 years on the index admission date.

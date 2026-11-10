@@ -144,13 +144,15 @@ summarise_cryptococcosis_stays <- function(records, window_start, window_end) {
 # with the flags the cohort flowchart filters on (plan §4):
 #   in_transplant_file: has a record in the USRDS transplant file;
 #   index_stay_id, index_admit_date, index_discharge_date: the first
-#     cryptococcosis stay that did not end before the first transplant
-#     (NA when there is none);
+#     cryptococcosis stay admitted on or after the first transplant (NA when
+#     there is none). A stay admitted before the first transplant is a
+#     cryptococcosis hospitalization claim preceding it, which the paper
+#     excludes (decided under issue #4);
 #   age_at_index: completed years on the index admission date.
 build_cohort_candidates <- function(crypto_stays, first_transplants, patients) {
   index_stays <- crypto_stays %>%
     inner_join(first_transplants, by = "USRDS_ID", relationship = "many-to-one") %>%
-    filter(stay_thru >= first_transplant_date) %>%
+    filter(stay_from >= first_transplant_date) %>%
     group_by(USRDS_ID) %>%
     slice_min(stay_from, n = 1, with_ties = FALSE) %>%
     ungroup() %>%

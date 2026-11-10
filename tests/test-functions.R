@@ -166,7 +166,7 @@ test_that("summarise_cryptococcosis_stays flags whole stays and applies the wind
   expect_equal(result$stay_thru, d(c("2006-01-09", "2017-01-04")))
 })
 
-test_that("build_cohort_candidates picks the first stay not ending before first transplant", {
+test_that("build_cohort_candidates picks the first stay admitted on or after first transplant", {
   d <- as.Date
   synthetic_stays <- tibble(
     USRDS_ID = c(1, 1, 2, 3, 4),
@@ -176,9 +176,10 @@ test_that("build_cohort_candidates picks the first stay not ending before first 
   )
   synthetic_first_tx <- tibble(
     USRDS_ID = c(1, 2, 3),
-    # Person 1: transplant between the two stays; person 2: transplant during
-    # the stay (stay ends after it); person 3: stay ends the day before
-    first_transplant_date = d(c("2008-01-01", "2010-01-03", "2011-01-10"))
+    # Person 1: transplant between the two stays; person 2: stay admitted on
+    # the transplant date; person 3: transplant during the stay (admitted the
+    # day before), so the stay does not count
+    first_transplant_date = d(c("2008-01-01", "2010-01-01", "2011-01-02"))
   )
   synthetic_patients <- tibble(
     USRDS_ID = c(1, 2, 3, 4),
@@ -191,16 +192,18 @@ test_that("build_cohort_candidates picks the first stay not ending before first 
   expect_equal(result$in_transplant_file, c(TRUE, TRUE, TRUE, FALSE))
   expect_equal(result$index_stay_id, c("1-2", "2-1", NA, NA))
   expect_equal(result$index_admit_date, d(c("2009-06-01", "2010-01-01", NA, NA)))
+  expect_equal(result$first_transplant_date[3], d("2011-01-02"))
   # Person 2 turns 18 the day after admission
   expect_equal(result$age_at_index, c(59, 17, NA, NA))
 })
 
-test_that("a stay ending on the first transplant date is kept", {
+test_that("a stay spanning the first transplant is not an index stay", {
   d <- as.Date
   result <- build_cohort_candidates(
     tibble(USRDS_ID = 1, stay_id = "1-1", stay_from = d("2010-01-01"), stay_thru = d("2010-01-05")),
-    tibble(USRDS_ID = 1, first_transplant_date = d("2010-01-05")),
+    tibble(USRDS_ID = 1, first_transplant_date = d("2010-01-02")),
     tibble(USRDS_ID = 1, BORN = d("1960-01-01"))
   )
-  expect_equal(result$index_stay_id, "1-1")
+  expect_true(is.na(result$index_stay_id))
+  expect_true(result$in_transplant_file)
 })

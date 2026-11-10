@@ -79,7 +79,7 @@ One row per person, with their index stay and age. The flag for cryptococcosis b
 The exclusions are applied in the plan's order, each as a flowchart step, so Figure 1 shows exactly how the cohort was reached:
 
 1. people in the transplant file;
-2. people with a cryptococcosis stay that did not end before their first transplant;
+2. people with a cryptococcosis stay admitted on or after their first transplant (a stay admitted before it counts as cryptococcosis before transplant, which the paper excludes);
 3. people without cryptococcosis before their first transplant (pending, above);
 4. people aged 18 to 90 at index admission.
 

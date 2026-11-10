@@ -109,10 +109,10 @@ The function adds a stay identifier and the stay's first and last dates. The pla
 `build_cohort_candidates()` makes one row per person with a cryptococcosis stay in the window. It adds the facts the cohort flowchart filters on:
 
 - whether the person is in the transplant file;
-- their index stay: the first cryptococcosis stay that did not end before their first transplant;
+- their index stay: the first cryptococcosis stay admitted on or after their first transplant;
 - their age on the index admission date.
 
-A stay that ends on the day of the first transplant still counts, because the plan excludes only stays that end *before* it. The function excludes no one itself; the exclusions happen in the [flowchart](create_cohort.qmd#flowchart).
+A stay admitted on the day of the first transplant counts; a stay admitted the day before does not, even if it continues past the transplant. The function excludes no one itself; the exclusions happen in the [flowchart](create_cohort.qmd#flowchart).
 
 ```{r}
 #| label: build-cohort-candidates
