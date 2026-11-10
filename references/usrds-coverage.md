@@ -31,7 +31,7 @@ The plan governs what each step must do. This document records only how the pack
 | 16 | Immunosuppression from HCPCS claims (not used) | `get_PS_HCPCS()`, `get_IN_HCPCS()` | Covered; not used in the main analysis ([#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2)) |
 | 17 | Age, sex, race, ethnicity, region and division | `load_usrds_file()`; no recoding or state-to-region crosswalk | Gap (small) |
 | — | Cohort selection: index event, exclusions, flowchart | none (`create_usrds_cohort()` needs the selected cohort as input) | Gap |
-| 18 | 6-month mortality and Kaplan–Meier | `create_usrds_cohort()`, `add_cohort_event()`, `finalize_usrds_cohort()` | Covered (`add_cohort_covariate()` not used) |
+| 18 | 6-month mortality and Kaplan–Meier | `load_usrds_file("patients")` for death dates; cohort functions not needed | Covered; cohort functions not used, and defects found |
 | 19 | Logistic regression, Table 1, figures | outside usRds's scope | Not applicable |
 | — | Infectious diseases specialist claims (legacy Rmd only, not in the paper) | `get_PS_specialty()` | Covered, with defects |
 
@@ -150,9 +150,19 @@ Hispanic ethnicity (format `$YNUFMT`) codes "no" as 2 or N. The legacy Rmd recod
 
 ### 18. Mortality and survival
 
-`create_usrds_cohort(df, start_date = index_admit_date, end_date = censor_date)`, then `add_cohort_event(cohort, deaths, "DIED", "death")` and `finalize_usrds_cohort(cohort)` give a counting-process data set for `survival::survfit()`. Covered. This analysis exercises these functions on a simple one-row-per-person cohort. **To verify:** that a death on the cohort stop date is counted (`tmerge` event at `tstop`), and how `.resolve_date()` treats a column name passed as `start_date` or `end_date`.
+Death dates load with `load_usrds_file("patients")`. Every covariate is fixed and death is the only event, so the survival data needs one row per person (time to death or end of death data, and whether death occurred), which `survival::survfit()` takes directly. The usRds cohort functions (`create_usrds_cohort()`, `add_cohort_event()`, `finalize_usrds_cohort()`, `add_cohort_covariate()`) are built for follow-up split by time-varying covariates or repeated events, and the analysis does not use them.
 
-`add_cohort_covariate()` is not used: every covariate in this study is fixed at transplant or measured on the index stay, so nothing changes during follow-up, and adding fixed covariates through it would split each person's time for no purpose. This replication therefore leaves it untested.
+They were probed on synthetic data (sourced from the usRds clone at `3f63750`, four people followed 180 days), because a survival analysis with time-varying covariates would rely on them:
+
+| Behaviour | Result |
+|---|---|
+| Dates passed as a column-name string | Works. A bare column name fails, although the internal helper's comment says either works. |
+| Death on the start date | **Not counted:** `tmerge` events fall in (tstart, tstop], so an event at time 0 is dropped. |
+| Death during follow-up | **Follow-up continues after death:** `add_cohort_event()` uses `cumevent()`, so a second interval from the death to the end keeps the person at risk. A Kaplan–Meier estimate from this overstates survival. |
+| Death on the end date | Counted. |
+| Ending follow-up at death (`end_date` = earlier of death and end) | Fixes continued follow-up, but stops with "tstart must be < tstop" for a death on the start date. |
+
+For death as an outcome, `add_cohort_event()` therefore needs a terminal-event option (stop follow-up at the event, using `event()` rather than `cumevent()`), and same-day events need a convention (for example, half a day). These are listed as follow-ups below.
 
 ### Cohort selection
 
@@ -190,7 +200,8 @@ Possible follow-ups for usRds, listed so the assessment is actionable. Acting on
 7. Stacked, harmonised UNOS kidney and kidney–pancreas loaders (steps 13–14).
 8. `RX_CD` immunosuppression crosswalk as package data (step 15).
 9. State code to Census region and division crosswalk (step 17).
-10. Defects: `get_PS_specialty()` (debug prints, SAS branch); SAS branch of `get_IN_ICD()` dropping `HCFASAF`; `load_usrds_file()` format priority; `apply_usrds_varlabels()` global-environment check.
+10. Cohort functions for a terminal event (step 18): `add_cohort_event()` keeps follow-up after death (`cumevent()`), drops events on the start date, and fails when follow-up ends at a same-day death; the date helper's comment says bare column names work, but they fail.
+11. Defects: `get_PS_specialty()` (debug prints, SAS branch); SAS branch of `get_IN_ICD()` dropping `HCFASAF`; `load_usrds_file()` format priority; `apply_usrds_varlabels()` global-environment check.
 
 ## Provenance
 

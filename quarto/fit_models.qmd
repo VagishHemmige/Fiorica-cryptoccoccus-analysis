@@ -1,0 +1,63 @@
+---
+title: "Survival and models"
+format: html
+---
+
+This script fits the survival curve and the logistic models for 6-month mortality, following plan [§8](analysis-plan.qmd#8-statistical-analysis). Tables and figures are made from these results in a separate step.
+
+::: {.Rcode title="Source code"}
+The full R script is available at:
+
+-   [`R/fit_models.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/fit_models.R)
+
+This R script file is itself reliant on the following helper files:
+
+-   [`R/setup.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/setup.R)
+-   [`R/functions.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/functions.R)
+-   [`R/create_outcomes.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/create_outcomes.R)
+
+The code sections below are imported directly from the script when this page is rendered.
+:::
+
+```{r}
+#| include: false
+#| eval: true
+#| cache: false
+knitr::read_chunk("../R/fit_models.R")
+```
+
+## Survival curve
+
+A Kaplan–Meier estimate of survival from the index admission (Figure 2).
+
+```{r}
+#| label: models-kaplan-meier
+#| eval: false
+```
+
+## Each variable alone
+
+Every candidate variable is tested on its own, using everyone whose value is known.
+
+```{r}
+#| label: models-bivariable
+#| eval: false
+```
+
+## Multivariable model
+
+All candidates go in together. The variable with the largest P value is then removed, one at a time, until every remaining variable has P below 0.05. The paper gave no threshold for entry and kept no variable in by force. The model uses everyone with every candidate known, and the number left out is reported.
+
+```{r}
+#| label: models-multivariable
+#| eval: false
+```
+
+## Goodness of fit
+
+The Hosmer–Lemeshow test compares predicted with observed deaths across tenths of predicted risk.
+
+```{r}
+#| label: models-goodness-of-fit
+#| eval: false
+```

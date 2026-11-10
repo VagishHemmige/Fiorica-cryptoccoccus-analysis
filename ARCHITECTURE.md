@@ -19,9 +19,14 @@ flowchart TD
   tx -->|"usRds::load_usrds_file()"| covariates
   unos[("USRDS UNOS files<br/>txunos_trr, txfuunos,<br/>txirunos, txifunos")] -->|"usRds::load_usrds_file()"| covariates
   covariates --> analysis["analysis_data<br/>one row per person"]
+  analysis --> outcomes["R/create_outcomes.R"]
+  tx -->|"usRds::load_usrds_file()"| outcomes
+  outcomes --> modeldata["analysis_data + outcomes,<br/>model_data"]
+  modeldata --> models["R/fit_models.R"]
+  models --> fits["km_fit, bivariable_results,<br/>multivariable, hosmer_lemeshow_result"]
 ```
 
-`R/main.R` sources the scripts in this order: `setup.R` (which sources `code_lists.R`), `functions.R`, `create_cohort.R`, `create_covariates.R`. USRDS files are reached only through usRds, located by `usRds::set_USRDS_wd()` on the machine that holds them.
+`R/main.R` sources the scripts in this order: `setup.R` (which sources `code_lists.R`), `functions.R`, `create_cohort.R`, `create_covariates.R`, `create_outcomes.R`, `fit_models.R`. USRDS files are reached only through usRds, located by `usRds::set_USRDS_wd()` on the machine that holds them.
 
 ## Scripts
 
@@ -31,6 +36,8 @@ flowchart TD
 | `R/code_lists.R` | Every code list, one row per code, with code type, system, exact or prefix match and source | dplyr, tidyr, stringr | `code_lists` |
 | `R/functions.R` | Helpers. Those marked "usRds gap" do work usRds does not yet do | `setup.R` | functions |
 | `R/create_cohort.R` | Builds the cohort (plan §4): flags cryptococcosis on hospitalization records, combines records into stays, picks each person's index stay, and applies every exclusion through `flowchart` | `setup.R`, `functions.R`, USRDS files | `cohort_flowchart`, `cohort` |
+| `R/create_outcomes.R` | Adds 6-month mortality and survival time from the patients file's death dates, censored at `death_data_end_date`; derives the model-ready variables (age 60 or older, not on tacrolimus, and so on) | `analysis_data`, USRDS patients file | `analysis_data` with outcomes, `model_data` |
+| `R/fit_models.R` | Kaplan–Meier fit; one logistic model per candidate; all candidates with backward elimination (joint Wald P, fixed complete-case sample); Hosmer–Lemeshow test | `analysis_data`, `model_data` | `km_fit`, `bivariable_results`, `multivariable`, `hosmer_lemeshow_result` |
 | `R/create_covariates.R` | Builds the covariates (plan §5): index-stay diagnoses, procedures and ICU; earlier transplant-complication hospitalizations; transplant history; demographics and region; UNOS registration and follow-up of the most recent transplant (rejection, serostatus, BMI, dialysis); immunosuppression at transplant and first follow-up | `cohort`, USRDS hospitalization, transplant, patients and UNOS files | `analysis_data` |
 
 ## Design choices in the code
@@ -40,6 +47,7 @@ flowchart TD
 - **One person, one row** from the candidates step on. Joins declare their expected relationships, so an unexpected duplicate stops the run.
 - **Release-dependent names in one place.** The UNOS key names differ between USRDS releases; the scripts take them from `unos_registration_id` and `unos_followup_id` in `setup.R`.
 - **Missing is not "no".** Combining yes/no values uses `any_known()`, so a person with only unknown rejection codes is missing rather than "no", and a registration with no drug records is missing rather than "not on".
+- **One row per person for survival.** All covariates are fixed and death is the only event, so `survfit()` takes one row per person; the usRds cohort functions, built for time-varying data, are not used.
 - **Logic in tested functions, loading in scripts.** The scripts load data through usRds and call functions from `functions.R`; the functions are tested on synthetic data in `tests/test-functions.R`.
 
 ## Tests

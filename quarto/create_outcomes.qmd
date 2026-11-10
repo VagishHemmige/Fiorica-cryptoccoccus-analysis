@@ -1,0 +1,72 @@
+---
+title: "Outcomes"
+format: html
+---
+
+This script adds the mortality outcomes (plan [§7](analysis-plan.qmd#7-outcomes)) and puts the variables in the form the model uses (plan [§8](analysis-plan.qmd#8-statistical-analysis)).
+
+::: {.Rcode title="Source code"}
+The full R script is available at:
+
+-   [`R/create_outcomes.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/create_outcomes.R)
+
+This R script file is itself reliant on the following helper files:
+
+-   [`R/setup.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/setup.R)
+-   [`R/functions.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/functions.R)
+-   [`R/create_covariates.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/create_covariates.R)
+
+The code sections below are imported directly from the script when this page is rendered.
+:::
+
+```{r}
+#| include: false
+#| eval: true
+#| cache: false
+knitr::read_chunk("../R/create_outcomes.R")
+```
+
+## Dates of death
+
+Dates of death come from the USRDS patients file. Each person needs only one row, because every characteristic is fixed at the start and death is the only event. That is why the usRds cohort functions aren't used here; the [coverage assessment](usrds-coverage.qmd) records what testing them showed.
+
+```{r}
+#| label: outcomes-deaths
+#| eval: false
+```
+
+## Mortality
+
+The script adds three things for each person:
+
+- death within 180 days of the index admission, where deaths on the admission day and on day 180 both count;
+- days to death;
+- for the survival curve, time to death or to the end of the release's death data.
+
+**Decision pending:** the end of the death data (`death_data_end_date`) has to be set for the release in use. The script stops until it is.
+
+```{r}
+#| label: outcomes-mortality
+#| eval: false
+```
+
+## Model variables
+
+The model uses the forms the paper reports:
+
+- age 60 or older;
+- more than one transplant;
+- any graft failure;
+- not being on tacrolimus.
+
+```{r}
+#| label: outcomes-model-variables
+#| eval: false
+```
+
+## Labels
+
+```{r}
+#| label: outcomes-labels
+#| eval: false
+```

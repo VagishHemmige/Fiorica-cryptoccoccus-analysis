@@ -383,3 +383,123 @@ load_flagged_hospitalizations <- function(file_root, ids, dx_columns, proc_colum
     flag_concepts(proc_columns, code_lists, proc_concepts) %>%
     select(all_of(c(key_columns, dx_concepts, proc_concepts)))
 }
+
+## ---- six-month-outcomes
+# Mortality outcomes from the index admission (plan §7): days to death;
+# died_within_window (death on or before day `window_days`, with the
+# admission day as day 0); and survival time and event for Kaplan-Meier,
+# censored at `data_end_date`. A death on the admission day has time 0.
+# `deaths` needs USRDS_ID and DIED (missing if alive).
+six_month_outcomes <- function(cohort_index, deaths, window_days, data_end_date) {
+  if (is.na(data_end_date)) {
+    stop(
+      "death_data_end_date must be set in R/setup.R for the USRDS release in use.",
+      call. = FALSE
+    )
+  }
+
+  cohort_index %>%
+    select(USRDS_ID, index_admit_date) %>%
+    left_join(deaths %>% select(USRDS_ID, DIED), by = "USRDS_ID", relationship = "one-to-one") %>%
+    mutate(
+      death_observed = !is.na(DIED) & DIED <= data_end_date,
+      days_to_death = if_else(death_observed, as.numeric(DIED - index_admit_date), NA),
+      died_within_window = death_observed & days_to_death <= window_days,
+      survival_days = if_else(
+        death_observed,
+        days_to_death,
+        as.numeric(data_end_date - index_admit_date)
+      ),
+      survival_event = as.integer(death_observed)
+    ) %>%
+    select(-DIED, -index_admit_date, -death_observed)
+}
+
+## ---- wald-term-p
+# Joint Wald test P value for one term of a fitted glm (all its coefficients
+# together, so a factor gets one P value), as Stata's stepwise uses by
+# default.
+wald_term_p <- function(model, term) {
+  term_index <- match(term, attr(terms(model), "term.labels"))
+  columns <- which(attr(model.matrix(model), "assign") == term_index)
+  estimates <- coef(model)[columns]
+  keep <- !is.na(estimates)
+  estimates <- estimates[keep]
+  covariance <- vcov(model)[names(estimates), names(estimates), drop = FALSE]
+  statistic <- as.numeric(t(estimates) %*% solve(covariance) %*% estimates)
+  pchisq(statistic, df = length(estimates), lower.tail = FALSE)
+}
+
+## ---- bivariable-models
+# One logistic model per candidate (outcome ~ candidate), each on the people
+# with that candidate known. Returns the term, people used, and Wald P value.
+bivariable_models <- function(data, outcome, candidates) {
+  map(candidates, \(candidate) {
+    model_data <- data %>%
+      select(all_of(c(outcome, candidate))) %>%
+      drop_na()
+    model <- glm(
+      reformulate(candidate, response = outcome),
+      family = binomial(),
+      data = model_data
+    )
+    tibble(
+      term = candidate,
+      n = nrow(model_data),
+      p_value = wald_term_p(model, candidate),
+      model = list(model)
+    )
+  }) %>%
+    list_rbind()
+}
+
+## ---- backward-eliminate
+# Backward elimination for a logistic model (plan §8): start from every
+# candidate on the complete cases for all of them (the sample stays fixed, as
+# in Stata's stepwise), and repeatedly remove the term with the largest Wald
+# P value while it is at or above `threshold`. Returns the final model, the
+# fixed sample and the removal steps.
+backward_eliminate <- function(data, outcome, candidates, threshold) {
+  model_data <- data %>%
+    select(all_of(c(outcome, candidates))) %>%
+    drop_na()
+  remaining <- candidates
+  steps <- tibble(step = integer(), removed = character(), p_value = numeric())
+
+  repeat {
+    model <- glm(reformulate(remaining, response = outcome), family = binomial(), data = model_data)
+    p_values <- map_dbl(remaining, \(term) wald_term_p(model, term))
+    worst <- which.max(p_values)
+    if (length(remaining) == 0 || p_values[worst] < threshold) {
+      break
+    }
+    steps <- add_row(steps, step = nrow(steps) + 1L, removed = remaining[worst], p_value = p_values[worst])
+    remaining <- remaining[-worst]
+    if (length(remaining) == 0) {
+      model <- glm(reformulate("1", response = outcome), family = binomial(), data = model_data)
+      break
+    }
+  }
+
+  list(model = model, data = model_data, steps = steps, retained = remaining)
+}
+
+## ---- hosmer-lemeshow
+# Hosmer-Lemeshow goodness-of-fit test with `groups` groups of predicted risk
+# (deciles by default): the statistic compares observed and expected events
+# in each group, on groups - 2 degrees of freedom.
+hosmer_lemeshow <- function(observed, predicted, groups = 10) {
+  breaks <- unique(quantile(predicted, probs = seq(0, 1, length.out = groups + 1)))
+  risk_group <- cut(predicted, breaks = breaks, include.lowest = TRUE)
+  table <- tibble(observed, predicted, risk_group) %>%
+    group_by(risk_group) %>%
+    summarise(n = n(), observed = sum(observed), expected = sum(predicted), .groups = "drop")
+  statistic <- sum((table$observed - table$expected)^2 / (table$expected * (1 - table$expected / table$n)))
+  df <- nrow(table) - 2
+  list(
+    statistic = statistic,
+    df = df,
+    p_value = pchisq(statistic, df = df, lower.tail = FALSE),
+    table = table
+  )
+}
