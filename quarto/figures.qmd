@@ -43,6 +43,8 @@ The flowchart is drawn from the same object that built the cohort, so the two ca
 #| eval: false
 ```
 
+**How this differs from the published figure.** The [published flowchart](results.qmd#figure-1.-flowchart-of-selection-of-relevant-ktrs-from-the-usrds-database) shows the starting totals and the final cohort only. This one shows every exclusion in the plan's order, with its count, because a reader cannot judge who was left out otherwise (STROBE and RECORD item 13). Its boxes therefore will not line up one for one with the published ones.
+
 ## Figure 2: survival
 
 The survival curve has its 95% confidence band and, below it, the number still at risk and the running totals of deaths and censored people. A time appears in that table only if no count shown there, or the change since the previous time, is from 1 to 10, and the curve stops at the last such time (`km_reportable_times()` on the [Functions](functions.qmd) page). A dashed line marks 6 months.
@@ -52,6 +54,8 @@ The survival curve has its 95% confidence band and, below it, the number still a
 #| eval: false
 ```
 
+**How this differs from the published figure.** The [published curve](results.qmd#figure-2.-kaplan-meier-survival-curve-for-the-1265-kidney-transplant-recipients-hospitalized-with-cryptococcosis) shows years on the axis, the number at risk every 5 years, and no confidence band. This one follows the KMunicate recommendations: the 95% confidence band, and below the curve the numbers at risk, censored and dead at each time shown, so a reader can see how much information lies behind each part of the curve. Time is in months, because the outcome is at 6 months. The published curve also starts with 2 fewer people than the cohort, most likely because Stata's survival setup drops people who died on the day of admission; this curve keeps them.
+
 ## Figure 3: odds ratios
 
 Each variable kept in the final model, with its adjusted odds ratio and 95% confidence interval on a log scale, and the numbers printed beside it.
@@ -60,6 +64,8 @@ Each variable kept in the final model, with its adjusted odds ratio and 95% conf
 #| label: figure-3
 #| eval: false
 ```
+
+**How this differs from the published figure.** The [published forest plot](results.qmd#figure-3.-multivariable-logistic-regression-analysis-of-predictors-of-6-month-mortality) uses a linear axis from 0 to 10. This one uses a log scale, on which halving and doubling the odds are the same distance from 1, so effects in either direction can be compared by eye; the estimate and interval are printed beside each row so no value has to be read off the axis.
 
 ## Captions and alt text
 
