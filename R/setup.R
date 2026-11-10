@@ -16,8 +16,8 @@ study_start_date <- as.Date("2006-01-01")
 study_end_date <- as.Date("2016-12-31")
 
 # Calendar years of physician/supplier claims searched for cryptococcosis
-# before the first transplant (plan §4, step 4). usRds maps these files from
-# 2006 only, so earlier claims cannot be searched (coverage map, step 10).
+# before the first transplant (plan §4, step 4): the study years, which is
+# where the data begin (coverage map, step 10).
 physician_claim_years <- seq(
   lubridate::year(study_start_date),
   lubridate::year(study_end_date)

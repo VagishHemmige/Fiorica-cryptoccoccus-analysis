@@ -10,8 +10,7 @@
 # with cryptococcosis are not in the transplant file, a few are outside the
 # age range, and 6-month mortality depends on ICU admission, cirrhosis, acute
 # kidney injury and age 60 or older. Some people also have a cryptococcosis
-# physician claim before their first transplant, or a cryptococcosis stay
-# before 2006, which exclude them.
+# physician claim before their first transplant, which excludes them.
 
 make_synthetic_usrds <- function(path = file.path(tempdir(), "synthetic_usrds"),
                                  n_people = 4000, seed = 20261110) {
@@ -94,10 +93,7 @@ make_synthetic_usrds <- function(path = file.path(tempdir(), "synthetic_usrds"),
       mutate(CLM_FROM = CLM_FROM + 1, CLM_THRU = CLM_FROM + 1),
     people %>% filter(runif(n()) < 0.3) %>% transmute(USRDS_ID, CLM_FROM = admit - draw(60:500, n()), CLM_THRU = CLM_FROM + 4,
       d1 = if_else(CLM_THRU < d("2015-10-01"), "99681", "T8612"), d2 = NA_character_, d3 = NA_character_,
-      proc = NA_character_, ICU_DAYS = 0L, CCU_DAYS = 0L),
-    # A cryptococcosis stay before 2006 for 2% (excluded: before the study start)
-    people %>% filter(runif(n()) < 0.02) %>% transmute(USRDS_ID, CLM_FROM = d("2003-01-01") + draw(0:1000, n()), CLM_THRU = CLM_FROM + 5,
-      d1 = "1175", d2 = NA_character_, d3 = NA_character_, proc = NA_character_, ICU_DAYS = 0L, CCU_DAYS = 0L)
+      proc = NA_character_, ICU_DAYS = 0L, CCU_DAYS = 0L)
   )
 
   widen <- function(df, dx_cols, sg_cols, old) {
