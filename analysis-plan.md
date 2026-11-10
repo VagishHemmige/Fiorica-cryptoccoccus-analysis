@@ -12,7 +12,7 @@ Reporting will follow STROBE [@vonelm2007strobe] and RECORD [@benchimol2015recor
 
 ## 1. Objective
 
-- **Primary:** estimate all-cause mortality within 6 months of the index cryptococcosis hospitalization among adult kidney transplant recipients with Medicare as primary payer, 2006–2016.
+- **Primary:** estimate all-cause mortality within 6 months of the index cryptococcosis hospitalization among adult kidney transplant recipients hospitalized under Medicare, 2006–2016.
 - **Secondary:**
   - describe time from kidney transplant to the index hospitalization;
   - estimate the association of clinical, transplant and immunosuppression characteristics with 6-month mortality.
@@ -36,7 +36,7 @@ Retrospective cohort of kidney transplant recipients, entering at their first po
 - **Linkage:** by `USRDS_ID`, as provided by USRDS. Transplant status comes from USRDS core and UNOS files, not diagnosis codes.
 - **Secondary-data declaration:** the investigators have analysed these data before (the published study). Results from this reconstruction will be compared with the paper only to check package behaviour.
 
-**Open:** which source defines the index hospitalization and its stay-level variables: the hospitalization files or institutional claims ([#1](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/1)).
+The index hospitalization and its stay-level variables (diagnoses, procedures, ICU and CCU days, discharge status) come from the USRDS hospitalization files, `hosp_to2009` and `hosp_2010on` (decided in [#1](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/1)). These files are a subset of the institutional claims, restricted to inpatient stays without payment variables (Researcher's Guide 2024, Appendix B), so institutional claims are not used as a second source for the index stay.
 
 ## 4. Study population
 
@@ -44,19 +44,20 @@ Source population: recipients of a kidney or kidney–pancreas transplant in the
 
 1. Hospitalizations with a cryptococcosis diagnosis code (§5) in any diagnosis position, admitted 2006-01-01 to 2016-12-31.
 2. Restrict to people in the transplant file.
-3. Exclude hospitalizations ending before the patient's first kidney transplant.
+3. Exclude hospitalizations admitted before the patient's first kidney transplant. A hospitalization admitted before the transplant is a cryptococcosis hospitalization claim preceding it, which the paper excludes; this includes stays that begin before the transplant and end after it (decided under [#4](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/4); the reconstruction kept such stays with time since transplant set to 0).
 4. Exclude people with any cryptococcosis claim before their first kidney transplant or before 2006-01-01. **Open:** which claim sources count and how many claims are required ([#4](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/4)).
 5. Keep each person's first remaining cryptococcosis hospitalization (the index hospitalization).
 6. Restrict to age 18–90 years on the index admission date.
-7. Restrict to Medicare as primary payer. **Open:** over what window ([#3](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/3)).
 
-The paper does not state the order of steps 6 and 7 relative to the others. The order above puts claim-based exclusions first, so each later step's denominator is a set of people with an index hospitalization.
+No separate Medicare-primary restriction is applied. The paper describes the cohort as recipients "with Medicare as their primary insurance coverage" but gives no window or method, and the index hospitalization is itself a Medicare-paid record. The plan therefore treats Medicare-primary status as a consequence of the data source rather than an applied exclusion (decided in [#3](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/3)). An explicit restriction is described as a variation in §9.
+
+The paper does not state the order of step 6 relative to the others. The order above puts claim-based exclusions first, so each later step's denominator is a set of people with an index hospitalization.
 
 ## 5. Exposure, index event and covariates
 
 **Index event and time zero:** admission date (`CLM_FROM`) of the index hospitalization. Overlapping or contiguous hospitalization records are one stay; the stay ends at the last record's `CLM_THRU`.
 
-**Code lists:** from Supplementary Table 1 [@fiorica2025]. Matching is exact on codes without decimals, except diabetes, which matches by prefix. ICD-9-CM applies to dates before 2015-10-01 and ICD-10-CM/PCS from that date. Lists are kept in code with their provenance (`references/usrds-coverage.md`).
+**Code lists:** from the 2025-03-25 reconstruction of the original analysis, by the maintainer's decision (2026-11-09, [#8](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/8)), rather than from Supplementary Table 1 [@fiorica2025]. The two are identical except for diabetes and the cyclosporine and tacrolimus HCPCS codes, which only the supplement lists and which are not used, because immunosuppression comes from the UNOS records ([#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2)). After checking every code against the official code sets, three corrections were made (maintainer's decision, 2026-11-09): diabetes stems match as open prefixes, as in the supplement, because the reconstruction's enumeration (stem plus at most two digits) misses most ICD-10-CM diabetes codes; ICD-9-CM 456.20 is added to cirrhosis, missing from both sources; and a ventriculoperitoneal shunt list is rebuilt (below). Codes are written without decimals and match exactly, except the diabetes prefixes. ICD-9-CM applies to inpatient stays discharged before 2015-10-01 and ICD-10-CM/PCS to those discharged on or after it, following CMS's discharge-date rule; for the hospitalization files the discharge date is `CLM_THRU`. Lists are kept in code with their provenance (`references/usrds-coverage.md`).
 
 | Concept | Codes |
 |---|---|
@@ -64,31 +65,35 @@ The paper does not state the order of steps 6 and 7 relative to the others. The 
 | Cryptococcal meningitis (CM) | 321.0, B45.1 |
 | Transplant complication | 996.81, T86.10–T86.12 |
 | Acute kidney injury | 584.5–584.9, N17.0–N17.2, N17.8, N17.9 |
-| Diabetes (prefix) | 250\*, E08\*, E09\*, E10\*, E11\*, E13\*, 357.2, 362.0, 362.02, 366.41 |
-| Cirrhosis | as listed in Supplementary Table 1 (31 codes) |
+| Diabetes (prefix) | 250\*, E08\*, E09\*, E10\*, E11\*, E13\*; 357.2, 362.0, 362.02, 366.41 |
+| Cirrhosis | the 31 codes in the reconstruction and Supplementary Table 1 (identical), plus 456.20 |
 
 **Covariates measured on the index stay:**
 
 - CM vs non-CM;
 - AKI, diabetes and cirrhosis, from any diagnosis on the stay;
 - ICU admission (any ICU or CCU days);
-- procedures: lumbar puncture, other spinal, neurosurgical and lung procedures, and ventriculoperitoneal shunt. **Open:** code system and the shunt list ([#5](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/5)).
+- procedures: lumbar puncture, other spinal, neurosurgical and lung procedures, and ventriculoperitoneal shunt. The shunt list is missing from both the supplement and the reconstruction (a copy/paste loss, in the maintainer's judgment), so it is rebuilt from the official code sets: ICD-9-CM 02.34 and the nine ICD-10-PCS codes for bypass of a cerebral ventricle to the peritoneal cavity. **Open:** whether CPT codes, which the paper's text names, are used as well as ICD procedure codes ([#5](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/5)).
 
 **Covariates measured at or before time zero:**
 
-- age, sex, race, Hispanic ethnicity, region;
-- BMI, pretransplant dialysis, HIV and CMV serostatus (UNOS registration);
-- number of transplants and graft failures before the index stay;
-- time since last transplant (also dichotomised at 2 years, as in the paper's model);
-- acute rejection (UNOS registration or follow-up);
+- age; sex and race (USRDS transplant file, record of the most recent transplant; race as White, Black or other); Hispanic ethnicity (patients file, format `$YNUFMT`: 1 or Y yes, 2 or N no, otherwise missing; the reconstruction treated code 2 as missing); Census region and division of residence (patients file `STATE`, FIPS codes; as in the reconstruction, Alaska and Hawaii are grouped with the territories as "Outside", which the maintainer is asked to confirm);
+- BMI, pretransplant dialysis, HIV and CMV serostatus, from the UNOS registration of the **most recent transplant on or before the index admission** (decided 2026-11-10; the reconstruction used the first transplant's registration);
+- number of transplants on or before, and graft failures before, the index admission;
+- time since the most recent transplant (also dichotomised at 2 years, as in the paper's model);
+- acute rejection: any episode (UNOS format `ACREJEPI` 1 or 2; 3 is none; blank, 990 and 998 missing) at the most recent transplant's registration or on its follow-up reports dated before the index admission (decided 2026-11-10). A follow-up report without a date takes the kidney graft failure date, as in the reconstruction;
 - any prior hospitalization with a transplant-complication code.
 
 **Immunosuppression:**
 
 - antithymocyte globulin, alemtuzumab, anti-IL-2 receptor antibody, tacrolimus, cyclosporine, mycophenolate, mTOR inhibitors, azathioprine, steroids;
-- measured at transplant registration and at follow-up.
+- measured from the UNOS records in the USRDS transplant files, not Medicare drug claims (decided in [#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2)):
+  - **at transplant:** `TXIRUNOS`, linked to the recipient registration (`TXUNOS_TRR_KI`/`_KP`);
+  - **at first follow-up:** `TXIFUNOS`, from the earliest follow-up report (`TXFUUNOS_KI`/`_KP`, earliest `FUDATE`), whether or not it precedes the index admission, as the paper's Methods describe ("the first post-transplant visit"). Under OPTN rules this is normally the 6-month report. A drug counts at follow-up if it is current maintenance at that visit (`RXMNTCUR`);
+- the transplant and its first follow-up are those of the most recent transplant on or before the index admission (decided 2026-11-10); a registration with no drug records is missing, not "not on";
+- drug classes come from `RX_CD` and `DRUG_CD_OSTXT`, using the reconstruction's mapping, checked against Appendix C, with codes 57 (generic Myfortic), 58 (generic sirolimus) and 59 (Envarsus XR), which it missed, added (decided 2026-11-10).
 
-**Open:** UNOS records, HCPCS claims or both, and which follow-up record counts ([#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2)).
+The paper's Discussion refers to a "1-year follow-up", and its Methods and Limitations say the drugs came from "billing codes"; the plan follows the Methods' time point and the UNOS records. The maintainer notes that billing data may be the gold standard, so this choice may be revisited ([#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2)).
 
 ## 6. Comparator or matching
 
@@ -121,7 +126,11 @@ Not applicable. Comparisons are between people who died within 6 months and thos
 
 ## 9. Sensitivity analyses
 
-None are prespecified. Comparing index-hospitalization sources (§3, [#1](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/1)) would test the package's claims route against the hospitalization-file route, if a decider adopts that option.
+**Variation: explicit Medicare-primary restriction.** One way the study could have been done differently is to require Medicare as primary payer from the payer history file (for example on the index admission date, for 365 days before it, or from first transplant to admission), with `usRds::verify_medicare_primary()`. This tests whether recipients with another primary payer, but a Medicare-paid index stay, change the estimates; it adds a flowchart step the paper does not show ([#3](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/3)).
+
+**Alternative: acute rejection from claims.** Rejection is measured from UNOS records (§5). The paper's Methods also mention ICD codes for graft rejection; a claims definition (a hospitalization with ICD-10-CM T86.11, kidney transplant rejection) is an alternative, noted but not built. ICD-9-CM has no rejection-specific kidney code (996.81 covers any complication of a transplanted kidney), so it would apply only from October 2015.
+
+No other sensitivity analyses are prespecified. A comparison of the hospitalization files with institutional claims was considered and not adopted, because the former are a subset of the latter (§3, [#1](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/1)).
 
 ## 10. Disclosure control
 
@@ -132,7 +141,7 @@ The USRDS data use agreement governs. No cell, count or percentage that disclose
 - Case and CM definitions use diagnosis codes, without microbiological confirmation.
 - Immunosuppression during the index stay is not captured.
 - Stepwise selection gives optimistic P values and unstable selection; the results are exploratory.
-- Medicare-primary restriction limits generalisability.
+- Restriction to Medicare-paid hospitalizations limits generalisability, and Medicare-primary status is assumed rather than verified (§4).
 - Differences from the published estimates may come from the data release, the order of exclusions, the open decisions above, or details of the original Stata code that the paper does not report. They are reported as such, not as corrections to the paper.
 
 ## 12. Reporting map

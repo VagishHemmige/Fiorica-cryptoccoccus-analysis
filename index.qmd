@@ -1,0 +1,28 @@
+---
+title: "Overview"
+format: html
+---
+
+## Background
+
+Cryptococcosis is an invasive fungal infection that affects people with weakened immune systems, including kidney transplant recipients. Fiorica et al. used USRDS data to study 6-month mortality, and the factors associated with it, among kidney transplant recipients hospitalized with cryptococcosis from 2006 to 2016 [@fiorica2025].
+
+## What this project does
+
+This project replicates that analysis as the paper describes it, using the [usRds](https://github.com/VagishHemmige/usRds) R package wherever the package can do a step. Along the way it assesses how well usRds covers the paper's methods.
+
+The original analysis was run in Stata, and that code is no longer available. The paper and its supplement are therefore the specification. The published estimates are a reference point, not a target.
+
+## Methods
+
+The cohort is built from USRDS hospitalization files, Medicare claims and UNOS transplant records. The outcome is death from any cause within 180 days of the first cryptococcosis hospitalization after transplant. It is analysed with:
+
+- descriptive tables;
+- a Kaplan–Meier curve;
+- multivariable logistic regression.
+
+[Study design and methods](quarto/study_methods.qmd) explains the choices in plain language. The [analysis plan](quarto/analysis-plan.qmd) is the authoritative specification. The [usRds coverage](quarto/usrds-coverage.qmd) page maps each step to the package.
+
+## Status
+
+In progress; nothing on this site comes from USRDS data. The code so far is the setup, the code lists, the helper functions, and the cohort and covariate scripts, with the helpers tested on synthetic data. Open decisions are tracked as [decision issues](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues?q=is%3Aissue+label%3Adecision).

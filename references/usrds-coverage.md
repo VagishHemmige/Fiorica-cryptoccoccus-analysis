@@ -3,7 +3,7 @@
 This document maps each step of the published analysis [@fiorica2025], as the paper describes it, to the usRds functions that do it, or records that none does. It is the project's coverage assessment: replicating the paper's methods, how much of the work can usRds do?
 
 - **Package version examined:** usRds 0.1.0, commit `3f63750` (default branch, 2026-11-09). Read from source; not run, because R is not installed in the environment where this was written. Re-check against the installed version before relying on any row.
-- **Sources compared:** the paper's Methods and Supplementary Table 1 (code lists), which are the specification; and the legacy Rmd dated 2025-03-25, the maintainer's best reconstruction of the original Stata analysis (secondary evidence only; not in this repository, see "Provenance" below). Where this document says "the legacy Rmd does X", it describes the reconstruction, not necessarily what the published analysis did.
+- **Sources compared:** the paper's Methods and Supplementary Table 1, which are the specification (except that the code lists come from the reconstruction, by decision; plan §5); and the legacy Rmd dated 2025-03-25, the maintainer's best reconstruction of the original Stata analysis (secondary evidence only; not in this repository, see "Provenance" below). Where this document says "the legacy Rmd does X", it describes the reconstruction, not necessarily what the published analysis did.
 - **Status key.** **Covered:** a usRds function does the step as the plan needs. **Partial:** a function exists but lacks something the step needs. **Gap:** no usRds function; currently done with hand-written code. **To verify:** behaviour that needs checking against the Researcher's Guide or by running the function on synthetic data.
 
 The plan governs what each step must do. This document records only how the package meets it. Open choices are linked to their decision issues.
@@ -15,21 +15,23 @@ The plan governs what each step must do. This document records only how the pack
 | 1 | Locate data files | `set_USRDS_wd()` (maps files on load) | Covered |
 | 2 | Demographics and death date | `load_usrds_file("patients")`, `apply_usrds_factors()` | Covered |
 | 3 | Transplant history (dates, failures, count before index) | `load_usrds_file("tx")` | Partial |
-| 4 | Index cryptococcosis hospitalization | `load_usrds_file("hosp_*")`, or `get_IN_ICD()` | Gap / Partial ([#1](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/1)) |
+| 4 | Index cryptococcosis hospitalization (hospitalization files) | `load_usrds_file("hosp_*")` only | Gap ([#1](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/1)) |
 | 5 | Cryptococcal meningitis vs other, on the index stay | depends on step 4 | Gap |
 | 6 | Comorbidities on the index stay (AKI, diabetes, cirrhosis) | depends on step 4; no prefix matching | Gap |
 | 7 | ICU admission; combining overlapping claims into one stay | none | Gap |
 | 8 | Discharge status | `apply_usrds_factors()` on the hospitalization file | To verify |
 | 9 | Procedures on the index stay | none for ICD procedure codes | Gap ([#5](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/5)) |
 | 10 | Exclude cryptococcosis before first transplant | `get_PS_ICD()`, `get_IN_ICD()` | Covered ([#4](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/4)) |
-| 11 | Prior hospitalization for kidney transplant complications | `get_IN_ICD()` | Covered (dates only) |
-| 12 | Medicare as primary payer | `verify_medicare_primary()` | Covered ([#3](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/3)) |
+| 11 | Prior hospitalization for kidney transplant complications | `get_IN_ICD()` could; the analysis uses the hospitalization files | Covered (dates only); project code used |
+| 12 | Medicare as primary payer (variation only) | `verify_medicare_primary()` | Covered; not used in the main analysis ([#3](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/3)) |
 | 13 | UNOS registration variables (BMI, pretransplant dialysis, HIV, CMV, rejection) | `load_usrds_file("txunos_trr_ki")`, `("txunos_trr_kp")` | Partial |
+| 13a | Acute rejection: UNOS (used) and ICD claims (alternative) | UNOS: `load_usrds_file()`; claims: `get_IN_ICD()` or the hospitalization files | Partial / Partial |
 | 14 | UNOS follow-up rejection | `load_usrds_file("txfuunos_ki")`, `("txfuunos_kp")` | Partial |
-| 15 | Immunosuppression from UNOS records | `load_usrds_file("txirunos")` | Partial ([#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2)) |
-| 16 | Immunosuppression from HCPCS claims | `get_PS_HCPCS()`, `get_IN_HCPCS()` | Covered ([#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2)) |
-| 17 | Age, region and division | none for state to Census region | Gap (small) |
-| 18 | 6-month mortality and Kaplan–Meier | `create_usrds_cohort()`, `add_cohort_event()`, `finalize_usrds_cohort()` | Covered |
+| 15 | Immunosuppression from UNOS records (at transplant and first follow-up) | `load_usrds_file("txirunos")`, `("txifunos")` | Partial ([#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2)) |
+| 16 | Immunosuppression from HCPCS claims (not used) | `get_PS_HCPCS()`, `get_IN_HCPCS()` | Covered; not used in the main analysis ([#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2)) |
+| 17 | Age, sex, race, ethnicity, region and division | `load_usrds_file()`; no recoding or state-to-region crosswalk | Gap (small) |
+| — | Cohort selection: index event, exclusions, flowchart | none (`create_usrds_cohort()` needs the selected cohort as input) | Gap |
+| 18 | 6-month mortality and Kaplan–Meier | `create_usrds_cohort()`, `add_cohort_event()`, `finalize_usrds_cohort()` | Covered (`add_cohort_covariate()` not used) |
 | 19 | Logistic regression, Table 1, figures | outside usRds's scope | Not applicable |
 | — | Infectious diseases specialist claims (legacy Rmd only, not in the paper) | `get_PS_specialty()` | Covered, with defects |
 
@@ -49,11 +51,11 @@ The mapper recognises six folder names: "ESRD Core", "ESRD transplant", "ESRD ho
 
 `load_usrds_file("tx", col_select = c(USRDS_ID, TDATE, FAILDATE, TOTTX))` loads one row per transplant. The paper needs, for each patient at the index date: first transplant date, number of transplants and graft failures before the index admission, and time since the most recent transplant. The legacy Rmd pivots to wide format (`TDATE_1`… `TDATE_5`) and loops over positions.
 
-**Gap:** a long-format helper, for example `summarise_transplant_history(df, index_date)`, returning those quantities per patient. It is generally reusable: the missed-diagnosis project needs first transplant date too.
+The `patients` file also has `TX1DATE` (date of first transplant; Appendix B 2024), which could replace the minimum of `TDATE`; the cohort script uses the `tx` file, which it needs for transplant history anyway. **Gap:** a long-format helper, for example `summarise_transplant_history(df, index_date)`, returning those quantities per patient. It is generally reusable: the missed-diagnosis project needs first transplant date too.
 
 ### 4. Index cryptococcosis hospitalization ([#1](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/1))
 
-The legacy Rmd reads the USRDS hospitalization files (`hosp_to2009`, `hosp_2010on`) and flags a stay if `PRIMDIAG` or any `HSDIAG1`–`HSDIAG26` is in the cryptococcosis list.
+Decided in [#1](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/1): the hospitalization files (`hosp_to2009`, `hosp_2010on`), as the legacy Rmd uses. A stay is flagged if `PRIMDIAG` or any `HSDIAG` position (10 before 2010, 26 from 2010) is in the cryptococcosis list. The Researcher's Guide (2024, Appendix B) describes both files as "a subset of the data in the Institutional Claims file", inpatient stays only and without payment variables, so the institutional-claims route below is noted for completeness, not used.
 
 - **`load_usrds_file("hosp_2010on")`** works, but reads the whole file before any filtering, and the diagnosis search across wide columns is hand-written.
 - **`get_IN_ICD(icd_codes, years)`** reads the institutional diagnosis files (file roots `det<year><letter>` in the internal `IN_ICD` table) with filtering pushed down for Parquet. It returns only `USRDS_ID`, `CODE`, `CLM_FROM` and `HCFASAF`: no `CLM_THRU`, no claim key (`SEQ_KEYC`) and no diagnosis position. So a stay found this way cannot be linked to its discharge status, ICU days or procedures, and principal and secondary diagnoses cannot be told apart.
@@ -64,11 +66,14 @@ The legacy Rmd reads the USRDS hospitalization files (`hosp_to2009`, `hosp_2010o
 - (a) `get_HOSP_ICD(icd_codes, years, positions = "any")`: searches `PRIMDIAG`/`HSDIAG*` with pushdown, and returns one row per stay with its key, dates, `DISCSTAT`, `ICU_DAYS` and `CCU_DAYS`.
 - (b) Alternatively, an option on `get_IN_ICD()` to return `CLM_THRU`, `SEQ_KEYC` and the diagnosis position, plus a companion that loads the claim header for a set of keys.
 
+**Found while writing the cohort script:** the two hospitalization files use `PRIMDIAG` differently (Appendix B 2024). In `hosp_to2009` it is a Y/N flag ("first diagnosis is primary") and the codes are in `HSDIAG1`–`HSDIAG10`. In `hosp_2010on` it is the principal diagnosis code. Searching `PRIMDIAG` in both, as the legacy Rmd does, is harmless but wrong in meaning. An extractor for these files (gap (a)) should hide that difference; this project handles it with per-file column lists in `R/setup.R`. Loading with default `factor_labels = TRUE` would also turn the pre-2010 flag into a factor, so the cohort script loads with `factor_labels = FALSE`.
+
 **To verify:**
 
 - whether the `det` files contain procedure codes as well as diagnosis codes in `CODE`, and if so how they are distinguished;
 - the SAS branch of `.load_individual_file_IN_ICD()` omits `HCFASAF`, so `establish_dx_date()` would misclassify SAS-sourced claims;
-- hospitalization file names differ by release; Appendix B for the release in use governs.
+- hospitalization file names differ by release; Appendix B for the release in use governs;
+- which files hold institutional diagnosis codes: in the 2024 layout (Appendix B), inpatient diagnosis and procedure codes are in `ip_dxp_<year>` ("Diagnosis and Procedure Details"), while `get_IN_ICD()` reads files with roots `det<year><letter>`, the name the 2024 layout uses for revenue-line details. Older releases may name files differently.
 
 ### 5. Cryptococcal meningitis on the index stay
 
@@ -76,7 +81,7 @@ B45.1 or 321.0 in any diagnosis position of the index stay, including stays merg
 
 ### 6. Comorbidities on the index stay
 
-AKI and cirrhosis use exact code lists. Diabetes uses prefixes (`250*`, `E08*`–`E13*`); the legacy Rmd enumerates them by loop.
+AKI and cirrhosis use exact code lists. Diabetes uses open prefixes (`250*`, `E08*`–`E13*`; plan §5). The reconstruction enumerated stems plus at most two digits instead, which misses most ICD-10-CM diabetes codes; an exact-only matcher pushes code toward that kind of enumeration error. The project matches prefixes with `code_matches()` in `R/functions.R`.
 
 **Gap:** the `get_*_ICD()` functions match exactly (`CODE %in% icd_codes`). The package builds an `icd_reference` table "so that the get_*_ICD functions can use wildcards" (`data-raw/DATASET.R`), but no exported function uses it yet. A `prefix = TRUE` option, or an `expand_icd_codes("E11", type = "dx")` helper backed by `icd_reference`, would close this.
 
@@ -102,33 +107,56 @@ The legacy Rmd's filter appears to keep the opposite group from the one the pape
 
 ### 11. Prior hospitalization for transplant complications
 
-T86.10–T86.12 or 996.81 on a hospitalization before the index admission. Only a date is needed, so `get_IN_ICD()` filtered to inpatient claims covers it. The legacy Rmd used the hospitalization file. The two sources may differ, and the choice follows [#1](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/1).
+T86.10–T86.12 or 996.81 on a hospitalization before the index admission. Only a date is needed, so `get_IN_ICD()` filtered to inpatient claims would cover it. Following [#1](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/1), the analysis uses the hospitalization files, which it already loads for the index stay (`R/create_covariates.R`), so this route is project code.
 
 ### 12. Medicare as primary payer ([#3](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/3))
 
-`verify_medicare_primary(df, index_date = "index_admit_date", lookback_days = ...)` adds `medicare_primary_TF`. Covered. The legacy Rmd did not apply this restriction.
+The main analysis applies no Medicare-primary restriction: the paper gives no window or method, the legacy Rmd applies none, and the index stay is itself a Medicare-paid record ([#3](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/3)). The explicit restriction is a variation (plan §9): `verify_medicare_primary(df, index_date = "index_admit_date", lookback_days = ...)` adds `medicare_primary_TF`. Covered, so the function is exercised only if the variation is run.
 
 ### 13–14. UNOS registration and follow-up
 
-These load with `load_usrds_file()`. Kidney-alone and kidney–pancreas recipients are in separate files with different variable names (`ACUTE_REJ_EPI` vs `ACUTE_REJ_EPI_KI`), and the legacy Rmd stacks and renames them by hand. The follow-up date falls back to `FUKIFAIL` when `FUDATE` is missing, and code 998 is dropped.
+These load with `load_usrds_file()`. Kidney-alone and kidney–pancreas recipients are in separate files with different variable names (`ACUTE_REJ_EPI` vs `ACUTE_REJ_EPI_KI`), stacked and renamed in project code, as in the legacy Rmd. The follow-up date falls back to `FUKIFAIL` when `FUDATE` is missing.
 
-**Gap (small):** `load_usrds_unos(c("trr", "fu"), organs = c("ki", "kp"))`, returning stacked, harmonised kidney variables with an organ indicator. **To verify:** the meaning of 998 and of the `ACUTE_REJ_EPI` codes in Appendix C, and whether `apply_usrds_factors()` labels them.
+Appendix C (2024, format `ACREJEPI`): 1 = yes, at least one episode treated; 2 = yes, none treated with an additional agent; 3 = no; 990 and 998 = episodes unknown (carried over from before 2005). The analysis counts 1 or 2 as an episode and 990/998 as missing; the legacy Rmd dropped only 998.
+
+The analysis takes the registration of the most recent transplant on or before the index admission, and that registration's follow-up reports, linked by the registration key (`TRR_ID` in the maintainer's release, from the legacy Rmd; `TRR_ID_CODE` in 2024).
+
+**Gap (small):** `load_usrds_unos(c("trr", "fu"), organs = c("ki", "kp"))`, returning stacked, harmonised kidney variables with an organ indicator. **To verify:** whether `apply_usrds_factors()` labels `ACUTE_REJ_EPI`; the scripts load with `factor_labels = FALSE` and recode from the raw codes.
+
+### 13a. Acute rejection from UNOS and from claims
+
+The package should support both routes, and this replication assesses both. **UNOS (used):** loading is covered by `load_usrds_file()`; choosing the transplant's registration and follow-up reports relative to an index date, and recoding `ACREJEPI`, are project code (gap, as step 13). **ICD claims (alternative, plan §9; not built):** a hospitalization with ICD-10-CM T86.11 could be found with `get_IN_ICD()` (dates only, inpatient claims; covered) or from the hospitalization files (gap, step 4). ICD-9-CM has no rejection-specific kidney code, so a claims definition works only from October 2015.
 
 ### 15. Immunosuppression from UNOS records ([#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2))
 
-`txirunos` loads with `load_usrds_file()`. The legacy Rmd maps `RX_CD` codes and misspelled free text (`DRUG_CD_OSTXT`) to drug classes. **Gap:** a verified `RX_CD`-to-class crosswalk shipped as package data, from Appendix C, so projects don't re-derive it. The free-text clean-up is study-specific and stays here.
+Decided in [#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2): immunosuppression at transplant from `TXIRUNOS` and at the first follow-up from `TXIFUNOS` ("Immunosuppression at Follow-up – UNOS", Appendix B 2024), which the legacy Rmd never loads. Both should load with `load_usrds_file()`. **To verify:**
+
+- that the file mapper finds `txifunos`;
+- the join keys: the legacy Rmd joins `TXIRUNOS` to the registration on `TRR_ID`, but the 2024 layout has encrypted keys (`TRR_ID_CODE`; `TRRFU_ID_CODE` linking `TXIFUNOS` to the follow-up reports), so key names depend on the release. The scripts take both names from constants in `R/setup.R`; the follow-up key `TRRFU_ID` is a guess for the maintainer's release and must be checked before running.
+
+The legacy Rmd maps `RX_CD` codes and misspelled free text (`DRUG_CD_OSTXT`) to drug classes. Checked against Appendix C (format `DRUG`), every code it maps is labelled correctly, but it misses 57 (generic Myfortic), 58 (generic sirolimus) and 59 (Envarsus XR), which are added (`R/code_lists.R`). **Gap:** a verified `RX_CD`-to-class crosswalk shipped as package data, from Appendix C, so projects don't re-derive it. The free-text clean-up is study-specific and stays here.
 
 ### 16. Immunosuppression from HCPCS claims ([#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2))
 
-`get_PS_HCPCS(c("J7502", "J7515", "J7516", "J7503", "J7507", "J7508", "J7525"), years)`, plus `get_IN_HCPCS()` for institutional lines. Covered. The package maps Part D files (a `PDE` file list exists internally) but has no Part D extractor. If [#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2) brings oral tacrolimus from Part D into scope, that is a gap.
+Not used in the main analysis ([#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2)), but kept in the assessment because the maintainer may revisit it (billing data may be the gold standard). `get_PS_HCPCS(c("J7502", "J7515", "J7516", "J7503", "J7507", "J7508", "J7525"), years)`, plus `get_IN_HCPCS()` for institutional lines. Covered. The package maps Part D files (a `PDE` file list exists internally) but has no Part D extractor. Part D is out of scope ([#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2)); if oral tacrolimus from Part D is ever brought in, that is a gap.
 
 ### 17. Age, region and division
 
-Age comes from `BORN`. The legacy Rmd maps USRDS `STATE` codes to Census regions and divisions by hand. **To verify:** whether USRDS `STATE` codes are FIPS codes (the legacy map treats "72" as outside, consistent with FIPS Puerto Rico, but also uses "03" and "43", which are not FIPS). **Gap (small):** a state-code crosswalk as package data.
+Age comes from `BORN`. `STATE` uses FIPS codes (Appendix C format `STATFIP`, which also lists 03 American Samoa and 43 Puerto Rico, older codes). The legacy Rmd maps them to Census regions by hand; territory codes it does not list (for example 66 Guam, 78 Virgin Islands) fall through to missing, which `R/code_lists.R` corrects by mapping every valid non-state code to "Outside". It also groups Alaska and Hawaii with the territories, unlike the Census Bureau (to confirm).
+
+Hispanic ethnicity (format `$YNUFMT`) codes "no" as 2 or N. The legacy Rmd recoded 0 or N as non-Hispanic, so code 2 would have become missing; the analysis follows the format. Sex and race (`$SEXFMT`, `$RACEFMT`) are recoded as in the legacy Rmd.
+
+**Gap (small):** a state-code crosswalk as package data; and recoding is project code because the scripts load with `factor_labels = FALSE`. Whether `apply_usrds_factors()` would label these correctly is **to verify**.
 
 ### 18. Mortality and survival
 
-`create_usrds_cohort(df, start_date = index_admit_date, end_date = censor_date)`, then `add_cohort_event(cohort, deaths, "DIED", "death")` and `finalize_usrds_cohort(cohort)` give a counting-process data set for `survival::survfit()`. Covered. This analysis exercises these functions on a simple one-row-per-person cohort. **To verify:** that a death on the cohort stop date is counted (`tmerge` event at `tstop`).
+`create_usrds_cohort(df, start_date = index_admit_date, end_date = censor_date)`, then `add_cohort_event(cohort, deaths, "DIED", "death")` and `finalize_usrds_cohort(cohort)` give a counting-process data set for `survival::survfit()`. Covered. This analysis exercises these functions on a simple one-row-per-person cohort. **To verify:** that a death on the cohort stop date is counted (`tmerge` event at `tstop`), and how `.resolve_date()` treats a column name passed as `start_date` or `end_date`.
+
+`add_cohort_covariate()` is not used: every covariate in this study is fixed at transplant or measured on the index stay, so nothing changes during follow-up, and adding fixed covariates through it would split each person's time for no purpose. This replication therefore leaves it untested.
+
+### Cohort selection
+
+The usRds cohort functions handle follow-up time, not entry: `create_usrds_cohort()` requires a data frame that already has one row per person (it stops on a repeated `USRDS_ID`), with start and end dates. Finding each person's index event and applying the exclusions is done in project code: `R/create_cohort.R`, with helpers in `R/functions.R` and every exclusion through `flowchart`. That part is a **gap**, but a mostly study-specific one. The reusable pieces (searching the hospitalization files, combining records into stays, first transplant date) are already listed as gaps at steps 3, 4 and 7, so no separate usRds follow-up is proposed.
 
 ### Infectious diseases specialist claims (legacy Rmd only)
 

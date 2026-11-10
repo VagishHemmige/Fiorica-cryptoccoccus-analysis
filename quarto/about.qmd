@@ -1,0 +1,41 @@
+---
+title: "About"
+format: html
+---
+
+## The study
+
+This project replicates Fiorica et al. 2025 [@fiorica2025], a study of mortality among kidney transplant recipients hospitalized with cryptococcosis, as the paper describes it. It uses the usRds package and assesses how well that package covers the paper's methods. The analysis is in progress, and no results from USRDS data are on this site.
+
+-   **Vagish Hemmige** (maintainer; makes the scientific decisions)
+
+Open decisions are listed as [decision issues](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues?q=is%3Aissue+label%3Adecision).
+
+## This repository
+
+`R/main.R` runs the scripts in order. They reach the USRDS data through the [usRds](https://github.com/VagishHemmige/usRds) package. The data are restricted under the USRDS data use agreement, so they are not in the repository. The analysis runs only on a machine with authorized access.
+
+Contributions follow the rules in [`AGENTS.md`](agents.qmd). Known issues and open decisions are tracked in [Issues](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues).
+
+## How this website was created
+
+The site is built with [Quarto](https://quarto.org) from the analysis scripts themselves. Each code page imports the labelled sections of its script from `R/` and shows them with an explanation. The site never runs the analysis, so it builds without the analysis data.
+
+The repository is maintained with the R Analysis Workflow plugin and with AI assistants (Claude). They work only on code, documentation and synthetic data, never on USRDS data, and scientific decisions stay with the maintainer.
+
+Four documents describe the project, plus a coverage assessment:
+
+-   [**Analysis plan**](analysis-plan.qmd): *what the analysis is meant to do, and why.*
+-   [**usRds coverage**](usrds-coverage.qmd): *each step of the paper mapped to usRds functions, and what is missing.*
+-   [**Architecture**](architecture.qmd): *how the code does it.*
+-   [**AGENTS.md**](agents.qmd): *how people and AI assistants work on the project.*
+-   [**Repository blueprint**](repository-blueprint.qmd): *the layout every project of this kind starts from.*
+
+## Pages
+
+-   [**Study design and methods**](study_methods.qmd): the study's choices in plain language.
+-   [**Building the cohort**](create_cohort.qmd): the index hospitalizations and the cohort flowchart.
+-   [**Covariates**](create_covariates.qmd): the characteristics compared and modelled.
+-   [**Setup**](setup.qmd): packages and shared constants.
+-   [**Code lists**](code_lists.qmd): the diagnosis, procedure and billing codes from the paper's supplement.
+-   [**Functions**](functions.qmd): helper functions, including those that fill usRds gaps.

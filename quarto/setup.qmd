@@ -1,0 +1,83 @@
+---
+title: "Setup"
+format: html
+---
+
+This script attaches the packages and defines the constants every other script uses.
+
+::: {.Rcode title="Source code"}
+The full R script is available at:
+
+-   [`R/setup.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/setup.R)
+
+The code sections below are imported directly from that script when this page is rendered.
+:::
+
+```{r}
+#| include: false
+#| eval: true
+#| cache: false
+knitr::read_chunk("../R/setup.R")
+```
+
+## Packages
+
+The analysis uses the tidyverse for data handling. **usRds** is the access package for the USRDS files: it locates the files on the machine that holds them and loads or extracts from them. The [coverage assessment](usrds-coverage.qmd) records which steps it does. **flowchart** builds the cohort flow diagram (Figure 1), **survival** the Kaplan–Meier curve (Figure 2), and **labelled** the variable labels.
+
+```{r}
+#| label: load-packages
+#| eval: false
+```
+
+## Constants
+
+These are the study's fixed parameters, each tied to the section of the [analysis plan](analysis-plan.qmd) that sets it:
+
+- the admission window for the index hospitalization, 2006–2016 (§3);
+- the age range, 18 to 90 years inclusive (§4);
+- the 180-day mortality window, in which a death on day 180 counts (§7);
+- the ICD-10 transition date (§5);
+- the 2-year cut-off for time since transplant in the model (§5).
+
+Scripts use these names rather than typing the numbers again.
+
+```{r}
+#| label: define-constants
+#| eval: false
+```
+
+## Code lists
+
+The code lists are long, so they live in their own script; see [Code lists](code_lists.qmd).
+
+```{r}
+#| label: code-lists-source
+#| eval: false
+```
+
+## Hospitalization file columns
+
+The two USRDS hospitalization files store diagnoses differently, according to Appendix B of the Researcher's Guide (2024):
+
+- **`hosp_to2009`** holds up to 10 diagnosis codes, in `HSDIAG1`–`HSDIAG10`. Its `PRIMDIAG` is only a yes/no flag saying whether the first diagnosis is the principal one.
+- **`hosp_2010on`** holds the principal diagnosis code in `PRIMDIAG` and up to 26 more in `HSDIAG1`–`HSDIAG26`.
+
+These constants name the columns that hold codes in each file, so a search never treats the old yes/no flag as a code.
+
+```{r}
+#| label: define-hospitalization-columns
+#| eval: false
+```
+
+## UNOS keys and covariate concepts
+
+The UNOS files link to one another by identifiers whose names changed between USRDS releases: the 2024 release adds `_CODE` to each. The registration key here, `TRR_ID`, is the one the reconstruction used with this project's release. The follow-up key, `TRRFU_ID`, has not been checked against that release.
+
+**Decision pending:** the follow-up key name has to be confirmed against Appendix B for the release in use before the covariates script is run.
+
+The concept lists name which diagnoses and procedures are flagged on the index stay.
+
+```{r}
+#| label: define-unos-keys
+#| eval: false
+```

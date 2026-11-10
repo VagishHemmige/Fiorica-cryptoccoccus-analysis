@@ -1,0 +1,31 @@
+---
+pagetitle: "Architecture"
+format: html
+---
+
+<!--
+This page only shows ARCHITECTURE.md from the repository root, which is the one source:
+edit that file, not this page. Its first heading is the page title.
+
+ARCHITECTURE.md marks its diagrams in GitHub's way, which GitHub draws but
+Quarto shows as code. The chunk below reads the file as text, marks each
+diagram in Quarto's way so Quarto draws it, and puts the result on the page.
+Each diagram also gets the cell option eval: true, because Quarto treats a
+mermaid diagram as a cell and _quarto.yml turns evaluation off site-wide,
+which would otherwise leave the diagram blank.
+It reads only ARCHITECTURE.md, never data, and runs no analysis code.
+(Do not write a code fence in this comment: Quarto reads it as one.)
+-->
+
+```{r}
+#| echo: false
+#| eval: true
+#| output: asis
+if (file.exists("../ARCHITECTURE.md")) {
+  architecture <- readLines("../ARCHITECTURE.md", warn = FALSE, encoding = "UTF-8")
+  architecture <- sub("^```mermaid\\s*$", "```{mermaid}\n%%| eval: true", architecture)
+  cat(architecture, sep = "\n")
+} else {
+  cat("# Architecture\n\n`ARCHITECTURE.md` has not been written yet.\n")
+}
+```

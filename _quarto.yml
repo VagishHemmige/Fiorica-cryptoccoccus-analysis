@@ -1,0 +1,127 @@
+project:
+  type: website
+  output-dir: docs
+  # Only the site's pages. Without this list Quarto also renders the root .md
+  # files (analysis-plan.md, ARCHITECTURE.md, ...) as pages outside the
+  # sidebar; they are shown through the Project documents pages instead.
+  render:
+    - index.qmd
+    - 404.qmd
+    - quarto/**
+
+author:
+  - name: Vagish Hemmige
+    email: vagish.hemmige@gmail.com
+
+# Citations: [@key] from references.bib, in AMA style. The CSL file is kept in
+# the repository so renders don't depend on a download.
+bibliography: references.bib
+csl: american-medical-association.csl
+
+execute:
+  # The site documents the code and never runs the analysis. Chunks that must
+  # run (the read_chunk() imports, the Architecture page's reader) set
+  # eval: true themselves (AGENTS.md, "Quarto website").
+  eval: false
+
+website:
+  title: "Cryptococcosis in KTRs: a usRds replication"
+  site-url: https://vagishhemmige.github.io/Fiorica-cryptoccoccus-analysis
+  repo-url: https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis
+  repo-branch: main
+  repo-actions: [edit, issue]
+  page-navigation: true
+
+  # Each kind of page has one icon, coloured in styles.css: book = background,
+  # diagram-3 = study design and methods, laptop = R code, clipboard-data =
+  # results, file-earmark-ruled = project documents.
+  sidebar:
+    style: docked
+    # Every section starts open, including those inside Code
+    collapse-level: 3
+    search: true
+    contents:
+      - href: index.qmd
+        text: Home
+        icon: house
+
+      - href: quarto/study_methods.qmd
+        text: Study design and methods
+        icon: diagram-3
+
+      - section: Code
+        contents:
+          - href: quarto/create_cohort.qmd
+            text: Building the cohort
+            icon: laptop
+          - href: quarto/create_covariates.qmd
+            text: Covariates
+            icon: laptop
+          - section: Setup and helper functions
+            contents:
+              - href: quarto/setup.qmd
+                text: Setup
+                icon: laptop
+              - href: quarto/code_lists.qmd
+                text: Code lists
+                icon: laptop
+              - href: quarto/functions.qmd
+                text: Functions
+                icon: laptop
+
+      - section: Project documents
+        contents:
+          - href: quarto/analysis-plan.qmd
+            text: Analysis plan
+            icon: file-earmark-ruled
+          - href: quarto/usrds-coverage.qmd
+            text: usRds coverage
+            icon: file-earmark-ruled
+          - href: quarto/architecture.qmd
+            text: Architecture
+            icon: file-earmark-ruled
+          - href: quarto/agents.qmd
+            text: AGENTS.md
+            icon: file-earmark-ruled
+          - href: quarto/repository-blueprint.qmd
+            text: Repository blueprint
+            icon: file-earmark-ruled
+
+      - href: quarto/about.qmd
+        text: About
+        icon: info-circle
+
+# Callouts: pink Rcode (R code), green Results (cleared results), yellow
+# Pending (provisional content, added by quarto/_pending.lua).
+custom-callout:
+  Rcode:
+    icon: true
+    icon-symbol: "💻"
+    color: "#d63384"
+  Results:
+    icon: true
+    icon-symbol: "📊"
+    color: "#198754"
+  Pending:
+    icon: true
+    icon-symbol: "⏳"
+    color: "#f0c400"
+
+filters:
+  # Yellow marks for provisional content, and their Pending callout. It runs
+  # before custom-callout, which turns the callout it adds into a styled box.
+  - quarto/_pending.lua
+  - custom-callout
+  # Reader comments (issue-comments extension) are not set up for this site:
+  # they need the extension in _extensions/ and the relay's GitHub App given
+  # access to this repository. Add the filter and its settings together.
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+    code-fold: true
+    code-tools: true
+    page-layout: full
+    code-summary: "Click to show/hide R Code"

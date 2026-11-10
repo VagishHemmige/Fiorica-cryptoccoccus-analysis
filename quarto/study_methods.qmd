@@ -1,0 +1,58 @@
+---
+title: "Study design and methods"
+format: html
+---
+
+This page explains, in plain language and without code, what this study chose and why. The formal specification is the [analysis plan](analysis-plan.qmd); each section below ends by linking the part of the plan that governs it. Three kinds of note mark where the description stands:
+
+- **Specified in:** the section of the analysis plan that defines the method.
+- **Current code:** where the code does not yet do what the plan says, what it does now, with a link to the GitHub issue tracking the difference.
+- **Decision pending:** a choice the plan has not yet made, linked to its decision issue. A paragraph that starts with **Decision pending:** is highlighted in yellow automatically.
+
+## The question and the design in brief
+
+The study asks how many kidney transplant recipients die within 6 months of being hospitalized with cryptococcosis, and which characteristics are associated with dying. It follows recipients from their first cryptococcosis hospitalization after transplant. It compares those who died within 6 months with those who survived, so it describes associations rather than causes.
+
+This project rebuilds the published study from its paper and supplement, and the paper is the specification. Where the paper is silent, the choice is made openly in a decision issue rather than borrowed from a later reconstruction of the original code.
+
+**Specified in:** [Scope](analysis-plan.qmd#scope-and-reporting-framework), [§1 Objective](analysis-plan.qmd#1-objective), [§2 Design](analysis-plan.qmd#2-design).
+
+## Finding the cryptococcosis hospitalizations
+
+A hospitalization counts if a cryptococcosis code appears in any of its diagnosis positions, not only the principal diagnosis. The stays come from the USRDS hospitalization files. These are the inpatient part of the Medicare institutional claims, already organised by stay, and they carry the details the study needs: ICU days, procedures and discharge status. Hospital records that overlap in time are treated as one stay. A stay counts only if it began on or after the first transplant: a stay that began before it, even if it continued past the transplant, is cryptococcosis before transplant, which the paper excludes.
+
+**Specified in:** [§3 Data source](analysis-plan.qmd#3-data-source), [§5](analysis-plan.qmd#5-exposure-index-event-and-covariates).
+
+## Who is included
+
+The cohort is adults aged 18 to 90 with a kidney or kidney–pancreas transplant whose first cryptococcosis hospitalization came after their transplant. People who had a cryptococcosis claim before their first transplant are excluded. The paper's cohort is described as having Medicare as primary insurance. Because every index stay is a Medicare-paid record, no separate payer check is applied. An explicit check is described as a possible variation.
+
+**Decision pending:** which claim sources count toward the pre-transplant exclusion, and whether one claim is enough ([#4](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/4)).
+
+**Specified in:** [§4 Study population](analysis-plan.qmd#4-study-population), [§9](analysis-plan.qmd#9-sensitivity-analyses).
+
+## What is measured
+
+Characteristics come from three places:
+
+- **the index stay itself:** meningitis or not, acute kidney injury, diabetes, cirrhosis, ICU admission and procedures;
+- **USRDS and UNOS transplant records:** transplant history, BMI, pretransplant dialysis, HIV and CMV status, rejection;
+- **earlier hospitalizations:** transplant complications.
+
+For someone with more than one transplant, the registry information comes from their most recent transplant before the cryptococcosis hospitalization, because that is the graft and drug regimen they were living with. Acute rejection counts any recorded episode, treated or not, at that transplant or at a follow-up visit before the hospitalization. The registry is the source; hospital claims coded for rejection are an alternative the plan describes but does not use.
+
+Immunosuppressive drugs come from the transplant registry records (UNOS) held in USRDS, at transplant and at the first follow-up visit after transplant, as the paper's Methods describe. The paper also mentions billing codes; those may be revisited as the source ([#2](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/2)).
+
+**Decision pending:** whether physician (CPT) billing codes for procedures are used as well as the hospital's ICD procedure codes ([#5](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/5)).
+
+**Specified in:** [§5](analysis-plan.qmd#5-exposure-index-event-and-covariates).
+
+## Outcome and analysis
+
+The main outcome is death from any cause within 180 days of admission. The methods follow the paper:
+
+- survivors and non-survivors are compared;
+- survival over time is drawn as a Kaplan–Meier curve;
+- the factors associated with death are found with logistic regression, using backward elimination as the paper did.
+
+**Specified in:** [§7 Outcomes](analysis-plan.qmd#7-outcomes), [§8 Statistical analysis](analysis-plan.qmd#8-statistical-analysis).
