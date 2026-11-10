@@ -11,15 +11,15 @@
 # PRIMDIAG is a Y/N flag that Appendix C would otherwise turn into a factor).
 # usRds gap (coverage map, step 4): no extractor for these files, so each is
 # loaded whole and searched here.
-hosp_to2009 <- load_usrds_file(
+hosp_to2009 <- load_usrds_columns(
   "hosp_to2009",
   factor_labels = FALSE,
-  col_select = all_of(c("USRDS_ID", "CLM_FROM", "CLM_THRU", hosp_to2009_dx_columns))
+  columns = c("USRDS_ID", "CLM_FROM", "CLM_THRU", hosp_to2009_dx_columns)
 )
-hosp_2010on <- load_usrds_file(
+hosp_2010on <- load_usrds_columns(
   "hosp_2010on",
   factor_labels = FALSE,
-  col_select = all_of(c("USRDS_ID", "CLM_FROM", "CLM_THRU", hosp_2010on_dx_columns))
+  columns = c("USRDS_ID", "CLM_FROM", "CLM_THRU", hosp_2010on_dx_columns)
 )
 
 ## ---- cohort-flag-records
@@ -51,17 +51,17 @@ rm(hosp_records)
 ## ---- cohort-load-transplants-patients
 # First transplant date from the transplant file; date of birth from the
 # patients file. Only the people with a cryptococcosis stay are kept.
-first_transplants <- load_usrds_file(
+first_transplants <- load_usrds_columns(
   "tx",
   usrds_ids = cryptococcosis_stays$USRDS_ID,
-  col_select = c("USRDS_ID", "TDATE")
+  columns = c("USRDS_ID", "TDATE")
 ) %>%
   first_transplant_dates()
 
-patients <- load_usrds_file(
+patients <- load_usrds_columns(
   "patients",
   usrds_ids = cryptococcosis_stays$USRDS_ID,
-  col_select = c("USRDS_ID", "BORN")
+  columns = c("USRDS_ID", "BORN")
 )
 
 ## ---- cohort-candidates

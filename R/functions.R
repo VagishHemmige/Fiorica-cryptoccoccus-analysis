@@ -364,8 +364,45 @@ any_known <- function(x) {
   )
 }
 
+## ---- load-usrds-columns
+# Temporary workaround for usRds#22 (https://github.com/VagishHemmige/usRds/issues/22):
+# usRds::load_usrds_file() stops whenever `col_select` is used on a Parquet
+# file. For Parquet files this reads the columns with arrow, from the path
+# usRds registered for the file, then repeats the package's own steps:
+# upper-case names, keep `usrds_ids`, apply Appendix C factor labels. Other
+# formats go straight to load_usrds_file(). Once usRds#22 is fixed, replace
+# each call with load_usrds_file(col_select = all_of(columns)) and delete this.
+load_usrds_columns <- function(file_key, columns, factor_labels = TRUE, usrds_ids = NULL) {
+  # The registry is internal to usRds (hence :::), acceptable only while
+  # this workaround lasts
+  file <- usRds:::.usrds_env$file_list %>%
+    filter(toupper(file_root) == toupper(file_key)) %>%
+    slice_head(n = 1)
+
+  if (nrow(file) == 0 || tolower(file$file_suffix) != "parquet") {
+    return(usRds::load_usrds_file(
+      file_key,
+      factor_labels = factor_labels,
+      usrds_ids = usrds_ids,
+      col_select = all_of(columns)
+    ))
+  }
+
+  data <- arrow::read_parquet(file$file_path, col_select = all_of(columns)) %>%
+    as_tibble() %>%
+    rename_with(toupper)
+  if (!is.null(usrds_ids)) {
+    data <- data %>% filter(USRDS_ID %in% usrds_ids)
+  }
+  if (factor_labels) {
+    data <- usRds::apply_usrds_factors(data, file_key = file$file_root)
+  }
+  data
+}
+
 ## ---- load-flagged-hospitalizations
-# Load one hospitalization file for a set of people (usRds::load_usrds_file())
+# Load one hospitalization file for a set of people (load_usrds_columns(),
+# standing in for usRds::load_usrds_file() until usRds#22 is fixed)
 # and flag diagnosis and procedure concepts on each record, keeping the key
 # fields, ICU/CCU days and the flags. Codes stay character
 # (factor_labels = FALSE). usRds gap (coverage map, steps 4-9).
@@ -373,11 +410,11 @@ load_flagged_hospitalizations <- function(file_root, ids, dx_columns, proc_colum
                                           dx_concepts, proc_concepts, code_lists) {
   key_columns <- c("USRDS_ID", "CLM_FROM", "CLM_THRU", "ICU_DAYS", "CCU_DAYS")
 
-  load_usrds_file(
+  load_usrds_columns(
     file_root,
     factor_labels = FALSE,
     usrds_ids = ids,
-    col_select = all_of(c(key_columns, dx_columns, proc_columns))
+    columns = c(key_columns, dx_columns, proc_columns)
   ) %>%
     flag_concepts(dx_columns, code_lists, dx_concepts) %>%
     flag_concepts(proc_columns, code_lists, proc_concepts) %>%

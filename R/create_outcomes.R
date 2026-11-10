@@ -9,11 +9,11 @@
 # Date of death from the patients file. The usRds cohort functions are not
 # used: every covariate is fixed and death is the only event, so one row per
 # person is enough (coverage map, step 18).
-deaths <- load_usrds_file(
+deaths <- load_usrds_columns(
   "patients",
   usrds_ids = analysis_data$USRDS_ID,
   factor_labels = FALSE,
-  col_select = c("USRDS_ID", "DIED")
+  columns = c("USRDS_ID", "DIED")
 )
 
 ## ---- outcomes-mortality

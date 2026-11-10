@@ -258,6 +258,15 @@ These turn the USRDS codes for sex, race and Hispanic ethnicity into labels. His
 #| eval: false
 ```
 
+## Loading selected columns (temporary)
+
+`usRds::load_usrds_file()` stops with an error whenever it is asked for selected columns from a Parquet file ([usRds#22](https://github.com/VagishHemmige/usRds/issues/22)). Until the package is fixed, the scripts load through `load_usrds_columns()`. For a Parquet file it reads just the requested columns, from the file usRds has registered, and then does what the package would: upper-case the names, keep only the requested people, and label coded values from Appendix C. Files in other formats go straight to `load_usrds_file()`. When the fix lands, the calls go back to the package and this function is deleted.
+
+```{r}
+#| label: load-usrds-columns
+#| eval: false
+```
+
 ## Small-count rules for tables
 
 USRDS does not allow any count from 1 to 10 to be published, including one that can be worked out by subtraction. `count_table_cells()` lists every count behind a descriptive table, including the ones not printed (such as the number *without* a condition). `flag_small_cells()` marks the small ones and then, wherever a single hidden count could be recovered from a total, hides the next smallest count as well, repeating until nothing more changes. `suppress_table_body()` then puts "≤10" in those cells and removes the P value for that variable.
