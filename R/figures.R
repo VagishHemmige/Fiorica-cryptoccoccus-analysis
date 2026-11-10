@@ -84,13 +84,13 @@ save_figure(figure_2, file.path("figures", "figure_2"), width = 170, height = 12
 # Adjusted odds ratios from the final model, with 95% Wald CIs, on a log
 # scale (halving and doubling the odds are equal distances), with ticks at
 # 0.25, 0.5, 1, 2, 4 and 8 so the scale is plain; the estimate and interval
-# are printed beside each row.
+# are printed beside each row, written "a to b" as in the tables (AMA style).
 odds_ratios <- tidy_odds_ratios(multivariable$model, report_labels) %>%
   mutate(
     term_label = fct_rev(fct_inorder(term_label)),
     or_text = str_glue(
       "{scales::number(estimate, accuracy = 0.01)} ",
-      "({scales::number(conf.low, accuracy = 0.01)}\u2013{scales::number(conf.high, accuracy = 0.01)})"
+      "({scales::number(conf.low, accuracy = 0.01)} to {scales::number(conf.high, accuracy = 0.01)})"
     )
   )
 or_text_x <- max(odds_ratios$conf.high) * 1.6

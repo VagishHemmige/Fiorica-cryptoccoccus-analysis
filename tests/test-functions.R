@@ -562,3 +562,34 @@ test_that("suppress_table_body masks the right rows and drops the variable's P v
   expect_equal(result$stat_1[4], "500")
   expect_true(all(is.na(result$p.value)))
 })
+
+test_that("style_pvalue_ama drops the leading zero and keeps the bounds", {
+  expect_equal(
+    style_pvalue_ama(c(0.0004, 0.0123, 0.04, 0.5, 0.999, NA)),
+    c("<.001", ".012", ".040", ".50", ">.99", NA)
+  )
+})
+
+test_that("prior_cryptococcosis_ids excludes a claim before transplant or before the study start", {
+  first_transplants <- tibble(
+    USRDS_ID = c(1, 2, 3, 4, 5),
+    first_transplant_date = as.Date(c("2008-06-01", "2008-06-01", "2008-06-01", "2003-01-01", NA))
+  )
+  claims <- tibble(
+    USRDS_ID = c(1, 2, 3, 4, 5, 5),
+    claim_date = as.Date(c(
+      "2008-05-31", # the day before transplant: excluded
+      "2008-06-01", # on the transplant date: kept
+      "2009-01-01", # after transplant: kept
+      "2005-12-31", # after transplant but before the study start: excluded
+      "2010-01-01", # not in the transplant file, after the start: kept here
+      "2010-02-01"
+    ))
+  )
+  expect_equal(
+    sort(prior_cryptococcosis_ids(claims, first_transplants, as.Date("2006-01-01"))),
+    c(1, 4)
+  )
+  # One claim is enough, and nobody without a claim is excluded
+  expect_equal(prior_cryptococcosis_ids(claims[0, ], first_transplants, as.Date("2006-01-01")), numeric())
+})

@@ -90,6 +90,7 @@ These settings control the outcomes and models:
 - **The age cut-off of 60** that the paper's model uses.
 - **The P value for backward elimination.**
 - **The list of candidate variables:** every characteristic in Tables 1 and 2, in the form the paper reports them.
+- **The paper's final model:** its eight variables, with the adjusted odds ratios and confidence intervals it reports, for the comparison in Table 4.
 
 **Decision pending:** `death_data_end_date` has to be set for the release in use; the outcomes script stops until it is.
 

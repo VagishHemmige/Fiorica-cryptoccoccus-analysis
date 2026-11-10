@@ -15,6 +15,14 @@ library(labelled)   # variable labels
 study_start_date <- as.Date("2006-01-01")
 study_end_date <- as.Date("2016-12-31")
 
+# Calendar years of physician/supplier claims searched for cryptococcosis
+# before the first transplant (plan §4, step 4). usRds maps these files from
+# 2006 only, so earlier claims cannot be searched (coverage map, step 10).
+physician_claim_years <- seq(
+  lubridate::year(study_start_date),
+  lubridate::year(study_end_date)
+)
+
 # Age at index admission, in years, inclusive (plan §4, step 6)
 age_min <- 18
 age_max <- 90
@@ -86,7 +94,7 @@ model_candidates <- c(
   "icu_admission", "lumbar_puncture", "spinal_procedure",
   "neurosurgical_procedure", "lung_procedure", "vp_shunt",
   "prior_transplant_complication", "more_than_one_transplant",
-  "prior_graft_failure", "over_cutoff_since_transplant", "organ", "bmi",
+  "prior_graft_failure", "over_cutoff_since_transplant", "bmi",
   "pretransplant_dialysis", "hiv_status", "cmv_status", "acute_rejection",
   "tx_antithymocyte_globulin", "tx_alemtuzumab", "tx_il2_receptor_antibody",
   "no_tacrolimus_at_transplant", "tx_cyclosporine", "tx_mycophenolate",
@@ -94,3 +102,20 @@ model_candidates <- c(
   "no_tacrolimus_at_followup", "fu_cyclosporine", "fu_mycophenolate",
   "fu_mtor_inhibitor", "fu_azathioprine", "fu_steroids"
 )
+
+# The paper's final model: its eight terms with the adjusted odds ratios and
+# 95% CIs it reports, in the paper's order (Fiorica et al. 2025, Results;
+# plan §8). Fitted as given, beside the backward elimination, to compare
+# estimates separately from which variables the selection keeps.
+published_model <- tibble::tribble(
+  ~term,                            ~published_or, ~published_low, ~published_high,
+  "cirrhosis",                       3.1,           1.2,            7.7,
+  "icu_admission",                   2.9,           2.0,            4.0,
+  "pretransplant_dialysis",          2.7,           1.5,            4.9,
+  "no_tacrolimus_at_followup",       2.2,           1.4,            3.3,
+  "age_60_or_older",                 2.0,           1.4,            2.8,
+  "acute_kidney_injury",             1.7,           1.2,            2.4,
+  "over_cutoff_since_transplant",    1.7,           1.1,            2.4,
+  "prior_transplant_complication",   1.5,           1.1,            2.2
+)
+stopifnot(all(published_model$term %in% model_candidates))

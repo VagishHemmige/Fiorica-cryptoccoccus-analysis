@@ -101,9 +101,13 @@ The legacy Rmd counts `HSSURG1`–`HSSURG25` matches against the supplement's li
 
 ### 10. Exclude cryptococcosis before first transplant ([#4](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/4))
 
-`get_PS_ICD(cryptococcus_codes, years)` and `get_IN_ICD(...)` give every claim date, to compare with the first transplant date from step 3. Covered.
+Decided under [#4](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/4): any one cryptococcosis claim, hospital or physician/supplier, before the first transplant or before 2006 excludes the person. **Physician/supplier claims: covered** by `get_PS_ICD(icd_codes, years, usrds_ids)`, which returns each claim's dates. **Hospital records:** the hospitalization files already loaded for step 4 (project code, as there).
 
-The legacy Rmd's filter appears to keep the opposite group from the one the paper describes; the paper's rule governs ([#4](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/4)). **Limit:** claims are searched only for the years mapped; pre-2006 claims are not in the paper's window.
+- **Exact codes only.** The cryptococcosis list is all exact codes, so `get_PS_ICD()` finds them; the script stops if a prefix code is ever added, since it would be missed silently (step 6 and usRds#9 for prefix matching).
+- **No check on `icd_codes`.** Passing the code list as a data frame instead of a character vector returns no claims and no warning; found while writing this step. A type check in the package would catch it.
+- **Years.** The package's file list (`PS_ICD`) maps physician/supplier files from 2006 to 2021, so earlier claims cannot be searched. For 2013 onward it includes the DME diagnosis files (`dme_dx_*`) alongside `ps_dx_*`.
+- **To verify:** the 2024 Appendix B layout of `PS_DX_*` lists no `HCFASAF` column, but `get_PS_ICD()` selects it from every file. If the release in use matches that layout, the 2013-onward files would fail to load. The synthetic files include the column, so this is untested.
+- The legacy Rmd's filter appears to keep the opposite group from the one the paper describes; the paper's rule governs.
 
 ### 11. Prior hospitalization for transplant complications
 
@@ -185,7 +189,7 @@ These are not tied to one step, but affect several.
 
 - **Which copy `load_usrds_file()` reads.** It takes the first registry match (`slice(1)`). The registry is built CSV first, then SAS, then Parquet. So when a file exists in more than one format, it appears to read the CSV, contradicting the vignette's statement that Parquet is preferred. **To verify** on synthetic files.
 - **`apply_usrds_varlabels()`** stops unless `metadata_b` exists in the global environment. The data are internal to the package, so with `var_labels = TRUE` it may always fail. `apply_usrds_factors()` has the same check commented out. **To verify.**
-- **`load_usrds_file()` with `col_select` on Parquet always fails.** It reads the column names with `arrow::open_dataset(full_path)$head(1)`. A Dataset is an R6 object, and `$head` looks for a method of that name on it; there is none, so `$head` returns `NULL` and calling it gives "attempt to apply non-function". `head()` for a Dataset exists only as an S3 method (`head(dataset, 1)`). No arrow release has had a `$head()` method on Dataset (checked all 63 CRAN releases in the cran/arrow mirror, 0.14.1 to 26.0.1), so this branch has never run; it is not a change in arrow. `head(arrow::open_dataset(full_path), 1)` works, and `names(arrow::open_dataset(full_path)$schema)` gets the names without reading rows. Found in the synthetic end-to-end run (2026-11-10); the run used a workspace-only copy of usRds with that one line changed, and the package itself was not modified.
+- **`load_usrds_file()` with `col_select` on Parquet always fails.** It reads the column names with `arrow::open_dataset(full_path)$head(1)`. A Dataset is an R6 object, and `$head` looks for a method of that name on it; there is none, so `$head` returns `NULL` and calling it gives "attempt to apply non-function". `head()` for a Dataset exists only as an S3 method (`head(dataset, 1)`). No arrow release has had a `$head()` method on Dataset (checked all 63 CRAN releases in the cran/arrow mirror, 0.14.1 to 26.0.1), so this branch has never run; it is not a change in arrow. `head(arrow::open_dataset(full_path), 1)` works, and `names(arrow::open_dataset(full_path)$schema)` gets the names without reading rows. Found in the synthetic end-to-end run (2026-11-10) and reported as [usRds#22](https://github.com/VagishHemmige/usRds/issues/22). **Until it is fixed,** the scripts load each file whole with `load_usrds_file()` and choose columns with `select()` afterwards, which uses only the package's public functions but holds every column in memory while loading. When the fix lands, the calls go back to `col_select`.
 - **`load_usrds_file()` forces `col_select` early.** `is.null(col_select)` evaluates the argument outside a selecting function, so `col_select = all_of(x)` gives tidyselect's deprecation warning. Capturing it with `rlang::enquo()` and testing `rlang::quo_is_null()` would avoid that.
 - **Documentation.** Facts this project relies on are not yet in the package documentation: claim-year assignment, ICD transition handling, and hospitalization file structure by release. Where these shape this analysis they are noted in `AGENTS.md` ("USRDS data facts"); they belong in usRds.
 
@@ -203,7 +207,7 @@ Possible follow-ups for usRds, listed so the assessment is actionable. Acting on
 8. `RX_CD` immunosuppression crosswalk as package data (step 15).
 9. State code to Census region and division crosswalk (step 17).
 10. Cohort functions for a terminal event (step 18): `add_cohort_event()` keeps follow-up after death (`cumevent()`), drops events on the start date, and fails when follow-up ends at a same-day death; the date helper's comment says bare column names work, but they fail.
-11. Defects: `get_PS_specialty()` (debug prints, SAS branch); SAS branch of `get_IN_ICD()` dropping `HCFASAF`; `load_usrds_file()` format priority; `apply_usrds_varlabels()` global-environment check; `load_usrds_file()` column lookup on Parquet (`$head(1)`, never valid) and early evaluation of `col_select`.
+11. Defects: `get_PS_specialty()` (debug prints, SAS branch); SAS branch of `get_IN_ICD()` dropping `HCFASAF`; `load_usrds_file()` format priority; `apply_usrds_varlabels()` global-environment check; `load_usrds_file()` column lookup on Parquet (`$head(1)`, never valid) and early evaluation of `col_select` ([usRds#22](https://github.com/VagishHemmige/usRds/issues/22)).
 
 ## Provenance
 

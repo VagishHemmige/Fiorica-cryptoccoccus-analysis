@@ -6,15 +6,18 @@
 #   plus model-ready variables).
 
 ## ---- outcomes-deaths
+# Columns are chosen with select() after loading, not with col_select,
+# because load_usrds_file() fails on Parquet files when col_select is used
+# (usRds#22). Return to col_select once that is fixed.
 # Date of death from the patients file. The usRds cohort functions are not
 # used: every covariate is fixed and death is the only event, so one row per
 # person is enough (coverage map, step 18).
 deaths <- load_usrds_file(
   "patients",
   usrds_ids = analysis_data$USRDS_ID,
-  factor_labels = FALSE,
-  col_select = c("USRDS_ID", "DIED")
-)
+  factor_labels = FALSE
+) %>%
+  select(all_of(c("USRDS_ID", "DIED")))
 
 ## ---- outcomes-mortality
 mortality <- six_month_outcomes(

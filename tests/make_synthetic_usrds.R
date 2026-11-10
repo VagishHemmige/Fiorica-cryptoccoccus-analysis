@@ -9,14 +9,19 @@
 # some cryptococcosis stays fall before the first transplant, some people
 # with cryptococcosis are not in the transplant file, a few are outside the
 # age range, and 6-month mortality depends on ICU admission, cirrhosis, acute
-# kidney injury and age 60 or older.
+# kidney injury and age 60 or older. Some people also have a cryptococcosis
+# physician claim before their first transplant, or a cryptococcosis stay
+# before 2006, which exclude them.
 
 make_synthetic_usrds <- function(path = file.path(tempdir(), "synthetic_usrds"),
                                  n_people = 4000, seed = 20261110) {
   set.seed(seed)
   d <- function(x) as.Date(x)
   draw <- function(x, n, prob = NULL) sample(x, n, replace = TRUE, prob = prob)
-  folders <- c(core = "ESRD Core", transplant = "ESRD transplant", hospital = "ESRD hospital")
+  folders <- c(
+    core = "ESRD Core", transplant = "ESRD transplant", hospital = "ESRD hospital",
+    physician = "Physician supplier"
+  )
   for (folder in folders) dir.create(file.path(path, folder), recursive = TRUE, showWarnings = FALSE)
   write <- function(df, folder, file) arrow::write_parquet(df, file.path(path, folders[[folder]], paste0(file, ".parquet")))
 
@@ -89,7 +94,10 @@ make_synthetic_usrds <- function(path = file.path(tempdir(), "synthetic_usrds"),
       mutate(CLM_FROM = CLM_FROM + 1, CLM_THRU = CLM_FROM + 1),
     people %>% filter(runif(n()) < 0.3) %>% transmute(USRDS_ID, CLM_FROM = admit - draw(60:500, n()), CLM_THRU = CLM_FROM + 4,
       d1 = if_else(CLM_THRU < d("2015-10-01"), "99681", "T8612"), d2 = NA_character_, d3 = NA_character_,
-      proc = NA_character_, ICU_DAYS = 0L, CCU_DAYS = 0L)
+      proc = NA_character_, ICU_DAYS = 0L, CCU_DAYS = 0L),
+    # A cryptococcosis stay before 2006 for 2% (excluded: before the study start)
+    people %>% filter(runif(n()) < 0.02) %>% transmute(USRDS_ID, CLM_FROM = d("2003-01-01") + draw(0:1000, n()), CLM_THRU = CLM_FROM + 5,
+      d1 = "1175", d2 = NA_character_, d3 = NA_character_, proc = NA_character_, ICU_DAYS = 0L, CCU_DAYS = 0L)
   )
 
   widen <- function(df, dx_cols, sg_cols, old) {
@@ -106,6 +114,25 @@ make_synthetic_usrds <- function(path = file.path(tempdir(), "synthetic_usrds"),
   }
   write(widen(filter(records, CLM_FROM < d("2010-01-01")), dx_old, sg_old, TRUE), "hospital", "hosp_to2009")
   write(widen(filter(records, CLM_FROM >= d("2010-01-01")), dx_new, sg_new, FALSE), "hospital", "hosp_2010on")
+
+  ## Physician/supplier claims (one file per year, named as usRds maps them):
+  ## a cryptococcosis claim before the first transplant for 4% (excluded),
+  ## one after it for 20% (kept), and unrelated claims
+  crypto_dx <- function(date) if_else(date < d("2015-10-01"), "1175", "B459")
+  ps_claims <- bind_rows(
+    people %>% filter(runif(n()) < 0.04) %>% transmute(USRDS_ID, CLM_FROM = first_tx - draw(30:900, n())),
+    people %>% filter(runif(n()) < 0.20) %>% transmute(USRDS_ID, CLM_FROM = first_tx + draw(1:2500, n()))
+  ) %>%
+    mutate(DIAG = crypto_dx(CLM_FROM)) %>%
+    bind_rows(tibble(USRDS_ID = draw(ids, 3000), CLM_FROM = d("2006-01-01") + draw(0:4017, 3000), DIAG = "4019")) %>%
+    filter(between(CLM_FROM, d("2006-01-01"), d("2016-12-31"))) %>%
+    mutate(CLM_THRU = CLM_FROM, HCFASAF = "P", year = as.integer(format(CLM_FROM, "%Y")))
+  ps_file <- c(set_names(str_c("ps", 2006:2011, "a"), 2006:2011), "2012" = "ps2012",
+               set_names(str_c("ps_dx_", 2013:2016), 2013:2016))
+  for (yr in 2006:2016) {
+    write(ps_claims %>% filter(year == yr) %>% select(USRDS_ID, DIAG, CLM_FROM, CLM_THRU, HCFASAF),
+          "physician", ps_file[[as.character(yr)]])
+  }
 
   ## Patients: deaths depend on ICU, cirrhosis, AKI and age 60 or older
   age_at_admit <- as.numeric(people$admit - people$born) / 365.25

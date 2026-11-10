@@ -6,6 +6,9 @@
 #   final data: one row per person in the study cohort).
 
 ## ---- cohort-load-hospitalizations
+# Columns are chosen with select() after loading, not with col_select,
+# because load_usrds_file() fails on Parquet files when col_select is used
+# (usRds#22). Return to col_select once that is fixed.
 # Both hospitalization files, with the key fields and diagnosis columns only.
 # factor_labels = FALSE keeps diagnosis codes as character (in hosp_to2009,
 # PRIMDIAG is a Y/N flag that Appendix C would otherwise turn into a factor).
@@ -13,14 +16,14 @@
 # loaded whole and searched here.
 hosp_to2009 <- load_usrds_file(
   "hosp_to2009",
-  factor_labels = FALSE,
-  col_select = all_of(c("USRDS_ID", "CLM_FROM", "CLM_THRU", hosp_to2009_dx_columns))
-)
+  factor_labels = FALSE
+) %>%
+  select(all_of(c("USRDS_ID", "CLM_FROM", "CLM_THRU", hosp_to2009_dx_columns)))
 hosp_2010on <- load_usrds_file(
   "hosp_2010on",
-  factor_labels = FALSE,
-  col_select = all_of(c("USRDS_ID", "CLM_FROM", "CLM_THRU", hosp_2010on_dx_columns))
-)
+  factor_labels = FALSE
+) %>%
+  select(all_of(c("USRDS_ID", "CLM_FROM", "CLM_THRU", hosp_2010on_dx_columns)))
 
 ## ---- cohort-flag-records
 # Flag cryptococcosis on every hospitalization record, using each file's own
@@ -46,6 +49,12 @@ cryptococcosis_stays <- hosp_records %>%
   semi_join(people_with_cryptococcosis, by = "USRDS_ID") %>%
   summarise_cryptococcosis_stays(study_start_date, study_end_date)
 
+# Every cryptococcosis hospital record, of any year, for the prior-claim
+# exclusion below
+hospital_cryptococcosis_claims <- hosp_records %>%
+  filter(cryptococcosis_record) %>%
+  select(USRDS_ID, claim_date = CLM_FROM)
+
 rm(hosp_records)
 
 ## ---- cohort-load-transplants-patients
@@ -53,29 +62,47 @@ rm(hosp_records)
 # patients file. Only the people with a cryptococcosis stay are kept.
 first_transplants <- load_usrds_file(
   "tx",
-  usrds_ids = cryptococcosis_stays$USRDS_ID,
-  col_select = c("USRDS_ID", "TDATE")
+  usrds_ids = cryptococcosis_stays$USRDS_ID
 ) %>%
+  select(all_of(c("USRDS_ID", "TDATE"))) %>%
   first_transplant_dates()
 
 patients <- load_usrds_file(
   "patients",
-  usrds_ids = cryptococcosis_stays$USRDS_ID,
-  col_select = c("USRDS_ID", "BORN")
-)
+  usrds_ids = cryptococcosis_stays$USRDS_ID
+) %>%
+  select(all_of(c("USRDS_ID", "BORN")))
+
+## ---- cohort-physician-claims
+# Physician/supplier claims with a cryptococcosis code, for the people with a
+# cryptococcosis stay (plan §4, step 4). usRds::get_PS_ICD() matches exact
+# codes, which the cryptococcosis list is. Covered by usRds (coverage map,
+# step 10). A prefix code would be silently missed, so the run stops if the
+# list ever gains one.
+stopifnot(all(cryptococcosis_codes$match == "exact"))
+
+physician_cryptococcosis_claims <- get_PS_ICD(
+  icd_codes = cryptococcosis_codes$code,
+  years = physician_claim_years,
+  usrds_ids = cryptococcosis_stays$USRDS_ID
+) %>%
+  select(USRDS_ID, claim_date = CLM_FROM)
 
 ## ---- cohort-candidates
+# One cryptococcosis claim of either kind before the first transplant, or
+# before 2006, excludes the person (decided under issue #4).
+prior_cryptococcosis <- prior_cryptococcosis_ids(
+  bind_rows(hospital_cryptococcosis_claims, physician_cryptococcosis_claims),
+  first_transplants,
+  study_start_date
+)
+
 cohort_candidates <- build_cohort_candidates(
   cryptococcosis_stays,
   first_transplants,
   patients
 ) %>%
-  mutate(
-    # Decision pending (issue #4): which claim sources and how many claims
-    # identify cryptococcosis before the first transplant. Until it is
-    # settled, nobody is excluded at this step.
-    no_prior_cryptococcosis = TRUE
-  )
+  mutate(no_prior_cryptococcosis = !USRDS_ID %in% prior_cryptococcosis)
 
 ## ---- cohort-flowchart
 # Every exclusion goes through fc_filter(), so Figure 1 reproduces the cohort
@@ -99,7 +126,10 @@ cohort_flowchart <- cohort_candidates %>%
   ) %>%
   fc_filter(
     no_prior_cryptococcosis,
-    label = "No cryptococcosis claim before first transplant",
+    label = str_glue(
+      "No cryptococcosis claim (hospital or physician) before first transplant ",
+      "or before {format(study_start_date, '%Y')}"
+    ),
     show_exc = TRUE
   ) %>%
   fc_filter(
@@ -119,5 +149,5 @@ cohort <- cohort %>%
     index_admit_date = "Admission date of the index stay (time zero)",
     index_discharge_date = "Discharge date of the index stay",
     age_at_index = "Age at index admission (completed years)",
-    no_prior_cryptococcosis = "No cryptococcosis claim before first transplant (pending #4)"
+    no_prior_cryptococcosis = "No cryptococcosis claim (hospital or physician/supplier) before first transplant or before the study start"
   )

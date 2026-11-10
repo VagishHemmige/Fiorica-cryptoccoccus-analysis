@@ -1,7 +1,7 @@
 # Purpose: survival curve and logistic models for 6-month mortality (plan §8).
 # Needs: setup.R, functions.R, create_outcomes.R (analysis_data, model_data).
 # Produces: km_fit, bivariable_results, multivariable (list: model, data,
-#   steps, retained), hosmer_lemeshow_result.
+#   steps, retained), hosmer_lemeshow_result, published_fit.
 
 ## ---- models-kaplan-meier
 # Kaplan-Meier estimate of survival from the index admission (Figure 2).
@@ -26,6 +26,17 @@ multivariable <- backward_eliminate(
   outcome = "died_within_window",
   candidates = model_candidates,
   threshold = elimination_threshold
+)
+
+## ---- models-published
+# The paper's final model, fitted as published: its eight terms on the same
+# people as the backward elimination (complete cases for every candidate),
+# because the paper's estimates come from the end of that selection
+# (plan §8). Compared with the published odds ratios in Table 4.
+published_fit <- glm(
+  reformulate(published_model$term, response = "died_within_window"),
+  family = binomial(),
+  data = multivariable$data
 )
 
 ## ---- models-goodness-of-fit

@@ -177,6 +177,24 @@ build_cohort_candidates <- function(crypto_stays, first_transplants, patients) {
     select(-BORN)
 }
 
+## ---- prior-cryptococcosis
+# People with any cryptococcosis claim before their first transplant or
+# before the study start (plan §4, step 4; decided under issue #4: hospital
+# and physician/supplier claims both count, and one claim is enough).
+# `claims` has one row per claim: USRDS_ID and claim_date (the first day of
+# service). A claim on the transplant date itself is not before it, matching
+# the rule for hospital stays. Returns the USRDS_IDs to exclude.
+prior_cryptococcosis_ids <- function(claims, first_transplants, start_date) {
+  claims %>%
+    left_join(first_transplants, by = "USRDS_ID", relationship = "many-to-one") %>%
+    filter(
+      claim_date < start_date |
+        (!is.na(first_transplant_date) & claim_date < first_transplant_date)
+    ) %>%
+    distinct(USRDS_ID) %>%
+    pull(USRDS_ID)
+}
+
 ## ---- flag-concepts
 # Add one logical column per concept to hospitalization records: TRUE when any
 # of `columns` holds a code from that concept's list. Columns are named
@@ -368,7 +386,8 @@ any_known <- function(x) {
 # Load one hospitalization file for a set of people (usRds::load_usrds_file())
 # and flag diagnosis and procedure concepts on each record, keeping the key
 # fields, ICU/CCU days and the flags. Codes stay character
-# (factor_labels = FALSE). usRds gap (coverage map, steps 4-9).
+# (factor_labels = FALSE). Columns are selected after loading because of
+# usRds#22. usRds gap (coverage map, steps 4-9).
 load_flagged_hospitalizations <- function(file_root, ids, dx_columns, proc_columns,
                                           dx_concepts, proc_concepts, code_lists) {
   key_columns <- c("USRDS_ID", "CLM_FROM", "CLM_THRU", "ICU_DAYS", "CCU_DAYS")
@@ -376,9 +395,9 @@ load_flagged_hospitalizations <- function(file_root, ids, dx_columns, proc_colum
   load_usrds_file(
     file_root,
     factor_labels = FALSE,
-    usrds_ids = ids,
-    col_select = all_of(c(key_columns, dx_columns, proc_columns))
+    usrds_ids = ids
   ) %>%
+    select(all_of(c(key_columns, dx_columns, proc_columns))) %>%
     flag_concepts(dx_columns, code_lists, dx_concepts) %>%
     flag_concepts(proc_columns, code_lists, proc_concepts) %>%
     select(all_of(c(key_columns, dx_concepts, proc_concepts)))
@@ -681,6 +700,15 @@ tidy_odds_ratios <- function(model, labels) {
       )
     ) %>%
     select(term, term_label, estimate, conf.low, conf.high, p.value)
+}
+
+## ---- style-pvalue-ama
+# P values in AMA style (the house style of OFID, CID and JID): 2 decimals as
+# gtsummary's JAMA theme rounds them, without the leading zero (".040",
+# "<.001", ">.99").
+style_pvalue_ama <- function(x) {
+  gtsummary::style_pvalue(x, digits = 2) %>%
+    str_replace("^([<>]?)0\\.", "\\1.")
 }
 
 ## ---- suppress-table-body
