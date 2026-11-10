@@ -119,6 +119,13 @@ A stay admitted on the day of the first transplant counts; a stay admitted the d
 #| eval: false
 ```
 
+`prior_cryptococcosis_ids()` takes every cryptococcosis claim (hospital records and physician claims together, one row per claim with its first day of service) and returns the people with any claim before their first transplant or before the study start. A claim on the transplant date itself does not count as before it, the same rule as for hospital stays.
+
+```{r}
+#| label: prior-cryptococcosis
+#| eval: false
+```
+
 ## Flagging concepts on records
 
 `flag_concepts()` adds one yes/no column per concept to hospitalization records. A record gets "yes" when any of the named columns holds a code from that concept's list.

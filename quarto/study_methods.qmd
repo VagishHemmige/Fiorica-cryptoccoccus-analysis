@@ -34,12 +34,13 @@ A hospitalization counts if a cryptococcosis code appears in any of its diagnosi
 
 The cohort is adults aged 18 to 90 with a kidney or kidney–pancreas transplant whose first cryptococcosis hospitalization came after their transplant. People who had a cryptococcosis claim before their first transplant are excluded. The paper's cohort is described as having Medicare as primary insurance. Because every index stay is a Medicare-paid record, no separate payer check is applied. An explicit check is described as a possible variation.
 
-**Decision pending:** which claim sources count toward the pre-transplant exclusion, and whether one claim is enough ([#4](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/4)).
+A cryptococcosis claim before the first transplant, or before 2006, excludes the person: a hospital record or a physician's bill, and one is enough. Earlier claims can only be seen while someone had Medicare, which recipients on dialysis usually did and those transplanted before dialysis often did not.
 
 **Alternatives considered:**
 
 - *Checking Medicare as primary payer.* The paper's cohort had Medicare as primary insurance but the paper gives no time window. One could require it on the admission date, for the year before, or from transplant onward; a longer window makes claims-based measures more complete and shrinks the cohort. Here no explicit check is made, and the check is kept as a variation ([#3](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/3)).
 - *A stay that begins before the first transplant and ends after it.* The reconstruction kept such stays, with time since transplant set to zero. The paper excludes cryptococcosis before transplant, so here they are excluded ([#4](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/4)).
+- *How many earlier claims to require, and of what kind.* Counting only hospital stays would miss cryptococcosis treated outside hospital. Requiring two or more claims would spare people with a single rule-out code, the way many studies define a case. For excluding an earlier condition, though, one claim is the usual rule, and a clinician billing for cryptococcosis before transplant is itself a reason to doubt that the later episode is new ([#4](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/4); @chubak2012).
 - *Alaska and Hawaii.* They could be counted in the West census region; here they are grouped with the territories as "Outside", as in the reconstruction, because they are hard to compare with the mainland for a study like this. No one is excluded for where they live ([#12](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/12)).
 
 **Specified in:** [§4 Study population](analysis-plan.qmd#4-study-population), [§9](analysis-plan.qmd#9-sensitivity-analyses).
