@@ -34,7 +34,7 @@ A hospitalization counts if a cryptococcosis code appears in any of its diagnosi
 
 The cohort is adults aged 18 to 90 with a kidney or kidney–pancreas transplant whose first cryptococcosis hospitalization came after their transplant. People who had a cryptococcosis claim before their first transplant are excluded. The paper's cohort is described as having Medicare as primary insurance. Because every index stay is a Medicare-paid record, no separate payer check is applied. An explicit check is described as a possible variation.
 
-A cryptococcosis claim before the first transplant, or before 2006, excludes the person: a hospital record or a physician's bill, and one is enough. Earlier claims can only be seen while someone had Medicare, which recipients on dialysis usually did and those transplanted before dialysis often did not.
+A cryptococcosis claim before the first transplant excludes the person: a hospital record or a physician's bill, and one is enough. Earlier claims can only be seen while someone had Medicare, which recipients on dialysis usually did and those transplanted before dialysis often did not.
 
 **Alternatives considered:**
 

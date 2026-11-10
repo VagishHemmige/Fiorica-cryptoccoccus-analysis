@@ -65,7 +65,7 @@ Each person's first transplant date comes from the USRDS transplant file, and th
 
 ## Physician claims
 
-The paper excludes anyone with a cryptococcosis claim, "physician or hospitalization", before their first transplant. Hospital records are already loaded; physician and supplier claims come from `usRds::get_PS_ICD()`, for the people with a cryptococcosis stay, searched for the same cryptococcosis codes. That function matches codes exactly, so the run stops if the code list ever gains a prefix code that it would miss. usRds reaches these claims from 2006 onward only.
+The paper excludes anyone with a cryptococcosis claim, "physician or hospitalization", before their first transplant. Hospital records are already loaded; physician and supplier claims come from `usRds::get_PS_ICD()`, for the people with a cryptococcosis stay, searched for the same cryptococcosis codes. That function matches codes exactly, so the run stops if the code list ever gains a prefix code that it would miss.
 
 ```{r}
 #| label: cohort-physician-claims
@@ -74,7 +74,7 @@ The paper excludes anyone with a cryptococcosis claim, "physician or hospitaliza
 
 ## Cohort candidates
 
-One row per person, with their index stay and age. A single cryptococcosis claim of either kind, dated before the person's first transplant or before 2006, marks them for exclusion ([#4](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/4)). One claim is enough: a clinician billing for cryptococcosis, even to rule it out, before transplant is a reason to doubt that the later episode is new, and studies that exclude an earlier condition usually take any single claim, because missing an earlier case matters more there than excluding a few people over a rule-out code [@chubak2012].
+One row per person, with their index stay and age. A single cryptococcosis claim of either kind, dated before the person's first transplant, marks them for exclusion ([#4](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/4)). One claim is enough: a clinician billing for cryptococcosis, even to rule it out, before transplant is a reason to doubt that the later episode is new, and studies that exclude an earlier condition usually take any single claim, because missing an earlier case matters more there than excluding a few people over a rule-out code [@chubak2012].
 
 ```{r}
 #| label: cohort-candidates
@@ -87,7 +87,7 @@ The exclusions are applied in the plan's order, each as a flowchart step, so Fig
 
 1. people in the transplant file;
 2. people with a cryptococcosis stay admitted on or after their first transplant (a stay admitted before it counts as cryptococcosis before transplant, which the paper excludes);
-3. people with no cryptococcosis claim, hospital or physician, before their first transplant or before 2006;
+3. people with no cryptococcosis claim, hospital or physician, before their first transplant;
 4. people aged 18 to 90 at index admission.
 
 The box labels are built from the study constants, so they can't fall out of step with the window or age range. The flowchart's final data is the cohort.

@@ -89,12 +89,11 @@ physician_cryptococcosis_claims <- get_PS_ICD(
   select(USRDS_ID, claim_date = CLM_FROM)
 
 ## ---- cohort-candidates
-# One cryptococcosis claim of either kind before the first transplant, or
-# before 2006, excludes the person (decided under issue #4).
+# One cryptococcosis claim of either kind before the first transplant
+# excludes the person (decided under issue #4).
 prior_cryptococcosis <- prior_cryptococcosis_ids(
   bind_rows(hospital_cryptococcosis_claims, physician_cryptococcosis_claims),
-  first_transplants,
-  study_start_date
+  first_transplants
 )
 
 cohort_candidates <- build_cohort_candidates(
@@ -126,10 +125,7 @@ cohort_flowchart <- cohort_candidates %>%
   ) %>%
   fc_filter(
     no_prior_cryptococcosis,
-    label = str_glue(
-      "No cryptococcosis claim (hospital or physician) before first transplant ",
-      "or before {format(study_start_date, '%Y')}"
-    ),
+    label = "No cryptococcosis claim (hospital or physician) before first transplant",
     show_exc = TRUE
   ) %>%
   fc_filter(
@@ -149,5 +145,5 @@ cohort <- cohort %>%
     index_admit_date = "Admission date of the index stay (time zero)",
     index_discharge_date = "Discharge date of the index stay",
     age_at_index = "Age at index admission (completed years)",
-    no_prior_cryptococcosis = "No cryptococcosis claim (hospital or physician/supplier) before first transplant or before the study start"
+    no_prior_cryptococcosis = "No cryptococcosis claim (hospital or physician/supplier) before first transplant"
   )
