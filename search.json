@@ -351,58 +351,697 @@
     ]
   },
   {
-    "objectID": "quarto/create_outcomes.html",
-    "href": "quarto/create_outcomes.html",
-    "title": "Outcomes",
+    "objectID": "quarto/results.html",
+    "href": "quarto/results.html",
+    "title": "Published results",
     "section": "",
-    "text": "PendingProvisional\n\n\n\nText highlighted like this is provisional: it depends on a decision the analysis plan has not yet made.\nThis script adds the mortality outcomes (plan §7) and puts the variables in the form the model uses (plan §8).",
+    "text": "ResultsReproduced from the published article\n\n\n\nThe tables on this page are reproduced, unchanged, from Fiorica G, Cervera-Hernandez ME, Pirofski L, Hemmige VS, Yoon H. High mortality and associated risk factors in kidney transplant recipients with cryptococcosis: a nationwide cohort study over a decade using USRDS data. Open Forum Infectious Diseases. 2025;12(5):ofaf2631, © The Author(s) 2025, published by Oxford University Press on behalf of the Infectious Diseases Society of America under a CC BY-NC-ND 4.0 license. They are transcribed cell for cell from the article, and the figures are shown as published. These are the outputs cleared by USRDS for publication; they were not produced by this repository’s code. This analysis’s own numbers are not expected to match them exactly: the original analysis was run in Stata, that code is no longer available, and the data release may differ (see the analysis plan, §11).\nApparent errors in the published tables are kept as printed and listed under Notes on the published results. The final model’s adjusted odds ratios (Figure 3) are also set beside this analysis’s refitted model in Table 4.",
     "crumbs": [
-      "Code",
-      "Outcomes"
+      "Published results",
+      "Published figures and tables"
     ]
   },
   {
-    "objectID": "quarto/create_outcomes.html#dates-of-death",
-    "href": "quarto/create_outcomes.html#dates-of-death",
-    "title": "Outcomes",
-    "section": "Dates of death",
-    "text": "Dates of death\nDates of death come from the USRDS patients file. Each person needs only one row, because every characteristic is fixed at the start and death is the only event. That is why the usRds cohort functions aren’t used here; the coverage assessment records what testing them showed.\n\n\nClick to show/hide R Code\n# Columns are chosen with select() after loading, not with col_select,\n# because load_usrds_file() fails on Parquet files when col_select is used\n# (usRds#22). Return to col_select once that is fixed.\n# Date of death from the patients file. The usRds cohort functions are not\n# used: every covariate is fixed and death is the only event, so one row per\n# person is enough (coverage map, step 18).\ndeaths &lt;- load_usrds_file(\n  \"patients\",\n  usrds_ids = analysis_data$USRDS_ID,\n  factor_labels = FALSE\n) %&gt;%\n  select(all_of(c(\"USRDS_ID\", \"DIED\")))",
+    "objectID": "quarto/results.html#figure-1.-flowchart-of-selection-of-relevant-ktrs-from-the-usrds-database",
+    "href": "quarto/results.html#figure-1.-flowchart-of-selection-of-relevant-ktrs-from-the-usrds-database",
+    "title": "Published results",
+    "section": "Figure 1. Flowchart of selection of relevant KTRs from the USRDS database",
+    "text": "Figure 1. Flowchart of selection of relevant KTRs from the USRDS database\n\n\n\n\n\n\nNote\n\n\n\nThe published image is to be added. It is in the article’s full text.\n\n\nThe Results report 1,848,170 hospitalizations among 257,958 kidney transplant recipients in the data set, and 1,265 recipients with 2,885 hospitalizations with a diagnosis of cryptococcosis during the study period; each recipient’s first such hospitalization is the index hospitalization.\nAbbreviations: KTRs, kidney transplant recipients; USRDS, United States Renal Data System.",
     "crumbs": [
-      "Code",
-      "Outcomes"
+      "Published results",
+      "Published figures and tables"
     ]
   },
   {
-    "objectID": "quarto/create_outcomes.html#mortality",
-    "href": "quarto/create_outcomes.html#mortality",
-    "title": "Outcomes",
-    "section": "Mortality",
-    "text": "Mortality\nThe script adds three things for each person:\n\ndeath within 180 days of the index admission, where deaths on the admission day and on day 180 both count;\ndays to death;\nfor the survival curve, time to death or to the end of the release’s death data.\n\n\nDecision pending: the end of the death data (death_data_end_date) has to be set for the release in use. The script stops until it is.\n\n\n\nClick to show/hide R Code\nmortality &lt;- six_month_outcomes(\n  analysis_data,\n  deaths,\n  window_days = mortality_window_days,\n  data_end_date = death_data_end_date\n)\n\nanalysis_data &lt;- analysis_data %&gt;%\n  left_join(mortality, by = \"USRDS_ID\", relationship = \"one-to-one\")\n\nstopifnot(nrow(analysis_data) == nrow(cohort))",
+    "objectID": "quarto/results.html#table-1.-demographic-and-clinical-characteristics-of-kidney-transplant-recipients-during-the-index-hospitalization-for-cryptococcosis",
+    "href": "quarto/results.html#table-1.-demographic-and-clinical-characteristics-of-kidney-transplant-recipients-during-the-index-hospitalization-for-cryptococcosis",
+    "title": "Published results",
+    "section": "Table 1. Demographic and Clinical Characteristics of Kidney Transplant Recipients During the Index Hospitalization for Cryptococcosis",
+    "text": "Table 1. Demographic and Clinical Characteristics of Kidney Transplant Recipients During the Index Hospitalization for Cryptococcosis\n\n\n\n\n\n\n\n\n\n\nVariables\nTotal (n = 1265)\nAlive at 6 Months (n = 985)\nDead at 6 Monthsa (n = 280)\nP Value\n\n\n\n\nDemographic characteristics\n\n\n\n\n\n\nAge at diagnosis, mean ± SD, y\n59.1 ± 11.2\n58.1 ± 10.9\n62.8 ± 11.3\n&lt;.001\n\n\nSex, No. (%)\n\n\n\n\n\n\nFemale\n408 (32.3)\n332 (33.7)\n76 (27.1)\n.04\n\n\nMale\n857 (67.7)\n653 (66.2)\n204 (72.8)\n\n\n\nRace, No. (%)\n\n\n\n\n\n\nWhite\n852 (67.4)\n655 (66.6)\n197 (70.3)\n.1\n\n\nBlack\n332 (26.2)\n270 (27.4)\n62 (22.1)\n\n\n\nOther\n79 (6.2)\n58 (5.9)\n21 (7.5)\n\n\n\nEthnicity, No. (%)\n\n\n\n\n\n\nHispanic\n256 (20.6)\n203 (20.9)\n53 (19.4)\n.5\n\n\nBMI at registration, mean ± SD, kg/m2\n27.3 ± 7.8\n27.3 ± 8.1\n27.6 ± 6.6\n.5\n\n\nUS region, No. (%)\n\n\n\n\n\n\nWest\n216 (17)\n166 (16.8)\n50 (17.8)\n.6\n\n\nMidwest\n274 (21.6)\n217 (22)\n57 (20.3)\n\n\n\nSouth\n603 (47.7)\n472 (47.9)\n131 (46.7)\n\n\n\nNortheast\n164 (12.9)\n125 (12.7)\n39 (13.9)\n\n\n\nClinical variables\n\n\n\n\n\n\nCryptococcal meningitis, No. (%)\n648 (51.2)\n489 (49.6)\n159 (56.7)\n.04\n\n\nProcedures performed, No. (%)\n\n\n\n\n\n\nLumbar puncture(s)\n878 (69.4)\n690 (70)\n188 (67.1)\n.3\n\n\nOther spinal procedures\n70 (5.5)\n48 (4.8)\n22 (7.8)\n.054\n\n\nNeurosurgical procedures\n30 (2.3)\n19 (1.9)\n11 (3.9)\n.052\n\n\nLung procedures\n354 (27.9)\n84 (30)\n270 (27.4)\n.3\n\n\nComorbid conditions, No. (%)\n\n\n\n\n\n\nICU admission\n558 (44.1)\n367 (37.2)\n191 (68.2)\n&lt;.001\n\n\nAKI\n622 (49.1)\n449 (45.5)\n173 (61.7)\n&lt;.001\n\n\nDiabetes\n606 (47.9)\n485 (49.2)\n121 (43.2)\n.07\n\n\nCirrhosis\n36 (2.8)\n18 (1.8)\n18 (6.4)\n&lt;.001\n\n\nCMV serostatus, positive\n740/1047b (70.6)\n582 (71.2)\n158 (68.7)\n.4\n\n\nPretransplant dialysis\n1030/1180 (87.2)\n783 (85.4)\n247 (93.5)\n.001\n\n\nTransplant complications\n\n\n\n\n\n\nTime post–last transplant, median (IQR), mo\n30.5 (12.8–74.5)\n28.3 (12.4–69.3)\n43.6 (14.8–91.2)\n&lt;.001\n\n\nNo. of transplants, median (min–max)\n1 (1–5)\nn/a\nn/a\n\n\n\nRejection episodes, any, No. (%)\n178 (14)\n144 (14.2)\n34 (12.1)\n.2\n\n\nTransplant failures, any, No. (%)\n238 (18.8)\n187 (18.9)\n51 (18.2)\n.7\n\n\nPrior hospitalization for complications of transplanted kidney, No. (%)\n806 (63.7)\n602 (61.1)\n204 (72.8)\n&lt;.001\n\n\n\nAbbreviations: AKI, acute kidney injury; BMI, body mass index; CMV, cytomegalovirus; ICU, intensive care unit; IQR, interquartile range; n/a, not available.\na Mortality indicates all-cause deaths occurring within 6 months following the index hospitalization for cryptococcosis.\nb Denominator indicates the total number available for each variable when data were missing.",
     "crumbs": [
-      "Code",
-      "Outcomes"
+      "Published results",
+      "Published figures and tables"
     ]
   },
   {
-    "objectID": "quarto/create_outcomes.html#model-variables",
-    "href": "quarto/create_outcomes.html#model-variables",
-    "title": "Outcomes",
-    "section": "Model variables",
-    "text": "Model variables\nThe model uses the forms the paper reports:\n\nage 60 or older;\nmore than one transplant;\nany graft failure;\nnot being on tacrolimus.\n\n\n\nClick to show/hide R Code\n# Variables in the form the paper's model reports them: age 60 or older, more\n# than one transplant, any graft failure, and not being on tacrolimus.\n# Categories are in the paper's Table 1 order, and the first is the\n# reference: Female, White, West. The paper shows Hispanic ethnicity as one\n# yes row, so non-Hispanic is the reference; for organ and serostatus, the\n# usual category (kidney alone, negative). The paper does not name its\n# reference categories; every term in its final model is yes or no.\nmodel_data &lt;- analysis_data %&gt;%\n  mutate(\n    age_60_or_older = age_at_index &gt;= age_model_cutoff,\n    more_than_one_transplant = transplants_before_index &gt; 1,\n    prior_graft_failure = failures_before_index &gt; 0,\n    no_tacrolimus_at_transplant = !tx_tacrolimus,\n    no_tacrolimus_at_followup = !fu_tacrolimus,\n    sex = factor(sex, levels = c(\"Female\", \"Male\")),\n    race = factor(race, levels = c(\"White\", \"Black\", \"Other\")),\n    hispanic = factor(hispanic, levels = c(\"Non-Hispanic\", \"Hispanic\")),\n    region = factor(region, levels = c(\"West\", \"Midwest\", \"South\", \"Northeast\", \"Outside\")),\n    organ = factor(organ, levels = c(\"Kidney\", \"Kidney-pancreas\")),\n    hiv_status = factor(hiv_status, levels = c(\"Negative\", \"Positive\")),\n    cmv_status = factor(cmv_status, levels = c(\"Negative\", \"Positive\"))\n  )\n# A value outside the listed categories would silently become missing\nfor (variable in c(\"sex\", \"race\", \"hispanic\", \"region\", \"organ\", \"hiv_status\", \"cmv_status\")) {\n  stopifnot(sum(is.na(model_data[[variable]])) == sum(is.na(analysis_data[[variable]])))\n}",
+    "objectID": "quarto/results.html#figure-2.-kaplan-meier-survival-curve-for-the-1265-kidney-transplant-recipients-hospitalized-with-cryptococcosis",
+    "href": "quarto/results.html#figure-2.-kaplan-meier-survival-curve-for-the-1265-kidney-transplant-recipients-hospitalized-with-cryptococcosis",
+    "title": "Published results",
+    "section": "Figure 2. Kaplan-Meier survival curve for the 1265 kidney transplant recipients hospitalized with cryptococcosis",
+    "text": "Figure 2. Kaplan-Meier survival curve for the 1265 kidney transplant recipients hospitalized with cryptococcosis\n\n\n\n\n\n\nNote\n\n\n\nThe published image is to be added. It is in the article’s full text.\n\n\nThe vertical dashed line indicates the 6-month time point. The Results report an overall 6-month mortality of 22% (280/1265).",
     "crumbs": [
-      "Code",
-      "Outcomes"
+      "Published results",
+      "Published figures and tables"
     ]
   },
   {
-    "objectID": "quarto/create_outcomes.html#labels",
-    "href": "quarto/create_outcomes.html#labels",
-    "title": "Outcomes",
-    "section": "Labels",
-    "text": "Labels\n\n\nClick to show/hide R Code\nanalysis_data &lt;- analysis_data %&gt;%\n  set_variable_labels(\n    days_to_death = \"Days from index admission to death\",\n    died_within_window = str_glue(\"Died within {mortality_window_days} days of index admission\"),\n    survival_days = \"Days from index admission to death or end of death data\",\n    survival_event = \"Died before the end of death data (1) or censored (0)\"\n  )",
+    "objectID": "quarto/results.html#table-2.-immunosuppressive-drug-use-among-kidney-transplant-recipients-at-the-time-of-transplantation-unos-registration-and-at-the-unos-follow-up-appointment",
+    "href": "quarto/results.html#table-2.-immunosuppressive-drug-use-among-kidney-transplant-recipients-at-the-time-of-transplantation-unos-registration-and-at-the-unos-follow-up-appointment",
+    "title": "Published results",
+    "section": "Table 2. Immunosuppressive Drug Use Among Kidney Transplant Recipients at the Time of Transplantation (UNOS Registration) and at the UNOS Follow-up Appointment",
+    "text": "Table 2. Immunosuppressive Drug Use Among Kidney Transplant Recipients at the Time of Transplantation (UNOS Registration) and at the UNOS Follow-up Appointment\n\n\n\n\n\n\n\n\n\n\nImmunosuppressive Drugs\nTotal (n = 1265)\nAlive at 6 Months (n = 985)\nDead at 6 Months (n = 280)\nP Value\n\n\n\n\nTime of transplantation (UNOS registration)\n\n\n\n\n\n\nSteroids\n1199 (97.2)\n928 (96.8)\n271 (98.5)\n.1\n\n\nATG\n552 (44.7)\n428 (44.6)\n124 (45)\n.9\n\n\nAlemtuzumab\n112 (9)\n93 (9.7)\n19 (6.9)\n.1\n\n\nAnti-IL-2 receptor antibody\n366 (29.6)\n280 (29.2)\n86 (31.2)\n.5\n\n\nTacrolimus\n1013 (82.1)\n807 (84.2)\n206 (74.9)\n&lt;.001\n\n\nCyclosporine\n228 (18.4)\n162 (16.9)\n66 (24)\n.008\n\n\nMMF\n1121 (90.2)\n873 (91.1)\n248 (90.1)\n.6\n\n\nmTOR inhibitor\n75 (6)\n57 (5.9)\n18 (6.5)\n.7\n\n\nAzathioprine\n85 (6.8)\n67 (6.9)\n18 (6.5)\n.7\n\n\nUNOS follow-up appointment\n\n\n\n\n\n\nSteroids\n963 (90.1)\n748 (89.9)\n215 (91.1)\n.5\n\n\nTacrolimus\n905 (84.7)\n725 (87.1)\n180 (76.2)\n&lt;.001\n\n\nCyclosporine\n245 (22.9)\n180 (21.6)\n65 (27.5)\n.057\n\n\nMycophenolate mofetil\n999 (93.5)\n777 (93.3)\n222 (94)\n.7\n\n\nmTOR inhibitor\n156 (14.6)\n115 (13.8)\n41 (17.3)\n.1\n\n\nAzathioprine\n106 (9.9)\n86 (10.3)\n20 (8.4)\n.3\n\n\n\nAbbreviations: ATG, antithymocyte globulin; IL-2, interleukin-2; mTOR, mechanistic target of rapamycin; MMF, mycophenolate mofetil; UNOS, United Network for Organ Sharing.",
+    "crumbs": [
+      "Published results",
+      "Published figures and tables"
+    ]
+  },
+  {
+    "objectID": "quarto/results.html#figure-3.-multivariable-logistic-regression-analysis-of-predictors-of-6-month-mortality",
+    "href": "quarto/results.html#figure-3.-multivariable-logistic-regression-analysis-of-predictors-of-6-month-mortality",
+    "title": "Published results",
+    "section": "Figure 3. Multivariable logistic regression analysis of predictors of 6-month mortality",
+    "text": "Figure 3. Multivariable logistic regression analysis of predictors of 6-month mortality\n\n\n\n\n\n\nNote\n\n\n\nThe published image is to be added. It is in the article’s full text.\n\n\nThe Results give the adjusted odds ratios (95% CI) shown in the figure, in order of size: cirrhosis during the index hospitalization, 3.1 (1.2–7.7); ICU admission, 2.9 (2.0–4.0); pretransplant dialysis, 2.7 (1.5–4.9); not on tacrolimus at follow-up, 2.2 (1.4–3.3); age ≥60 years, 2.0 (1.4–2.8); AKI during the index hospitalization, 1.7 (1.2–2.4); more than 2 years since transplant, 1.7 (1.1–2.4); and previous hospitalization for complications of the transplanted kidney, 1.5 (1.1–2.2).\nAbbreviations: AKI, acute kidney injury; ICU, intensive care unit; OR, odds ratio.",
+    "crumbs": [
+      "Published results",
+      "Published figures and tables"
+    ]
+  },
+  {
+    "objectID": "quarto/results.html#notes-on-the-published-results",
+    "href": "quarto/results.html#notes-on-the-published-results",
+    "title": "Published results",
+    "section": "Notes on the published results",
+    "text": "Notes on the published results\nThese are kept above as printed. Each is listed so that this analysis’s outputs can be compared with what was intended. Every percentage was recomputed from its count and column size.\nHow percentages are printed\n\nMost percentages are cut to one decimal place rather than rounded: for example, 204 of 280 (72.86%) is printed 72.8, and 449 of 985 (45.58%) is printed 45.5. This analysis’s tables round, so many of its percentages will differ from the published ones by 0.1 even when the counts agree.\nWhere a variable has missing values, percentages use the people with known values, although the table gives a denominator only for CMV serostatus and pretransplant dialysis. For example, the race rows sum to 1,263, not 1,265, and 655 of 983 (66.6%) matches the printed White survivor percentage where 655 of 985 (66.5%) would not; Hispanic ethnicity implies about 1,243 people with known ethnicity. In Table 2, the percentages imply about 1,234 people with drug records at transplant and about 1,068 at follow-up.\n\nTable 1\n\nLung procedures: the survivor and death cells appear swapped. 84 (30) fits the 280 deaths (84/280 is 30.0%), and 270 (27.4) fits the 985 survivors (270/985 is 27.4%); read as printed (84/985 and 270/280), they would be 8.5% and 96.4%. The total, 354, is their sum.\nRejection episodes, survivors: 144 is printed as 14.2%; 144/985 is 14.6%. A denominator that gives 14.2% would be over 1,000, more than the 985 survivors. The total (178, 14%) and the deaths (34, 12.1%) match their counts.\nUS region: the four regions sum to 1,257 of 1,265; the table has no row for the other 8. This analysis shows Outside and Unknown as their own rows (plan §5, #12).\nContinuous variables: the Methods describe continuous variables as mean ± SD; time since the last transplant is given as median (IQR), and the number of transplants as median (min–max), without a comparison by group.\n\nTable 2\n\nMMF at transplant, total: 1,121 is printed as 90.2%. The row’s own survivor and death percentages imply about 958 and 275 people with records, so 1,121 of about 1,233 (90.9%). The total is an average of the two groups weighted by their size, so with about 3.5 survivors for each death it should lie near the survivors’ 91.1%, not near the deaths’ 90.1%.\n\nText and tables\n\nThe Results give male sex in survivors as 66.3% and CMV seropositivity as 70.7%; Table 1 gives 66.2% and 70.6%, the same counts cut rather than rounded.\nThe Methods take immunosuppression from “the first post-transplant visit”, obtained “using relevant billing codes”; the Results and Discussion refer to a 1-year follow-up. This analysis uses the UNOS records and the earliest follow-up report (plan §5, #2).\nThe Methods name CPT codes for procedures; Supplementary Table 1 lists ICD procedure codes (plan §5, #5).\nThe Limitations say cases were identified by 2 ICD-9 codes; the case definition in Supplementary Table 1 also lists ICD-10-CM codes (plan §5).",
+    "crumbs": [
+      "Published results",
+      "Published figures and tables"
+    ]
+  },
+  {
+    "objectID": "quarto/results.html#references",
+    "href": "quarto/results.html#references",
+    "title": "Published results",
+    "section": "References",
+    "text": "References\n\n\n1. Fiorica G, Cervera-Hernandez ME, Pirofski L, Hemmige VS, Yoon H. High mortality and associated risk factors in kidney transplant recipients with cryptococcosis: A nationwide cohort study over a decade using USRDS data. Open Forum Infectious Diseases. 2025;12(5):ofaf263. doi:10.1093/ofid/ofaf263",
+    "crumbs": [
+      "Published results",
+      "Published figures and tables"
+    ]
+  },
+  {
+    "objectID": "quarto/about.html",
+    "href": "quarto/about.html",
+    "title": "About",
+    "section": "",
+    "text": "This project replicates Fiorica et al. 20251, a study of mortality among kidney transplant recipients hospitalized with cryptococcosis, as the paper describes it. It uses the usRds package and assesses how well that package covers the paper’s methods. The analysis is in progress, and no results from USRDS data are on this site.\n\nVagish Hemmige (maintainer; makes the scientific decisions)\n\nOpen decisions are listed as decision issues.",
+    "crumbs": [
+      "About"
+    ]
+  },
+  {
+    "objectID": "quarto/about.html#the-study",
+    "href": "quarto/about.html#the-study",
+    "title": "About",
+    "section": "",
+    "text": "This project replicates Fiorica et al. 20251, a study of mortality among kidney transplant recipients hospitalized with cryptococcosis, as the paper describes it. It uses the usRds package and assesses how well that package covers the paper’s methods. The analysis is in progress, and no results from USRDS data are on this site.\n\nVagish Hemmige (maintainer; makes the scientific decisions)\n\nOpen decisions are listed as decision issues.",
+    "crumbs": [
+      "About"
+    ]
+  },
+  {
+    "objectID": "quarto/about.html#this-repository",
+    "href": "quarto/about.html#this-repository",
+    "title": "About",
+    "section": "This repository",
+    "text": "This repository\nR/main.R runs the scripts in order. They reach the USRDS data through the usRds package. The data are restricted under the USRDS data use agreement, so they are not in the repository. The analysis runs only on a machine with authorized access.\nContributions follow the rules in AGENTS.md. Known issues and open decisions are tracked in Issues.",
+    "crumbs": [
+      "About"
+    ]
+  },
+  {
+    "objectID": "quarto/about.html#how-this-website-was-created",
+    "href": "quarto/about.html#how-this-website-was-created",
+    "title": "About",
+    "section": "How this website was created",
+    "text": "How this website was created\nThe site is built with Quarto from the analysis scripts themselves. Each code page imports the labelled sections of its script from R/ and shows them with an explanation. The site never runs the analysis, so it builds without the analysis data.\nThe repository is maintained with the R Analysis Workflow plugin and with AI assistants (Claude). They work only on code, documentation and synthetic data, never on USRDS data, and scientific decisions stay with the maintainer.\nFour documents describe the project, plus a coverage assessment:\n\nAnalysis plan: what the analysis is meant to do, and why.\nusRds coverage: each step of the paper mapped to usRds functions, and what is missing.\nArchitecture: how the code does it.\nAGENTS.md: how people and AI assistants work on the project.\nRepository blueprint: the layout every project of this kind starts from.",
+    "crumbs": [
+      "About"
+    ]
+  },
+  {
+    "objectID": "quarto/about.html#pages",
+    "href": "quarto/about.html#pages",
+    "title": "About",
+    "section": "Pages",
+    "text": "Pages\n\nStudy design and methods: the study’s choices in plain language.\nBuilding the cohort: the index hospitalizations and the cohort flowchart.\nCovariates: the characteristics compared and modelled.\nOutcomes: 6-month mortality and survival time.\nSurvival and models: the Kaplan–Meier fit and logistic models.\nSetup: packages and shared constants.\nCode lists: the diagnosis, procedure and billing codes from the paper’s supplement.\nFunctions: helper functions, including those that fill usRds gaps.",
+    "crumbs": [
+      "About"
+    ]
+  },
+  {
+    "objectID": "quarto/agents.html",
+    "href": "quarto/agents.html",
+    "title": "",
+    "section": "",
+    "text": "Project documentsAGENTS.md Code",
+    "crumbs": [
+      "Project documents",
+      "AGENTS.md"
+    ]
+  },
+  {
+    "objectID": "quarto/agents.html#the-project",
+    "href": "quarto/agents.html#the-project",
+    "title": "",
+    "section": "The project",
+    "text": "The project\nThis is an R analysis project, not an R package. It rebuilds the analysis of Fiorica et al. 2025 (6-month mortality, and the factors associated with it, among kidney transplant recipients hospitalized with cryptococcosis, USRDS 2006–2016) with the usRds package. The goal is to replicate the analysis as the paper describes it, and in doing so to assess how well usRds covers it. For each step, references/usrds-coverage.md records whether usRds does it (covered, partial or gap). Closing gaps in usRds is outside this project’s scope; findings are passed to the usRds maintainer, who decides what to do with them. The code and methods are published as a Quarto website.\n\nWhat counts as done for a step. A step is done when it runs on synthetic data, using usRds functions where they exist and project code in R/functions.R where they don’t, and its coverage status in references/usrds-coverage.md reflects what the code actually needed. Project code written for a gap is labelled as such in a comment, so the assessment can be read from the code. The published counts and odds ratios are a reference point, not a target: the original analysis was run in Stata, that code is no longer available, and the data release may differ. A difference from the paper is investigated, but it is not a defect unless it comes from departing from the paper’s methods or from a usRds error.\nThe paper is the specification; the legacy Rmd is secondary evidence. The 2025-03-25 Rmd is the maintainer’s best reconstruction of how the original Stata analysis was done; it did not produce the published results. Where the paper (including its supplement) states a method, the plan follows the paper. Where the paper is silent, the Rmd’s choice is a candidate for the deciders, not a default; where the two disagree, the paper wins and the difference is noted, unless a decision says otherwise (the code lists come from the Rmd by decision, with corrections checked against the official code sets; see the plan, §5) (see #4). Do not introduce package infrastructure or impose CRAN conventions.\nThe analysis plan is the scientific source of truth. Code implements the plan; it does not redefine it. If implementation needs a different design, open a decision issue, or comment on the existing one, for the deciders. Once a decider has settled it (in the issue, or relayed there in their exact words), the plan change and the code can go in the same pull request, which closes the issue. Track decisions in Git history and issues rather than a change ledger within the plan.\nDeciders. Scientific decisions in every area are made by Vagish Hemmige. Anyone may open or contribute to a decision issue; only a decider settles it (see “Working with agents”).\nDo not make unresolved scientific decisions implicitly through code. Check relevant open GitHub issues before implementing analyses that depend on them.\nMaintain implementation status and defects in GitHub Issues rather than in a standing list inside this file.\nDefault branch: main. Changes reach it only through pull requests.",
+    "crumbs": [
+      "Project documents",
+      "AGENTS.md"
+    ]
+  },
+  {
+    "objectID": "quarto/agents.html#data-sources",
+    "href": "quarto/agents.html#data-sources",
+    "title": "",
+    "section": "Data sources",
+    "text": "Data sources\nEach source this project uses is listed below with the package that accesses it. Code that touches a source goes through its package. Do not write project-specific loading, cleaning, or definition code for something the package already does.\n\n\n\n\n\n\n\n\n\n\n\nSource\nAccessed through\nPackage documentation\nPackage maintained by\nAccess\nWhat AI agents may do\n\n\n\n\nUSRDS standard analysis files, including linked Medicare claims and payer history (release as recorded for each result)\nusRds (load_usrds_file(), get_IN_ICD(), get_PS_ICD())\nhttps://vagishhemmige.github.io/usRds/\nThis team\nRestricted (USRDS data use agreement)\nNone: code, documentation and synthetic data only\n\n\n\nTo allow more for a source, a person changes its row through a pull request, naming the agreement and section that permit it, the approved AI service, and exactly what agents may do. Agents never propose or make this change themselves, and nothing in personal instructions can grant it.\nAdd a row when code first loads a new source. The UNOS transplant files (txunos_trr_ki, txunos_trr_kp, txfuunos_*, txirunos) are part of the USRDS release and are covered by the row above.\nFor every package:\n\nRead its documentation before writing code for a source, including known issues. Behavior that sets the cohort, an exposure, an outcome, or a denominator is checked in the documentation, not assumed from a function’s name.\n\nFor packages this team maintains: see “Look in usRds first” below.\nFor external packages:\n\nWork around problems here. Wrap the function in R/functions.R with a comment explaining the problem and linking any upstream issue. Reporting a bug upstream is an external communication; the person directing the work decides whether to file it.\nFacts about the source that this project relies on (definitions, release quirks, suppression rules) go in references/ with a citation to the provider’s documentation, or in the plan when they shape a decision.\n\nFor a source with no package: one loading script records the download URL, the release or access date, and any processing. Verify its variables against the provider’s documentation for that release.",
+    "crumbs": [
+      "Project documents",
+      "AGENTS.md"
+    ]
+  },
+  {
+    "objectID": "quarto/agents.html#exploration-and-definitive-analysis",
+    "href": "quarto/agents.html#exploration-and-definitive-analysis",
+    "title": "",
+    "section": "Exploration and definitive analysis",
+    "text": "Exploration and definitive analysis\nExploration is welcome on branches or forks. Experimental scripts need not be sourced from R/main.R or have Quarto pages, and their findings are labelled preliminary. A script becomes part of the definitive analysis when it is sourced from R/main.R; from then on every rule below applies to it.",
+    "crumbs": [
+      "Project documents",
+      "AGENTS.md"
+    ]
+  },
+  {
+    "objectID": "quarto/agents.html#r-scripts",
+    "href": "quarto/agents.html#r-scripts",
+    "title": "",
+    "section": "R scripts",
+    "text": "R scripts\n\nOpen the .Rproj and run R/main.R from the project root. main.R sources definitive scripts in dependency order.\nKeep scripts focused on one analytical responsibility. Study-specific scripts may be grouped in stage-specific subdirectories. Include a short header stating the script’s role, its required upstream objects, and what it produces.\nWhen a definitive script is added or structurally reorganized, source it in main.R as appropriate and update ARCHITECTURE.md in the same pull request when the change materially affects structure or data flow. ARCHITECTURE.md describes current implementation, not planned work.\nDefine shared libraries, paths, configurable analytical constants, and their dependencies in R/setup.R. Other scripts do not call library(), re-source setup.R, or hard-code study parameters. Large, version-controlled code lists may live in separate files sourced by setup.R.\nPlace reusable helpers in R/functions.R, or organized subdirectories when warranted. Prefer explicit function arguments over dependence on global objects.\nAvoid setwd(), machine-specific absolute paths, and writes outside designated project outputs. Locate restricted USRDS inputs through usRds’s directory configuration.\nNo results in the repository. No script (exploratory or definitive) or comment, commit message, issue, pull-request text or review report contains results, counts or data values from restricted data unless they are cleared for release. Check before every commit and post, since a public repository publishes everything pushed to it, on any branch. Numbers quoted from the published paper are public and may be cited.",
+    "crumbs": [
+      "Project documents",
+      "AGENTS.md"
+    ]
+  },
+  {
+    "objectID": "quarto/agents.html#chunk-labels",
+    "href": "quarto/agents.html#chunk-labels",
+    "title": "",
+    "section": "Chunk labels",
+    "text": "Chunk labels\nScripts are divided into labelled sections so Quarto can reuse code without copying it:\n## ---- cryptococcus-claims\n\nLabel logical steps with descriptive kebab-case identifiers unique across scripts; a duplicate silently picks up the wrong code. A label covers code up to the next label.\nBefore renaming or removing a label, check the .qmd pages that reference it.\nLabels are comments; the underlying R scripts must remain executable through main.R.",
+    "crumbs": [
+      "Project documents",
+      "AGENTS.md"
+    ]
+  },
+  {
+    "objectID": "quarto/agents.html#variable-labels",
+    "href": "quarto/agents.html#variable-labels",
+    "title": "",
+    "section": "Variable labels",
+    "text": "Variable labels\n\nLabel analytical variables with human-readable descriptions (for example, labelled::set_variable_labels()).\nFor USRDS fields, prefer usRds::apply_usrds_varlabels() and usRds::apply_usrds_factors() rather than duplicating source labels.\nLabel derived variables where created, including units and time windows where relevant.",
+    "crumbs": [
+      "Project documents",
+      "AGENTS.md"
+    ]
+  },
+  {
+    "objectID": "quarto/agents.html#quarto-website",
+    "href": "quarto/agents.html#quarto-website",
+    "title": "",
+    "section": "Quarto website",
+    "text": "Quarto website\nThe site documents the code. It does not run the analysis. Exploratory scripts need no page.\n\n_quarto.yml, index.qmd, 404.qmd (the page GitHub Pages shows for a missing address) and styles.css sit at the root; quarto/ has one page per definitive script, named after it (for example, quarto/create_cohort.qmd for R/create_cohort.R), plus the Study design and methods, Published results (quarto/results.qmd: the paper’s tables and figures as printed, with notes on apparent errors; its notice says they are reproduced from the article under its license, not produced by this code), About and project-document pages (including quarto/usrds-coverage.qmd, which shows references/usrds-coverage.md). Background pages are added once their content is written; the Home page carries a short background until then. The custom-callout extension in _extensions/ provides the Rcode, Results and Pending callouts.\nVisual cues. Each kind of page has one sidebar icon, coloured by styles.css, and pages mark the same kind of content with the callout of that colour: background book (blue); study design and methods diagram-3 (orange); R code laptop (pink, Rcode 💻); results clipboard-data (green, Results 📊); project documents file-earmark-ruled (grey). Give every new page the icon of its kind.\nProvisional content. quarto/_pending.lua highlights in yellow every paragraph that starts with Decision pending: or, in the plan, Open:, and any [text]{.pending}, and adds a ⏳ Pending callout to pages that have a mark. Mark only what an open decision could change, link the decision issue, and remove the mark when the decision is settled.\nProject documents. analysis-plan.md, ARCHITECTURE.md, AGENTS.md and REPOSITORY-BLUEPRINT.md are shown on the site by pages in quarto/ that only include the root file, which stays the one source: edit the root file, not the page.\nEach script page loads its script with knitr::read_chunk(\"../R/&lt;script&gt;.R\") in a hidden chunk and shows each labelled section with #| eval: false, with prose explaining what the section does and why, without duplicating source code. Pages link to the script on GitHub and to the scripts it depends on.\nNever evaluate analysis code in the site. Pages render without restricted data. Only the read_chunk() imports, the Architecture page’s chunk that reads ARCHITECTURE.md, site helpers that read code or text, and results pages that read cleared outputs run. Review any proposed publication of aggregate results separately for disclosure compliance.\nPublishing. The site renders to docs/, which is not committed: a GitHub Actions workflow (.github/workflows/publish.yml) renders it on every push to main and publishes it to the gh-pages branch, which GitHub Pages serves. On a pull request the workflow only renders, as a check that every page builds.\nWhen you add a definitive script, add its page and sidebar entry in the same pull request. Prose must match the code: if a change alters what a section does, or its chunk labels, update its explanation and navigation in the same pull request.",
+    "crumbs": [
+      "Project documents",
+      "AGENTS.md"
+    ]
+  },
+  {
+    "objectID": "quarto/agents.html#outputs",
+    "href": "quarto/agents.html#outputs",
+    "title": "",
+    "section": "Outputs",
+    "text": "Outputs\n\nR/tables.R and R/figures.R may create outputs directly or orchestrate specialized scripts, exporting to tables/ and figures/.\ntables/ and figures/ are gitignored until USRDS review before publication clears them for release, because they come from restricted data: agents may not open them (see Restricted data). Commit cleared, nonrestricted results only when intentional. Disclosure rules apply to all outputs.\nPublished figures need alt text.\nREADME.Rmd is the source of README.md; edit the .Rmd and re-knit.",
+    "crumbs": [
+      "Project documents",
+      "AGENTS.md"
+    ]
+  },
+  {
+    "objectID": "quarto/agents.html#restricted-data-applies-to-everyone",
+    "href": "quarto/agents.html#restricted-data-applies-to-everyone",
+    "title": "",
+    "section": "Restricted data (applies to everyone)",
+    "text": "Restricted data (applies to everyone)\nUSRDS and Medicare data are governed by a data use agreement (DUA). Applicable DUA requirements take precedence over convenience or automation. The Access column of “Data sources” says which sources are restricted. For each restricted source:\n\nNever commit data, extracts, person-level data objects, or saved objects or outputs derived from patient-level records. Keep restricted source data outside the repository, and review output paths and .gitignore before adding new output types.\nAI agents never read restricted data. Anything an agent opens, prints, or summarizes is sent to the model provider. Agents do not open data files or patient-level objects, print rows, or display identifiers (including USRDS IDs), person-level dates, or ZIP codes. Agents also do not open outputs from restricted data that are not yet cleared for release (for example tables/ and figures/ while they are ignored). Agents write code, review it, and run it on synthetic data; results on real data are produced by an authorized person in an authorized environment. A request to execute a pipeline does not itself provide authorization. The only exception is what the Data sources table explicitly allows for a source, and only within those words.\nSynthetic data are built in code, labelled as synthetic, and never derived from real records.\nDisclosure. Prevent disclosure of counts 1–10 in tables, figures, flowcharts, or prose, including counts recoverable by subtraction or complementary cells. Follow the applicable DUA’s exact dissemination rules. Check every output before it leaves the approved environment, including scripts, comments, commit messages, issues, pull-request text and review reports (see R scripts).\nCredentials and paid APIs. Never commit keys, tokens, or .Renviron. Ask before paid, bulk, or uncached API calls.",
+    "crumbs": [
+      "Project documents",
+      "AGENTS.md"
+    ]
+  },
+  {
+    "objectID": "quarto/agents.html#look-in-usrds-first",
+    "href": "quarto/agents.html#look-in-usrds-first",
+    "title": "",
+    "section": "Look in usRds first",
+    "text": "Look in usRds first\nThe usRds package is the first place to look for USRDS file loading, claims extraction, claim types, diagnosis dates, Medicare coverage, cohort helpers, and costs.\n\nCheck its documentation, known limitations, and open issues before reproducing functionality locally.\nRaise generally reusable defects or enhancements in usRds; prefer fixes there. Temporary project-specific wrappers must identify the upstream issue and be reconsidered when resolved.\nWhen this analysis depends on a pending usRds enhancement or correction, track the study-specific implementation task here and link it to the corresponding usRds issue.\nRecord the usRds version or commit used for any result.",
+    "crumbs": [
+      "Project documents",
+      "AGENTS.md"
+    ]
+  },
+  {
+    "objectID": "quarto/agents.html#usrds-data-facts",
+    "href": "quarto/agents.html#usrds-data-facts",
+    "title": "",
+    "section": "USRDS data facts",
+    "text": "USRDS data facts\nData available to this project: the maintainer’s USRDS extract begins on 2006-01-01; there are no records before that date (maintainer, 2026-11-10). Never write a rule, window, lookback or synthetic record that depends on earlier data, and check a lookback against this date before proposing it. The end of the death data is set per release in death_data_end_date (R/setup.R).\nSources: the Researcher’s Guide, Appendix B, and Appendix C for the specific USRDS release being analyzed. The summary below is a starting point, not a replacement for release-appropriate documentation. Obtain the applicable public documents from the NIDDK Researcher’s Guide page. Consult usRds for machine-readable variable labels and formats.\nInstitutional (IN) claims include inpatient, outpatient, skilled nursing facility, home health, and hospice services.\n\nHCFASAF historically distinguishes I inpatient, O outpatient, N SNF, H home health, and S hospice; older data can include M for REBUS inpatient stays.\nSince 2002, corresponding file families include ip_*, op_*, sn_*, hh_*, and hs_*, generally with CLM, DXP, and DET records. Confirm structure for the release.\nInstitutional claim identifiers include USRDS_ID, CLM_FROM, and SEQ_KEYC; verify the applicable key in source documentation.\n\nPhysician/supplier (PS) claims have CLM, LINE, and DX sources.\n\nClaim lines are not necessarily distinct encounters. Define and validate episode grouping before counting services; distinguish diagnoses, procedures, and claim-level versus line-level records.\nPhysician/supplier services are not synonymous with outpatient care.\n\nClaims year: claims can be assigned by service end date rather than start date; verify against release documentation and account for claims crossing year boundaries.\n2025-release data currency (illustrative only; re-verify for the release used): claims complete through 2023-12-31 except the Q1 2024 inpatient file; core files including death dates extend through 2024-12-31. Do not infer contemporaneous coverage of claims and vital status.\nPayer history (payhist): payer categories and Medicare FFS observability must be verified against the release-specific guide. The primary versus sensitivity coverage definitions are prescribed in analysis-plan.md, not here. Pay attention to Medicare Advantage, Medicare secondary payer categories, uncovered days, and Medicare entitlement transitions after transplantation.\nICD transition: ICD-9-CM applies before 2015-10-01; ICD-10-CM and ICD-10-PCS on or after that date. Codes may omit decimals. Establish the date controlling the code system for claims spanning the transition, and verify against official code-set definitions.\nUnclear variables: consult the relevant Appendix B/C and source code documentation rather than inferring meaning from variable names.",
+    "crumbs": [
+      "Project documents",
+      "AGENTS.md"
+    ]
+  },
+  {
+    "objectID": "quarto/agents.html#coding-conventions",
+    "href": "quarto/agents.html#coding-conventions",
+    "title": "",
+    "section": "Coding conventions",
+    "text": "Coding conventions\n\nBuild descriptive flowchart text from centrally defined parameters so labels cannot become stale when an analysis window changes.\nCode lists: maintain code type, coding system, category, and exact/prefix matching; verify against official coding sources. Distinguish outcome from opportunity codes and personal-history from symptom codes. Do not invent clinical definitions or variables. Check category overlaps and clinically justified exceptions rather than assuming all codes are mutually exclusive.\nCohort flow: every patient-level inclusion or exclusion goes through fc_filter() in the flowchart workflow. Do not drop rows from $data outside the flowchart; the diagram must reproduce the cohort exactly.\nJoins: specify join keys and expected relationships. Check row multiplication, particularly after interval joins, and define handling of missing or unmatched records explicitly.\nDates and windows: implement the boundaries prespecified in the analysis plan; test boundary cases on synthetic data.\nCode that turns model output into reported numbers lives in named functions in R/functions.R, tested on synthetic data with a known answer.\nPackage APIs: read the help page and NEWS for the installed version before calling a package; don’t write calls from memory.\nStyle: use readable tidyverse conventions. Related readability improvements may accompany functional changes; keep unrelated large-scale formatting separate.",
+    "crumbs": [
+      "Project documents",
+      "AGENTS.md"
+    ]
+  },
+  {
+    "objectID": "quarto/agents.html#checks-for-any-change",
+    "href": "quarto/agents.html#checks-for-any-change",
+    "title": "",
+    "section": "Checks for any change",
+    "text": "Checks for any change\nBefore presenting changes for review or seeking commit approval, perform the applicable checks below. Report which checks were completed, which were not, and any limitations.\nEvery change\n\nPlan: does the change implement the plan as written, and does it leave every open decision open?\nData sources: does it use usRds’s functions, and does their documented behavior match what the plan needs?\nPackage APIs: for new or changed calls to a package, does the pull request name the installed version and the help page or NEWS entry relied on?\nReported numbers: does each estimate match the plan’s estimand, and do tables, figures, and site prose say what the code actually computes?\nDisclosure: search every changed tracked file, and the commit messages and pull-request text, for dates, record IDs, names, absolute paths and numbers that could come from restricted data. Read each hit in context; legitimate ones (plan dates, deciders’ names, synthetic examples) stay.\n\nCohort construction\n\nDo the order, denominator, and labels of flowchart steps reflect the actual conditions?\nAre the cohort counts reproducible from the operations shown?\nIs downstream analysis based on the final flowchart dataset?\n\nClaims and case definitions\n\nWhich claim files, claim types, diagnosis fields, and date fields are used?\nAre exact/prefix matching and ICD-9/ICD-10 date transitions handled appropriately?\nCan history codes, rule-out diagnoses, or outcome codes contaminate opportunities?\n\nWindows and coverage\n\nDoes index ascertainment agree with the analysis plan?\nAre date-window boundaries correct and inclusive where specified?\nDoes eligible Medicare coverage span the entire required observation period, with adjacent spans joined without allowing gaps?\n\nTransplant timing\n\nAre first and repeat transplants distinguished where the analysis requires them?\nAre transplant dates and characteristics drawn from the correct episode according to the analysis plan?\nAre graft failure and repeat transplants treated as prespecified?\n\nResidence and facility\n\nIs residence information valid for the relevant date?\nIs facility information aligned to the appropriate year and transplant center?\nAre historical identifiers and changes in identifiers accounted for?\n\nStructure and documentation\n\nDoes ARCHITECTURE.md describe current scripts and data flow when structural changes warrant an update?\nAre chunk labels unique, and do Quarto pages continue to find the labels they reference?\nDoes every definitive script have a Quarto page and sidebar entry, with matching chunk labels? Were affected pages and navigation updated?\nDoes any site chunk evaluate analysis code, and are derived variables labeled?\n\nExecution\n\nDoes main.R run from a clean session, using suitable relative paths?\nAre machine-specific absolute paths or hard-coded restricted-data directories absent?\nAre package versions and saved intermediates documented and checked for staleness?\n\nValidation on real data (by an authorized person only; share only permitted, disclosure-reviewed aggregate findings)\n\nRow counts before and after interval joins.\nCounts of people with multiple matching coverage or residence spans.\nCase counts by ICD-9 versus ICD-10 era and by claim type.",
+    "crumbs": [
+      "Project documents",
+      "AGENTS.md"
+    ]
+  },
+  {
+    "objectID": "quarto/agents.html#working-with-agents",
+    "href": "quarto/agents.html#working-with-agents",
+    "title": "",
+    "section": "Working with agents",
+    "text": "Working with agents\n\nAutonomy. The person directing an agent sets its working style (review only, step by step, or hands-off) in their own instructions, and may add stricter rules; those take precedence. Without a style, an agent works step by step. At most, an agent may edit code and documentation, add scripts and tests, run code and render the site on synthetic data, and commit to a branch and open a pull request.\nDecisions. Anyone, including an agent, may add options and evidence to a decision issue. A decider states the choice in the issue. Agents implement decisions; they never choose among options on their own, in the issue, the plan, or the code.\nEvery agent, under any autonomy: never merges a pull request; follows the restricted-data rules; asks before running the full pipeline or making expensive external/API calls (approval for these does not override DUA restrictions); shows a person the exact text before posting or sending anything as them, unless that person’s own instructions waive this; and proposes another way of writing something already agreed before committing it.\nPull requests opened by an agent are focused. Each says which plan section or issue it addresses, what was checked, and whether by running code on synthetic data or by reading only. Synthetic results are never described as clinical results.\nScientific citations: maintain verified references in root-level references.bib; cite methodological sources in analysis-plan.md and technical references with the corresponding implementation documentation. Verify bibliographic metadata, source support for claims, and compatibility with the data release being analyzed.",
+    "crumbs": [
+      "Project documents",
+      "AGENTS.md"
+    ]
+  },
+  {
+    "objectID": "quarto/create_covariates.html",
+    "href": "quarto/create_covariates.html",
+    "title": "Covariates",
+    "section": "",
+    "text": "PendingProvisional\n\n\n\nText highlighted like this is provisional: it depends on a decision the analysis plan has not yet made.\nThis script builds the characteristics the analysis compares and models, listed in §5 of the analysis plan. It joins them to the cohort to give analysis_data, with one row per person.",
     "crumbs": [
       "Code",
-      "Outcomes"
+      "Covariates"
+    ]
+  },
+  {
+    "objectID": "quarto/create_covariates.html#starting-point",
+    "href": "quarto/create_covariates.html#starting-point",
+    "title": "Covariates",
+    "section": "Starting point",
+    "text": "Starting point\nEach person’s index stay, from the cohort.\n\n\nClick to show/hide R Code\n# Columns are chosen with select() after loading, not with col_select,\n# because load_usrds_file() fails on Parquet files when col_select is used\n# (usRds#22). Return to col_select once that is fixed.\n# The cohort's index stays, the starting point for every covariate.\ncohort_index &lt;- cohort %&gt;%\n  select(USRDS_ID, index_admit_date, index_discharge_date)\n\ncohort_ids &lt;- cohort_index$USRDS_ID",
+    "crumbs": [
+      "Code",
+      "Covariates"
+    ]
+  },
+  {
+    "objectID": "quarto/create_covariates.html#hospitalization-records",
+    "href": "quarto/create_covariates.html#hospitalization-records",
+    "title": "Covariates",
+    "section": "Hospitalization records",
+    "text": "Hospitalization records\nAll hospitalization records of cohort members are loaded from both files through usRds. Each record is flagged for the diagnoses and procedures of interest, using each file’s own code columns.\n\n\nClick to show/hide R Code\n# All hospitalization records of cohort members, with diagnosis and procedure\n# columns and ICU/CCU days. usRds gap (coverage map, steps 4-9): searched here.\ndx_concepts &lt;- c(index_stay_dx_concepts, \"transplant_complication\")\n\nhospitalization_records &lt;- bind_rows(\n  load_flagged_hospitalizations(\n    \"hosp_to2009\", cohort_ids, hosp_to2009_dx_columns, hosp_to2009_proc_columns,\n    dx_concepts, index_stay_proc_concepts, code_lists\n  ),\n  load_flagged_hospitalizations(\n    \"hosp_2010on\", cohort_ids, hosp_2010on_dx_columns, hosp_2010on_proc_columns,\n    dx_concepts, index_stay_proc_concepts, code_lists\n  )\n)",
+    "crumbs": [
+      "Code",
+      "Covariates"
+    ]
+  },
+  {
+    "objectID": "quarto/create_covariates.html#on-the-index-stay",
+    "href": "quarto/create_covariates.html#on-the-index-stay",
+    "title": "Covariates",
+    "section": "On the index stay",
+    "text": "On the index stay\nThese are taken from the records that make up the index stay:\n\nmeningitis, acute kidney injury, diabetes and cirrhosis;\nthe five procedure groups;\nICU admission (any ICU or CCU days).\n\n\n\nClick to show/hide R Code\n# Meningitis, acute kidney injury, diabetes, cirrhosis and procedures on any\n# record of the index stay; ICU admission if any ICU or CCU days.\nindex_stay_covariates &lt;- summarise_index_stay(\n  hospitalization_records,\n  cohort_index,\n  c(index_stay_dx_concepts, index_stay_proc_concepts)\n)",
+    "crumbs": [
+      "Code",
+      "Covariates"
+    ]
+  },
+  {
+    "objectID": "quarto/create_covariates.html#earlier-hospitalization-for-a-transplant-complication",
+    "href": "quarto/create_covariates.html#earlier-hospitalization-for-a-transplant-complication",
+    "title": "Covariates",
+    "section": "Earlier hospitalization for a transplant complication",
+    "text": "Earlier hospitalization for a transplant complication\nWhether any hospitalization before the index admission had a transplant-complication code.\n\n\nClick to show/hide R Code\n# Any hospitalization with a transplant-complication code before the index\n# admission.\nprior_complication &lt;- summarise_prior_hospitalizations(\n  hospitalization_records,\n  cohort_index,\n  \"transplant_complication\"\n) %&gt;%\n  rename(prior_transplant_complication = prior)\n\nrm(hospitalization_records)",
+    "crumbs": [
+      "Code",
+      "Covariates"
+    ]
+  },
+  {
+    "objectID": "quarto/create_covariates.html#transplant-history-sex-and-race",
+    "href": "quarto/create_covariates.html#transplant-history-sex-and-race",
+    "title": "Covariates",
+    "section": "Transplant history, sex and race",
+    "text": "Transplant history, sex and race\nThese come from the USRDS transplant file:\n\nhow many transplants, and graft failures, came before the index admission;\nhow long it had been since the most recent transplant;\nsex and race, from that most recent transplant’s record.\n\n\n\nClick to show/hide R Code\n# Transplants, graft failures and time since the most recent transplant, from\n# the USRDS transplant file. Sex and race come from the record of the most\n# recent transplant, as in the reconstruction (which took them from this file).\ntransplants &lt;- load_usrds_file(\n  \"tx\",\n  usrds_ids = cohort_ids,\n  factor_labels = FALSE\n) %&gt;%\n  select(all_of(c(\"USRDS_ID\", \"TDATE\", \"FAILDATE\", \"RSEX\", \"RACE\")))\n\ntransplant_history &lt;- summarise_transplant_history(transplants, cohort_index)\n\ntransplant_demographics &lt;- transplants %&gt;%\n  inner_join(\n    transplant_history %&gt;% select(USRDS_ID, last_transplant_date),\n    by = c(\"USRDS_ID\", \"TDATE\" = \"last_transplant_date\"),\n    relationship = \"many-to-one\"\n  ) %&gt;%\n  distinct(USRDS_ID, .keep_all = TRUE) %&gt;%\n  transmute(USRDS_ID, sex = recode_sex(RSEX), race = recode_race(RACE))",
+    "crumbs": [
+      "Code",
+      "Covariates"
+    ]
+  },
+  {
+    "objectID": "quarto/create_covariates.html#ethnicity-and-region",
+    "href": "quarto/create_covariates.html#ethnicity-and-region",
+    "title": "Covariates",
+    "section": "Ethnicity and region",
+    "text": "Ethnicity and region\nThese come from the patients file. Hispanic ethnicity follows the official coding, and region uses the region table.\n\n\nClick to show/hide R Code\n# Hispanic ethnicity and region of residence, from the patients file.\npatient_covariates &lt;- load_usrds_file(\n  \"patients\",\n  usrds_ids = cohort_ids,\n  factor_labels = FALSE\n) %&gt;%\n  select(all_of(c(\"USRDS_ID\", \"HISPANIC\", \"STATE\"))) %&gt;%\n  left_join(state_regions, by = \"STATE\", relationship = \"many-to-one\") %&gt;%\n  transmute(USRDS_ID, hispanic = recode_hispanic(HISPANIC), region, division)",
+    "crumbs": [
+      "Code",
+      "Covariates"
+    ]
+  },
+  {
+    "objectID": "quarto/create_covariates.html#registry-data-at-transplant",
+    "href": "quarto/create_covariates.html#registry-data-at-transplant",
+    "title": "Covariates",
+    "section": "Registry data at transplant",
+    "text": "Registry data at transplant\nBMI, dialysis before transplant, HIV and CMV status, and rejection come from the UNOS registration of the most recent transplant on or before the index admission. Kidney-alone and kidney–pancreas registrations are stacked together.\n\n\nClick to show/hide R Code\n# UNOS registration of the most recent transplant on or before the index\n# admission (kidney-alone and kidney-pancreas files stacked; the kidney-\n# pancreas file names kidney rejection ACUTE_REJ_EPI_KI).\nregistration_columns &lt;- c(\n  \"USRDS_ID\", unos_registration_id, \"TDATE\", \"BMI\", \"PRE_TX_DIAL\",\n  \"HIV_SEROSTATUS\", \"CMV_STATUS\"\n)\n\nregistrations &lt;- bind_rows(\n  load_usrds_file(\n    \"txunos_trr_ki\",\n    usrds_ids = cohort_ids,\n    factor_labels = FALSE\n  ) %&gt;%\n    select(all_of(c(registration_columns, \"ACUTE_REJ_EPI\"))) %&gt;%\n    mutate(organ = \"Kidney\"),\n  load_usrds_file(\n    \"txunos_trr_kp\",\n    usrds_ids = cohort_ids,\n    factor_labels = FALSE\n  ) %&gt;%\n    select(all_of(c(registration_columns, \"ACUTE_REJ_EPI_KI\"))) %&gt;%\n    rename(ACUTE_REJ_EPI = ACUTE_REJ_EPI_KI) %&gt;%\n    mutate(organ = \"Kidney-pancreas\")\n)\n\nindex_registration &lt;- select_index_registration(registrations, cohort_index)",
+    "crumbs": [
+      "Code",
+      "Covariates"
+    ]
+  },
+  {
+    "objectID": "quarto/create_covariates.html#registry-follow-up-reports",
+    "href": "quarto/create_covariates.html#registry-follow-up-reports",
+    "title": "Covariates",
+    "section": "Registry follow-up reports",
+    "text": "Registry follow-up reports\nThe follow-up reports of that same transplant. A report without a date takes the date the kidney graft failed, as in the reconstruction.\n\nDecision pending: the name of the key linking follow-up drug records to these reports has to be confirmed for the release in use (see Setup).\n\n\n\nClick to show/hide R Code\n# Follow-up reports of the index registration. A missing FUDATE falls back to\n# the kidney graft failure date (FUKIFAIL), as in the reconstruction.\nfollowup_columns &lt;- c(\n  \"USRDS_ID\", unos_registration_id, unos_followup_id, \"FUDATE\", \"FUKIFAIL\"\n)\n\nfollowups &lt;- bind_rows(\n  load_usrds_file(\n    \"txfuunos_ki\",\n    usrds_ids = cohort_ids,\n    factor_labels = FALSE\n  ) %&gt;%\n    select(all_of(c(followup_columns, \"ACUTE_REJ_EPI\"))),\n  load_usrds_file(\n    \"txfuunos_kp\",\n    usrds_ids = cohort_ids,\n    factor_labels = FALSE\n  ) %&gt;%\n    select(all_of(c(followup_columns, \"ACUTE_REJ_EPI_KI\"))) %&gt;%\n    rename(ACUTE_REJ_EPI = ACUTE_REJ_EPI_KI)\n) %&gt;%\n  mutate(FUDATE = coalesce(FUDATE, FUKIFAIL)) %&gt;%\n  semi_join(index_registration, by = c(\"USRDS_ID\", unos_registration_id)) %&gt;%\n  inner_join(cohort_index %&gt;% select(USRDS_ID, index_admit_date), by = \"USRDS_ID\", relationship = \"many-to-one\")",
+    "crumbs": [
+      "Code",
+      "Covariates"
+    ]
+  },
+  {
+    "objectID": "quarto/create_covariates.html#acute-rejection",
+    "href": "quarto/create_covariates.html#acute-rejection",
+    "title": "Covariates",
+    "section": "Acute rejection",
+    "text": "Acute rejection\nA person counts as having had acute rejection if there was any episode, treated or not:\n\nat the registration, or\non a follow-up report dated before the index admission.\n\nThe same section also puts the other registration values into analysis form: BMI as recorded, dialysis as yes or no, and HIV and CMV status as positive or negative. Unknown codes are missing. An alternative is to use claims coded for kidney transplant rejection; that is described in the plan but not built (§9).\n\n\nClick to show/hide R Code\n# Acute rejection: any episode (ACREJEPI 1 or 2) at the index registration or\n# on a follow-up report of that transplant dated before the index admission\n# (decided 2026-11-10). An ICD claims definition (T86.11) is the alternative\n# (plan §9); it is not built here.\nfollowup_rejection &lt;- followups %&gt;%\n  filter(FUDATE &lt; index_admit_date) %&gt;%\n  group_by(USRDS_ID) %&gt;%\n  summarise(rejection_followup = any_known(unos_rejection_any(ACUTE_REJ_EPI)), .groups = \"drop\")\n\nregistration_covariates &lt;- index_registration %&gt;%\n  left_join(followup_rejection, by = \"USRDS_ID\", relationship = \"one-to-one\") %&gt;%\n  rowwise() %&gt;%\n  mutate(\n    acute_rejection = any_known(c(unos_rejection_any(ACUTE_REJ_EPI), rejection_followup))\n  ) %&gt;%\n  ungroup() %&gt;%\n  transmute(\n    USRDS_ID,\n    organ,\n    bmi = BMI,\n    pretransplant_dialysis = case_when(\n      PRE_TX_DIAL == \"Y\" ~ TRUE,\n      PRE_TX_DIAL == \"N\" ~ FALSE,\n      .default = NA\n    ),\n    hiv_status = case_when(HIV_SEROSTATUS == \"P\" ~ \"Positive\", HIV_SEROSTATUS == \"N\" ~ \"Negative\", .default = NA),\n    cmv_status = case_when(CMV_STATUS == \"P\" ~ \"Positive\", CMV_STATUS == \"N\" ~ \"Negative\", .default = NA),\n    acute_rejection\n  )",
+    "crumbs": [
+      "Code",
+      "Covariates"
+    ]
+  },
+  {
+    "objectID": "quarto/create_covariates.html#immunosuppression-at-transplant",
+    "href": "quarto/create_covariates.html#immunosuppression-at-transplant",
+    "title": "Covariates",
+    "section": "Immunosuppression at transplant",
+    "text": "Immunosuppression at transplant\nThe drug classes recorded at that transplant’s registration (#2). A registration with no drug records is missing rather than “not on”.\n\n\nClick to show/hide R Code\n# Immunosuppression at transplant: the index registration's drug records\n# (TXIRUNOS), any drug in each class. A registration with no drug records is\n# missing, not \"not on\".\ntransplant_drugs &lt;- load_usrds_file(\n  \"txirunos\",\n  usrds_ids = cohort_ids,\n  factor_labels = FALSE\n) %&gt;%\n  select(all_of(c(\"USRDS_ID\", unos_registration_id, \"RX_CD\", \"DRUG_CD_OSTXT\"))) %&gt;%\n  semi_join(index_registration, by = c(\"USRDS_ID\", unos_registration_id))\n\nimmunosuppression_transplant &lt;- classify_immunosuppressants(\n  transplant_drugs,\n  unos_registration_id,\n  immunosuppressant_classes,\n  immunosuppressant_free_text\n) %&gt;%\n  inner_join(\n    index_registration %&gt;% select(USRDS_ID, all_of(unos_registration_id)),\n    by = unos_registration_id,\n    relationship = \"one-to-one\"\n  ) %&gt;%\n  select(-all_of(unos_registration_id)) %&gt;%\n  rename_with(\\(x) str_c(\"tx_\", x), -USRDS_ID)",
+    "crumbs": [
+      "Code",
+      "Covariates"
+    ]
+  },
+  {
+    "objectID": "quarto/create_covariates.html#immunosuppression-at-first-follow-up",
+    "href": "quarto/create_covariates.html#immunosuppression-at-first-follow-up",
+    "title": "Covariates",
+    "section": "Immunosuppression at first follow-up",
+    "text": "Immunosuppression at first follow-up\nThe drug classes current at that transplant’s first follow-up visit, as the paper’s Methods describe (#2). A drug counts only if it was current maintenance at the visit.\n\n\nClick to show/hide R Code\n# Immunosuppression at the first follow-up report of the index transplant\n# (earliest FUDATE, whatever its date relative to the index admission; #2):\n# a class counts if one of its drugs is current maintenance (RXMNTCUR = 1).\nfirst_followup &lt;- followups %&gt;%\n  filter(!is.na(FUDATE)) %&gt;%\n  group_by(USRDS_ID) %&gt;%\n  slice_min(FUDATE, n = 1, with_ties = FALSE) %&gt;%\n  ungroup() %&gt;%\n  select(USRDS_ID, all_of(unos_followup_id))\n\nfollowup_drugs &lt;- load_usrds_file(\n  \"txifunos\",\n  usrds_ids = cohort_ids,\n  factor_labels = FALSE\n) %&gt;%\n  select(all_of(c(\"USRDS_ID\", unos_followup_id, \"RX_CD\", \"DRUG_CD_OSTXT\", \"RXMNTCUR\"))) %&gt;%\n  semi_join(first_followup, by = c(\"USRDS_ID\", unos_followup_id)) %&gt;%\n  # Drugs not current at the visit keep the follow-up's key but match no class\n  mutate(\n    RX_CD = if_else(RXMNTCUR %in% 1, RX_CD, NA),\n    DRUG_CD_OSTXT = if_else(RXMNTCUR %in% 1, DRUG_CD_OSTXT, NA)\n  )\n\nimmunosuppression_followup &lt;- classify_immunosuppressants(\n  followup_drugs,\n  unos_followup_id,\n  immunosuppressant_classes,\n  immunosuppressant_free_text\n) %&gt;%\n  inner_join(first_followup, by = unos_followup_id, relationship = \"one-to-one\") %&gt;%\n  select(-all_of(unos_followup_id)) %&gt;%\n  rename_with(\\(x) str_c(\"fu_\", x), -USRDS_ID)",
+    "crumbs": [
+      "Code",
+      "Covariates"
+    ]
+  },
+  {
+    "objectID": "quarto/create_covariates.html#putting-it-together",
+    "href": "quarto/create_covariates.html#putting-it-together",
+    "title": "Covariates",
+    "section": "Putting it together",
+    "text": "Putting it together\nEvery covariate table is joined to the cohort one-to-one, so a duplicate stops the run. Time since transplant is converted to months and also split at the plan’s 2-year cut-off. The script then checks that analysis_data still has exactly one row per cohort member.\n\n\nClick to show/hide R Code\n# One row per cohort member. Joins are one-to-one, so a duplicate stops the run.\nanalysis_data &lt;- cohort %&gt;%\n  left_join(index_stay_covariates, by = \"USRDS_ID\", relationship = \"one-to-one\") %&gt;%\n  left_join(prior_complication, by = \"USRDS_ID\", relationship = \"one-to-one\") %&gt;%\n  left_join(transplant_history, by = \"USRDS_ID\", relationship = \"one-to-one\") %&gt;%\n  left_join(transplant_demographics, by = \"USRDS_ID\", relationship = \"one-to-one\") %&gt;%\n  left_join(patient_covariates, by = \"USRDS_ID\", relationship = \"one-to-one\") %&gt;%\n  left_join(registration_covariates, by = \"USRDS_ID\", relationship = \"one-to-one\") %&gt;%\n  left_join(immunosuppression_transplant, by = \"USRDS_ID\", relationship = \"one-to-one\") %&gt;%\n  left_join(immunosuppression_followup, by = \"USRDS_ID\", relationship = \"one-to-one\") %&gt;%\n  mutate(\n    months_since_last_transplant = days_since_last_transplant / (365.25 / 12),\n    over_cutoff_since_transplant = days_since_last_transplant &gt; years_since_transplant_cutoff * 365.25\n  )\n\nstopifnot(nrow(analysis_data) == nrow(cohort))",
+    "crumbs": [
+      "Code",
+      "Covariates"
+    ]
+  },
+  {
+    "objectID": "quarto/create_covariates.html#variable-labels",
+    "href": "quarto/create_covariates.html#variable-labels",
+    "title": "Covariates",
+    "section": "Variable labels",
+    "text": "Variable labels\n\n\nClick to show/hide R Code\nanalysis_data &lt;- analysis_data %&gt;%\n  set_variable_labels(\n    cryptococcal_meningitis = \"Cryptococcal meningitis on the index stay\",\n    acute_kidney_injury = \"Acute kidney injury on the index stay\",\n    diabetes = \"Diabetes on the index stay\",\n    cirrhosis = \"Cirrhosis on the index stay\",\n    icu_admission = \"ICU or CCU days on the index stay\",\n    lumbar_puncture = \"Lumbar puncture on the index stay\",\n    spinal_procedure = \"Other spinal procedure on the index stay\",\n    neurosurgical_procedure = \"Neurosurgical procedure on the index stay\",\n    lung_procedure = \"Lung procedure on the index stay\",\n    vp_shunt = \"Ventriculoperitoneal shunt on the index stay\",\n    prior_transplant_complication = \"Earlier hospitalization with a transplant-complication code\",\n    transplants_before_index = \"Transplants on or before index admission\",\n    failures_before_index = \"Graft failures before index admission\",\n    months_since_last_transplant = \"Months since most recent transplant\",\n    over_cutoff_since_transplant = str_glue(\"More than {years_since_transplant_cutoff} years since most recent transplant\"),\n    sex = \"Sex\",\n    race = \"Race\",\n    hispanic = \"Hispanic ethnicity\",\n    region = \"Census region of residence\",\n    organ = \"Most recent transplant: kidney or kidney-pancreas\",\n    bmi = \"BMI at registration\",\n    pretransplant_dialysis = \"Dialysis before transplant\",\n    hiv_status = \"HIV serostatus at registration\",\n    cmv_status = \"CMV serostatus at registration\",\n    acute_rejection = \"Acute rejection episode (UNOS registration or follow-up before index)\"\n  )",
+    "crumbs": [
+      "Code",
+      "Covariates"
+    ]
+  },
+  {
+    "objectID": "quarto/tables.html",
+    "href": "quarto/tables.html",
+    "title": "Tables",
+    "section": "",
+    "text": "This script makes Tables 1 and 2 (characteristics and immunosuppression by vital status 6 months after admission) and the odds-ratio table, following plan §8 and the disclosure rules in §10. The tables are written to tables/, which is not in the repository; they appear on this site only after USRDS review clears them.",
+    "crumbs": [
+      "Code",
+      "Tables"
+    ]
+  },
+  {
+    "objectID": "quarto/tables.html#journal-style",
+    "href": "quarto/tables.html#journal-style",
+    "title": "Tables",
+    "section": "Journal style",
+    "text": "Journal style\nThe tables follow the style shared by OFID, CID and JID, which is AMA style: gtsummary’s JAMA theme, with P values shown without a leading zero (style_pvalue_ama() on the Functions page).\n\n\nClick to show/hide R Code\n# OFID, CID and JID share one house style, which follows the AMA Manual of\n# Style (OFID author guidelines; plan §8). gtsummary's JAMA theme gives the\n# AMA conventions: P values to 2 decimals without a leading zero, \"No. (%)\"\n# and the statistic named beside each variable, and CIs written \"a to b\".\n# On top of it, P values drop the leading zero (style_pvalue_ama()), and\n# footnotes use lowercase letters when the tables are saved.\ngtsummary::theme_gtsummary_journal(\"jama\")\ngtsummary::set_gtsummary_theme(list(\n  \"pkgwide-fn:pvalue_fun\" = style_pvalue_ama,\n  \"pkgwide-fn:prependpvalue_fun\" = \\(x) str_c(\"P\", if_else(str_detect(style_pvalue_ama(x), \"^[&lt;&gt;]\"), \" \", \" = \"), style_pvalue_ama(x))\n))\np_value_header &lt;- \"***P*** **value**\"",
+    "crumbs": [
+      "Code",
+      "Tables"
+    ]
+  },
+  {
+    "objectID": "quarto/tables.html#readable-names",
+    "href": "quarto/tables.html#readable-names",
+    "title": "Tables",
+    "section": "Readable names",
+    "text": "Readable names\nEvery variable in a table or figure gets a readable name here, so no column name reaches an output.\n\n\nClick to show/hide R Code\n# Readable names for every variable in a table or figure, so no column name\n# reaches an output. Drug labels are shared by the at-transplant (tx_) and\n# first follow-up (fu_) versions.\ndrug_labels &lt;- c(\n  antithymocyte_globulin = \"Antithymocyte globulin\",\n  alemtuzumab = \"Alemtuzumab\",\n  il2_receptor_antibody = \"Anti-IL-2 receptor antibody\",\n  tacrolimus = \"Tacrolimus\",\n  cyclosporine = \"Cyclosporine\",\n  mycophenolate = \"Mycophenolate\",\n  mtor_inhibitor = \"mTOR inhibitor\",\n  azathioprine = \"Azathioprine\",\n  steroids = \"Steroids\"\n)\n\nreport_labels &lt;- c(\n  age_at_index = \"Age at index admission, years\",\n  age_60_or_older = \"Age 60 years or older\",\n  sex = \"Sex\",\n  race = \"Race\",\n  hispanic = \"Hispanic ethnicity\",\n  region = \"Census region of residence\",\n  organ = \"Transplanted organ\",\n  bmi = \"BMI at registration, kg/m²\",\n  pretransplant_dialysis = \"Dialysis before transplant\",\n  hiv_status = \"HIV serostatus\",\n  cmv_status = \"CMV serostatus\",\n  more_than_one_transplant = \"More than one transplant\",\n  prior_graft_failure = \"Earlier graft failure\",\n  months_since_last_transplant = \"Months since most recent transplant\",\n  over_cutoff_since_transplant = str_glue(\"More than {years_since_transplant_cutoff} years since most recent transplant\"),\n  acute_rejection = \"Acute rejection episode\",\n  prior_transplant_complication = \"Earlier hospitalization for a transplant complication\",\n  cryptococcal_meningitis = \"Cryptococcal meningitis\",\n  acute_kidney_injury = \"Acute kidney injury\",\n  diabetes = \"Diabetes\",\n  cirrhosis = \"Cirrhosis\",\n  icu_admission = \"ICU admission\",\n  lumbar_puncture = \"Lumbar puncture\",\n  spinal_procedure = \"Other spinal procedure\",\n  neurosurgical_procedure = \"Neurosurgical procedure\",\n  lung_procedure = \"Lung procedure\",\n  vp_shunt = \"Ventriculoperitoneal shunt\",\n  no_tacrolimus_at_transplant = \"Not on tacrolimus at transplant\",\n  no_tacrolimus_at_followup = \"Not on tacrolimus at first follow-up\",\n  set_names(str_c(drug_labels, \" at transplant\"), str_c(\"tx_\", names(drug_labels))),\n  set_names(str_c(drug_labels, \" at first follow-up\"), str_c(\"fu_\", names(drug_labels)))\n)\n\n\n\n\nClick to show/hide R Code\ntable_1_variables &lt;- c(\n  \"age_at_index\", \"age_60_or_older\", \"sex\", \"race\", \"hispanic\", \"region\",\n  \"bmi\", \"pretransplant_dialysis\", \"hiv_status\", \"cmv_status\",\n  \"more_than_one_transplant\", \"prior_graft_failure\",\n  \"months_since_last_transplant\", \"over_cutoff_since_transplant\",\n  \"acute_rejection\", \"prior_transplant_complication\",\n  \"cryptococcal_meningitis\", \"acute_kidney_injury\", \"diabetes\", \"cirrhosis\",\n  \"icu_admission\", \"lumbar_puncture\", \"spinal_procedure\",\n  \"neurosurgical_procedure\", \"lung_procedure\", \"vp_shunt\"\n)\n# Table 2 follows the paper's rows and order: induction agents only at\n# transplant, steroids first in both blocks.\ntable_2_variables &lt;- c(\n  str_c(\"tx_\", c(\n    \"steroids\", \"antithymocyte_globulin\", \"alemtuzumab\", \"il2_receptor_antibody\",\n    \"tacrolimus\", \"cyclosporine\", \"mycophenolate\", \"mtor_inhibitor\", \"azathioprine\"\n  )),\n  str_c(\"fu_\", c(\n    \"steroids\", \"tacrolimus\", \"cyclosporine\", \"mycophenolate\", \"mtor_inhibitor\", \"azathioprine\"\n  ))\n)\n\n# The grouping column: 6-month vital status, survivors first\ntable_data &lt;- model_data %&gt;%\n  mutate(\n    vital_status = factor(\n      if_else(died_within_window, \"Died\", \"Survived\"),\n      levels = c(\"Survived\", \"Died\")\n    )\n  )\ntable_group_columns &lt;- c(Overall = \"stat_0\", Survived = \"stat_1\", Died = \"stat_2\")",
+    "crumbs": [
+      "Code",
+      "Tables"
+    ]
+  },
+  {
+    "objectID": "quarto/tables.html#descriptive-tables",
+    "href": "quarto/tables.html#descriptive-tables",
+    "title": "Tables",
+    "section": "Descriptive tables",
+    "text": "Descriptive tables\nOne function makes both descriptive tables. Continuous variables are shown as mean (SD), time since transplant as median (IQR), and everything else as a count and percentage, with the number unknown always shown. Continuous variables are compared with Student’s t test; categorical ones with the chi-squared test, or Fisher’s exact test when an expected count is under 5.\nBefore the table is shown, every count from 1 to 10 is hidden, along with any other count that would let it be worked out by subtraction, and the P value of that variable is removed (flag_small_cells() and suppress_table_body() on the Functions page).\n\n\nClick to show/hide R Code\n# One descriptive table by vital status (plan §8): mean (SD) for continuous\n# variables, median (IQR) for time since transplant, No. (%) otherwise, with\n# missing counts always shown. Student t test for continuous variables; for\n# categorical ones, the chi-squared test without continuity correction, or\n# Fisher's exact test when an expected count is under 5 (gtsummary's\n# default rule). Small cells are then hidden (plan §10).\ndescribe_by_vital_status &lt;- function(data, variables, labels, medians = character()) {\n  counts &lt;- count_table_cells(data, variables, group = \"vital_status\")\n  flags &lt;- flag_small_cells(counts)\n\n  table &lt;- data %&gt;%\n    select(all_of(c(\"vital_status\", variables))) %&gt;%\n    gtsummary::tbl_summary(\n      by = vital_status,\n      label = as.list(labels[variables]),\n      statistic = c(\n        list(gtsummary::all_continuous() ~ \"{mean} ({sd})\"),\n        as.list(set_names(rep(\"{median} ({p25} \\u2013 {p75})\", length(medians)), medians))\n      ),\n      digits = list(gtsummary::all_categorical() ~ c(0, 1)),\n      missing = \"always\",\n      missing_text = \"Unknown\"\n    ) %&gt;%\n    gtsummary::add_overall(last = FALSE) %&gt;%\n    gtsummary::add_p(\n      test = list(gtsummary::all_continuous() ~ \"t.test\"),\n      test.args = list(gtsummary::all_continuous() ~ list(var.equal = TRUE))\n    ) %&gt;%\n    gtsummary::modify_table_body(\n      \\(body) suppress_table_body(body, flags, table_group_columns) %&gt;%\n        mutate(stat_label = str_replace(stat_label, \"^n \\\\(%\\\\)$\", \"No. (%)\"))\n    ) %&gt;%\n    gtsummary::modify_header(p.value = p_value_header) %&gt;%\n    gtsummary::modify_footnote_header(\n      \"Cells with 1 to 10 people, and cells from which they could be recovered, are shown as ≤10, and their P values are removed (USRDS data use agreement).\",\n      columns = gtsummary::all_stat_cols(),\n      replace = FALSE\n    )\n\n  list(table = table, flags = flags)\n}\n\n\n\n\nClick to show/hide R Code\ntable_1_result &lt;- describe_by_vital_status(\n  table_data, table_1_variables, report_labels,\n  medians = \"months_since_last_transplant\"\n)\ntable_1 &lt;- table_1_result$table %&gt;%\n  gtsummary::modify_caption(\"**Table 1.** Characteristics of kidney transplant recipients hospitalized with cryptococcosis, by vital status 6 months after admission\") %&gt;%\n  gtsummary::modify_abbreviation(\"BMI = body mass index\") %&gt;%\n  gtsummary::modify_abbreviation(\"CMV = cytomegalovirus\") %&gt;%\n  gtsummary::modify_abbreviation(\"HIV = human immunodeficiency virus\") %&gt;%\n  gtsummary::modify_abbreviation(\"ICU = intensive care unit\")\n\n\n\n\nClick to show/hide R Code\n# Immunosuppression at transplant and at the first follow-up visit, from the\n# UNOS records (plan §5), as two blocks of one table.\ntable_2_result &lt;- describe_by_vital_status(table_data, table_2_variables, report_labels)\ntable_2 &lt;- table_2_result$table %&gt;%\n  gtsummary::modify_caption(\"**Table 2.** Immunosuppression at transplant and at the first follow-up visit, by vital status 6 months after admission\") %&gt;%\n  gtsummary::modify_abbreviation(\"IL-2 = interleukin 2\") %&gt;%\n  gtsummary::modify_abbreviation(\"mTOR = mechanistic target of rapamycin\")",
+    "crumbs": [
+      "Code",
+      "Tables"
+    ]
+  },
+  {
+    "objectID": "quarto/tables.html#follow-up",
+    "href": "quarto/tables.html#follow-up",
+    "title": "Tables",
+    "section": "Follow-up",
+    "text": "Follow-up\nBefore any model, how long people were followed and how many died or were censored. Median follow-up uses the reverse Kaplan–Meier method, which treats censoring as the event.\n\n\nClick to show/hide R Code\n# Follow-up before any model (time to event): deaths, censoring, and median\n# follow-up by the reverse Kaplan-Meier method (censoring treated as the\n# event). Counts here pass the same small-count rule as the tables.\nreverse_km &lt;- survival::survfit(\n  survival::Surv(survival_days, 1 - survival_event) ~ 1,\n  data = analysis_data\n)\nfollow_up_summary &lt;- tibble(\n  measure = c(\n    \"People\", \"Deaths\", \"Censored\",\n    \"Deaths within 6 months\", \"Median follow-up, days (95% CI)\"\n  ),\n  value = c(\n    nrow(analysis_data),\n    sum(analysis_data$survival_event),\n    sum(analysis_data$survival_event == 0),\n    sum(model_data$died_within_window),\n    str_glue(\n      \"{summary(reverse_km)$table[['median']]} \",\n      \"({summary(reverse_km)$table[['0.95LCL']]}, {summary(reverse_km)$table[['0.95UCL']]})\"\n    )\n  ) %&gt;%\n    as.character()\n)",
+    "crumbs": [
+      "Code",
+      "Tables"
+    ]
+  },
+  {
+    "objectID": "quarto/tables.html#odds-ratios",
+    "href": "quarto/tables.html#odds-ratios",
+    "title": "Tables",
+    "section": "Odds ratios",
+    "text": "Odds ratios\nEach variable alone, and the final model after backward elimination, side by side. The P value shown for each variable is the single joint test the selection used, so a variable with several categories has one P value, not one per category.\n\n\nClick to show/hide R Code\n# Unadjusted (each candidate alone) and adjusted (final backward-elimination\n# model) odds ratios with 95% Wald confidence intervals. P values are the\n# joint Wald P per term that the selection used (plan §8), one per variable,\n# not one per factor level. Candidates with no estimable coefficient (no\n# variation among the people with them known) are listed in a footnote.\nreplace_term_p &lt;- function(body, term_p) {\n  body %&gt;%\n    left_join(term_p, by = \"variable\") %&gt;%\n    mutate(p.value = if_else(row_type == \"label\", term_p_value, NA_real_)) %&gt;%\n    select(-term_p_value)\n}\n\nestimable &lt;- bivariable_results %&gt;% filter(!is.na(p_value))\nnot_estimable &lt;- bivariable_results %&gt;% filter(is.na(p_value))\n# Yes/no variables are shown on one row (the odds ratio for yes)\nlogical_terms &lt;- estimable$term[map_lgl(model_data[estimable$term], is.logical)]\n\ntable_unadjusted &lt;- model_data %&gt;%\n  select(all_of(c(\"died_within_window\", estimable$term))) %&gt;%\n  gtsummary::tbl_uvregression(\n    method = glm,\n    y = died_within_window,\n    method.args = list(family = binomial),\n    exponentiate = TRUE,\n    label = as.list(report_labels[estimable$term]),\n    show_single_row = all_of(logical_terms),\n    hide_n = TRUE\n  ) %&gt;%\n  gtsummary::modify_table_body(\n    \\(body) replace_term_p(body, tibble(variable = estimable$term, term_p_value = estimable$p_value))\n  )\n\nadjusted_p &lt;- tibble(\n  variable = multivariable$retained,\n  term_p_value = map_dbl(multivariable$retained, \\(term) wald_term_p(multivariable$model, term))\n)\ntable_adjusted &lt;- multivariable$model %&gt;%\n  gtsummary::tbl_regression(\n    exponentiate = TRUE,\n    label = as.list(report_labels[multivariable$retained]),\n    show_single_row = all_of(intersect(logical_terms, multivariable$retained))\n  ) %&gt;%\n  gtsummary::modify_table_body(\\(body) replace_term_p(body, adjusted_p))\n\nmodel_n &lt;- nobs(multivariable$model)\nmodel_events &lt;- sum(multivariable$data$died_within_window)\nmodel_excluded &lt;- nrow(model_data) - model_n\n\ntable_models &lt;- gtsummary::tbl_merge(\n  list(table_unadjusted, table_adjusted),\n  tab_spanner = c(\"**Unadjusted**\", \"**Adjusted**\")\n) %&gt;%\n  gtsummary::modify_header(p.value_1 = p_value_header, p.value_2 = p_value_header) %&gt;%\n  gtsummary::modify_caption(\"**Table 3.** Odds ratios for death within 6 months of admission\") %&gt;%\n  gtsummary::modify_source_note(\n    str_glue(\n      \"Unadjusted: one logistic model per variable, on the people with it known. \",\n      \"Adjusted: backward elimination from all candidates (removed while P ≥ {elimination_threshold}), \",\n      \"on the {model_n} people with every candidate known ({model_events} deaths; {model_excluded} excluded for missing data). \",\n      \"P values are joint Wald tests, one per variable. \",\n      \"Hosmer-Lemeshow test of the adjusted model: χ² = {round(hosmer_lemeshow_result$statistic, 2)}, \",\n      \"df = {hosmer_lemeshow_result$df}, P = {gtsummary::style_pvalue(hosmer_lemeshow_result$p_value, digits = 2)}.\"\n    )\n  )\nif (nrow(not_estimable) &gt; 0) {\n  table_models &lt;- table_models %&gt;%\n    gtsummary::modify_source_note(\n      str_c(\"Not estimable (no variation): \", str_flatten_comma(report_labels[not_estimable$term]), \".\")\n    )\n}",
+    "crumbs": [
+      "Code",
+      "Tables"
+    ]
+  },
+  {
+    "objectID": "quarto/tables.html#the-papers-final-model",
+    "href": "quarto/tables.html#the-papers-final-model",
+    "title": "Tables",
+    "section": "The paper’s final model",
+    "text": "The paper’s final model\nTable 4 sets the odds ratios from the refitted eight-variable model beside the ones the paper reports, and says whether the backward elimination here kept each variable.\n\n\nClick to show/hide R Code\n# Table 4: the paper's final model refitted here, beside the odds ratios the\n# paper reports, with whether the backward elimination kept each term. Same\n# people as the adjusted model in Table 3.\n# Published values keep the paper's one decimal place\nformat_or &lt;- function(estimate, low, high, accuracy = 0.01) {\n  str_glue(\n    \"{scales::number(estimate, accuracy = accuracy)} \",\n    \"({scales::number(low, accuracy = accuracy)} to {scales::number(high, accuracy = accuracy)})\"\n  )\n}\npublished_comparison &lt;- published_model %&gt;%\n  left_join(\n    tidy_odds_ratios(published_fit, report_labels) %&gt;%\n      mutate(term = str_remove(term, \"TRUE$\")) %&gt;%\n      select(term, term_label, estimate, conf.low, conf.high),\n    by = \"term\"\n  ) %&gt;%\n  transmute(\n    Characteristic = term_label,\n    `Published aOR (95% CI)` = format_or(published_or, published_low, published_high, accuracy = 0.1),\n    `This analysis, aOR (95% CI)` = format_or(estimate, conf.low, conf.high),\n    `Kept by backward elimination` = if_else(term %in% multivariable$retained, \"Yes\", \"No\")\n  )\ntable_published_model &lt;- published_comparison %&gt;%\n  gt::gt() %&gt;%\n  gt::tab_caption(gt::md(\"**Table 4.** The paper's final model refitted, beside the published adjusted odds ratios\")) %&gt;%\n  gt::tab_source_note(str_glue(\n    \"Published estimates: Fiorica et al. 2025, Results. This analysis: the same eight terms in one logistic model, \",\n    \"on the {nobs(published_fit)} people with every candidate known ({sum(multivariable$data$died_within_window)} deaths), as in Table 3. \",\n    \"Abbreviation: aOR = adjusted odds ratio.\"\n  ))",
+    "crumbs": [
+      "Code",
+      "Tables"
+    ]
+  },
+  {
+    "objectID": "quarto/tables.html#disclosure-checks",
+    "href": "quarto/tables.html#disclosure-checks",
+    "title": "Tables",
+    "section": "Disclosure checks",
+    "text": "Disclosure checks\nSome counts cannot be hidden inside a table, such as how many people the model left out for missing data. They are collected here for the reviewer; any row marked for review must be resolved before results leave the approved environment.\n\n\nClick to show/hide R Code\n# What a reviewer needs before release (plan §10): cells hidden in each\n# table, and counts the tables cannot hide themselves. Rows with\n# needs_review = TRUE must be resolved before anything leaves the approved\n# environment.\ngroup_sizes &lt;- table(table_data$vital_status)\ndisclosure_checks &lt;- tibble(\n  check = c(\n    \"Table 1: cells hidden\",\n    \"Table 2: cells hidden\",\n    \"Smallest vital-status group\",\n    \"People excluded from the adjusted model for missing data\",\n    \"Deaths in the adjusted model\",\n    \"Smallest of deaths and censored in follow-up\"\n  ),\n  value = c(\n    sum(table_1_result$flags$suppress),\n    sum(table_2_result$flags$suppress),\n    min(group_sizes),\n    model_excluded,\n    model_events,\n    min(sum(analysis_data$survival_event), sum(analysis_data$survival_event == 0))\n  ),\n  needs_review = c(\n    FALSE,\n    FALSE,\n    min(group_sizes) &lt;= 10,\n    between(model_excluded, 1, 10),\n    between(model_events, 1, 10),\n    between(min(sum(analysis_data$survival_event), sum(analysis_data$survival_event == 0)), 1, 10)\n  )\n)\n\n\n\n\nClick to show/hide R Code\ndir.create(\"tables\", showWarnings = FALSE)\nwalk2(\n  list(table_1, table_2, table_models),\n  c(\"table_1\", \"table_2\", \"table_models\"),\n  \\(table, name) {\n    gt_table &lt;- gtsummary::as_gt(table) %&gt;%\n      gt::opt_footnote_marks(marks = \"letters\")\n    gt::gtsave(gt_table, file.path(\"tables\", str_c(name, \".html\")))\n    gt::gtsave(gt_table, file.path(\"tables\", str_c(name, \".docx\")))\n  }\n)\ngt::gtsave(table_published_model, file.path(\"tables\", \"table_published_model.html\"))\ngt::gtsave(table_published_model, file.path(\"tables\", \"table_published_model.docx\"))",
+    "crumbs": [
+      "Code",
+      "Tables"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Overview",
+    "section": "",
+    "text": "Cryptococcosis is an invasive fungal infection that affects people with weakened immune systems, including kidney transplant recipients. Fiorica et al. used USRDS data to study 6-month mortality, and the factors associated with it, among kidney transplant recipients hospitalized with cryptococcosis from 2006 to 20161.",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#background",
+    "href": "index.html#background",
+    "title": "Overview",
+    "section": "",
+    "text": "Cryptococcosis is an invasive fungal infection that affects people with weakened immune systems, including kidney transplant recipients. Fiorica et al. used USRDS data to study 6-month mortality, and the factors associated with it, among kidney transplant recipients hospitalized with cryptococcosis from 2006 to 20161.",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#what-this-project-does",
+    "href": "index.html#what-this-project-does",
+    "title": "Overview",
+    "section": "What this project does",
+    "text": "What this project does\nThis project replicates that analysis as the paper describes it, using the usRds R package wherever the package can do a step. Along the way it assesses how well usRds covers the paper’s methods.\nThe original analysis was run in Stata, and that code is no longer available. The paper and its supplement are therefore the specification. The published estimates are a reference point, not a target.",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#methods",
+    "href": "index.html#methods",
+    "title": "Overview",
+    "section": "Methods",
+    "text": "Methods\nThe cohort is built from USRDS hospitalization files, Medicare claims and UNOS transplant records. The outcome is death from any cause within 180 days of the first cryptococcosis hospitalization after transplant. It is analysed with:\n\ndescriptive tables;\na Kaplan–Meier curve;\nmultivariable logistic regression.\n\nStudy design and methods explains the choices in plain language. The analysis plan is the authoritative specification. The usRds coverage page maps each step to the package.",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#status",
+    "href": "index.html#status",
+    "title": "Overview",
+    "section": "Status",
+    "text": "Status\nIn progress; nothing on this site comes from USRDS data. The code so far is the setup, the code lists, the helper functions, and the cohort, covariate, outcome and model scripts, with the helpers tested on synthetic data. Open decisions are tracked as decision issues.",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "quarto/figures.html",
+    "href": "quarto/figures.html",
+    "title": "Figures",
+    "section": "",
+    "text": "This script draws the three figures: the cohort flowchart (Figure 1), the survival curve (Figure 2) and the odds ratios from the final model (Figure 3), in the house style shared with the COHERO analysis. The figures are written to figures/, which is not in the repository; they appear on this site only after USRDS review clears them.\nClick to show/hide R Code\nggplot2::theme_set(theme_publication())\n# One series per figure: the palette's first colour after the gray kept for\n# a reference group (plot_style.R)\nseries_color &lt;- dplyr::nth(publication_colors, 2)\ndir.create(\"figures\", showWarnings = FALSE)",
+    "crumbs": [
+      "Code",
+      "Figures"
+    ]
+  },
+  {
+    "objectID": "quarto/figures.html#figure-1-the-cohort",
+    "href": "quarto/figures.html#figure-1-the-cohort",
+    "title": "Figures",
+    "section": "Figure 1: the cohort",
+    "text": "Figure 1: the cohort\nThe flowchart is drawn from the same object that built the cohort, so the two cannot disagree. If any box holds 1 to 10 people, the figure is not saved and the run warns.\n\n\nClick to show/hide R Code\n# The flowchart from the same object that built the cohort, so the diagram\n# and the analytic data cannot disagree. A box with 1 to 10 people is not\n# exported: the run warns and the check is left for review.\nflowchart_boxes &lt;- flowchart::fc_view(cohort_flowchart, what = \"fc\")\nflowchart_small &lt;- flowchart_small_counts(flowchart_boxes)\n\nif (nrow(flowchart_small) == 0) {\n  cohort_flowchart %&gt;%\n    flowchart::fc_draw(big.mark = \",\", box_corners = \"sharp\") %&gt;%\n    flowchart::fc_export(\"figure_1.png\", path = \"figures\", width = 180, height = 240, units = \"mm\", res = 600) %&gt;%\n    flowchart::fc_export(\"figure_1.pdf\", path = \"figures\", width = 180, height = 240, units = \"mm\")\n} else {\n  warning(\n    \"Figure 1 not exported: \", nrow(flowchart_small),\n    \" box(es) with 1 to 10 people (see flowchart_small).\",\n    call. = FALSE\n  )\n}",
+    "crumbs": [
+      "Code",
+      "Figures"
+    ]
+  },
+  {
+    "objectID": "quarto/figures.html#figure-2-survival",
+    "href": "quarto/figures.html#figure-2-survival",
+    "title": "Figures",
+    "section": "Figure 2: survival",
+    "text": "Figure 2: survival\nThe survival curve has its 95% confidence band and, below it, the number still at risk and the running totals of deaths and censored people. A time appears in that table only if no count shown there, or the change since the previous time, is from 1 to 10, and the curve stops at the last such time (km_reportable_times() on the Functions page). A dashed line marks 6 months.\n\n\nClick to show/hide R Code\n# Kaplan-Meier survival from the index admission (KMunicate style: curve with\n# its 95% CI, and at risk, deaths and censored below). The risk table shows\n# only times that pass the small-count rule, and the curve stops at the last\n# of them (plan §10). Time 0 stays on the axis even when the table cannot\n# show it (for example, 1 to 10 deaths on the admission day). A dashed line\n# marks 6 months.\ndays_per_month &lt;- 365.25 / 12\nkm_candidate_times &lt;- c(0, mortality_window_days, seq(365, 10 * 365, by = 365))\nkm_times &lt;- km_reportable_times(km_fit, km_candidate_times)\nmonths_label &lt;- \\(days) round(days / days_per_month)\n\nfigure_2 &lt;- ggsurvfit::ggsurvfit(\n  km_fit,\n  theme = theme_publication(),\n  color = series_color,\n  linewidth = 0.5\n) +\n  ggsurvfit::add_confidence_interval(fill = series_color, alpha = 0.15) +\n  ggplot2::geom_vline(\n    xintercept = mortality_window_days,\n    linetype = \"22\", color = \"gray40\", linewidth = 0.3\n  ) +\n  ggsurvfit::add_risktable(\n    times = km_times,\n    risktable_stats = c(\"n.risk\", \"cum.censor\", \"cum.event\"),\n    stats_label = list(n.risk = \"At risk\", cum.censor = \"Censored\", cum.event = \"Deaths\"),\n    theme = ggsurvfit::theme_risktable_default(axis.text.y.size = 8, plot.title.size = 8),\n    size = 2.4\n  ) +\n  ggplot2::scale_x_continuous(\n    breaks = union(0, km_times),\n    labels = months_label,\n    limits = c(0, max(km_times)),\n    expand = ggplot2::expansion(add = c(60, 200))\n  ) +\n  ggplot2::scale_y_continuous(\n    labels = scales::label_percent(),\n    limits = c(0, 1),\n    expand = ggplot2::expansion(mult = c(0, 0.02))\n  ) +\n  ggplot2::labs(x = \"Months since index admission\", y = \"Probability of survival\")\n\nsave_figure(figure_2, file.path(\"figures\", \"figure_2\"), width = 170, height = 120)",
+    "crumbs": [
+      "Code",
+      "Figures"
+    ]
+  },
+  {
+    "objectID": "quarto/figures.html#figure-3-odds-ratios",
+    "href": "quarto/figures.html#figure-3-odds-ratios",
+    "title": "Figures",
+    "section": "Figure 3: odds ratios",
+    "text": "Figure 3: odds ratios\nEach variable kept in the final model, with its adjusted odds ratio and 95% confidence interval on a log scale, and the numbers printed beside it.\n\n\nClick to show/hide R Code\n# Adjusted odds ratios from the final model, with 95% Wald CIs, on a log\n# scale (halving and doubling the odds are equal distances), with ticks at\n# 0.25, 0.5, 1, 2, 4 and 8 so the scale is plain; the estimate and interval\n# are printed beside each row, written \"a to b\" as in the tables (AMA style).\nodds_ratios &lt;- tidy_odds_ratios(multivariable$model, report_labels) %&gt;%\n  mutate(\n    term_label = fct_rev(fct_inorder(term_label)),\n    or_text = str_glue(\n      \"{scales::number(estimate, accuracy = 0.01)} \",\n      \"({scales::number(conf.low, accuracy = 0.01)} to {scales::number(conf.high, accuracy = 0.01)})\"\n    )\n  )\nor_text_x &lt;- max(odds_ratios$conf.high) * 1.6\n\nfigure_3 &lt;- ggplot2::ggplot(odds_ratios, ggplot2::aes(x = estimate, y = term_label)) +\n  ggplot2::geom_vline(xintercept = 1, linetype = \"22\", color = \"gray40\", linewidth = 0.3) +\n  ggplot2::geom_pointrange(\n    ggplot2::aes(xmin = conf.low, xmax = conf.high),\n    color = series_color, size = 0.3, linewidth = 0.4\n  ) +\n  ggplot2::geom_text(\n    ggplot2::aes(x = or_text_x, label = or_text),\n    hjust = 0, size = 2.6, color = \"gray20\"\n  ) +\n  ggplot2::scale_x_log10(\n    breaks = c(0.25, 0.5, 1, 2, 4, 8),\n    labels = scales::label_number(drop0trailing = TRUE),\n    expand = ggplot2::expansion(mult = c(0.05, 0.45))\n  ) +\n  ggplot2::coord_cartesian(clip = \"off\") +\n  ggplot2::labs(x = \"Adjusted odds ratio (95% CI), log scale\", y = NULL) +\n  ggplot2::theme(panel.grid.major.y = ggplot2::element_blank())\n\nsave_figure(\n  figure_3, file.path(\"figures\", \"figure_3\"),\n  width = 160, height = 30 + 8 * nrow(odds_ratios)\n)",
+    "crumbs": [
+      "Code",
+      "Figures"
+    ]
+  },
+  {
+    "objectID": "quarto/figures.html#captions-and-alt-text",
+    "href": "quarto/figures.html#captions-and-alt-text",
+    "title": "Figures",
+    "section": "Captions and alt text",
+    "text": "Captions and alt text\nCaptions and descriptions for screen readers are built from the fitted results, so no number is typed by hand.\n\n\nClick to show/hide R Code\n# Captions and alt text, built from the fitted objects so no number is\n# retyped.\nlist_or_none &lt;- \\(x) if (length(x) == 0) \"none\" else str_flatten_comma(as.character(x), \", and \")\nsix_month_survival &lt;- summary(km_fit, times = mortality_window_days)$surv\nreference_levels &lt;- multivariable$model$xlevels %&gt;%\n  imap_chr(\\(levels, variable) str_c(report_labels[[variable]], \": \", dplyr::first(levels)))\nfigure_text &lt;- tibble(\n  figure = c(\"figure_1\", \"figure_2\", \"figure_3\"),\n  caption = c(\n    \"Figure 1. Selection of kidney transplant recipients hospitalized with cryptococcosis, USRDS 2006-2016.\",\n    str_glue(\n      \"Figure 2. Kaplan-Meier estimate of overall survival from the index admission, with 95% confidence interval. \",\n      \"The dashed line marks 6 months. Numbers below are people at risk and cumulative censored and deaths; \",\n      \"the curve stops at the last time with more than 10 people at risk (USRDS data use agreement).\"\n    ),\n    str_c(\n      \"Figure 3. Adjusted odds ratios for death within 6 months of admission, from the final logistic model after backward elimination, with 95% confidence intervals (log scale).\",\n      if (length(reference_levels) &gt; 0) str_c(\" Reference categories: \", str_flatten(reference_levels, \"; \"), \".\") else \"\"\n    )\n  ),\n  alt_text = c(\n    str_glue(\n      \"Flowchart of {nrow(flowchart_boxes %&gt;% filter(type == 'exclude'))} exclusion steps, from people with a cryptococcosis \",\n      \"hospitalization to the {scales::label_comma()(nrow(cohort))} recipients in the analysis.\"\n    ),\n    str_glue(\n      \"Single Kaplan-Meier survival curve over {months_label(max(km_times))} months after admission; \",\n      \"survival at 6 months is {scales::label_percent(accuracy = 0.1)(six_month_survival)}.\"\n    ),\n    str_glue(\n      \"Forest plot of {nrow(odds_ratios)} adjusted odds ratios. \",\n      \"Confidence intervals entirely above 1: \",\n      \"{list_or_none(odds_ratios$term_label[odds_ratios$conf.low &gt; 1])}; \",\n      \"entirely below 1: \",\n      \"{list_or_none(odds_ratios$term_label[odds_ratios$conf.high &lt; 1])}.\"\n    )\n  )\n)\nwrite_csv(figure_text, file.path(\"figures\", \"figure_text.csv\"))\n\n\n\n\nClick to show/hide R Code\ndisclosure_checks &lt;- disclosure_checks %&gt;%\n  add_row(\n    check = \"Figure 1: boxes with 1 to 10 people\",\n    value = nrow(flowchart_small),\n    needs_review = nrow(flowchart_small) &gt; 0\n  ) %&gt;%\n  add_row(\n    check = \"Figure 2: last time shown (days)\",\n    value = max(km_times),\n    needs_review = FALSE\n  )",
+    "crumbs": [
+      "Code",
+      "Figures"
+    ]
+  },
+  {
+    "objectID": "quarto/repository-blueprint.html",
+    "href": "quarto/repository-blueprint.html",
+    "title": "",
+    "section": "",
+    "text": "Project documentsRepository blueprint Code",
+    "crumbs": [
+      "Project documents",
+      "Repository blueprint"
+    ]
+  },
+  {
+    "objectID": "quarto/repository-blueprint.html#analytical-scripts",
+    "href": "quarto/repository-blueprint.html#analytical-scripts",
+    "title": "",
+    "section": "Analytical scripts",
+    "text": "Analytical scripts\n\nR/main.R sources definitive scripts in dependency order.\nTypical workflow: setup → cohort construction → processing → modeling → outputs.\nStudy-specific scripts may be grouped into subdirectories by analytical stage.\nR/tables.R and R/figures.R may generate outputs directly or orchestrate specialized scripts.",
+    "crumbs": [
+      "Project documents",
+      "Repository blueprint"
+    ]
+  },
+  {
+    "objectID": "quarto/repository-blueprint.html#documentation",
+    "href": "quarto/repository-blueprint.html#documentation",
+    "title": "",
+    "section": "Documentation",
+    "text": "Documentation\n\nDocument definitive analytical scripts with explanatory Quarto pages; exploratory scripts need not have pages.\nUse Cryptococcus-cost-analysis as an example for Quarto supporting files, chunk imports, callouts, and formatting—not scientific methods.\nQuarto source and rendered output locations may vary by project.",
+    "crumbs": [
+      "Project documents",
+      "Repository blueprint"
+    ]
+  },
+  {
+    "objectID": "quarto/repository-blueprint.html#outputs-and-version-control",
+    "href": "quarto/repository-blueprint.html#outputs-and-version-control",
+    "title": "",
+    "section": "Outputs and version control",
+    "text": "Outputs and version control\n\nTrack approved, nonrestricted outputs when useful for publication; otherwise retain them locally and exclude them from Git.\n.gitignore: Exclude restricted data, credentials, caches, temporary files, and generated outputs unless intentionally tracked (e.g., .Rproj.user/, .Rhistory, .RData, .httr-oauth, .quarto/, cache/, figures/, tables/, *.quarto_ipynb); verify exclusions cover actual output paths without hiding necessary source or reference files.",
+    "crumbs": [
+      "Project documents",
+      "Repository blueprint"
     ]
   },
   {
@@ -754,609 +1393,58 @@
     ]
   },
   {
-    "objectID": "quarto/repository-blueprint.html",
-    "href": "quarto/repository-blueprint.html",
-    "title": "",
+    "objectID": "quarto/create_outcomes.html",
+    "href": "quarto/create_outcomes.html",
+    "title": "Outcomes",
     "section": "",
-    "text": "Project documentsRepository blueprint Code",
-    "crumbs": [
-      "Project documents",
-      "Repository blueprint"
-    ]
-  },
-  {
-    "objectID": "quarto/repository-blueprint.html#analytical-scripts",
-    "href": "quarto/repository-blueprint.html#analytical-scripts",
-    "title": "",
-    "section": "Analytical scripts",
-    "text": "Analytical scripts\n\nR/main.R sources definitive scripts in dependency order.\nTypical workflow: setup → cohort construction → processing → modeling → outputs.\nStudy-specific scripts may be grouped into subdirectories by analytical stage.\nR/tables.R and R/figures.R may generate outputs directly or orchestrate specialized scripts.",
-    "crumbs": [
-      "Project documents",
-      "Repository blueprint"
-    ]
-  },
-  {
-    "objectID": "quarto/repository-blueprint.html#documentation",
-    "href": "quarto/repository-blueprint.html#documentation",
-    "title": "",
-    "section": "Documentation",
-    "text": "Documentation\n\nDocument definitive analytical scripts with explanatory Quarto pages; exploratory scripts need not have pages.\nUse Cryptococcus-cost-analysis as an example for Quarto supporting files, chunk imports, callouts, and formatting—not scientific methods.\nQuarto source and rendered output locations may vary by project.",
-    "crumbs": [
-      "Project documents",
-      "Repository blueprint"
-    ]
-  },
-  {
-    "objectID": "quarto/repository-blueprint.html#outputs-and-version-control",
-    "href": "quarto/repository-blueprint.html#outputs-and-version-control",
-    "title": "",
-    "section": "Outputs and version control",
-    "text": "Outputs and version control\n\nTrack approved, nonrestricted outputs when useful for publication; otherwise retain them locally and exclude them from Git.\n.gitignore: Exclude restricted data, credentials, caches, temporary files, and generated outputs unless intentionally tracked (e.g., .Rproj.user/, .Rhistory, .RData, .httr-oauth, .quarto/, cache/, figures/, tables/, *.quarto_ipynb); verify exclusions cover actual output paths without hiding necessary source or reference files.",
-    "crumbs": [
-      "Project documents",
-      "Repository blueprint"
-    ]
-  },
-  {
-    "objectID": "quarto/figures.html",
-    "href": "quarto/figures.html",
-    "title": "Figures",
-    "section": "",
-    "text": "This script draws the three figures: the cohort flowchart (Figure 1), the survival curve (Figure 2) and the odds ratios from the final model (Figure 3), in the house style shared with the COHERO analysis. The figures are written to figures/, which is not in the repository; they appear on this site only after USRDS review clears them.\nClick to show/hide R Code\nggplot2::theme_set(theme_publication())\n# One series per figure: the palette's first colour after the gray kept for\n# a reference group (plot_style.R)\nseries_color &lt;- dplyr::nth(publication_colors, 2)\ndir.create(\"figures\", showWarnings = FALSE)",
+    "text": "PendingProvisional\n\n\n\nText highlighted like this is provisional: it depends on a decision the analysis plan has not yet made.\nThis script adds the mortality outcomes (plan §7) and puts the variables in the form the model uses (plan §8).",
     "crumbs": [
       "Code",
-      "Figures"
+      "Outcomes"
     ]
   },
   {
-    "objectID": "quarto/figures.html#figure-1-the-cohort",
-    "href": "quarto/figures.html#figure-1-the-cohort",
-    "title": "Figures",
-    "section": "Figure 1: the cohort",
-    "text": "Figure 1: the cohort\nThe flowchart is drawn from the same object that built the cohort, so the two cannot disagree. If any box holds 1 to 10 people, the figure is not saved and the run warns.\n\n\nClick to show/hide R Code\n# The flowchart from the same object that built the cohort, so the diagram\n# and the analytic data cannot disagree. A box with 1 to 10 people is not\n# exported: the run warns and the check is left for review.\nflowchart_boxes &lt;- flowchart::fc_view(cohort_flowchart, what = \"fc\")\nflowchart_small &lt;- flowchart_small_counts(flowchart_boxes)\n\nif (nrow(flowchart_small) == 0) {\n  cohort_flowchart %&gt;%\n    flowchart::fc_draw(big.mark = \",\", box_corners = \"sharp\") %&gt;%\n    flowchart::fc_export(\"figure_1.png\", path = \"figures\", width = 180, height = 240, units = \"mm\", res = 600) %&gt;%\n    flowchart::fc_export(\"figure_1.pdf\", path = \"figures\", width = 180, height = 240, units = \"mm\")\n} else {\n  warning(\n    \"Figure 1 not exported: \", nrow(flowchart_small),\n    \" box(es) with 1 to 10 people (see flowchart_small).\",\n    call. = FALSE\n  )\n}",
+    "objectID": "quarto/create_outcomes.html#dates-of-death",
+    "href": "quarto/create_outcomes.html#dates-of-death",
+    "title": "Outcomes",
+    "section": "Dates of death",
+    "text": "Dates of death\nDates of death come from the USRDS patients file. Each person needs only one row, because every characteristic is fixed at the start and death is the only event. That is why the usRds cohort functions aren’t used here; the coverage assessment records what testing them showed.\n\n\nClick to show/hide R Code\n# Columns are chosen with select() after loading, not with col_select,\n# because load_usrds_file() fails on Parquet files when col_select is used\n# (usRds#22). Return to col_select once that is fixed.\n# Date of death from the patients file. The usRds cohort functions are not\n# used: every covariate is fixed and death is the only event, so one row per\n# person is enough (coverage map, step 18).\ndeaths &lt;- load_usrds_file(\n  \"patients\",\n  usrds_ids = analysis_data$USRDS_ID,\n  factor_labels = FALSE\n) %&gt;%\n  select(all_of(c(\"USRDS_ID\", \"DIED\")))",
     "crumbs": [
       "Code",
-      "Figures"
+      "Outcomes"
     ]
   },
   {
-    "objectID": "quarto/figures.html#figure-2-survival",
-    "href": "quarto/figures.html#figure-2-survival",
-    "title": "Figures",
-    "section": "Figure 2: survival",
-    "text": "Figure 2: survival\nThe survival curve has its 95% confidence band and, below it, the number still at risk and the running totals of deaths and censored people. A time appears in that table only if no count shown there, or the change since the previous time, is from 1 to 10, and the curve stops at the last such time (km_reportable_times() on the Functions page). A dashed line marks 6 months.\n\n\nClick to show/hide R Code\n# Kaplan-Meier survival from the index admission (KMunicate style: curve with\n# its 95% CI, and at risk, deaths and censored below). The risk table shows\n# only times that pass the small-count rule, and the curve stops at the last\n# of them (plan §10). Time 0 stays on the axis even when the table cannot\n# show it (for example, 1 to 10 deaths on the admission day). A dashed line\n# marks 6 months.\ndays_per_month &lt;- 365.25 / 12\nkm_candidate_times &lt;- c(0, mortality_window_days, seq(365, 10 * 365, by = 365))\nkm_times &lt;- km_reportable_times(km_fit, km_candidate_times)\nmonths_label &lt;- \\(days) round(days / days_per_month)\n\nfigure_2 &lt;- ggsurvfit::ggsurvfit(\n  km_fit,\n  theme = theme_publication(),\n  color = series_color,\n  linewidth = 0.5\n) +\n  ggsurvfit::add_confidence_interval(fill = series_color, alpha = 0.15) +\n  ggplot2::geom_vline(\n    xintercept = mortality_window_days,\n    linetype = \"22\", color = \"gray40\", linewidth = 0.3\n  ) +\n  ggsurvfit::add_risktable(\n    times = km_times,\n    risktable_stats = c(\"n.risk\", \"cum.censor\", \"cum.event\"),\n    stats_label = list(n.risk = \"At risk\", cum.censor = \"Censored\", cum.event = \"Deaths\"),\n    theme = ggsurvfit::theme_risktable_default(axis.text.y.size = 8, plot.title.size = 8),\n    size = 2.4\n  ) +\n  ggplot2::scale_x_continuous(\n    breaks = union(0, km_times),\n    labels = months_label,\n    limits = c(0, max(km_times)),\n    expand = ggplot2::expansion(add = c(60, 200))\n  ) +\n  ggplot2::scale_y_continuous(\n    labels = scales::label_percent(),\n    limits = c(0, 1),\n    expand = ggplot2::expansion(mult = c(0, 0.02))\n  ) +\n  ggplot2::labs(x = \"Months since index admission\", y = \"Probability of survival\")\n\nsave_figure(figure_2, file.path(\"figures\", \"figure_2\"), width = 170, height = 120)",
+    "objectID": "quarto/create_outcomes.html#mortality",
+    "href": "quarto/create_outcomes.html#mortality",
+    "title": "Outcomes",
+    "section": "Mortality",
+    "text": "Mortality\nThe script adds three things for each person:\n\ndeath within 180 days of the index admission, where deaths on the admission day and on day 180 both count;\ndays to death;\nfor the survival curve, time to death or to the end of the release’s death data.\n\n\nDecision pending: the end of the death data (death_data_end_date) has to be set for the release in use. The script stops until it is.\n\n\n\nClick to show/hide R Code\nmortality &lt;- six_month_outcomes(\n  analysis_data,\n  deaths,\n  window_days = mortality_window_days,\n  data_end_date = death_data_end_date\n)\n\nanalysis_data &lt;- analysis_data %&gt;%\n  left_join(mortality, by = \"USRDS_ID\", relationship = \"one-to-one\")\n\nstopifnot(nrow(analysis_data) == nrow(cohort))",
     "crumbs": [
       "Code",
-      "Figures"
+      "Outcomes"
     ]
   },
   {
-    "objectID": "quarto/figures.html#figure-3-odds-ratios",
-    "href": "quarto/figures.html#figure-3-odds-ratios",
-    "title": "Figures",
-    "section": "Figure 3: odds ratios",
-    "text": "Figure 3: odds ratios\nEach variable kept in the final model, with its adjusted odds ratio and 95% confidence interval on a log scale, and the numbers printed beside it.\n\n\nClick to show/hide R Code\n# Adjusted odds ratios from the final model, with 95% Wald CIs, on a log\n# scale (halving and doubling the odds are equal distances), with ticks at\n# 0.25, 0.5, 1, 2, 4 and 8 so the scale is plain; the estimate and interval\n# are printed beside each row, written \"a to b\" as in the tables (AMA style).\nodds_ratios &lt;- tidy_odds_ratios(multivariable$model, report_labels) %&gt;%\n  mutate(\n    term_label = fct_rev(fct_inorder(term_label)),\n    or_text = str_glue(\n      \"{scales::number(estimate, accuracy = 0.01)} \",\n      \"({scales::number(conf.low, accuracy = 0.01)} to {scales::number(conf.high, accuracy = 0.01)})\"\n    )\n  )\nor_text_x &lt;- max(odds_ratios$conf.high) * 1.6\n\nfigure_3 &lt;- ggplot2::ggplot(odds_ratios, ggplot2::aes(x = estimate, y = term_label)) +\n  ggplot2::geom_vline(xintercept = 1, linetype = \"22\", color = \"gray40\", linewidth = 0.3) +\n  ggplot2::geom_pointrange(\n    ggplot2::aes(xmin = conf.low, xmax = conf.high),\n    color = series_color, size = 0.3, linewidth = 0.4\n  ) +\n  ggplot2::geom_text(\n    ggplot2::aes(x = or_text_x, label = or_text),\n    hjust = 0, size = 2.6, color = \"gray20\"\n  ) +\n  ggplot2::scale_x_log10(\n    breaks = c(0.25, 0.5, 1, 2, 4, 8),\n    labels = scales::label_number(drop0trailing = TRUE),\n    expand = ggplot2::expansion(mult = c(0.05, 0.45))\n  ) +\n  ggplot2::coord_cartesian(clip = \"off\") +\n  ggplot2::labs(x = \"Adjusted odds ratio (95% CI), log scale\", y = NULL) +\n  ggplot2::theme(panel.grid.major.y = ggplot2::element_blank())\n\nsave_figure(\n  figure_3, file.path(\"figures\", \"figure_3\"),\n  width = 160, height = 30 + 8 * nrow(odds_ratios)\n)",
+    "objectID": "quarto/create_outcomes.html#model-variables",
+    "href": "quarto/create_outcomes.html#model-variables",
+    "title": "Outcomes",
+    "section": "Model variables",
+    "text": "Model variables\nThe model uses the forms the paper reports:\n\nage 60 or older;\nmore than one transplant;\nany graft failure;\nnot being on tacrolimus.\n\n\n\nClick to show/hide R Code\n# Variables in the form the paper's model reports them: age 60 or older, more\n# than one transplant, any graft failure, and not being on tacrolimus.\n# Categories are in the paper's Table 1 order, and the first is the\n# reference: Female, White, West. The paper shows Hispanic ethnicity as one\n# yes row, so non-Hispanic is the reference; for organ and serostatus, the\n# usual category (kidney alone, negative). The paper does not name its\n# reference categories; every term in its final model is yes or no.\nmodel_data &lt;- analysis_data %&gt;%\n  mutate(\n    age_60_or_older = age_at_index &gt;= age_model_cutoff,\n    more_than_one_transplant = transplants_before_index &gt; 1,\n    prior_graft_failure = failures_before_index &gt; 0,\n    no_tacrolimus_at_transplant = !tx_tacrolimus,\n    no_tacrolimus_at_followup = !fu_tacrolimus,\n    sex = factor(sex, levels = c(\"Female\", \"Male\")),\n    race = factor(race, levels = c(\"White\", \"Black\", \"Other\")),\n    hispanic = factor(hispanic, levels = c(\"Non-Hispanic\", \"Hispanic\")),\n    region = factor(region, levels = c(\"West\", \"Midwest\", \"South\", \"Northeast\", \"Outside\")),\n    organ = factor(organ, levels = c(\"Kidney\", \"Kidney-pancreas\")),\n    hiv_status = factor(hiv_status, levels = c(\"Negative\", \"Positive\")),\n    cmv_status = factor(cmv_status, levels = c(\"Negative\", \"Positive\"))\n  )\n# A value outside the listed categories would silently become missing\nfor (variable in c(\"sex\", \"race\", \"hispanic\", \"region\", \"organ\", \"hiv_status\", \"cmv_status\")) {\n  stopifnot(sum(is.na(model_data[[variable]])) == sum(is.na(analysis_data[[variable]])))\n}",
     "crumbs": [
       "Code",
-      "Figures"
+      "Outcomes"
     ]
   },
   {
-    "objectID": "quarto/figures.html#captions-and-alt-text",
-    "href": "quarto/figures.html#captions-and-alt-text",
-    "title": "Figures",
-    "section": "Captions and alt text",
-    "text": "Captions and alt text\nCaptions and descriptions for screen readers are built from the fitted results, so no number is typed by hand.\n\n\nClick to show/hide R Code\n# Captions and alt text, built from the fitted objects so no number is\n# retyped.\nlist_or_none &lt;- \\(x) if (length(x) == 0) \"none\" else str_flatten_comma(as.character(x), \", and \")\nsix_month_survival &lt;- summary(km_fit, times = mortality_window_days)$surv\nreference_levels &lt;- multivariable$model$xlevels %&gt;%\n  imap_chr(\\(levels, variable) str_c(report_labels[[variable]], \": \", dplyr::first(levels)))\nfigure_text &lt;- tibble(\n  figure = c(\"figure_1\", \"figure_2\", \"figure_3\"),\n  caption = c(\n    \"Figure 1. Selection of kidney transplant recipients hospitalized with cryptococcosis, USRDS 2006-2016.\",\n    str_glue(\n      \"Figure 2. Kaplan-Meier estimate of overall survival from the index admission, with 95% confidence interval. \",\n      \"The dashed line marks 6 months. Numbers below are people at risk and cumulative censored and deaths; \",\n      \"the curve stops at the last time with more than 10 people at risk (USRDS data use agreement).\"\n    ),\n    str_c(\n      \"Figure 3. Adjusted odds ratios for death within 6 months of admission, from the final logistic model after backward elimination, with 95% confidence intervals (log scale).\",\n      if (length(reference_levels) &gt; 0) str_c(\" Reference categories: \", str_flatten(reference_levels, \"; \"), \".\") else \"\"\n    )\n  ),\n  alt_text = c(\n    str_glue(\n      \"Flowchart of {nrow(flowchart_boxes %&gt;% filter(type == 'exclude'))} exclusion steps, from people with a cryptococcosis \",\n      \"hospitalization to the {scales::label_comma()(nrow(cohort))} recipients in the analysis.\"\n    ),\n    str_glue(\n      \"Single Kaplan-Meier survival curve over {months_label(max(km_times))} months after admission; \",\n      \"survival at 6 months is {scales::label_percent(accuracy = 0.1)(six_month_survival)}.\"\n    ),\n    str_glue(\n      \"Forest plot of {nrow(odds_ratios)} adjusted odds ratios. \",\n      \"Confidence intervals entirely above 1: \",\n      \"{list_or_none(odds_ratios$term_label[odds_ratios$conf.low &gt; 1])}; \",\n      \"entirely below 1: \",\n      \"{list_or_none(odds_ratios$term_label[odds_ratios$conf.high &lt; 1])}.\"\n    )\n  )\n)\nwrite_csv(figure_text, file.path(\"figures\", \"figure_text.csv\"))\n\n\n\n\nClick to show/hide R Code\ndisclosure_checks &lt;- disclosure_checks %&gt;%\n  add_row(\n    check = \"Figure 1: boxes with 1 to 10 people\",\n    value = nrow(flowchart_small),\n    needs_review = nrow(flowchart_small) &gt; 0\n  ) %&gt;%\n  add_row(\n    check = \"Figure 2: last time shown (days)\",\n    value = max(km_times),\n    needs_review = FALSE\n  )",
+    "objectID": "quarto/create_outcomes.html#labels",
+    "href": "quarto/create_outcomes.html#labels",
+    "title": "Outcomes",
+    "section": "Labels",
+    "text": "Labels\n\n\nClick to show/hide R Code\nanalysis_data &lt;- analysis_data %&gt;%\n  set_variable_labels(\n    days_to_death = \"Days from index admission to death\",\n    died_within_window = str_glue(\"Died within {mortality_window_days} days of index admission\"),\n    survival_days = \"Days from index admission to death or end of death data\",\n    survival_event = \"Died before the end of death data (1) or censored (0)\"\n  )",
     "crumbs": [
       "Code",
-      "Figures"
-    ]
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Overview",
-    "section": "",
-    "text": "Cryptococcosis is an invasive fungal infection that affects people with weakened immune systems, including kidney transplant recipients. Fiorica et al. used USRDS data to study 6-month mortality, and the factors associated with it, among kidney transplant recipients hospitalized with cryptococcosis from 2006 to 20161.",
-    "crumbs": [
-      "Home"
-    ]
-  },
-  {
-    "objectID": "index.html#background",
-    "href": "index.html#background",
-    "title": "Overview",
-    "section": "",
-    "text": "Cryptococcosis is an invasive fungal infection that affects people with weakened immune systems, including kidney transplant recipients. Fiorica et al. used USRDS data to study 6-month mortality, and the factors associated with it, among kidney transplant recipients hospitalized with cryptococcosis from 2006 to 20161.",
-    "crumbs": [
-      "Home"
-    ]
-  },
-  {
-    "objectID": "index.html#what-this-project-does",
-    "href": "index.html#what-this-project-does",
-    "title": "Overview",
-    "section": "What this project does",
-    "text": "What this project does\nThis project replicates that analysis as the paper describes it, using the usRds R package wherever the package can do a step. Along the way it assesses how well usRds covers the paper’s methods.\nThe original analysis was run in Stata, and that code is no longer available. The paper and its supplement are therefore the specification. The published estimates are a reference point, not a target.",
-    "crumbs": [
-      "Home"
-    ]
-  },
-  {
-    "objectID": "index.html#methods",
-    "href": "index.html#methods",
-    "title": "Overview",
-    "section": "Methods",
-    "text": "Methods\nThe cohort is built from USRDS hospitalization files, Medicare claims and UNOS transplant records. The outcome is death from any cause within 180 days of the first cryptococcosis hospitalization after transplant. It is analysed with:\n\ndescriptive tables;\na Kaplan–Meier curve;\nmultivariable logistic regression.\n\nStudy design and methods explains the choices in plain language. The analysis plan is the authoritative specification. The usRds coverage page maps each step to the package.",
-    "crumbs": [
-      "Home"
-    ]
-  },
-  {
-    "objectID": "index.html#status",
-    "href": "index.html#status",
-    "title": "Overview",
-    "section": "Status",
-    "text": "Status\nIn progress; nothing on this site comes from USRDS data. The code so far is the setup, the code lists, the helper functions, and the cohort, covariate, outcome and model scripts, with the helpers tested on synthetic data. Open decisions are tracked as decision issues.",
-    "crumbs": [
-      "Home"
-    ]
-  },
-  {
-    "objectID": "quarto/tables.html",
-    "href": "quarto/tables.html",
-    "title": "Tables",
-    "section": "",
-    "text": "This script makes Tables 1 and 2 (characteristics and immunosuppression by vital status 6 months after admission) and the odds-ratio table, following plan §8 and the disclosure rules in §10. The tables are written to tables/, which is not in the repository; they appear on this site only after USRDS review clears them.",
-    "crumbs": [
-      "Code",
-      "Tables"
-    ]
-  },
-  {
-    "objectID": "quarto/tables.html#journal-style",
-    "href": "quarto/tables.html#journal-style",
-    "title": "Tables",
-    "section": "Journal style",
-    "text": "Journal style\nThe tables follow the style shared by OFID, CID and JID, which is AMA style: gtsummary’s JAMA theme, with P values shown without a leading zero (style_pvalue_ama() on the Functions page).\n\n\nClick to show/hide R Code\n# OFID, CID and JID share one house style, which follows the AMA Manual of\n# Style (OFID author guidelines; plan §8). gtsummary's JAMA theme gives the\n# AMA conventions: P values to 2 decimals without a leading zero, \"No. (%)\"\n# and the statistic named beside each variable, and CIs written \"a to b\".\n# On top of it, P values drop the leading zero (style_pvalue_ama()), and\n# footnotes use lowercase letters when the tables are saved.\ngtsummary::theme_gtsummary_journal(\"jama\")\ngtsummary::set_gtsummary_theme(list(\n  \"pkgwide-fn:pvalue_fun\" = style_pvalue_ama,\n  \"pkgwide-fn:prependpvalue_fun\" = \\(x) str_c(\"P\", if_else(str_detect(style_pvalue_ama(x), \"^[&lt;&gt;]\"), \" \", \" = \"), style_pvalue_ama(x))\n))\np_value_header &lt;- \"***P*** **value**\"",
-    "crumbs": [
-      "Code",
-      "Tables"
-    ]
-  },
-  {
-    "objectID": "quarto/tables.html#readable-names",
-    "href": "quarto/tables.html#readable-names",
-    "title": "Tables",
-    "section": "Readable names",
-    "text": "Readable names\nEvery variable in a table or figure gets a readable name here, so no column name reaches an output.\n\n\nClick to show/hide R Code\n# Readable names for every variable in a table or figure, so no column name\n# reaches an output. Drug labels are shared by the at-transplant (tx_) and\n# first follow-up (fu_) versions.\ndrug_labels &lt;- c(\n  antithymocyte_globulin = \"Antithymocyte globulin\",\n  alemtuzumab = \"Alemtuzumab\",\n  il2_receptor_antibody = \"Anti-IL-2 receptor antibody\",\n  tacrolimus = \"Tacrolimus\",\n  cyclosporine = \"Cyclosporine\",\n  mycophenolate = \"Mycophenolate\",\n  mtor_inhibitor = \"mTOR inhibitor\",\n  azathioprine = \"Azathioprine\",\n  steroids = \"Steroids\"\n)\n\nreport_labels &lt;- c(\n  age_at_index = \"Age at index admission, years\",\n  age_60_or_older = \"Age 60 years or older\",\n  sex = \"Sex\",\n  race = \"Race\",\n  hispanic = \"Hispanic ethnicity\",\n  region = \"Census region of residence\",\n  organ = \"Transplanted organ\",\n  bmi = \"BMI at registration, kg/m²\",\n  pretransplant_dialysis = \"Dialysis before transplant\",\n  hiv_status = \"HIV serostatus\",\n  cmv_status = \"CMV serostatus\",\n  more_than_one_transplant = \"More than one transplant\",\n  prior_graft_failure = \"Earlier graft failure\",\n  months_since_last_transplant = \"Months since most recent transplant\",\n  over_cutoff_since_transplant = str_glue(\"More than {years_since_transplant_cutoff} years since most recent transplant\"),\n  acute_rejection = \"Acute rejection episode\",\n  prior_transplant_complication = \"Earlier hospitalization for a transplant complication\",\n  cryptococcal_meningitis = \"Cryptococcal meningitis\",\n  acute_kidney_injury = \"Acute kidney injury\",\n  diabetes = \"Diabetes\",\n  cirrhosis = \"Cirrhosis\",\n  icu_admission = \"ICU admission\",\n  lumbar_puncture = \"Lumbar puncture\",\n  spinal_procedure = \"Other spinal procedure\",\n  neurosurgical_procedure = \"Neurosurgical procedure\",\n  lung_procedure = \"Lung procedure\",\n  vp_shunt = \"Ventriculoperitoneal shunt\",\n  no_tacrolimus_at_transplant = \"Not on tacrolimus at transplant\",\n  no_tacrolimus_at_followup = \"Not on tacrolimus at first follow-up\",\n  set_names(str_c(drug_labels, \" at transplant\"), str_c(\"tx_\", names(drug_labels))),\n  set_names(str_c(drug_labels, \" at first follow-up\"), str_c(\"fu_\", names(drug_labels)))\n)\n\n\n\n\nClick to show/hide R Code\ntable_1_variables &lt;- c(\n  \"age_at_index\", \"age_60_or_older\", \"sex\", \"race\", \"hispanic\", \"region\",\n  \"bmi\", \"pretransplant_dialysis\", \"hiv_status\", \"cmv_status\",\n  \"more_than_one_transplant\", \"prior_graft_failure\",\n  \"months_since_last_transplant\", \"over_cutoff_since_transplant\",\n  \"acute_rejection\", \"prior_transplant_complication\",\n  \"cryptococcal_meningitis\", \"acute_kidney_injury\", \"diabetes\", \"cirrhosis\",\n  \"icu_admission\", \"lumbar_puncture\", \"spinal_procedure\",\n  \"neurosurgical_procedure\", \"lung_procedure\", \"vp_shunt\"\n)\n# Table 2 follows the paper's rows and order: induction agents only at\n# transplant, steroids first in both blocks.\ntable_2_variables &lt;- c(\n  str_c(\"tx_\", c(\n    \"steroids\", \"antithymocyte_globulin\", \"alemtuzumab\", \"il2_receptor_antibody\",\n    \"tacrolimus\", \"cyclosporine\", \"mycophenolate\", \"mtor_inhibitor\", \"azathioprine\"\n  )),\n  str_c(\"fu_\", c(\n    \"steroids\", \"tacrolimus\", \"cyclosporine\", \"mycophenolate\", \"mtor_inhibitor\", \"azathioprine\"\n  ))\n)\n\n# The grouping column: 6-month vital status, survivors first\ntable_data &lt;- model_data %&gt;%\n  mutate(\n    vital_status = factor(\n      if_else(died_within_window, \"Died\", \"Survived\"),\n      levels = c(\"Survived\", \"Died\")\n    )\n  )\ntable_group_columns &lt;- c(Overall = \"stat_0\", Survived = \"stat_1\", Died = \"stat_2\")",
-    "crumbs": [
-      "Code",
-      "Tables"
-    ]
-  },
-  {
-    "objectID": "quarto/tables.html#descriptive-tables",
-    "href": "quarto/tables.html#descriptive-tables",
-    "title": "Tables",
-    "section": "Descriptive tables",
-    "text": "Descriptive tables\nOne function makes both descriptive tables. Continuous variables are shown as mean (SD), time since transplant as median (IQR), and everything else as a count and percentage, with the number unknown always shown. Continuous variables are compared with Student’s t test; categorical ones with the chi-squared test, or Fisher’s exact test when an expected count is under 5.\nBefore the table is shown, every count from 1 to 10 is hidden, along with any other count that would let it be worked out by subtraction, and the P value of that variable is removed (flag_small_cells() and suppress_table_body() on the Functions page).\n\n\nClick to show/hide R Code\n# One descriptive table by vital status (plan §8): mean (SD) for continuous\n# variables, median (IQR) for time since transplant, No. (%) otherwise, with\n# missing counts always shown. Student t test for continuous variables; for\n# categorical ones, the chi-squared test without continuity correction, or\n# Fisher's exact test when an expected count is under 5 (gtsummary's\n# default rule). Small cells are then hidden (plan §10).\ndescribe_by_vital_status &lt;- function(data, variables, labels, medians = character()) {\n  counts &lt;- count_table_cells(data, variables, group = \"vital_status\")\n  flags &lt;- flag_small_cells(counts)\n\n  table &lt;- data %&gt;%\n    select(all_of(c(\"vital_status\", variables))) %&gt;%\n    gtsummary::tbl_summary(\n      by = vital_status,\n      label = as.list(labels[variables]),\n      statistic = c(\n        list(gtsummary::all_continuous() ~ \"{mean} ({sd})\"),\n        as.list(set_names(rep(\"{median} ({p25} \\u2013 {p75})\", length(medians)), medians))\n      ),\n      digits = list(gtsummary::all_categorical() ~ c(0, 1)),\n      missing = \"always\",\n      missing_text = \"Unknown\"\n    ) %&gt;%\n    gtsummary::add_overall(last = FALSE) %&gt;%\n    gtsummary::add_p(\n      test = list(gtsummary::all_continuous() ~ \"t.test\"),\n      test.args = list(gtsummary::all_continuous() ~ list(var.equal = TRUE))\n    ) %&gt;%\n    gtsummary::modify_table_body(\n      \\(body) suppress_table_body(body, flags, table_group_columns) %&gt;%\n        mutate(stat_label = str_replace(stat_label, \"^n \\\\(%\\\\)$\", \"No. (%)\"))\n    ) %&gt;%\n    gtsummary::modify_header(p.value = p_value_header) %&gt;%\n    gtsummary::modify_footnote_header(\n      \"Cells with 1 to 10 people, and cells from which they could be recovered, are shown as ≤10, and their P values are removed (USRDS data use agreement).\",\n      columns = gtsummary::all_stat_cols(),\n      replace = FALSE\n    )\n\n  list(table = table, flags = flags)\n}\n\n\n\n\nClick to show/hide R Code\ntable_1_result &lt;- describe_by_vital_status(\n  table_data, table_1_variables, report_labels,\n  medians = \"months_since_last_transplant\"\n)\ntable_1 &lt;- table_1_result$table %&gt;%\n  gtsummary::modify_caption(\"**Table 1.** Characteristics of kidney transplant recipients hospitalized with cryptococcosis, by vital status 6 months after admission\") %&gt;%\n  gtsummary::modify_abbreviation(\"BMI = body mass index\") %&gt;%\n  gtsummary::modify_abbreviation(\"CMV = cytomegalovirus\") %&gt;%\n  gtsummary::modify_abbreviation(\"HIV = human immunodeficiency virus\") %&gt;%\n  gtsummary::modify_abbreviation(\"ICU = intensive care unit\")\n\n\n\n\nClick to show/hide R Code\n# Immunosuppression at transplant and at the first follow-up visit, from the\n# UNOS records (plan §5), as two blocks of one table.\ntable_2_result &lt;- describe_by_vital_status(table_data, table_2_variables, report_labels)\ntable_2 &lt;- table_2_result$table %&gt;%\n  gtsummary::modify_caption(\"**Table 2.** Immunosuppression at transplant and at the first follow-up visit, by vital status 6 months after admission\") %&gt;%\n  gtsummary::modify_abbreviation(\"IL-2 = interleukin 2\") %&gt;%\n  gtsummary::modify_abbreviation(\"mTOR = mechanistic target of rapamycin\")",
-    "crumbs": [
-      "Code",
-      "Tables"
-    ]
-  },
-  {
-    "objectID": "quarto/tables.html#follow-up",
-    "href": "quarto/tables.html#follow-up",
-    "title": "Tables",
-    "section": "Follow-up",
-    "text": "Follow-up\nBefore any model, how long people were followed and how many died or were censored. Median follow-up uses the reverse Kaplan–Meier method, which treats censoring as the event.\n\n\nClick to show/hide R Code\n# Follow-up before any model (time to event): deaths, censoring, and median\n# follow-up by the reverse Kaplan-Meier method (censoring treated as the\n# event). Counts here pass the same small-count rule as the tables.\nreverse_km &lt;- survival::survfit(\n  survival::Surv(survival_days, 1 - survival_event) ~ 1,\n  data = analysis_data\n)\nfollow_up_summary &lt;- tibble(\n  measure = c(\n    \"People\", \"Deaths\", \"Censored\",\n    \"Deaths within 6 months\", \"Median follow-up, days (95% CI)\"\n  ),\n  value = c(\n    nrow(analysis_data),\n    sum(analysis_data$survival_event),\n    sum(analysis_data$survival_event == 0),\n    sum(model_data$died_within_window),\n    str_glue(\n      \"{summary(reverse_km)$table[['median']]} \",\n      \"({summary(reverse_km)$table[['0.95LCL']]}, {summary(reverse_km)$table[['0.95UCL']]})\"\n    )\n  ) %&gt;%\n    as.character()\n)",
-    "crumbs": [
-      "Code",
-      "Tables"
-    ]
-  },
-  {
-    "objectID": "quarto/tables.html#odds-ratios",
-    "href": "quarto/tables.html#odds-ratios",
-    "title": "Tables",
-    "section": "Odds ratios",
-    "text": "Odds ratios\nEach variable alone, and the final model after backward elimination, side by side. The P value shown for each variable is the single joint test the selection used, so a variable with several categories has one P value, not one per category.\n\n\nClick to show/hide R Code\n# Unadjusted (each candidate alone) and adjusted (final backward-elimination\n# model) odds ratios with 95% Wald confidence intervals. P values are the\n# joint Wald P per term that the selection used (plan §8), one per variable,\n# not one per factor level. Candidates with no estimable coefficient (no\n# variation among the people with them known) are listed in a footnote.\nreplace_term_p &lt;- function(body, term_p) {\n  body %&gt;%\n    left_join(term_p, by = \"variable\") %&gt;%\n    mutate(p.value = if_else(row_type == \"label\", term_p_value, NA_real_)) %&gt;%\n    select(-term_p_value)\n}\n\nestimable &lt;- bivariable_results %&gt;% filter(!is.na(p_value))\nnot_estimable &lt;- bivariable_results %&gt;% filter(is.na(p_value))\n# Yes/no variables are shown on one row (the odds ratio for yes)\nlogical_terms &lt;- estimable$term[map_lgl(model_data[estimable$term], is.logical)]\n\ntable_unadjusted &lt;- model_data %&gt;%\n  select(all_of(c(\"died_within_window\", estimable$term))) %&gt;%\n  gtsummary::tbl_uvregression(\n    method = glm,\n    y = died_within_window,\n    method.args = list(family = binomial),\n    exponentiate = TRUE,\n    label = as.list(report_labels[estimable$term]),\n    show_single_row = all_of(logical_terms),\n    hide_n = TRUE\n  ) %&gt;%\n  gtsummary::modify_table_body(\n    \\(body) replace_term_p(body, tibble(variable = estimable$term, term_p_value = estimable$p_value))\n  )\n\nadjusted_p &lt;- tibble(\n  variable = multivariable$retained,\n  term_p_value = map_dbl(multivariable$retained, \\(term) wald_term_p(multivariable$model, term))\n)\ntable_adjusted &lt;- multivariable$model %&gt;%\n  gtsummary::tbl_regression(\n    exponentiate = TRUE,\n    label = as.list(report_labels[multivariable$retained]),\n    show_single_row = all_of(intersect(logical_terms, multivariable$retained))\n  ) %&gt;%\n  gtsummary::modify_table_body(\\(body) replace_term_p(body, adjusted_p))\n\nmodel_n &lt;- nobs(multivariable$model)\nmodel_events &lt;- sum(multivariable$data$died_within_window)\nmodel_excluded &lt;- nrow(model_data) - model_n\n\ntable_models &lt;- gtsummary::tbl_merge(\n  list(table_unadjusted, table_adjusted),\n  tab_spanner = c(\"**Unadjusted**\", \"**Adjusted**\")\n) %&gt;%\n  gtsummary::modify_header(p.value_1 = p_value_header, p.value_2 = p_value_header) %&gt;%\n  gtsummary::modify_caption(\"**Table 3.** Odds ratios for death within 6 months of admission\") %&gt;%\n  gtsummary::modify_source_note(\n    str_glue(\n      \"Unadjusted: one logistic model per variable, on the people with it known. \",\n      \"Adjusted: backward elimination from all candidates (removed while P ≥ {elimination_threshold}), \",\n      \"on the {model_n} people with every candidate known ({model_events} deaths; {model_excluded} excluded for missing data). \",\n      \"P values are joint Wald tests, one per variable. \",\n      \"Hosmer-Lemeshow test of the adjusted model: χ² = {round(hosmer_lemeshow_result$statistic, 2)}, \",\n      \"df = {hosmer_lemeshow_result$df}, P = {gtsummary::style_pvalue(hosmer_lemeshow_result$p_value, digits = 2)}.\"\n    )\n  )\nif (nrow(not_estimable) &gt; 0) {\n  table_models &lt;- table_models %&gt;%\n    gtsummary::modify_source_note(\n      str_c(\"Not estimable (no variation): \", str_flatten_comma(report_labels[not_estimable$term]), \".\")\n    )\n}",
-    "crumbs": [
-      "Code",
-      "Tables"
-    ]
-  },
-  {
-    "objectID": "quarto/tables.html#the-papers-final-model",
-    "href": "quarto/tables.html#the-papers-final-model",
-    "title": "Tables",
-    "section": "The paper’s final model",
-    "text": "The paper’s final model\nTable 4 sets the odds ratios from the refitted eight-variable model beside the ones the paper reports, and says whether the backward elimination here kept each variable.\n\n\nClick to show/hide R Code\n# Table 4: the paper's final model refitted here, beside the odds ratios the\n# paper reports, with whether the backward elimination kept each term. Same\n# people as the adjusted model in Table 3.\n# Published values keep the paper's one decimal place\nformat_or &lt;- function(estimate, low, high, accuracy = 0.01) {\n  str_glue(\n    \"{scales::number(estimate, accuracy = accuracy)} \",\n    \"({scales::number(low, accuracy = accuracy)} to {scales::number(high, accuracy = accuracy)})\"\n  )\n}\npublished_comparison &lt;- published_model %&gt;%\n  left_join(\n    tidy_odds_ratios(published_fit, report_labels) %&gt;%\n      mutate(term = str_remove(term, \"TRUE$\")) %&gt;%\n      select(term, term_label, estimate, conf.low, conf.high),\n    by = \"term\"\n  ) %&gt;%\n  transmute(\n    Characteristic = term_label,\n    `Published aOR (95% CI)` = format_or(published_or, published_low, published_high, accuracy = 0.1),\n    `This analysis, aOR (95% CI)` = format_or(estimate, conf.low, conf.high),\n    `Kept by backward elimination` = if_else(term %in% multivariable$retained, \"Yes\", \"No\")\n  )\ntable_published_model &lt;- published_comparison %&gt;%\n  gt::gt() %&gt;%\n  gt::tab_caption(gt::md(\"**Table 4.** The paper's final model refitted, beside the published adjusted odds ratios\")) %&gt;%\n  gt::tab_source_note(str_glue(\n    \"Published estimates: Fiorica et al. 2025, Results. This analysis: the same eight terms in one logistic model, \",\n    \"on the {nobs(published_fit)} people with every candidate known ({sum(multivariable$data$died_within_window)} deaths), as in Table 3. \",\n    \"Abbreviation: aOR = adjusted odds ratio.\"\n  ))",
-    "crumbs": [
-      "Code",
-      "Tables"
-    ]
-  },
-  {
-    "objectID": "quarto/tables.html#disclosure-checks",
-    "href": "quarto/tables.html#disclosure-checks",
-    "title": "Tables",
-    "section": "Disclosure checks",
-    "text": "Disclosure checks\nSome counts cannot be hidden inside a table, such as how many people the model left out for missing data. They are collected here for the reviewer; any row marked for review must be resolved before results leave the approved environment.\n\n\nClick to show/hide R Code\n# What a reviewer needs before release (plan §10): cells hidden in each\n# table, and counts the tables cannot hide themselves. Rows with\n# needs_review = TRUE must be resolved before anything leaves the approved\n# environment.\ngroup_sizes &lt;- table(table_data$vital_status)\ndisclosure_checks &lt;- tibble(\n  check = c(\n    \"Table 1: cells hidden\",\n    \"Table 2: cells hidden\",\n    \"Smallest vital-status group\",\n    \"People excluded from the adjusted model for missing data\",\n    \"Deaths in the adjusted model\",\n    \"Smallest of deaths and censored in follow-up\"\n  ),\n  value = c(\n    sum(table_1_result$flags$suppress),\n    sum(table_2_result$flags$suppress),\n    min(group_sizes),\n    model_excluded,\n    model_events,\n    min(sum(analysis_data$survival_event), sum(analysis_data$survival_event == 0))\n  ),\n  needs_review = c(\n    FALSE,\n    FALSE,\n    min(group_sizes) &lt;= 10,\n    between(model_excluded, 1, 10),\n    between(model_events, 1, 10),\n    between(min(sum(analysis_data$survival_event), sum(analysis_data$survival_event == 0)), 1, 10)\n  )\n)\n\n\n\n\nClick to show/hide R Code\ndir.create(\"tables\", showWarnings = FALSE)\nwalk2(\n  list(table_1, table_2, table_models),\n  c(\"table_1\", \"table_2\", \"table_models\"),\n  \\(table, name) {\n    gt_table &lt;- gtsummary::as_gt(table) %&gt;%\n      gt::opt_footnote_marks(marks = \"letters\")\n    gt::gtsave(gt_table, file.path(\"tables\", str_c(name, \".html\")))\n    gt::gtsave(gt_table, file.path(\"tables\", str_c(name, \".docx\")))\n  }\n)\ngt::gtsave(table_published_model, file.path(\"tables\", \"table_published_model.html\"))\ngt::gtsave(table_published_model, file.path(\"tables\", \"table_published_model.docx\"))",
-    "crumbs": [
-      "Code",
-      "Tables"
-    ]
-  },
-  {
-    "objectID": "quarto/create_covariates.html",
-    "href": "quarto/create_covariates.html",
-    "title": "Covariates",
-    "section": "",
-    "text": "PendingProvisional\n\n\n\nText highlighted like this is provisional: it depends on a decision the analysis plan has not yet made.\nThis script builds the characteristics the analysis compares and models, listed in §5 of the analysis plan. It joins them to the cohort to give analysis_data, with one row per person.",
-    "crumbs": [
-      "Code",
-      "Covariates"
-    ]
-  },
-  {
-    "objectID": "quarto/create_covariates.html#starting-point",
-    "href": "quarto/create_covariates.html#starting-point",
-    "title": "Covariates",
-    "section": "Starting point",
-    "text": "Starting point\nEach person’s index stay, from the cohort.\n\n\nClick to show/hide R Code\n# Columns are chosen with select() after loading, not with col_select,\n# because load_usrds_file() fails on Parquet files when col_select is used\n# (usRds#22). Return to col_select once that is fixed.\n# The cohort's index stays, the starting point for every covariate.\ncohort_index &lt;- cohort %&gt;%\n  select(USRDS_ID, index_admit_date, index_discharge_date)\n\ncohort_ids &lt;- cohort_index$USRDS_ID",
-    "crumbs": [
-      "Code",
-      "Covariates"
-    ]
-  },
-  {
-    "objectID": "quarto/create_covariates.html#hospitalization-records",
-    "href": "quarto/create_covariates.html#hospitalization-records",
-    "title": "Covariates",
-    "section": "Hospitalization records",
-    "text": "Hospitalization records\nAll hospitalization records of cohort members are loaded from both files through usRds. Each record is flagged for the diagnoses and procedures of interest, using each file’s own code columns.\n\n\nClick to show/hide R Code\n# All hospitalization records of cohort members, with diagnosis and procedure\n# columns and ICU/CCU days. usRds gap (coverage map, steps 4-9): searched here.\ndx_concepts &lt;- c(index_stay_dx_concepts, \"transplant_complication\")\n\nhospitalization_records &lt;- bind_rows(\n  load_flagged_hospitalizations(\n    \"hosp_to2009\", cohort_ids, hosp_to2009_dx_columns, hosp_to2009_proc_columns,\n    dx_concepts, index_stay_proc_concepts, code_lists\n  ),\n  load_flagged_hospitalizations(\n    \"hosp_2010on\", cohort_ids, hosp_2010on_dx_columns, hosp_2010on_proc_columns,\n    dx_concepts, index_stay_proc_concepts, code_lists\n  )\n)",
-    "crumbs": [
-      "Code",
-      "Covariates"
-    ]
-  },
-  {
-    "objectID": "quarto/create_covariates.html#on-the-index-stay",
-    "href": "quarto/create_covariates.html#on-the-index-stay",
-    "title": "Covariates",
-    "section": "On the index stay",
-    "text": "On the index stay\nThese are taken from the records that make up the index stay:\n\nmeningitis, acute kidney injury, diabetes and cirrhosis;\nthe five procedure groups;\nICU admission (any ICU or CCU days).\n\n\n\nClick to show/hide R Code\n# Meningitis, acute kidney injury, diabetes, cirrhosis and procedures on any\n# record of the index stay; ICU admission if any ICU or CCU days.\nindex_stay_covariates &lt;- summarise_index_stay(\n  hospitalization_records,\n  cohort_index,\n  c(index_stay_dx_concepts, index_stay_proc_concepts)\n)",
-    "crumbs": [
-      "Code",
-      "Covariates"
-    ]
-  },
-  {
-    "objectID": "quarto/create_covariates.html#earlier-hospitalization-for-a-transplant-complication",
-    "href": "quarto/create_covariates.html#earlier-hospitalization-for-a-transplant-complication",
-    "title": "Covariates",
-    "section": "Earlier hospitalization for a transplant complication",
-    "text": "Earlier hospitalization for a transplant complication\nWhether any hospitalization before the index admission had a transplant-complication code.\n\n\nClick to show/hide R Code\n# Any hospitalization with a transplant-complication code before the index\n# admission.\nprior_complication &lt;- summarise_prior_hospitalizations(\n  hospitalization_records,\n  cohort_index,\n  \"transplant_complication\"\n) %&gt;%\n  rename(prior_transplant_complication = prior)\n\nrm(hospitalization_records)",
-    "crumbs": [
-      "Code",
-      "Covariates"
-    ]
-  },
-  {
-    "objectID": "quarto/create_covariates.html#transplant-history-sex-and-race",
-    "href": "quarto/create_covariates.html#transplant-history-sex-and-race",
-    "title": "Covariates",
-    "section": "Transplant history, sex and race",
-    "text": "Transplant history, sex and race\nThese come from the USRDS transplant file:\n\nhow many transplants, and graft failures, came before the index admission;\nhow long it had been since the most recent transplant;\nsex and race, from that most recent transplant’s record.\n\n\n\nClick to show/hide R Code\n# Transplants, graft failures and time since the most recent transplant, from\n# the USRDS transplant file. Sex and race come from the record of the most\n# recent transplant, as in the reconstruction (which took them from this file).\ntransplants &lt;- load_usrds_file(\n  \"tx\",\n  usrds_ids = cohort_ids,\n  factor_labels = FALSE\n) %&gt;%\n  select(all_of(c(\"USRDS_ID\", \"TDATE\", \"FAILDATE\", \"RSEX\", \"RACE\")))\n\ntransplant_history &lt;- summarise_transplant_history(transplants, cohort_index)\n\ntransplant_demographics &lt;- transplants %&gt;%\n  inner_join(\n    transplant_history %&gt;% select(USRDS_ID, last_transplant_date),\n    by = c(\"USRDS_ID\", \"TDATE\" = \"last_transplant_date\"),\n    relationship = \"many-to-one\"\n  ) %&gt;%\n  distinct(USRDS_ID, .keep_all = TRUE) %&gt;%\n  transmute(USRDS_ID, sex = recode_sex(RSEX), race = recode_race(RACE))",
-    "crumbs": [
-      "Code",
-      "Covariates"
-    ]
-  },
-  {
-    "objectID": "quarto/create_covariates.html#ethnicity-and-region",
-    "href": "quarto/create_covariates.html#ethnicity-and-region",
-    "title": "Covariates",
-    "section": "Ethnicity and region",
-    "text": "Ethnicity and region\nThese come from the patients file. Hispanic ethnicity follows the official coding, and region uses the region table.\n\n\nClick to show/hide R Code\n# Hispanic ethnicity and region of residence, from the patients file.\npatient_covariates &lt;- load_usrds_file(\n  \"patients\",\n  usrds_ids = cohort_ids,\n  factor_labels = FALSE\n) %&gt;%\n  select(all_of(c(\"USRDS_ID\", \"HISPANIC\", \"STATE\"))) %&gt;%\n  left_join(state_regions, by = \"STATE\", relationship = \"many-to-one\") %&gt;%\n  transmute(USRDS_ID, hispanic = recode_hispanic(HISPANIC), region, division)",
-    "crumbs": [
-      "Code",
-      "Covariates"
-    ]
-  },
-  {
-    "objectID": "quarto/create_covariates.html#registry-data-at-transplant",
-    "href": "quarto/create_covariates.html#registry-data-at-transplant",
-    "title": "Covariates",
-    "section": "Registry data at transplant",
-    "text": "Registry data at transplant\nBMI, dialysis before transplant, HIV and CMV status, and rejection come from the UNOS registration of the most recent transplant on or before the index admission. Kidney-alone and kidney–pancreas registrations are stacked together.\n\n\nClick to show/hide R Code\n# UNOS registration of the most recent transplant on or before the index\n# admission (kidney-alone and kidney-pancreas files stacked; the kidney-\n# pancreas file names kidney rejection ACUTE_REJ_EPI_KI).\nregistration_columns &lt;- c(\n  \"USRDS_ID\", unos_registration_id, \"TDATE\", \"BMI\", \"PRE_TX_DIAL\",\n  \"HIV_SEROSTATUS\", \"CMV_STATUS\"\n)\n\nregistrations &lt;- bind_rows(\n  load_usrds_file(\n    \"txunos_trr_ki\",\n    usrds_ids = cohort_ids,\n    factor_labels = FALSE\n  ) %&gt;%\n    select(all_of(c(registration_columns, \"ACUTE_REJ_EPI\"))) %&gt;%\n    mutate(organ = \"Kidney\"),\n  load_usrds_file(\n    \"txunos_trr_kp\",\n    usrds_ids = cohort_ids,\n    factor_labels = FALSE\n  ) %&gt;%\n    select(all_of(c(registration_columns, \"ACUTE_REJ_EPI_KI\"))) %&gt;%\n    rename(ACUTE_REJ_EPI = ACUTE_REJ_EPI_KI) %&gt;%\n    mutate(organ = \"Kidney-pancreas\")\n)\n\nindex_registration &lt;- select_index_registration(registrations, cohort_index)",
-    "crumbs": [
-      "Code",
-      "Covariates"
-    ]
-  },
-  {
-    "objectID": "quarto/create_covariates.html#registry-follow-up-reports",
-    "href": "quarto/create_covariates.html#registry-follow-up-reports",
-    "title": "Covariates",
-    "section": "Registry follow-up reports",
-    "text": "Registry follow-up reports\nThe follow-up reports of that same transplant. A report without a date takes the date the kidney graft failed, as in the reconstruction.\n\nDecision pending: the name of the key linking follow-up drug records to these reports has to be confirmed for the release in use (see Setup).\n\n\n\nClick to show/hide R Code\n# Follow-up reports of the index registration. A missing FUDATE falls back to\n# the kidney graft failure date (FUKIFAIL), as in the reconstruction.\nfollowup_columns &lt;- c(\n  \"USRDS_ID\", unos_registration_id, unos_followup_id, \"FUDATE\", \"FUKIFAIL\"\n)\n\nfollowups &lt;- bind_rows(\n  load_usrds_file(\n    \"txfuunos_ki\",\n    usrds_ids = cohort_ids,\n    factor_labels = FALSE\n  ) %&gt;%\n    select(all_of(c(followup_columns, \"ACUTE_REJ_EPI\"))),\n  load_usrds_file(\n    \"txfuunos_kp\",\n    usrds_ids = cohort_ids,\n    factor_labels = FALSE\n  ) %&gt;%\n    select(all_of(c(followup_columns, \"ACUTE_REJ_EPI_KI\"))) %&gt;%\n    rename(ACUTE_REJ_EPI = ACUTE_REJ_EPI_KI)\n) %&gt;%\n  mutate(FUDATE = coalesce(FUDATE, FUKIFAIL)) %&gt;%\n  semi_join(index_registration, by = c(\"USRDS_ID\", unos_registration_id)) %&gt;%\n  inner_join(cohort_index %&gt;% select(USRDS_ID, index_admit_date), by = \"USRDS_ID\", relationship = \"many-to-one\")",
-    "crumbs": [
-      "Code",
-      "Covariates"
-    ]
-  },
-  {
-    "objectID": "quarto/create_covariates.html#acute-rejection",
-    "href": "quarto/create_covariates.html#acute-rejection",
-    "title": "Covariates",
-    "section": "Acute rejection",
-    "text": "Acute rejection\nA person counts as having had acute rejection if there was any episode, treated or not:\n\nat the registration, or\non a follow-up report dated before the index admission.\n\nThe same section also puts the other registration values into analysis form: BMI as recorded, dialysis as yes or no, and HIV and CMV status as positive or negative. Unknown codes are missing. An alternative is to use claims coded for kidney transplant rejection; that is described in the plan but not built (§9).\n\n\nClick to show/hide R Code\n# Acute rejection: any episode (ACREJEPI 1 or 2) at the index registration or\n# on a follow-up report of that transplant dated before the index admission\n# (decided 2026-11-10). An ICD claims definition (T86.11) is the alternative\n# (plan §9); it is not built here.\nfollowup_rejection &lt;- followups %&gt;%\n  filter(FUDATE &lt; index_admit_date) %&gt;%\n  group_by(USRDS_ID) %&gt;%\n  summarise(rejection_followup = any_known(unos_rejection_any(ACUTE_REJ_EPI)), .groups = \"drop\")\n\nregistration_covariates &lt;- index_registration %&gt;%\n  left_join(followup_rejection, by = \"USRDS_ID\", relationship = \"one-to-one\") %&gt;%\n  rowwise() %&gt;%\n  mutate(\n    acute_rejection = any_known(c(unos_rejection_any(ACUTE_REJ_EPI), rejection_followup))\n  ) %&gt;%\n  ungroup() %&gt;%\n  transmute(\n    USRDS_ID,\n    organ,\n    bmi = BMI,\n    pretransplant_dialysis = case_when(\n      PRE_TX_DIAL == \"Y\" ~ TRUE,\n      PRE_TX_DIAL == \"N\" ~ FALSE,\n      .default = NA\n    ),\n    hiv_status = case_when(HIV_SEROSTATUS == \"P\" ~ \"Positive\", HIV_SEROSTATUS == \"N\" ~ \"Negative\", .default = NA),\n    cmv_status = case_when(CMV_STATUS == \"P\" ~ \"Positive\", CMV_STATUS == \"N\" ~ \"Negative\", .default = NA),\n    acute_rejection\n  )",
-    "crumbs": [
-      "Code",
-      "Covariates"
-    ]
-  },
-  {
-    "objectID": "quarto/create_covariates.html#immunosuppression-at-transplant",
-    "href": "quarto/create_covariates.html#immunosuppression-at-transplant",
-    "title": "Covariates",
-    "section": "Immunosuppression at transplant",
-    "text": "Immunosuppression at transplant\nThe drug classes recorded at that transplant’s registration (#2). A registration with no drug records is missing rather than “not on”.\n\n\nClick to show/hide R Code\n# Immunosuppression at transplant: the index registration's drug records\n# (TXIRUNOS), any drug in each class. A registration with no drug records is\n# missing, not \"not on\".\ntransplant_drugs &lt;- load_usrds_file(\n  \"txirunos\",\n  usrds_ids = cohort_ids,\n  factor_labels = FALSE\n) %&gt;%\n  select(all_of(c(\"USRDS_ID\", unos_registration_id, \"RX_CD\", \"DRUG_CD_OSTXT\"))) %&gt;%\n  semi_join(index_registration, by = c(\"USRDS_ID\", unos_registration_id))\n\nimmunosuppression_transplant &lt;- classify_immunosuppressants(\n  transplant_drugs,\n  unos_registration_id,\n  immunosuppressant_classes,\n  immunosuppressant_free_text\n) %&gt;%\n  inner_join(\n    index_registration %&gt;% select(USRDS_ID, all_of(unos_registration_id)),\n    by = unos_registration_id,\n    relationship = \"one-to-one\"\n  ) %&gt;%\n  select(-all_of(unos_registration_id)) %&gt;%\n  rename_with(\\(x) str_c(\"tx_\", x), -USRDS_ID)",
-    "crumbs": [
-      "Code",
-      "Covariates"
-    ]
-  },
-  {
-    "objectID": "quarto/create_covariates.html#immunosuppression-at-first-follow-up",
-    "href": "quarto/create_covariates.html#immunosuppression-at-first-follow-up",
-    "title": "Covariates",
-    "section": "Immunosuppression at first follow-up",
-    "text": "Immunosuppression at first follow-up\nThe drug classes current at that transplant’s first follow-up visit, as the paper’s Methods describe (#2). A drug counts only if it was current maintenance at the visit.\n\n\nClick to show/hide R Code\n# Immunosuppression at the first follow-up report of the index transplant\n# (earliest FUDATE, whatever its date relative to the index admission; #2):\n# a class counts if one of its drugs is current maintenance (RXMNTCUR = 1).\nfirst_followup &lt;- followups %&gt;%\n  filter(!is.na(FUDATE)) %&gt;%\n  group_by(USRDS_ID) %&gt;%\n  slice_min(FUDATE, n = 1, with_ties = FALSE) %&gt;%\n  ungroup() %&gt;%\n  select(USRDS_ID, all_of(unos_followup_id))\n\nfollowup_drugs &lt;- load_usrds_file(\n  \"txifunos\",\n  usrds_ids = cohort_ids,\n  factor_labels = FALSE\n) %&gt;%\n  select(all_of(c(\"USRDS_ID\", unos_followup_id, \"RX_CD\", \"DRUG_CD_OSTXT\", \"RXMNTCUR\"))) %&gt;%\n  semi_join(first_followup, by = c(\"USRDS_ID\", unos_followup_id)) %&gt;%\n  # Drugs not current at the visit keep the follow-up's key but match no class\n  mutate(\n    RX_CD = if_else(RXMNTCUR %in% 1, RX_CD, NA),\n    DRUG_CD_OSTXT = if_else(RXMNTCUR %in% 1, DRUG_CD_OSTXT, NA)\n  )\n\nimmunosuppression_followup &lt;- classify_immunosuppressants(\n  followup_drugs,\n  unos_followup_id,\n  immunosuppressant_classes,\n  immunosuppressant_free_text\n) %&gt;%\n  inner_join(first_followup, by = unos_followup_id, relationship = \"one-to-one\") %&gt;%\n  select(-all_of(unos_followup_id)) %&gt;%\n  rename_with(\\(x) str_c(\"fu_\", x), -USRDS_ID)",
-    "crumbs": [
-      "Code",
-      "Covariates"
-    ]
-  },
-  {
-    "objectID": "quarto/create_covariates.html#putting-it-together",
-    "href": "quarto/create_covariates.html#putting-it-together",
-    "title": "Covariates",
-    "section": "Putting it together",
-    "text": "Putting it together\nEvery covariate table is joined to the cohort one-to-one, so a duplicate stops the run. Time since transplant is converted to months and also split at the plan’s 2-year cut-off. The script then checks that analysis_data still has exactly one row per cohort member.\n\n\nClick to show/hide R Code\n# One row per cohort member. Joins are one-to-one, so a duplicate stops the run.\nanalysis_data &lt;- cohort %&gt;%\n  left_join(index_stay_covariates, by = \"USRDS_ID\", relationship = \"one-to-one\") %&gt;%\n  left_join(prior_complication, by = \"USRDS_ID\", relationship = \"one-to-one\") %&gt;%\n  left_join(transplant_history, by = \"USRDS_ID\", relationship = \"one-to-one\") %&gt;%\n  left_join(transplant_demographics, by = \"USRDS_ID\", relationship = \"one-to-one\") %&gt;%\n  left_join(patient_covariates, by = \"USRDS_ID\", relationship = \"one-to-one\") %&gt;%\n  left_join(registration_covariates, by = \"USRDS_ID\", relationship = \"one-to-one\") %&gt;%\n  left_join(immunosuppression_transplant, by = \"USRDS_ID\", relationship = \"one-to-one\") %&gt;%\n  left_join(immunosuppression_followup, by = \"USRDS_ID\", relationship = \"one-to-one\") %&gt;%\n  mutate(\n    months_since_last_transplant = days_since_last_transplant / (365.25 / 12),\n    over_cutoff_since_transplant = days_since_last_transplant &gt; years_since_transplant_cutoff * 365.25\n  )\n\nstopifnot(nrow(analysis_data) == nrow(cohort))",
-    "crumbs": [
-      "Code",
-      "Covariates"
-    ]
-  },
-  {
-    "objectID": "quarto/create_covariates.html#variable-labels",
-    "href": "quarto/create_covariates.html#variable-labels",
-    "title": "Covariates",
-    "section": "Variable labels",
-    "text": "Variable labels\n\n\nClick to show/hide R Code\nanalysis_data &lt;- analysis_data %&gt;%\n  set_variable_labels(\n    cryptococcal_meningitis = \"Cryptococcal meningitis on the index stay\",\n    acute_kidney_injury = \"Acute kidney injury on the index stay\",\n    diabetes = \"Diabetes on the index stay\",\n    cirrhosis = \"Cirrhosis on the index stay\",\n    icu_admission = \"ICU or CCU days on the index stay\",\n    lumbar_puncture = \"Lumbar puncture on the index stay\",\n    spinal_procedure = \"Other spinal procedure on the index stay\",\n    neurosurgical_procedure = \"Neurosurgical procedure on the index stay\",\n    lung_procedure = \"Lung procedure on the index stay\",\n    vp_shunt = \"Ventriculoperitoneal shunt on the index stay\",\n    prior_transplant_complication = \"Earlier hospitalization with a transplant-complication code\",\n    transplants_before_index = \"Transplants on or before index admission\",\n    failures_before_index = \"Graft failures before index admission\",\n    months_since_last_transplant = \"Months since most recent transplant\",\n    over_cutoff_since_transplant = str_glue(\"More than {years_since_transplant_cutoff} years since most recent transplant\"),\n    sex = \"Sex\",\n    race = \"Race\",\n    hispanic = \"Hispanic ethnicity\",\n    region = \"Census region of residence\",\n    organ = \"Most recent transplant: kidney or kidney-pancreas\",\n    bmi = \"BMI at registration\",\n    pretransplant_dialysis = \"Dialysis before transplant\",\n    hiv_status = \"HIV serostatus at registration\",\n    cmv_status = \"CMV serostatus at registration\",\n    acute_rejection = \"Acute rejection episode (UNOS registration or follow-up before index)\"\n  )",
-    "crumbs": [
-      "Code",
-      "Covariates"
-    ]
-  },
-  {
-    "objectID": "quarto/agents.html",
-    "href": "quarto/agents.html",
-    "title": "",
-    "section": "",
-    "text": "Project documentsAGENTS.md Code",
-    "crumbs": [
-      "Project documents",
-      "AGENTS.md"
-    ]
-  },
-  {
-    "objectID": "quarto/agents.html#the-project",
-    "href": "quarto/agents.html#the-project",
-    "title": "",
-    "section": "The project",
-    "text": "The project\nThis is an R analysis project, not an R package. It rebuilds the analysis of Fiorica et al. 2025 (6-month mortality, and the factors associated with it, among kidney transplant recipients hospitalized with cryptococcosis, USRDS 2006–2016) with the usRds package. The goal is to replicate the analysis as the paper describes it, and in doing so to assess how well usRds covers it. For each step, references/usrds-coverage.md records whether usRds does it (covered, partial or gap). Closing gaps in usRds is outside this project’s scope; findings are passed to the usRds maintainer, who decides what to do with them. The code and methods are published as a Quarto website.\n\nWhat counts as done for a step. A step is done when it runs on synthetic data, using usRds functions where they exist and project code in R/functions.R where they don’t, and its coverage status in references/usrds-coverage.md reflects what the code actually needed. Project code written for a gap is labelled as such in a comment, so the assessment can be read from the code. The published counts and odds ratios are a reference point, not a target: the original analysis was run in Stata, that code is no longer available, and the data release may differ. A difference from the paper is investigated, but it is not a defect unless it comes from departing from the paper’s methods or from a usRds error.\nThe paper is the specification; the legacy Rmd is secondary evidence. The 2025-03-25 Rmd is the maintainer’s best reconstruction of how the original Stata analysis was done; it did not produce the published results. Where the paper (including its supplement) states a method, the plan follows the paper. Where the paper is silent, the Rmd’s choice is a candidate for the deciders, not a default; where the two disagree, the paper wins and the difference is noted, unless a decision says otherwise (the code lists come from the Rmd by decision, with corrections checked against the official code sets; see the plan, §5) (see #4). Do not introduce package infrastructure or impose CRAN conventions.\nThe analysis plan is the scientific source of truth. Code implements the plan; it does not redefine it. If implementation needs a different design, open a decision issue, or comment on the existing one, for the deciders. Once a decider has settled it (in the issue, or relayed there in their exact words), the plan change and the code can go in the same pull request, which closes the issue. Track decisions in Git history and issues rather than a change ledger within the plan.\nDeciders. Scientific decisions in every area are made by Vagish Hemmige. Anyone may open or contribute to a decision issue; only a decider settles it (see “Working with agents”).\nDo not make unresolved scientific decisions implicitly through code. Check relevant open GitHub issues before implementing analyses that depend on them.\nMaintain implementation status and defects in GitHub Issues rather than in a standing list inside this file.\nDefault branch: main. Changes reach it only through pull requests.",
-    "crumbs": [
-      "Project documents",
-      "AGENTS.md"
-    ]
-  },
-  {
-    "objectID": "quarto/agents.html#data-sources",
-    "href": "quarto/agents.html#data-sources",
-    "title": "",
-    "section": "Data sources",
-    "text": "Data sources\nEach source this project uses is listed below with the package that accesses it. Code that touches a source goes through its package. Do not write project-specific loading, cleaning, or definition code for something the package already does.\n\n\n\n\n\n\n\n\n\n\n\nSource\nAccessed through\nPackage documentation\nPackage maintained by\nAccess\nWhat AI agents may do\n\n\n\n\nUSRDS standard analysis files, including linked Medicare claims and payer history (release as recorded for each result)\nusRds (load_usrds_file(), get_IN_ICD(), get_PS_ICD())\nhttps://vagishhemmige.github.io/usRds/\nThis team\nRestricted (USRDS data use agreement)\nNone: code, documentation and synthetic data only\n\n\n\nTo allow more for a source, a person changes its row through a pull request, naming the agreement and section that permit it, the approved AI service, and exactly what agents may do. Agents never propose or make this change themselves, and nothing in personal instructions can grant it.\nAdd a row when code first loads a new source. The UNOS transplant files (txunos_trr_ki, txunos_trr_kp, txfuunos_*, txirunos) are part of the USRDS release and are covered by the row above.\nFor every package:\n\nRead its documentation before writing code for a source, including known issues. Behavior that sets the cohort, an exposure, an outcome, or a denominator is checked in the documentation, not assumed from a function’s name.\n\nFor packages this team maintains: see “Look in usRds first” below.\nFor external packages:\n\nWork around problems here. Wrap the function in R/functions.R with a comment explaining the problem and linking any upstream issue. Reporting a bug upstream is an external communication; the person directing the work decides whether to file it.\nFacts about the source that this project relies on (definitions, release quirks, suppression rules) go in references/ with a citation to the provider’s documentation, or in the plan when they shape a decision.\n\nFor a source with no package: one loading script records the download URL, the release or access date, and any processing. Verify its variables against the provider’s documentation for that release.",
-    "crumbs": [
-      "Project documents",
-      "AGENTS.md"
-    ]
-  },
-  {
-    "objectID": "quarto/agents.html#exploration-and-definitive-analysis",
-    "href": "quarto/agents.html#exploration-and-definitive-analysis",
-    "title": "",
-    "section": "Exploration and definitive analysis",
-    "text": "Exploration and definitive analysis\nExploration is welcome on branches or forks. Experimental scripts need not be sourced from R/main.R or have Quarto pages, and their findings are labelled preliminary. A script becomes part of the definitive analysis when it is sourced from R/main.R; from then on every rule below applies to it.",
-    "crumbs": [
-      "Project documents",
-      "AGENTS.md"
-    ]
-  },
-  {
-    "objectID": "quarto/agents.html#r-scripts",
-    "href": "quarto/agents.html#r-scripts",
-    "title": "",
-    "section": "R scripts",
-    "text": "R scripts\n\nOpen the .Rproj and run R/main.R from the project root. main.R sources definitive scripts in dependency order.\nKeep scripts focused on one analytical responsibility. Study-specific scripts may be grouped in stage-specific subdirectories. Include a short header stating the script’s role, its required upstream objects, and what it produces.\nWhen a definitive script is added or structurally reorganized, source it in main.R as appropriate and update ARCHITECTURE.md in the same pull request when the change materially affects structure or data flow. ARCHITECTURE.md describes current implementation, not planned work.\nDefine shared libraries, paths, configurable analytical constants, and their dependencies in R/setup.R. Other scripts do not call library(), re-source setup.R, or hard-code study parameters. Large, version-controlled code lists may live in separate files sourced by setup.R.\nPlace reusable helpers in R/functions.R, or organized subdirectories when warranted. Prefer explicit function arguments over dependence on global objects.\nAvoid setwd(), machine-specific absolute paths, and writes outside designated project outputs. Locate restricted USRDS inputs through usRds’s directory configuration.\nNo results in the repository. No script (exploratory or definitive) or comment, commit message, issue, pull-request text or review report contains results, counts or data values from restricted data unless they are cleared for release. Check before every commit and post, since a public repository publishes everything pushed to it, on any branch.",
-    "crumbs": [
-      "Project documents",
-      "AGENTS.md"
-    ]
-  },
-  {
-    "objectID": "quarto/agents.html#chunk-labels",
-    "href": "quarto/agents.html#chunk-labels",
-    "title": "",
-    "section": "Chunk labels",
-    "text": "Chunk labels\nScripts are divided into labelled sections so Quarto can reuse code without copying it:\n## ---- cryptococcus-claims\n\nLabel logical steps with descriptive kebab-case identifiers unique across scripts; a duplicate silently picks up the wrong code. A label covers code up to the next label.\nBefore renaming or removing a label, check the .qmd pages that reference it.\nLabels are comments; the underlying R scripts must remain executable through main.R.",
-    "crumbs": [
-      "Project documents",
-      "AGENTS.md"
-    ]
-  },
-  {
-    "objectID": "quarto/agents.html#variable-labels",
-    "href": "quarto/agents.html#variable-labels",
-    "title": "",
-    "section": "Variable labels",
-    "text": "Variable labels\n\nLabel analytical variables with human-readable descriptions (for example, labelled::set_variable_labels()).\nFor USRDS fields, prefer usRds::apply_usrds_varlabels() and usRds::apply_usrds_factors() rather than duplicating source labels.\nLabel derived variables where created, including units and time windows where relevant.",
-    "crumbs": [
-      "Project documents",
-      "AGENTS.md"
-    ]
-  },
-  {
-    "objectID": "quarto/agents.html#quarto-website",
-    "href": "quarto/agents.html#quarto-website",
-    "title": "",
-    "section": "Quarto website",
-    "text": "Quarto website\nThe site documents the code. It does not run the analysis. Exploratory scripts need no page.\n\n_quarto.yml, index.qmd, 404.qmd (the page GitHub Pages shows for a missing address) and styles.css sit at the root; quarto/ has one page per definitive script, named after it (for example, quarto/create_cohort.qmd for R/create_cohort.R), plus the Study design and methods, About and project-document pages (including quarto/usrds-coverage.qmd, which shows references/usrds-coverage.md). Background pages are added once their content is written; the Home page carries a short background until then. The custom-callout extension in _extensions/ provides the Rcode, Results and Pending callouts.\nVisual cues. Each kind of page has one sidebar icon, coloured by styles.css, and pages mark the same kind of content with the callout of that colour: background book (blue); study design and methods diagram-3 (orange); R code laptop (pink, Rcode 💻); results clipboard-data (green, Results 📊); project documents file-earmark-ruled (grey). Give every new page the icon of its kind.\nProvisional content. quarto/_pending.lua highlights in yellow every paragraph that starts with Decision pending: or, in the plan, Open:, and any [text]{.pending}, and adds a ⏳ Pending callout to pages that have a mark. Mark only what an open decision could change, link the decision issue, and remove the mark when the decision is settled.\nProject documents. analysis-plan.md, ARCHITECTURE.md, AGENTS.md and REPOSITORY-BLUEPRINT.md are shown on the site by pages in quarto/ that only include the root file, which stays the one source: edit the root file, not the page.\nEach script page loads its script with knitr::read_chunk(\"../R/&lt;script&gt;.R\") in a hidden chunk and shows each labelled section with #| eval: false, with prose explaining what the section does and why, without duplicating source code. Pages link to the script on GitHub and to the scripts it depends on.\nNever evaluate analysis code in the site. Pages render without restricted data. Only the read_chunk() imports, the Architecture page’s chunk that reads ARCHITECTURE.md, site helpers that read code or text, and results pages that read cleared outputs run. Review any proposed publication of aggregate results separately for disclosure compliance.\nPublishing. The site renders to docs/, which is not committed: a GitHub Actions workflow (.github/workflows/publish.yml) renders it on every push to main and publishes it to the gh-pages branch, which GitHub Pages serves. On a pull request the workflow only renders, as a check that every page builds.\nWhen you add a definitive script, add its page and sidebar entry in the same pull request. Prose must match the code: if a change alters what a section does, or its chunk labels, update its explanation and navigation in the same pull request.",
-    "crumbs": [
-      "Project documents",
-      "AGENTS.md"
-    ]
-  },
-  {
-    "objectID": "quarto/agents.html#outputs",
-    "href": "quarto/agents.html#outputs",
-    "title": "",
-    "section": "Outputs",
-    "text": "Outputs\n\nR/tables.R and R/figures.R may create outputs directly or orchestrate specialized scripts, exporting to tables/ and figures/.\ntables/ and figures/ are gitignored until USRDS review before publication clears them for release, because they come from restricted data: agents may not open them (see Restricted data). Commit cleared, nonrestricted results only when intentional. Disclosure rules apply to all outputs.\nPublished figures need alt text.\nREADME.Rmd is the source of README.md; edit the .Rmd and re-knit.",
-    "crumbs": [
-      "Project documents",
-      "AGENTS.md"
-    ]
-  },
-  {
-    "objectID": "quarto/agents.html#restricted-data-applies-to-everyone",
-    "href": "quarto/agents.html#restricted-data-applies-to-everyone",
-    "title": "",
-    "section": "Restricted data (applies to everyone)",
-    "text": "Restricted data (applies to everyone)\nUSRDS and Medicare data are governed by a data use agreement (DUA). Applicable DUA requirements take precedence over convenience or automation. The Access column of “Data sources” says which sources are restricted. For each restricted source:\n\nNever commit data, extracts, person-level data objects, or saved objects or outputs derived from patient-level records. Keep restricted source data outside the repository, and review output paths and .gitignore before adding new output types.\nAI agents never read restricted data. Anything an agent opens, prints, or summarizes is sent to the model provider. Agents do not open data files or patient-level objects, print rows, or display identifiers (including USRDS IDs), person-level dates, or ZIP codes. Agents also do not open outputs from restricted data that are not yet cleared for release (for example tables/ and figures/ while they are ignored). Agents write code, review it, and run it on synthetic data; results on real data are produced by an authorized person in an authorized environment. A request to execute a pipeline does not itself provide authorization. The only exception is what the Data sources table explicitly allows for a source, and only within those words.\nSynthetic data are built in code, labelled as synthetic, and never derived from real records.\nDisclosure. Prevent disclosure of counts 1–10 in tables, figures, flowcharts, or prose, including counts recoverable by subtraction or complementary cells. Follow the applicable DUA’s exact dissemination rules. Check every output before it leaves the approved environment, including scripts, comments, commit messages, issues, pull-request text and review reports (see R scripts).\nCredentials and paid APIs. Never commit keys, tokens, or .Renviron. Ask before paid, bulk, or uncached API calls.",
-    "crumbs": [
-      "Project documents",
-      "AGENTS.md"
-    ]
-  },
-  {
-    "objectID": "quarto/agents.html#look-in-usrds-first",
-    "href": "quarto/agents.html#look-in-usrds-first",
-    "title": "",
-    "section": "Look in usRds first",
-    "text": "Look in usRds first\nThe usRds package is the first place to look for USRDS file loading, claims extraction, claim types, diagnosis dates, Medicare coverage, cohort helpers, and costs.\n\nCheck its documentation, known limitations, and open issues before reproducing functionality locally.\nRaise generally reusable defects or enhancements in usRds; prefer fixes there. Temporary project-specific wrappers must identify the upstream issue and be reconsidered when resolved.\nWhen this analysis depends on a pending usRds enhancement or correction, track the study-specific implementation task here and link it to the corresponding usRds issue.\nRecord the usRds version or commit used for any result.",
-    "crumbs": [
-      "Project documents",
-      "AGENTS.md"
-    ]
-  },
-  {
-    "objectID": "quarto/agents.html#usrds-data-facts",
-    "href": "quarto/agents.html#usrds-data-facts",
-    "title": "",
-    "section": "USRDS data facts",
-    "text": "USRDS data facts\nData available to this project: the maintainer’s USRDS extract begins on 2006-01-01; there are no records before that date (maintainer, 2026-11-10). Never write a rule, window, lookback or synthetic record that depends on earlier data, and check a lookback against this date before proposing it. The end of the death data is set per release in death_data_end_date (R/setup.R).\nSources: the Researcher’s Guide, Appendix B, and Appendix C for the specific USRDS release being analyzed. The summary below is a starting point, not a replacement for release-appropriate documentation. Obtain the applicable public documents from the NIDDK Researcher’s Guide page. Consult usRds for machine-readable variable labels and formats.\nInstitutional (IN) claims include inpatient, outpatient, skilled nursing facility, home health, and hospice services.\n\nHCFASAF historically distinguishes I inpatient, O outpatient, N SNF, H home health, and S hospice; older data can include M for REBUS inpatient stays.\nSince 2002, corresponding file families include ip_*, op_*, sn_*, hh_*, and hs_*, generally with CLM, DXP, and DET records. Confirm structure for the release.\nInstitutional claim identifiers include USRDS_ID, CLM_FROM, and SEQ_KEYC; verify the applicable key in source documentation.\n\nPhysician/supplier (PS) claims have CLM, LINE, and DX sources.\n\nClaim lines are not necessarily distinct encounters. Define and validate episode grouping before counting services; distinguish diagnoses, procedures, and claim-level versus line-level records.\nPhysician/supplier services are not synonymous with outpatient care.\n\nClaims year: claims can be assigned by service end date rather than start date; verify against release documentation and account for claims crossing year boundaries.\n2025-release data currency (illustrative only; re-verify for the release used): claims complete through 2023-12-31 except the Q1 2024 inpatient file; core files including death dates extend through 2024-12-31. Do not infer contemporaneous coverage of claims and vital status.\nPayer history (payhist): payer categories and Medicare FFS observability must be verified against the release-specific guide. The primary versus sensitivity coverage definitions are prescribed in analysis-plan.md, not here. Pay attention to Medicare Advantage, Medicare secondary payer categories, uncovered days, and Medicare entitlement transitions after transplantation.\nICD transition: ICD-9-CM applies before 2015-10-01; ICD-10-CM and ICD-10-PCS on or after that date. Codes may omit decimals. Establish the date controlling the code system for claims spanning the transition, and verify against official code-set definitions.\nUnclear variables: consult the relevant Appendix B/C and source code documentation rather than inferring meaning from variable names.",
-    "crumbs": [
-      "Project documents",
-      "AGENTS.md"
-    ]
-  },
-  {
-    "objectID": "quarto/agents.html#coding-conventions",
-    "href": "quarto/agents.html#coding-conventions",
-    "title": "",
-    "section": "Coding conventions",
-    "text": "Coding conventions\n\nBuild descriptive flowchart text from centrally defined parameters so labels cannot become stale when an analysis window changes.\nCode lists: maintain code type, coding system, category, and exact/prefix matching; verify against official coding sources. Distinguish outcome from opportunity codes and personal-history from symptom codes. Do not invent clinical definitions or variables. Check category overlaps and clinically justified exceptions rather than assuming all codes are mutually exclusive.\nCohort flow: every patient-level inclusion or exclusion goes through fc_filter() in the flowchart workflow. Do not drop rows from $data outside the flowchart; the diagram must reproduce the cohort exactly.\nJoins: specify join keys and expected relationships. Check row multiplication, particularly after interval joins, and define handling of missing or unmatched records explicitly.\nDates and windows: implement the boundaries prespecified in the analysis plan; test boundary cases on synthetic data.\nCode that turns model output into reported numbers lives in named functions in R/functions.R, tested on synthetic data with a known answer.\nPackage APIs: read the help page and NEWS for the installed version before calling a package; don’t write calls from memory.\nStyle: use readable tidyverse conventions. Related readability improvements may accompany functional changes; keep unrelated large-scale formatting separate.",
-    "crumbs": [
-      "Project documents",
-      "AGENTS.md"
-    ]
-  },
-  {
-    "objectID": "quarto/agents.html#checks-for-any-change",
-    "href": "quarto/agents.html#checks-for-any-change",
-    "title": "",
-    "section": "Checks for any change",
-    "text": "Checks for any change\nBefore presenting changes for review or seeking commit approval, perform the applicable checks below. Report which checks were completed, which were not, and any limitations.\nEvery change\n\nPlan: does the change implement the plan as written, and does it leave every open decision open?\nData sources: does it use usRds’s functions, and does their documented behavior match what the plan needs?\nPackage APIs: for new or changed calls to a package, does the pull request name the installed version and the help page or NEWS entry relied on?\nReported numbers: does each estimate match the plan’s estimand, and do tables, figures, and site prose say what the code actually computes?\nDisclosure: search every changed tracked file, and the commit messages and pull-request text, for dates, record IDs, names, absolute paths and numbers that could come from restricted data. Read each hit in context; legitimate ones (plan dates, deciders’ names, synthetic examples) stay.\n\nCohort construction\n\nDo the order, denominator, and labels of flowchart steps reflect the actual conditions?\nAre the cohort counts reproducible from the operations shown?\nIs downstream analysis based on the final flowchart dataset?\n\nClaims and case definitions\n\nWhich claim files, claim types, diagnosis fields, and date fields are used?\nAre exact/prefix matching and ICD-9/ICD-10 date transitions handled appropriately?\nCan history codes, rule-out diagnoses, or outcome codes contaminate opportunities?\n\nWindows and coverage\n\nDoes index ascertainment agree with the analysis plan?\nAre date-window boundaries correct and inclusive where specified?\nDoes eligible Medicare coverage span the entire required observation period, with adjacent spans joined without allowing gaps?\n\nTransplant timing\n\nAre first and repeat transplants distinguished where the analysis requires them?\nAre transplant dates and characteristics drawn from the correct episode according to the analysis plan?\nAre graft failure and repeat transplants treated as prespecified?\n\nResidence and facility\n\nIs residence information valid for the relevant date?\nIs facility information aligned to the appropriate year and transplant center?\nAre historical identifiers and changes in identifiers accounted for?\n\nStructure and documentation\n\nDoes ARCHITECTURE.md describe current scripts and data flow when structural changes warrant an update?\nAre chunk labels unique, and do Quarto pages continue to find the labels they reference?\nDoes every definitive script have a Quarto page and sidebar entry, with matching chunk labels? Were affected pages and navigation updated?\nDoes any site chunk evaluate analysis code, and are derived variables labeled?\n\nExecution\n\nDoes main.R run from a clean session, using suitable relative paths?\nAre machine-specific absolute paths or hard-coded restricted-data directories absent?\nAre package versions and saved intermediates documented and checked for staleness?\n\nValidation on real data (by an authorized person only; share only permitted, disclosure-reviewed aggregate findings)\n\nRow counts before and after interval joins.\nCounts of people with multiple matching coverage or residence spans.\nCase counts by ICD-9 versus ICD-10 era and by claim type.",
-    "crumbs": [
-      "Project documents",
-      "AGENTS.md"
-    ]
-  },
-  {
-    "objectID": "quarto/agents.html#working-with-agents",
-    "href": "quarto/agents.html#working-with-agents",
-    "title": "",
-    "section": "Working with agents",
-    "text": "Working with agents\n\nAutonomy. The person directing an agent sets its working style (review only, step by step, or hands-off) in their own instructions, and may add stricter rules; those take precedence. Without a style, an agent works step by step. At most, an agent may edit code and documentation, add scripts and tests, run code and render the site on synthetic data, and commit to a branch and open a pull request.\nDecisions. Anyone, including an agent, may add options and evidence to a decision issue. A decider states the choice in the issue. Agents implement decisions; they never choose among options on their own, in the issue, the plan, or the code.\nEvery agent, under any autonomy: never merges a pull request; follows the restricted-data rules; asks before running the full pipeline or making expensive external/API calls (approval for these does not override DUA restrictions); shows a person the exact text before posting or sending anything as them, unless that person’s own instructions waive this; and proposes another way of writing something already agreed before committing it.\nPull requests opened by an agent are focused. Each says which plan section or issue it addresses, what was checked, and whether by running code on synthetic data or by reading only. Synthetic results are never described as clinical results.\nScientific citations: maintain verified references in root-level references.bib; cite methodological sources in analysis-plan.md and technical references with the corresponding implementation documentation. Verify bibliographic metadata, source support for claims, and compatibility with the data release being analyzed.",
-    "crumbs": [
-      "Project documents",
-      "AGENTS.md"
-    ]
-  },
-  {
-    "objectID": "quarto/about.html",
-    "href": "quarto/about.html",
-    "title": "About",
-    "section": "",
-    "text": "This project replicates Fiorica et al. 20251, a study of mortality among kidney transplant recipients hospitalized with cryptococcosis, as the paper describes it. It uses the usRds package and assesses how well that package covers the paper’s methods. The analysis is in progress, and no results from USRDS data are on this site.\n\nVagish Hemmige (maintainer; makes the scientific decisions)\n\nOpen decisions are listed as decision issues.",
-    "crumbs": [
-      "About"
-    ]
-  },
-  {
-    "objectID": "quarto/about.html#the-study",
-    "href": "quarto/about.html#the-study",
-    "title": "About",
-    "section": "",
-    "text": "This project replicates Fiorica et al. 20251, a study of mortality among kidney transplant recipients hospitalized with cryptococcosis, as the paper describes it. It uses the usRds package and assesses how well that package covers the paper’s methods. The analysis is in progress, and no results from USRDS data are on this site.\n\nVagish Hemmige (maintainer; makes the scientific decisions)\n\nOpen decisions are listed as decision issues.",
-    "crumbs": [
-      "About"
-    ]
-  },
-  {
-    "objectID": "quarto/about.html#this-repository",
-    "href": "quarto/about.html#this-repository",
-    "title": "About",
-    "section": "This repository",
-    "text": "This repository\nR/main.R runs the scripts in order. They reach the USRDS data through the usRds package. The data are restricted under the USRDS data use agreement, so they are not in the repository. The analysis runs only on a machine with authorized access.\nContributions follow the rules in AGENTS.md. Known issues and open decisions are tracked in Issues.",
-    "crumbs": [
-      "About"
-    ]
-  },
-  {
-    "objectID": "quarto/about.html#how-this-website-was-created",
-    "href": "quarto/about.html#how-this-website-was-created",
-    "title": "About",
-    "section": "How this website was created",
-    "text": "How this website was created\nThe site is built with Quarto from the analysis scripts themselves. Each code page imports the labelled sections of its script from R/ and shows them with an explanation. The site never runs the analysis, so it builds without the analysis data.\nThe repository is maintained with the R Analysis Workflow plugin and with AI assistants (Claude). They work only on code, documentation and synthetic data, never on USRDS data, and scientific decisions stay with the maintainer.\nFour documents describe the project, plus a coverage assessment:\n\nAnalysis plan: what the analysis is meant to do, and why.\nusRds coverage: each step of the paper mapped to usRds functions, and what is missing.\nArchitecture: how the code does it.\nAGENTS.md: how people and AI assistants work on the project.\nRepository blueprint: the layout every project of this kind starts from.",
-    "crumbs": [
-      "About"
-    ]
-  },
-  {
-    "objectID": "quarto/about.html#pages",
-    "href": "quarto/about.html#pages",
-    "title": "About",
-    "section": "Pages",
-    "text": "Pages\n\nStudy design and methods: the study’s choices in plain language.\nBuilding the cohort: the index hospitalizations and the cohort flowchart.\nCovariates: the characteristics compared and modelled.\nOutcomes: 6-month mortality and survival time.\nSurvival and models: the Kaplan–Meier fit and logistic models.\nSetup: packages and shared constants.\nCode lists: the diagnosis, procedure and billing codes from the paper’s supplement.\nFunctions: helper functions, including those that fill usRds gaps.",
-    "crumbs": [
-      "About"
+      "Outcomes"
     ]
   },
   {

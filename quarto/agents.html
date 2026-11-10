@@ -112,6 +112,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <style>
+div.callout-Pending.callout {
+  border-left-color: #f0c400;
+}
+div.callout-Pending.callout-style-default > .callout-header {
+  background-color: rgba(240, 196, 0, 0.13);
+}
+div.callout-Pending .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pending.callout-titled .callout-icon::before {
+  content: '⏳';
+  background-image: none;
+}
 div.callout-Rcode.callout {
   border-left-color: #d63384;
 }
@@ -132,17 +143,6 @@ div.callout-Results.callout-style-default > .callout-header {
 div.callout-Results .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
 div.callout-Results.callout-style-default .callout-icon::before, div.callout-Results.callout-titled .callout-icon::before {
   content: '📊';
-  background-image: none;
-}
-div.callout-Pending.callout {
-  border-left-color: #f0c400;
-}
-div.callout-Pending.callout-style-default > .callout-header {
-  background-color: rgba(240, 196, 0, 0.13);
-}
-div.callout-Pending .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pending.callout-titled .callout-icon::before {
-  content: '⏳';
   background-image: none;
 }
 </style>
@@ -287,12 +287,30 @@ div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pen
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
- <span class="menu-text">Project documents</span></a>
+ <span class="menu-text">Published results</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../quarto/results.html" class="sidebar-item-text sidebar-link"><i class="bi bi-clipboard-data" role="img">
+</i> 
+ <span class="menu-text">Published figures and tables</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Project documents</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../quarto/analysis-plan.html" class="sidebar-item-text sidebar-link"><i class="bi bi-file-earmark-ruled" role="img">
@@ -505,7 +523,7 @@ edit that file, not this page. Its first heading is the page title.
 <li>Define shared libraries, paths, configurable analytical constants, and their dependencies in <code>R/setup.R</code>. Other scripts do not call <code>library()</code>, re-source <code>setup.R</code>, or hard-code study parameters. Large, version-controlled code lists may live in separate files sourced by <code>setup.R</code>.</li>
 <li>Place reusable helpers in <code>R/functions.R</code>, or organized subdirectories when warranted. Prefer explicit function arguments over dependence on global objects.</li>
 <li>Avoid <code>setwd()</code>, machine-specific absolute paths, and writes outside designated project outputs. Locate restricted USRDS inputs through <code>usRds</code>’s directory configuration.</li>
-<li><strong>No results in the repository.</strong> No script (exploratory or definitive) or comment, commit message, issue, pull-request text or review report contains results, counts or data values from restricted data unless they are cleared for release. Check before every commit and post, since a public repository publishes everything pushed to it, on any branch.</li>
+<li><strong>No results in the repository.</strong> No script (exploratory or definitive) or comment, commit message, issue, pull-request text or review report contains results, counts or data values from restricted data unless they are cleared for release. Check before every commit and post, since a public repository publishes everything pushed to it, on any branch. Numbers quoted from the published paper are public and may be cited.</li>
 </ul>
 </section>
 <section id="chunk-labels" class="level2">
@@ -530,7 +548,7 @@ edit that file, not this page. Its first heading is the page title.
 <h2 class="anchored" data-anchor-id="quarto-website">Quarto website</h2>
 <p>The site documents the code. It does not run the analysis. Exploratory scripts need no page.</p>
 <ul>
-<li><code>_quarto.yml</code>, <code>index.qmd</code>, <code>404.qmd</code> (the page GitHub Pages shows for a missing address) and <code>styles.css</code> sit at the root; <code>quarto/</code> has one page per definitive script, named after it (for example, <code>quarto/create_cohort.qmd</code> for <code>R/create_cohort.R</code>), plus the Study design and methods, About and project-document pages (including <code>quarto/usrds-coverage.qmd</code>, which shows <code>references/usrds-coverage.md</code>). Background pages are added once their content is written; the Home page carries a short background until then. The <code>custom-callout</code> extension in <code>_extensions/</code> provides the <code>Rcode</code>, <code>Results</code> and <code>Pending</code> callouts.</li>
+<li><code>_quarto.yml</code>, <code>index.qmd</code>, <code>404.qmd</code> (the page GitHub Pages shows for a missing address) and <code>styles.css</code> sit at the root; <code>quarto/</code> has one page per definitive script, named after it (for example, <code>quarto/create_cohort.qmd</code> for <code>R/create_cohort.R</code>), plus the Study design and methods, Published results (<code>quarto/results.qmd</code>: the paper’s tables and figures as printed, with notes on apparent errors; its notice says they are reproduced from the article under its license, not produced by this code), About and project-document pages (including <code>quarto/usrds-coverage.qmd</code>, which shows <code>references/usrds-coverage.md</code>). Background pages are added once their content is written; the Home page carries a short background until then. The <code>custom-callout</code> extension in <code>_extensions/</code> provides the <code>Rcode</code>, <code>Results</code> and <code>Pending</code> callouts.</li>
 <li><strong>Visual cues.</strong> Each kind of page has one sidebar icon, coloured by <code>styles.css</code>, and pages mark the same kind of content with the callout of that colour: background <code>book</code> (blue); study design and methods <code>diagram-3</code> (orange); R code <code>laptop</code> (pink, <code>Rcode</code> 💻); results <code>clipboard-data</code> (green, <code>Results</code> 📊); project documents <code>file-earmark-ruled</code> (grey). Give every new page the icon of its kind.</li>
 <li><strong>Provisional content.</strong> <code>quarto/_pending.lua</code> highlights in yellow every paragraph that starts with <strong>Decision pending:</strong> or, in the plan, <strong>Open:</strong>, and any <code>[text]{.pending}</code>, and adds a ⏳ <code>Pending</code> callout to pages that have a mark. Mark only what an open decision could change, link the decision issue, and remove the mark when the decision is settled.</li>
 <li><strong>Project documents.</strong> <code>analysis-plan.md</code>, <code>ARCHITECTURE.md</code>, <code>AGENTS.md</code> and <code>REPOSITORY-BLUEPRINT.md</code> are shown on the site by pages in <code>quarto/</code> that only include the root file, which stays the one source: edit the root file, not the page.</li>
