@@ -570,26 +570,21 @@ test_that("style_pvalue_ama drops the leading zero and keeps the bounds", {
   )
 })
 
-test_that("prior_cryptococcosis_ids excludes a claim before transplant or before the study start", {
+test_that("prior_cryptococcosis_ids excludes one claim before transplant, not on or after it", {
   first_transplants <- tibble(
-    USRDS_ID = c(1, 2, 3, 4, 5),
-    first_transplant_date = as.Date(c("2008-06-01", "2008-06-01", "2008-06-01", "2003-01-01", NA))
+    USRDS_ID = c(1, 2, 3, 4),
+    first_transplant_date = as.Date(c("2008-06-01", "2008-06-01", "2008-06-01", NA))
   )
   claims <- tibble(
-    USRDS_ID = c(1, 2, 3, 4, 5, 5),
+    USRDS_ID = c(1, 2, 3, 4),
     claim_date = as.Date(c(
       "2008-05-31", # the day before transplant: excluded
       "2008-06-01", # on the transplant date: kept
       "2009-01-01", # after transplant: kept
-      "2005-12-31", # after transplant but before the study start: excluded
-      "2010-01-01", # not in the transplant file, after the start: kept here
-      "2010-02-01"
+      "2007-01-01"  # not in the transplant file: left to that step
     ))
   )
-  expect_equal(
-    sort(prior_cryptococcosis_ids(claims, first_transplants, as.Date("2006-01-01"))),
-    c(1, 4)
-  )
-  # One claim is enough, and nobody without a claim is excluded
-  expect_equal(prior_cryptococcosis_ids(claims[0, ], first_transplants, as.Date("2006-01-01")), numeric())
+  expect_equal(prior_cryptococcosis_ids(claims, first_transplants), 1)
+  # Nobody without a claim is excluded
+  expect_equal(prior_cryptococcosis_ids(claims[0, ], first_transplants), numeric())
 })

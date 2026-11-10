@@ -178,19 +178,16 @@ build_cohort_candidates <- function(crypto_stays, first_transplants, patients) {
 }
 
 ## ---- prior-cryptococcosis
-# People with any cryptococcosis claim before their first transplant or
-# before the study start (plan §4, step 4; decided under issue #4: hospital
-# and physician/supplier claims both count, and one claim is enough).
-# `claims` has one row per claim: USRDS_ID and claim_date (the first day of
-# service). A claim on the transplant date itself is not before it, matching
-# the rule for hospital stays. Returns the USRDS_IDs to exclude.
-prior_cryptococcosis_ids <- function(claims, first_transplants, start_date) {
+# People with any cryptococcosis claim before their first transplant (plan
+# §4, step 4; decided under issue #4: hospital and physician/supplier claims
+# both count, and one claim is enough). `claims` has one row per claim:
+# USRDS_ID and claim_date (the first day of service). A claim on the
+# transplant date itself is not before it, matching the rule for hospital
+# stays. Returns the USRDS_IDs to exclude.
+prior_cryptococcosis_ids <- function(claims, first_transplants) {
   claims %>%
-    left_join(first_transplants, by = "USRDS_ID", relationship = "many-to-one") %>%
-    filter(
-      claim_date < start_date |
-        (!is.na(first_transplant_date) & claim_date < first_transplant_date)
-    ) %>%
+    inner_join(first_transplants, by = "USRDS_ID", relationship = "many-to-one") %>%
+    filter(claim_date < first_transplant_date) %>%
     distinct(USRDS_ID) %>%
     pull(USRDS_ID)
 }

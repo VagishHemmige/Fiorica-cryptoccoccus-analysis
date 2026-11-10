@@ -101,11 +101,11 @@ The legacy Rmd counts `HSSURG1`–`HSSURG25` matches against the supplement's li
 
 ### 10. Exclude cryptococcosis before first transplant ([#4](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/4))
 
-Decided under [#4](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/4): any one cryptococcosis claim, hospital or physician/supplier, before the first transplant or before 2006 excludes the person. **Physician/supplier claims: covered** by `get_PS_ICD(icd_codes, years, usrds_ids)`, which returns each claim's dates. **Hospital records:** the hospitalization files already loaded for step 4 (project code, as there).
+Decided under [#4](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/4): any one cryptococcosis claim, hospital or physician/supplier, before the first transplant excludes the person. **Physician/supplier claims: covered** by `get_PS_ICD(icd_codes, years, usrds_ids)`, which returns each claim's dates. **Hospital records:** the hospitalization files already loaded for step 4 (project code, as there).
 
 - **Exact codes only.** The cryptococcosis list is all exact codes, so `get_PS_ICD()` finds them; the script stops if a prefix code is ever added, since it would be missed silently (step 6 and usRds#9 for prefix matching).
 - **No check on `icd_codes`.** Passing the code list as a data frame instead of a character vector returns no claims and no warning; found while writing this step. A type check in the package would catch it.
-- **Years.** The package's file list (`PS_ICD`) maps physician/supplier files from 2006 to 2021, so earlier claims cannot be searched. For 2013 onward it includes the DME diagnosis files (`dme_dx_*`) alongside `ps_dx_*`.
+- **Years.** The package's file list (`PS_ICD`) maps physician/supplier files from 2006 to 2021, matching where the data begin. For 2013 onward it includes the DME diagnosis files (`dme_dx_*`) alongside `ps_dx_*`.
 - **To verify:** the 2024 Appendix B layout of `PS_DX_*` lists no `HCFASAF` column, but `get_PS_ICD()` selects it from every file. If the release in use matches that layout, the 2013-onward files would fail to load. The synthetic files include the column, so this is untested.
 - The legacy Rmd's filter appears to keep the opposite group from the one the paper describes; the paper's rule governs.
 

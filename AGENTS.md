@@ -123,6 +123,8 @@ The [usRds](https://github.com/VagishHemmige/usRds) package is the first place t
 
 ## USRDS data facts
 
+**Data available to this project:** the maintainer's USRDS extract begins on 2006-01-01; there are no records before that date (maintainer, 2026-11-10). Never write a rule, window, lookback or synthetic record that depends on earlier data, and check a lookback against this date before proposing it. The end of the death data is set per release in `death_data_end_date` (`R/setup.R`).
+
 Sources: the Researcher's Guide, Appendix B, and Appendix C for the **specific USRDS release being analyzed**. The summary below is a starting point, not a replacement for release-appropriate documentation. Obtain the applicable public documents from the [NIDDK Researcher's Guide page](https://www.niddk.nih.gov/about-niddk/strategic-plans-reports/usrds/for-researchers/researchers-guide). Consult `usRds` for machine-readable variable labels and formats.
 
 **Institutional (IN) claims** include inpatient, outpatient, skilled nursing facility, home health, and hospice services.

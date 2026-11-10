@@ -45,7 +45,7 @@ Source population: recipients of a kidney or kidney–pancreas transplant in the
 1. Hospitalizations with a cryptococcosis diagnosis code (§5) in any diagnosis position, admitted 2006-01-01 to 2016-12-31.
 2. Restrict to people in the transplant file.
 3. Exclude hospitalizations admitted before the patient's first kidney transplant. A hospitalization admitted before the transplant is a cryptococcosis hospitalization claim preceding it, which the paper excludes; this includes stays that begin before the transplant and end after it (decided under [#4](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/4); the reconstruction kept such stays with time since transplant set to 0).
-4. Exclude people with any cryptococcosis claim before their first kidney transplant or before 2006-01-01. Hospital records and physician/supplier claims both count, as the paper says ("physician or hospitalization"), and one claim is enough (decided under [#4](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/4)). A single claim is the usual choice for excluding an earlier condition, where missing a true earlier case matters more than excluding a few people over a rule-out code [@chubak2012]. A claim dated on the transplant day is not before it. Physician/supplier claims are searched from 2006, the earliest year usRds maps.
+4. Exclude people with any cryptococcosis claim before their first kidney transplant. Hospital records and physician/supplier claims both count, as the paper says ("physician or hospitalization"), and one claim is enough (decided under [#4](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/4)). A single claim is the usual choice for excluding an earlier condition, where missing a true earlier case matters more than excluding a few people over a rule-out code [@chubak2012]. A claim dated on the transplant day is not before it. The paper also excludes claims "before the study period"; the data begin on 2006-01-01, so there are none to find.
 5. Keep each person's first remaining cryptococcosis hospitalization (the index hospitalization).
 6. Restrict to age 18–90 years on the index admission date.
 
@@ -146,7 +146,7 @@ The USRDS data use agreement governs. No cell, count or percentage that disclose
 - Immunosuppression during the index stay is not captured.
 - Stepwise selection gives optimistic P values and unstable selection; the results are exploratory.
 - Restriction to Medicare-paid hospitalizations limits generalisability, and Medicare-primary status is assumed rather than verified (§4).
-- Earlier cryptococcosis (§4, step 4) can only be seen while a person had Medicare before transplant. Recipients on dialysis usually did; those transplanted before dialysis, or with other insurance, may have no earlier claims to find, so the exclusion catches more people who had been on dialysis. Physician claims before 2006 are not searched.
+- Earlier cryptococcosis (§4, step 4) can only be seen while a person had Medicare before transplant. Recipients on dialysis usually did; those transplanted before dialysis, or with other insurance, may have no earlier claims to find, so the exclusion catches more people who had been on dialysis.
 - Differences from the published estimates may come from the data release, the order of exclusions, the open decisions above, or details of the original Stata code that the paper does not report. They are reported as such, not as corrections to the paper.
 
 ## 12. Reporting map
