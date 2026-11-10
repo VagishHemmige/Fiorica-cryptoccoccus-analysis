@@ -1,0 +1,41 @@
+---
+title: "Statistical methods"
+format: html
+---
+
+This page explains the statistical methods in plain language, for readers who want to know what the numbers mean before reading how they were computed. The choices themselves are on the [Study design and methods](study_methods.qmd) page and in the [analysis plan](analysis-plan.qmd).
+
+## Comparing survivors and non-survivors
+
+Tables 1 and 2 compare the people who were alive 6 months after admission with those who had died. For a measurement such as age, the table gives the average and the spread (standard deviation), and the *P* value comes from a t test of whether the averages differ. For a yes-or-no characteristic, it gives the number and percentage, and the *P* value comes from a chi-squared test, or from Fisher's exact test when the numbers are small. A *P* value is a measure of how surprising a difference would be if there were no real difference; it is not the size of the difference, and with dozens of comparisons some small *P* values are expected by chance.
+
+## Odds ratios from logistic regression
+
+Logistic regression estimates how each characteristic is associated with death within 6 months, taking the others into account. Its result for each characteristic is an **odds ratio**: how many times higher the odds of death are with the characteristic than without it. An odds ratio of 2 doubles the odds; 1 means no difference. When an outcome is common, as here, where about one in five died [@fiorica2025], an odds ratio is further from 1 than the corresponding ratio of risks: above 1 it overstates the risk ratio and below 1 it understates it, so an odds ratio of 2 does not mean twice the risk [@zhang1998; @davies1998]. The study is descriptive: an odds ratio is an association, not evidence that the characteristic causes death.
+
+## Choosing the variables: backward elimination
+
+The paper examined each variable on its own first and then entered them into a multivariable model with backward elimination, removing variables until every remaining one had *P* below 0.05 [@fiorica2025]. It does not list the candidates; this project takes every characteristic in Tables 1 and 2 as one, and removes them one at a time, each time the one with the largest *P* value ([analysis plan](analysis-plan.qmd), §8). Backward elimination is common. It has known weaknesses: which variables survive can change with small changes in the data, the estimates of those that survive tend to be too far from 1, and their *P* values and confidence intervals look more certain than they are [@heinze2018; @steyerberg1999]. Screening variables one at a time first can also drop important ones [@sun1996]. This project keeps the method because its aim is to repeat the paper, and it also refits the paper's own final model so the estimates can be compared directly (Table 4). The plan lists these limits (§11).
+
+Two details follow Stata's `stepwise` command [@stata19stepwise]; the paper reports using Stata 16.1 as well as R [@fiorica2025]. A characteristic with several categories, such as region, is tested as a whole with one joint test rather than category by category. And every step uses the same people: everyone with all the candidate characteristics known.
+
+## Checking the model's fit
+
+The Hosmer–Lemeshow test groups people by their predicted risk of death and compares predicted with observed deaths in each group [@hosmer1980]. A small *P* value suggests the model's predictions do not match what happened; a large one does not prove that they do.
+
+## Survival over time
+
+The Kaplan–Meier method estimates the proportion still alive at each time after admission, using everyone for as long as they were followed, including people whose follow-up ended before they died [@kaplan1958]. Figure 2 follows the KMunicate recommendations: the curve is shown with its 95% confidence band, and a table beneath it gives the numbers at risk, censored and dead at each time shown [@morris2019].
+
+## Small numbers
+
+Under the USRDS data use agreement no count from 1 to 10 may be published, including one that could be worked out from other numbers (see [Data sources](data_sources.qmd#access-and-disclosure)). The tables hide such counts, and the survival curve stops before fewer than 11 people remain at risk.
+
+## Reporting
+
+Reporting follows STROBE, the guideline for observational studies [@vonelm2007strobe], and its extension for studies of routinely collected health data such as billing records, RECORD [@benchimol2015record].
+
+## References
+
+::: {#refs}
+:::

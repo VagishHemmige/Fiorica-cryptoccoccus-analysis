@@ -1,0 +1,36 @@
+---
+title: "Data sources"
+format: html
+---
+
+This page describes where the study's data come from and what they can and cannot show. Which files each step uses is on the [Study design and methods](study_methods.qmd) page and in the [usRds coverage](usrds-coverage.qmd) assessment.
+
+## The United States Renal Data System
+
+The United States Renal Data System (USRDS) is the national data system for chronic kidney disease and end-stage kidney disease in the United States, run for the National Institute of Diabetes and Digestive and Kidney Diseases. It links registry information on almost everyone treated for kidney failure with their Medicare billing records and with transplant records from the Organ Procurement and Transplantation Network (OPTN) [@usrds2024guide; @foley2013]. The [published supplement](supplement.qmd#supplementary-figure-1.-data-sources-of-the-usrds-database-and-resultant-data) shows its sources in a diagram.
+
+Its strengths are near-complete coverage of people with kidney failure in the United States and the link to Medicare claims; its limits include that its methods are not continuously validated [@foley2013]. Billing records are released only for people with Medicare fee-for-service coverage: USRDS receives claims for people in Medicare Advantage plans but does not release them in its standard files [@usrds2024guide]. Care paid by other insurers, or by Medicare Advantage plans, is therefore not seen.
+
+## The files this study uses
+
+-   **Hospitalization files.** Records of hospital stays paid by Medicare, with their diagnosis and procedure codes [@usrds2024guide]: up to 10 diagnosis codes in the file for stays before 2010 (`hosp_to2009`), and up to 26 in the later file (`hosp_2010on`). A long stay can be billed in more than one record, and the analysis combines them. The study's cases, the index hospitalization and the conditions during it come from these files.
+-   **Physician and supplier claims.** Bills from physicians and other providers, with their diagnosis codes. The study uses them to find cryptococcosis before transplant.
+-   **Patient and transplant files.** Date of birth, sex, race, ethnicity, state of residence and date of death, and the date of every kidney transplant and graft failure.
+-   **OPTN transplant records.** The registration at each transplant, the follow-up reports after it, and the immunosuppressive drugs recorded at transplant and at follow-up [@usrds2024guide]. These give body mass index, dialysis before transplant, HIV and cytomegalovirus status, rejection and the drugs in Table 2.
+
+The extract used here begins on 1 January 2006, the start of the study period; there are no earlier records.
+
+## Diagnosis codes
+
+Diagnoses and procedures are coded in the International Classification of Diseases. US claims switched from the 9th revision (ICD-9-CM) to the 10th (ICD-10-CM for diagnoses, ICD-10-PCS for inpatient procedures) on 1 October 2015 [@hhs2014icd10], so the study period has nearly ten years of ICD-9 coding and fifteen months of ICD-10. Every code list therefore has both versions; the lists are on the [Code lists](code_lists.qmd) page.
+
+A diagnosis in a claim means a provider billed for it, not that it was confirmed. No study was found that measures how accurately billing codes identify cryptococcosis in Medicare or USRDS data. The nearest evidence concerns other infections. In transplant recipients at one hospital, the ICD-9 code for invasive aspergillosis found 63% of confirmed cases, and 71% of the patients it flagged had the infection [@chang2008aspergillosis]. Codes for cytomegalovirus after kidney transplant performed similarly in another centre [@santos2015], and codes for invasive fungal infection moderately well in children with cancer [@valentine2020]. Which kind of accuracy matters depends on the use: excluding people with an earlier condition calls for a high negative predictive value, so that few of the people kept had the condition, and defining a cohort calls for a high positive predictive value, so that few of the people included lack it [@chubak2012].
+
+## Access and disclosure
+
+USRDS data are released only under a data use agreement. Results may not be published if any table cell, or any number that can be worked out from others, describes fewer than 11 people [@usrdsdua]. This is why counts from 1 to 10 are hidden in this project's tables and figures, and why nothing on this site comes from the data. The data are read through the [usRds](https://github.com/VagishHemmige/usRds) package, on a machine with authorized access.
+
+## References
+
+::: {#refs}
+:::

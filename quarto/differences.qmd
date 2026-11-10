@@ -1,0 +1,63 @@
+---
+title: "Differences from the reconstruction"
+format: html
+---
+
+The original analysis was run in Stata (the paper also lists R and RStudio among its software), and that code is no longer available. In 2025 the maintainer rebuilt it in R as an R Markdown file dated 25 March 2025, his best reconstruction of what was done. That file did not produce the published numbers, and it is not in this repository, because of how it was put together. The specification for this analysis is the paper and its supplement [@fiorica2025]; the reconstruction is secondary evidence.
+
+This page lists every place where this analysis differs from the reconstruction, and every place where the reconstruction differs from the paper. It describes the reconstruction without reproducing it. Each entry is one of five kinds:
+
+-   **Follows the paper**: the reconstruction does something other than what the paper describes. This analysis follows the paper.
+-   **Corrected error**: the reconstruction does not do what it evidently intends. This analysis does.
+-   **Rebuilt**: neither the paper nor the reconstruction gives what is needed, so it is rebuilt from official sources.
+-   **Decided**: the paper is silent, so the maintainer chose, in the linked decision issue.
+-   **Open decision**: still to be decided, in the linked issue.
+
+::: callout-note
+## Status
+This analysis has not yet been run on the USRDS data. Its numbers are not expected to match the published ones exactly even beyond the entries here, because the original was run in Stata and the data release may differ. The column "Effect" says what each difference can change. The [Study design and methods](study_methods.qmd) page explains the main choices in plain language, with the alternatives considered.
+:::
+
+## Finding the hospitalizations
+
+| Reconstruction | Kind | This analysis | Effect |
+|---|---|---|---|
+| Searches the USRDS hospitalization files for the cryptococcosis codes. | Decided ([#1](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/1)) | The same files. Medicare institutional claims were considered and not used, because the hospitalization files are built from them. | None |
+| Checks the first-diagnosis field for a code in both hospitalization files. In the file for stays before 2010 that field is a yes/no flag, not a code; the codes are in the numbered fields, which the reconstruction also searches. | Corrected error | Each file is read by its own layout. | None found: the numbered fields catch the same codes |
+| Combines a person's first record with the records that overlap it, chaining up to seven. | Corrected error | Every record is combined into stays however many overlap, so a code on any record of a stay counts for the whole stay. | Stays with more than seven overlapping records |
+| Matches the ICD-9 and ICD-10 codes on every record, whatever its date. | Decided ([#8](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/8)) | ICD-9 or ICD-10 by discharge date, Medicare's rule for inpatient stays [@cmsmm7492]. | Codes from the wrong code set, which should be rare |
+
+## Who is included
+
+| Reconstruction | Kind | This analysis | Effect |
+|---|---|---|---|
+| Keeps only people whose first physician claim for cryptococcosis came *before* their first transplant, and drops everyone without such a claim: the opposite of the paper's exclusion. | Follows the paper ([#4](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/4)) | Excludes anyone with a cryptococcosis claim, hospital or physician, before their first transplant. One claim is enough. | Cohort size |
+| Keeps a stay that begins before the first transplant and ends after it, with time since transplant set to zero. | Follows the paper ([#4](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/4)) | Such a stay is cryptococcosis before transplant, so it does not count as the index stay. | Cohort size, slightly |
+| No check that Medicare was the primary payer. | Decided ([#3](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/3)) | None either, since the paper gives no window; a check is kept as a possible variation. | None |
+| Maps states to regions by hand, grouping Alaska and Hawaii with the territories as "Outside"; territory codes it does not list (such as Guam and the Virgin Islands) become missing. | Corrected error; grouping decided ([#12](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/12)) | Every territory code in the USRDS format is mapped to "Outside"; Alaska and Hawaii stay there, as in the reconstruction. No one is excluded for where they live. | People from unlisted territories, who were missing |
+
+## What is measured
+
+| Reconstruction | Kind | This analysis | Effect |
+|---|---|---|---|
+| Code lists identical to the paper's supplement. | Decided ([#8](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/8)) | The reconstruction's lists, with the corrections below. | See below |
+| No codes for ventriculoperitoneal shunt, which the paper reports (nor does the supplement list them separately). | Rebuilt ([#8](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/8)) | Built from the official code sets: ICD-9-CM 02.34 and the nine ICD-10-PCS codes for a shunt from the cerebral ventricle to the peritoneal cavity. | Shunt counts |
+| Diabetes codes written as each stem followed by at most two digits, which finds 106 of the 466 ICD-10-CM diabetes codes valid in 2016–2017. | Corrected error ([#8](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/8)) | Every code beginning with the stems, as the supplement intends with its asterisks. | Diabetes, from October 2015 |
+| Cirrhosis lists 456.21 but not 456.20, its pair (esophageal varices in diseases classified elsewhere, with and without bleeding). | Corrected error ([#8](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/8)) | 456.20 added. | Cirrhosis before October 2015, slightly |
+| Procedures from the ICD procedure codes on the hospitalization record. The paper's Methods mention CPT codes. | Open decision ([#5](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/5)) | ICD procedure codes, as the supplement lists; whether to add CPT codes from physician claims is open. | Procedure counts |
+| Transplant characteristics from the first transplant's registration. | Decided ([#12](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/12)) | From the most recent transplant on or before the index admission, which describes the graft the person had at the time. | People with more than one transplant |
+| Immunosuppression from the registry at transplant only. | Decided ([#2](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/2)) | From the registry at transplant and at the first follow-up visit, as the title of the paper's Table 2 says; the paper's Methods say billing codes, and the supplement lists drug billing codes. | Table 2's follow-up block |
+| Registry drug codes mapped by hand; the codes for generic Myfortic, generic sirolimus and Envarsus XR are missing. | Corrected error ([#12](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/12)) | Those three added; the rest of the mapping is correct. | Drug use, for recipients on those drugs |
+| Hispanic ethnicity recoded so that the USRDS code for "no" became missing. | Corrected error | Coded as the USRDS format defines it. | Missing ethnicity |
+| Counts infectious diseases specialist claims during the stay. | Not in the paper | Not carried over. | None |
+
+## Analysis
+
+| Reconstruction | Kind | This analysis | Effect |
+|---|---|---|---|
+| No model; the original model was fitted in Stata. | Rebuilt | Backward elimination from every characteristic in Tables 1 and 2, as the paper describes, testing each variable as a whole and keeping the same people at every step, as Stata does. The paper's own eight-variable model is also refitted, to compare odds ratios directly (Table 4). | The final model, if the selection keeps different variables |
+
+## References
+
+::: {#refs}
+:::

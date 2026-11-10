@@ -67,7 +67,7 @@ Abbreviations: AKI, acute kidney injury; BMI, body mass index; CMV, cytomegalovi
 
 ## Figure 2. Kaplan-Meier survival curve for the 1265 kidney transplant recipients hospitalized with cryptococcosis
 
-![](images/published_figure_2.png){fig-alt="Published Kaplan-Meier survival curve over 15 years, falling steeply in the first months and then steadily to about 18% at about 12.5 years. A dashed vertical line marks 6 months, labelled '6-month mortality rate of 22%'. Numbers at risk: 1,263 at 0 years, 403 at 5, 71 at 10 and 0 at 15." width="100%"}
+![](images/published_figure_2.png){fig-alt="Published Kaplan-Meier survival curve over 15 years, falling steeply in the first months and then steadily to about 18% at about 12.5 years. A dashed vertical line marks 6 months, labelled '6-month mortality rate of 22%'. A table of numbers at risk is shown beneath, at 0, 5, 10 and 15 years." width="100%"}
 
 The vertical dashed line indicates the 6-month time point. The Results report an overall 6-month mortality of 22% (280/1265).
 
@@ -126,7 +126,6 @@ These are kept above as printed. Each is listed so that this analysis's outputs 
 **Figures**
 
 -   Figure 1 shows the denominators and the final cohort but none of the exclusions the Methods describe (age, cryptococcosis before transplant). "Hospitalizations" could mean hospital records or stays merged from overlapping records; this analysis merges records into stays.
--   Figure 2 starts with 1,263 at risk, not 1,265. Stata's survival setup drops anyone with no follow-up time, so the two are most likely people who died on the day of admission.
 -   Figure 2 gives only the number at risk, at 5-year intervals, and no confidence band; the 22% in its label is the share who died within 6 months (280 of 1,265), not a reading from the curve.
 -   Figure 3 uses a linear axis, on which an odds ratio of 0.5 and one of 2 look unequal although they are the same size of effect in opposite directions. It labels the time variable "Posttransplant ≥2 years" where the Results say "more than 2 years"; counted in whole days against 2 × 365.25 days, the two pick out the same people. No model N or number of deaths is given.
 

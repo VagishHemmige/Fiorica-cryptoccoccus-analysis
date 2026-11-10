@@ -1,0 +1,70 @@
+---
+title: "Figure style"
+format: html
+---
+
+The house style for figures: one theme with its colors, shapes and line types, readable labels, and one way to save a figure at its printed size. The file is copied unchanged from the maintainer's [COHERO analysis](https://github.com/VagishHemmige/COHERO-RCT-analysis), so figures look the same across his projects.
+
+::: {.Rcode title="Source code"}
+The full R script is available at:
+
+-   [`R/plot_style.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/plot_style.R)
+
+It is used by [`R/figures.R`](figures.qmd). The code sections below are imported directly from that script when this page is rendered.
+:::
+
+```{r}
+#| include: false
+#| eval: true
+#| cache: false
+knitr::read_chunk("../R/plot_style.R")
+```
+
+## Check the ggplot2 version
+
+The theme relies on features added in ggplot2 4.0.0: a theme can carry the palettes its figures use, and labels can be looked up by variable name. On an older version the script stops with a message saying what to update, rather than failing later with a less helpful error.
+
+```{r}
+#| label: check-ggplot2-version
+#| eval: false
+```
+
+## Palettes
+
+A palette is the ordered set of colors (or shapes, or line types) given to the groups in a figure. The colors are the Okabe-Ito set, chosen to stay distinguishable for people with the common kinds of color-vision deficiency, with a neutral dark gray first for a reference group. Groups also differ by point shape and line type, so a figure still works in grayscale and never relies on color alone. This study's figures each show a single series, which takes the first color after the gray.
+
+```{r}
+#| label: publication-palettes
+#| eval: false
+```
+
+## The publication theme
+
+A theme controls everything in a figure that is not data: background, gridlines, text sizes, legend position. `theme_publication()` keeps only what helps a reader: light horizontal gridlines to read values against, thin axis lines, no panel border. It also carries the palettes above, so a figure needs no color settings of its own. Text sizes are set for the printed figure (9 points by default), so a figure should be saved at the size it will be printed.
+
+```{r}
+#| label: theme-publication
+#| eval: false
+```
+
+## Labels
+
+`label_figure()` replaces column names with readable names, and `figure_label()` looks up one name for a title or axis label. Both take the labels as arguments, so the file reads nothing from the rest of the project. This study's figures take their readable names from `report_labels`, defined on the [Tables](tables.qmd) page.
+
+```{r}
+#| label: label-figure
+#| eval: false
+```
+
+## Saving a figure
+
+`save_figure()` writes a figure at its printed size in millimetres, in each format needed: PDF and SVG, which keep lines and text sharp at any zoom, for journals; and PNG for the website. Figures 2 and 3 are saved with it.
+
+```{r}
+#| label: save-figure
+#| eval: false
+```
+
+## The default theme
+
+Loading this file changes no settings. [Figures](figures.qmd) sets `theme_publication()` as the default theme for this project.
