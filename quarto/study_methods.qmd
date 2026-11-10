@@ -19,7 +19,7 @@ This project rebuilds the published study from its paper and supplement, and the
 
 ## Finding the cryptococcosis hospitalizations
 
-A hospitalization counts if a cryptococcosis code appears in any of its diagnosis positions, not only the principal diagnosis. The stays come from the USRDS hospitalization files. These are the inpatient part of the Medicare institutional claims, already organised by stay, and they carry the details the study needs: ICU days, procedures and discharge status. Hospital records that overlap in time are treated as one stay.
+A hospitalization counts if a cryptococcosis code appears in any of its diagnosis positions, not only the principal diagnosis. The stays come from the USRDS hospitalization files. These are the inpatient part of the Medicare institutional claims, already organised by stay, and they carry the details the study needs: ICU days, procedures and discharge status. Hospital records that overlap in time are treated as one stay. A stay counts only if it began on or after the first transplant: a stay that began before it, even if it continued past the transplant, is cryptococcosis before transplant, which the paper excludes.
 
 **Specified in:** [§3 Data source](analysis-plan.qmd#3-data-source), [§5](analysis-plan.qmd#5-exposure-index-event-and-covariates).
 
@@ -38,6 +38,8 @@ Characteristics come from three places:
 - **the index stay itself:** meningitis or not, acute kidney injury, diabetes, cirrhosis, ICU admission and procedures;
 - **USRDS and UNOS transplant records:** transplant history, BMI, pretransplant dialysis, HIV and CMV status, rejection;
 - **earlier hospitalizations:** transplant complications.
+
+For someone with more than one transplant, the registry information comes from their most recent transplant before the cryptococcosis hospitalization, because that is the graft and drug regimen they were living with. Acute rejection counts any recorded episode, treated or not, at that transplant or at a follow-up visit before the hospitalization. The registry is the source; hospital claims coded for rejection are an alternative the plan describes but does not use.
 
 Immunosuppressive drugs come from the transplant registry records (UNOS) held in USRDS, at transplant and at the first follow-up visit after transplant, as the paper's Methods describe. The paper also mentions billing codes; those may be revisited as the source ([#2](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/2)).
 

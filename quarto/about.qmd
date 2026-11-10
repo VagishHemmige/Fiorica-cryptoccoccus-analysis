@@ -35,6 +35,7 @@ Four documents describe the project, plus a coverage assessment:
 
 -   [**Study design and methods**](study_methods.qmd): the study's choices in plain language.
 -   [**Building the cohort**](create_cohort.qmd): the index hospitalizations and the cohort flowchart.
+-   [**Covariates**](create_covariates.qmd): the characteristics compared and modelled.
 -   [**Setup**](setup.qmd): packages and shared constants.
 -   [**Code lists**](code_lists.qmd): the diagnosis, procedure and billing codes from the paper's supplement.
 -   [**Functions**](functions.qmd): helper functions, including those that fill usRds gaps.

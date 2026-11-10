@@ -68,3 +68,16 @@ These constants name the columns that hold codes in each file, so a search never
 #| label: define-hospitalization-columns
 #| eval: false
 ```
+
+## UNOS keys and covariate concepts
+
+The UNOS files link to one another by identifiers whose names changed between USRDS releases: the 2024 release adds `_CODE` to each. The registration key here, `TRR_ID`, is the one the reconstruction used with this project's release. The follow-up key, `TRRFU_ID`, has not been checked against that release.
+
+**Decision pending:** the follow-up key name has to be confirmed against Appendix B for the release in use before the covariates script is run.
+
+The concept lists name which diagnoses and procedures are flagged on the index stay.
+
+```{r}
+#| label: define-unos-keys
+#| eval: false
+```

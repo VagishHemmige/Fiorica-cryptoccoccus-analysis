@@ -77,11 +77,11 @@ The paper does not state the order of step 6 relative to the others. The order a
 
 **Covariates measured at or before time zero:**
 
-- age, sex, race, Hispanic ethnicity, region;
-- BMI, pretransplant dialysis, HIV and CMV serostatus (UNOS registration);
-- number of transplants and graft failures before the index stay;
-- time since last transplant (also dichotomised at 2 years, as in the paper's model);
-- acute rejection (UNOS registration or follow-up);
+- age; sex and race (USRDS transplant file, record of the most recent transplant; race as White, Black or other); Hispanic ethnicity (patients file, format `$YNUFMT`: 1 or Y yes, 2 or N no, otherwise missing; the reconstruction treated code 2 as missing); Census region and division of residence (patients file `STATE`, FIPS codes; as in the reconstruction, Alaska and Hawaii are grouped with the territories as "Outside", which the maintainer is asked to confirm);
+- BMI, pretransplant dialysis, HIV and CMV serostatus, from the UNOS registration of the **most recent transplant on or before the index admission** (decided 2026-11-10; the reconstruction used the first transplant's registration);
+- number of transplants on or before, and graft failures before, the index admission;
+- time since the most recent transplant (also dichotomised at 2 years, as in the paper's model);
+- acute rejection: any episode (UNOS format `ACREJEPI` 1 or 2; 3 is none; blank, 990 and 998 missing) at the most recent transplant's registration or on its follow-up reports dated before the index admission (decided 2026-11-10). A follow-up report without a date takes the kidney graft failure date, as in the reconstruction;
 - any prior hospitalization with a transplant-complication code.
 
 **Immunosuppression:**
@@ -90,7 +90,8 @@ The paper does not state the order of step 6 relative to the others. The order a
 - measured from the UNOS records in the USRDS transplant files, not Medicare drug claims (decided in [#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2)):
   - **at transplant:** `TXIRUNOS`, linked to the recipient registration (`TXUNOS_TRR_KI`/`_KP`);
   - **at first follow-up:** `TXIFUNOS`, from the earliest follow-up report (`TXFUUNOS_KI`/`_KP`, earliest `FUDATE`), whether or not it precedes the index admission, as the paper's Methods describe ("the first post-transplant visit"). Under OPTN rules this is normally the 6-month report. A drug counts at follow-up if it is current maintenance at that visit (`RXMNTCUR`);
-- drug classes come from `RX_CD` and `DRUG_CD_OSTXT`, using the reconstruction's mapping.
+- the transplant and its first follow-up are those of the most recent transplant on or before the index admission (decided 2026-11-10); a registration with no drug records is missing, not "not on";
+- drug classes come from `RX_CD` and `DRUG_CD_OSTXT`, using the reconstruction's mapping, checked against Appendix C, with codes 57 (generic Myfortic), 58 (generic sirolimus) and 59 (Envarsus XR), which it missed, added (decided 2026-11-10).
 
 The paper's Discussion refers to a "1-year follow-up", and its Methods and Limitations say the drugs came from "billing codes"; the plan follows the Methods' time point and the UNOS records. The maintainer notes that billing data may be the gold standard, so this choice may be revisited ([#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2)).
 
@@ -126,6 +127,8 @@ Not applicable. Comparisons are between people who died within 6 months and thos
 ## 9. Sensitivity analyses
 
 **Variation: explicit Medicare-primary restriction.** One way the study could have been done differently is to require Medicare as primary payer from the payer history file (for example on the index admission date, for 365 days before it, or from first transplant to admission), with `usRds::verify_medicare_primary()`. This tests whether recipients with another primary payer, but a Medicare-paid index stay, change the estimates; it adds a flowchart step the paper does not show ([#3](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/3)).
+
+**Alternative: acute rejection from claims.** Rejection is measured from UNOS records (§5). The paper's Methods also mention ICD codes for graft rejection; a claims definition (a hospitalization with ICD-10-CM T86.11, kidney transplant rejection) is an alternative, noted but not built. ICD-9-CM has no rejection-specific kidney code (996.81 covers any complication of a transplanted kidney), so it would apply only from October 2015.
 
 No other sensitivity analyses are prespecified. A comparison of the hospitalization files with institutional claims was considered and not adopted, because the former are a subset of the latter (§3, [#1](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/1)).
 

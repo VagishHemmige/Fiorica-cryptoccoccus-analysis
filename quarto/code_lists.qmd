@@ -53,3 +53,36 @@ The code system is inferred from each code's form: ICD-10-PCS codes have seven c
 #| label: code-lists
 #| eval: false
 ```
+
+## Ventriculoperitoneal shunt
+
+The VP shunt codes, rebuilt from the official code sets because neither source lists them (see above). Shunt replacement and removal are not placement and are left out.
+
+```{r}
+#| label: code-lists-vp-shunt
+#| eval: false
+```
+
+## Immunosuppressive drug classes
+
+UNOS records each immunosuppressive drug by a numeric code (`RX_CD`), with free text when the drug is "other". This table assigns each code to one of the classes the paper reports. The mapping is the reconstruction's, checked against the official labels in Appendix C. Three codes it missed are added: 57 (generic Myfortic), 58 (generic sirolimus) and 59 (Envarsus XR). Rituximab, IVIG and muromonab, which the reconstruction also flagged, are left out because the paper doesn't report them.
+
+The free-text table keeps the reconstruction's spellings, including the misspellings found in the data.
+
+```{r}
+#| label: immunosuppressant-classes
+#| eval: false
+```
+
+## Regions
+
+USRDS records state of residence as a FIPS code. This table assigns each code to a Census region and division.
+
+- **The 48 contiguous states and DC** follow the Census Bureau.
+- **Alaska and Hawaii** are grouped with the territories as "Outside", as in the reconstruction. That differs from the Census Bureau and still needs confirming.
+- **Every other valid non-state code** (territories, foreign) is "Outside". The reconstruction left some of these, such as Guam and the Virgin Islands, as missing.
+
+```{r}
+#| label: state-regions
+#| eval: false
+```

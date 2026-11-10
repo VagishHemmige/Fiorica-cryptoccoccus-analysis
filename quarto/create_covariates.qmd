@@ -1,0 +1,157 @@
+---
+title: "Covariates"
+format: html
+---
+
+This script builds the characteristics the analysis compares and models, listed in §5 of the [analysis plan](analysis-plan.qmd#5-exposure-index-event-and-covariates). It joins them to the cohort to give `analysis_data`, with one row per person.
+
+::: {.Rcode title="Source code"}
+The full R script is available at:
+
+-   [`R/create_covariates.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/create_covariates.R)
+
+This R script file is itself reliant on the following helper files:
+
+-   [`R/setup.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/setup.R)
+-   [`R/functions.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/functions.R)
+-   [`R/create_cohort.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/create_cohort.R)
+
+The code sections below are imported directly from the script when this page is rendered.
+:::
+
+```{r}
+#| include: false
+#| eval: true
+#| cache: false
+knitr::read_chunk("../R/create_covariates.R")
+```
+
+## Starting point
+
+Each person's index stay, from the cohort.
+
+```{r}
+#| label: covariates-index
+#| eval: false
+```
+
+## Hospitalization records
+
+All hospitalization records of cohort members are loaded from both files through usRds. Each record is flagged for the diagnoses and procedures of interest, using each file's own code columns.
+
+```{r}
+#| label: covariates-load-hospitalizations
+#| eval: false
+```
+
+## On the index stay
+
+These are taken from the records that make up the index stay:
+
+- meningitis, acute kidney injury, diabetes and cirrhosis;
+- the five procedure groups;
+- ICU admission (any ICU or CCU days).
+
+```{r}
+#| label: covariates-index-stay
+#| eval: false
+```
+
+## Earlier hospitalization for a transplant complication
+
+Whether any hospitalization before the index admission had a transplant-complication code.
+
+```{r}
+#| label: covariates-prior-hospitalization
+#| eval: false
+```
+
+## Transplant history, sex and race
+
+These come from the USRDS transplant file:
+
+- how many transplants, and graft failures, came before the index admission;
+- how long it had been since the most recent transplant;
+- sex and race, from that most recent transplant's record.
+
+```{r}
+#| label: covariates-transplant-history
+#| eval: false
+```
+
+## Ethnicity and region
+
+These come from the patients file. Hispanic ethnicity follows the official coding, and region uses the [region table](code_lists.qmd#regions).
+
+```{r}
+#| label: covariates-patients
+#| eval: false
+```
+
+## Registry data at transplant
+
+BMI, dialysis before transplant, HIV and CMV status, and rejection come from the UNOS registration of the **most recent transplant on or before the index admission**. Kidney-alone and kidney–pancreas registrations are stacked together.
+
+```{r}
+#| label: covariates-unos-registration
+#| eval: false
+```
+
+## Registry follow-up reports
+
+The follow-up reports of that same transplant. A report without a date takes the date the kidney graft failed, as in the reconstruction.
+
+**Decision pending:** the name of the key linking follow-up drug records to these reports has to be confirmed for the release in use (see [Setup](setup.qmd#unos-keys-and-covariate-concepts)).
+
+```{r}
+#| label: covariates-unos-follow-up
+#| eval: false
+```
+
+## Acute rejection
+
+A person counts as having had acute rejection if there was any episode, treated or not:
+
+- at the registration, or
+- on a follow-up report dated before the index admission.
+
+The same section also puts the other registration values into analysis form: BMI as recorded, dialysis as yes or no, and HIV and CMV status as positive or negative. Unknown codes are missing. An alternative is to use claims coded for kidney transplant rejection; that is described in the plan but not built ([§9](analysis-plan.qmd#9-sensitivity-analyses)).
+
+```{r}
+#| label: covariates-rejection
+#| eval: false
+```
+
+## Immunosuppression at transplant
+
+The drug classes recorded at that transplant's registration ([#2](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/2)). A registration with no drug records is missing rather than "not on".
+
+```{r}
+#| label: covariates-immunosuppression-transplant
+#| eval: false
+```
+
+## Immunosuppression at first follow-up
+
+The drug classes current at that transplant's first follow-up visit, as the paper's Methods describe ([#2](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/2)). A drug counts only if it was current maintenance at the visit.
+
+```{r}
+#| label: covariates-immunosuppression-followup
+#| eval: false
+```
+
+## Putting it together
+
+Every covariate table is joined to the cohort one-to-one, so a duplicate stops the run. Time since transplant is converted to months and also split at the plan's 2-year cut-off. The script then checks that `analysis_data` still has exactly one row per cohort member.
+
+```{r}
+#| label: covariates-assemble
+#| eval: false
+```
+
+## Variable labels
+
+```{r}
+#| label: covariates-labels
+#| eval: false
+```

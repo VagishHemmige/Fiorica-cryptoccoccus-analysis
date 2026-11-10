@@ -7,4 +7,7 @@ source("R/functions.R")
 
 # Cohort (plan §4)
 source("R/create_cohort.R")
+
+# Covariates (plan §5)
+source("R/create_covariates.R")
 # Further analysis scripts are added here as they join the definitive analysis.
