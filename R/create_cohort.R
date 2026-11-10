@@ -6,21 +6,24 @@
 #   final data: one row per person in the study cohort).
 
 ## ---- cohort-load-hospitalizations
+# Columns are chosen with select() after loading, not with col_select,
+# because load_usrds_file() fails on Parquet files when col_select is used
+# (usRds#22). Return to col_select once that is fixed.
 # Both hospitalization files, with the key fields and diagnosis columns only.
 # factor_labels = FALSE keeps diagnosis codes as character (in hosp_to2009,
 # PRIMDIAG is a Y/N flag that Appendix C would otherwise turn into a factor).
 # usRds gap (coverage map, step 4): no extractor for these files, so each is
 # loaded whole and searched here.
-hosp_to2009 <- load_usrds_columns(
+hosp_to2009 <- load_usrds_file(
   "hosp_to2009",
-  factor_labels = FALSE,
-  columns = c("USRDS_ID", "CLM_FROM", "CLM_THRU", hosp_to2009_dx_columns)
-)
-hosp_2010on <- load_usrds_columns(
+  factor_labels = FALSE
+) %>%
+  select(all_of(c("USRDS_ID", "CLM_FROM", "CLM_THRU", hosp_to2009_dx_columns)))
+hosp_2010on <- load_usrds_file(
   "hosp_2010on",
-  factor_labels = FALSE,
-  columns = c("USRDS_ID", "CLM_FROM", "CLM_THRU", hosp_2010on_dx_columns)
-)
+  factor_labels = FALSE
+) %>%
+  select(all_of(c("USRDS_ID", "CLM_FROM", "CLM_THRU", hosp_2010on_dx_columns)))
 
 ## ---- cohort-flag-records
 # Flag cryptococcosis on every hospitalization record, using each file's own
@@ -51,18 +54,18 @@ rm(hosp_records)
 ## ---- cohort-load-transplants-patients
 # First transplant date from the transplant file; date of birth from the
 # patients file. Only the people with a cryptococcosis stay are kept.
-first_transplants <- load_usrds_columns(
+first_transplants <- load_usrds_file(
   "tx",
-  usrds_ids = cryptococcosis_stays$USRDS_ID,
-  columns = c("USRDS_ID", "TDATE")
+  usrds_ids = cryptococcosis_stays$USRDS_ID
 ) %>%
+  select(all_of(c("USRDS_ID", "TDATE"))) %>%
   first_transplant_dates()
 
-patients <- load_usrds_columns(
+patients <- load_usrds_file(
   "patients",
-  usrds_ids = cryptococcosis_stays$USRDS_ID,
-  columns = c("USRDS_ID", "BORN")
-)
+  usrds_ids = cryptococcosis_stays$USRDS_ID
+) %>%
+  select(all_of(c("USRDS_ID", "BORN")))
 
 ## ---- cohort-candidates
 cohort_candidates <- build_cohort_candidates(

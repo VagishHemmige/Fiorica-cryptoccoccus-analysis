@@ -5,6 +5,9 @@
 # Produces: analysis_data.
 
 ## ---- covariates-index
+# Columns are chosen with select() after loading, not with col_select,
+# because load_usrds_file() fails on Parquet files when col_select is used
+# (usRds#22). Return to col_select once that is fixed.
 # The cohort's index stays, the starting point for every covariate.
 cohort_index <- cohort %>%
   select(USRDS_ID, index_admit_date, index_discharge_date)
@@ -52,12 +55,12 @@ rm(hospitalization_records)
 # Transplants, graft failures and time since the most recent transplant, from
 # the USRDS transplant file. Sex and race come from the record of the most
 # recent transplant, as in the reconstruction (which took them from this file).
-transplants <- load_usrds_columns(
+transplants <- load_usrds_file(
   "tx",
   usrds_ids = cohort_ids,
-  factor_labels = FALSE,
-  columns = c("USRDS_ID", "TDATE", "FAILDATE", "RSEX", "RACE")
-)
+  factor_labels = FALSE
+) %>%
+  select(all_of(c("USRDS_ID", "TDATE", "FAILDATE", "RSEX", "RACE")))
 
 transplant_history <- summarise_transplant_history(transplants, cohort_index)
 
@@ -72,12 +75,12 @@ transplant_demographics <- transplants %>%
 
 ## ---- covariates-patients
 # Hispanic ethnicity and region of residence, from the patients file.
-patient_covariates <- load_usrds_columns(
+patient_covariates <- load_usrds_file(
   "patients",
   usrds_ids = cohort_ids,
-  factor_labels = FALSE,
-  columns = c("USRDS_ID", "HISPANIC", "STATE")
+  factor_labels = FALSE
 ) %>%
+  select(all_of(c("USRDS_ID", "HISPANIC", "STATE"))) %>%
   left_join(state_regions, by = "STATE", relationship = "many-to-one") %>%
   transmute(USRDS_ID, hispanic = recode_hispanic(HISPANIC), region, division)
 
@@ -91,19 +94,19 @@ registration_columns <- c(
 )
 
 registrations <- bind_rows(
-  load_usrds_columns(
+  load_usrds_file(
     "txunos_trr_ki",
     usrds_ids = cohort_ids,
-    factor_labels = FALSE,
-    columns = c(registration_columns, "ACUTE_REJ_EPI")
+    factor_labels = FALSE
   ) %>%
+    select(all_of(c(registration_columns, "ACUTE_REJ_EPI"))) %>%
     mutate(organ = "Kidney"),
-  load_usrds_columns(
+  load_usrds_file(
     "txunos_trr_kp",
     usrds_ids = cohort_ids,
-    factor_labels = FALSE,
-    columns = c(registration_columns, "ACUTE_REJ_EPI_KI")
+    factor_labels = FALSE
   ) %>%
+    select(all_of(c(registration_columns, "ACUTE_REJ_EPI_KI"))) %>%
     rename(ACUTE_REJ_EPI = ACUTE_REJ_EPI_KI) %>%
     mutate(organ = "Kidney-pancreas")
 )
@@ -118,18 +121,18 @@ followup_columns <- c(
 )
 
 followups <- bind_rows(
-  load_usrds_columns(
+  load_usrds_file(
     "txfuunos_ki",
     usrds_ids = cohort_ids,
-    factor_labels = FALSE,
-    columns = c(followup_columns, "ACUTE_REJ_EPI")
-  ),
-  load_usrds_columns(
+    factor_labels = FALSE
+  ) %>%
+    select(all_of(c(followup_columns, "ACUTE_REJ_EPI"))),
+  load_usrds_file(
     "txfuunos_kp",
     usrds_ids = cohort_ids,
-    factor_labels = FALSE,
-    columns = c(followup_columns, "ACUTE_REJ_EPI_KI")
+    factor_labels = FALSE
   ) %>%
+    select(all_of(c(followup_columns, "ACUTE_REJ_EPI_KI"))) %>%
     rename(ACUTE_REJ_EPI = ACUTE_REJ_EPI_KI)
 ) %>%
   mutate(FUDATE = coalesce(FUDATE, FUKIFAIL)) %>%
@@ -171,12 +174,12 @@ registration_covariates <- index_registration %>%
 # Immunosuppression at transplant: the index registration's drug records
 # (TXIRUNOS), any drug in each class. A registration with no drug records is
 # missing, not "not on".
-transplant_drugs <- load_usrds_columns(
+transplant_drugs <- load_usrds_file(
   "txirunos",
   usrds_ids = cohort_ids,
-  factor_labels = FALSE,
-  columns = c("USRDS_ID", unos_registration_id, "RX_CD", "DRUG_CD_OSTXT")
+  factor_labels = FALSE
 ) %>%
+  select(all_of(c("USRDS_ID", unos_registration_id, "RX_CD", "DRUG_CD_OSTXT"))) %>%
   semi_join(index_registration, by = c("USRDS_ID", unos_registration_id))
 
 immunosuppression_transplant <- classify_immunosuppressants(
@@ -204,12 +207,12 @@ first_followup <- followups %>%
   ungroup() %>%
   select(USRDS_ID, all_of(unos_followup_id))
 
-followup_drugs <- load_usrds_columns(
+followup_drugs <- load_usrds_file(
   "txifunos",
   usrds_ids = cohort_ids,
-  factor_labels = FALSE,
-  columns = c("USRDS_ID", unos_followup_id, "RX_CD", "DRUG_CD_OSTXT", "RXMNTCUR")
+  factor_labels = FALSE
 ) %>%
+  select(all_of(c("USRDS_ID", unos_followup_id, "RX_CD", "DRUG_CD_OSTXT", "RXMNTCUR"))) %>%
   semi_join(first_followup, by = c("USRDS_ID", unos_followup_id)) %>%
   # Drugs not current at the visit keep the follow-up's key but match no class
   mutate(

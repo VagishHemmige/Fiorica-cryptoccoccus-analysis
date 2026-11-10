@@ -34,7 +34,7 @@ flowchart TD
   figures --> figout[/"figures/ (gitignored)<br/>Figures 1-3, captions, alt text"/]
 ```
 
-`R/main.R` sources the scripts in this order: `setup.R` (which sources `code_lists.R`), `functions.R`, `create_cohort.R`, `create_covariates.R`, `create_outcomes.R`, `fit_models.R`, `plot_style.R`, `tables.R`, `figures.R`. USRDS files are reached only through usRds, located by `usRds::set_USRDS_wd()` on the machine that holds them. Until [usRds#22](https://github.com/VagishHemmige/usRds/issues/22) is fixed, the scripts call `load_usrds_columns()` (`R/functions.R`), a temporary stand-in for `usRds::load_usrds_file()` that avoids its failing column selection on Parquet files; the diagram's `load_usrds_file()` labels refer to it.
+`R/main.R` sources the scripts in this order: `setup.R` (which sources `code_lists.R`), `functions.R`, `create_cohort.R`, `create_covariates.R`, `create_outcomes.R`, `fit_models.R`, `plot_style.R`, `tables.R`, `figures.R`. USRDS files are reached only through usRds, located by `usRds::set_USRDS_wd()` on the machine that holds them. Until [usRds#22](https://github.com/VagishHemmige/usRds/issues/22) is fixed, columns are chosen with `select()` after `load_usrds_file()` rather than with its `col_select`.
 
 ## Scripts
 

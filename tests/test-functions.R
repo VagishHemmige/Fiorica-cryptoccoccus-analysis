@@ -569,18 +569,3 @@ test_that("style_pvalue_ama drops the leading zero and keeps the bounds", {
     c("<.001", ".012", ".040", ".50", ">.99", NA)
   )
 })
-
-test_that("load_usrds_columns reads selected Parquet columns as load_usrds_file would (usRds#22 workaround)", {
-  root <- withr::local_tempdir()
-  dir.create(file.path(root, "ESRD Core"))
-  arrow::write_parquet(
-    tibble(USRDS_ID = c(1, 2, 3), BORN = as.Date(c("1950-01-01", "1960-01-01", "1970-01-01")), DIED = as.Date(NA), STATE = "06"),
-    file.path(root, "ESRD Core", "patients.parquet")
-  )
-  usRds::set_USRDS_wd(root, permanent = FALSE)
-  selected <- load_usrds_columns("patients", c("USRDS_ID", "BORN"), factor_labels = FALSE, usrds_ids = c(1, 3))
-  expect_equal(names(selected), c("USRDS_ID", "BORN"))
-  expect_equal(selected$USRDS_ID, c(1, 3))
-  whole <- usRds::load_usrds_file("patients", factor_labels = FALSE, usrds_ids = c(1, 3))
-  expect_equal(selected, whole %>% select(USRDS_ID, BORN))
-})
