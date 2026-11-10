@@ -14,4 +14,10 @@ source("R/create_covariates.R")
 # Outcomes (plan §7) and models (plan §8)
 source("R/create_outcomes.R")
 source("R/fit_models.R")
+
+# Tables and figures (plan §8, §10); outputs go to the gitignored tables/
+# and figures/ folders until USRDS review clears them
+source("R/plot_style.R")
+source("R/report_tables.R")
+source("R/report_figures.R")
 # Further analysis scripts are added here as they join the definitive analysis.

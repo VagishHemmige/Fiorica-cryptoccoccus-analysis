@@ -108,7 +108,7 @@ cohort_flowchart <- cohort_candidates %>%
     show_exc = TRUE
   )
 
-cohort <- cohort_flowchart$data
+cohort <- flowchart::fc_view(cohort_flowchart, what = "data")
 
 ## ---- cohort-labels
 cohort <- cohort %>%

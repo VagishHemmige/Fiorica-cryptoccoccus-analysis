@@ -1,0 +1,76 @@
+---
+title: "Figures"
+format: html
+---
+
+This script draws the three figures: the cohort flowchart (Figure 1), the survival curve (Figure 2) and the odds ratios from the final model (Figure 3), in the house style shared with the COHERO analysis. The figures are written to `figures/`, which is not in the repository; they appear on this site only after USRDS review clears them.
+
+::: {.Rcode title="Source code"}
+The full R script is available at:
+
+-   [`R/report_figures.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/report_figures.R)
+
+This R script file is itself reliant on the following helper files:
+
+-   [`R/setup.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/setup.R)
+-   [`R/functions.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/functions.R)
+-   [`R/plot_style.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/plot_style.R)
+-   [`R/create_cohort.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/create_cohort.R)
+-   [`R/fit_models.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/fit_models.R)
+-   [`R/report_tables.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/report_tables.R)
+
+The code sections below are imported directly from the script when this page is rendered.
+:::
+
+```{r}
+#| include: false
+#| eval: true
+#| cache: false
+knitr::read_chunk("../R/report_figures.R")
+```
+
+```{r}
+#| label: figure-defaults
+#| eval: false
+```
+
+## Figure 1: the cohort
+
+The flowchart is drawn from the same object that built the cohort, so the two cannot disagree. If any box holds 1 to 10 people, the figure is not saved and the run warns.
+
+```{r}
+#| label: figure-1
+#| eval: false
+```
+
+## Figure 2: survival
+
+The survival curve has its 95% confidence band and, below it, the number still at risk and the running totals of deaths and censored people. A time appears in that table only if no count shown there, or the change since the previous time, is from 1 to 10, and the curve stops at the last such time (`km_reportable_times()` on the [Functions](functions.qmd) page). A dashed line marks 6 months.
+
+```{r}
+#| label: figure-2
+#| eval: false
+```
+
+## Figure 3: odds ratios
+
+Each variable kept in the final model, with its adjusted odds ratio and 95% confidence interval on a log scale, and the numbers printed beside it.
+
+```{r}
+#| label: figure-3
+#| eval: false
+```
+
+## Captions and alt text
+
+Captions and descriptions for screen readers are built from the fitted results, so no number is typed by hand.
+
+```{r}
+#| label: figure-text
+#| eval: false
+```
+
+```{r}
+#| label: figure-disclosure-checks
+#| eval: false
+```
