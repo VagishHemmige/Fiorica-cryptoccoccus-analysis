@@ -4,16 +4,14 @@ format: html
 ---
 
 ::: {.Results title="Reproduced from the published article"}
-The tables on this page are reproduced, unchanged, from Fiorica G, Cervera-Hernandez ME, Pirofski L, Hemmige VS, Yoon H. High mortality and associated risk factors in kidney transplant recipients with cryptococcosis: a nationwide cohort study over a decade using USRDS data. *Open Forum Infectious Diseases*. 2025;12(5):ofaf263 [@fiorica2025], © The Author(s) 2025, published by Oxford University Press on behalf of the Infectious Diseases Society of America under a [CC BY-NC-ND 4.0 license](https://creativecommons.org/licenses/by-nc-nd/4.0/). They are transcribed cell for cell from the article, and the figures are shown as published. These are the outputs cleared by USRDS for publication; they were **not** produced by this repository's code. This analysis's own numbers are not expected to match them exactly: the original analysis was run in Stata, that code is no longer available, and the data release may differ (see the [analysis plan](analysis-plan.qmd), §11).
+The tables on this page are reproduced, unchanged, from Fiorica G, Cervera-Hernandez ME, Pirofski L, Hemmige VS, Yoon H. High mortality and associated risk factors in kidney transplant recipients with cryptococcosis: a nationwide cohort study over a decade using USRDS data. *Open Forum Infectious Diseases*. 2025;12(5):ofaf263 [@fiorica2025], © The Author(s) 2025, published by Oxford University Press on behalf of the Infectious Diseases Society of America under a [CC BY-NC-ND 4.0 license](https://creativecommons.org/licenses/by-nc-nd/4.0/). They are transcribed cell for cell from the article, and the figures are images of the published figures. These are the outputs cleared by USRDS for publication; they were **not** produced by this repository's code. This analysis's own numbers are not expected to match them exactly: the original analysis was run in Stata, that code is no longer available, and the data release may differ (see the [analysis plan](analysis-plan.qmd), §11).
 :::
 
 Apparent errors in the published tables are kept as printed and listed under [Notes on the published results](#notes-on-the-published-results). The final model's adjusted odds ratios (Figure 3) are also set beside this analysis's refitted model in [Table 4](tables.qmd).
 
 ## Figure 1. Flowchart of selection of relevant KTRs from the USRDS database
 
-::: callout-note
-The published image is to be added. It is in the [article's full text](https://pmc.ncbi.nlm.nih.gov/articles/PMC12089938/).
-:::
+![](images/published_figure_1.png){fig-alt="Published flowchart. Two boxes at the top, 1,848,170 hospitalizations in USRDS during the study period and 257,958 kidney transplant recipients in USRDS, lead to 2,885 hospitalizations for cryptococcosis in kidney transplant recipients during the study period, and then to 1,265 recipients with a first hospitalization for cryptococcosis during the study period. No exclusion steps are shown." width="100%"}
 
 The Results report 1,848,170 hospitalizations among 257,958 kidney transplant recipients in the data set, and 1,265 recipients with 2,885 hospitalizations with a diagnosis of cryptococcosis during the study period; each recipient's first such hospitalization is the index hospitalization.
 
@@ -69,9 +67,7 @@ Abbreviations: AKI, acute kidney injury; BMI, body mass index; CMV, cytomegalovi
 
 ## Figure 2. Kaplan-Meier survival curve for the 1265 kidney transplant recipients hospitalized with cryptococcosis
 
-::: callout-note
-The published image is to be added. It is in the [article's full text](https://pmc.ncbi.nlm.nih.gov/articles/PMC12089938/).
-:::
+![](images/published_figure_2.png){fig-alt="Published Kaplan-Meier survival curve over 15 years, falling steeply in the first months and then steadily to about 18% at about 12.5 years. A dashed vertical line marks 6 months, labelled '6-month mortality rate of 22%'. Numbers at risk: 1,263 at 0 years, 403 at 5, 71 at 10 and 0 at 15." width="100%"}
 
 The vertical dashed line indicates the 6-month time point. The Results report an overall 6-month mortality of 22% (280/1265).
 
@@ -101,9 +97,7 @@ Abbreviations: ATG, antithymocyte globulin; IL-2, interleukin-2; mTOR, mechanist
 
 ## Figure 3. Multivariable logistic regression analysis of predictors of 6-month mortality
 
-::: callout-note
-The published image is to be added. It is in the [article's full text](https://pmc.ncbi.nlm.nih.gov/articles/PMC12089938/).
-:::
+![](images/published_figure_3.png){fig-alt="Published forest plot of adjusted odds ratios with 95% confidence intervals on a linear axis from 0 to 10, with a dotted line at 1: age 60 years or older, 2 or more years after transplant, pretransplant dialysis, hospitalizations for complications of the transplanted kidney, no tacrolimus at follow-up, acute kidney injury and cirrhosis during the index admission, and ICU admission. All intervals lie above 1." width="100%"}
 
 The Results give the adjusted odds ratios (95% CI) shown in the figure, in order of size: cirrhosis during the index hospitalization, 3.1 (1.2–7.7); ICU admission, 2.9 (2.0–4.0); pretransplant dialysis, 2.7 (1.5–4.9); not on tacrolimus at follow-up, 2.2 (1.4–3.3); age ≥60 years, 2.0 (1.4–2.8); AKI during the index hospitalization, 1.7 (1.2–2.4); more than 2 years since transplant, 1.7 (1.1–2.4); and previous hospitalization for complications of the transplanted kidney, 1.5 (1.1–2.2).
 
@@ -128,6 +122,13 @@ These are kept above as printed. Each is listed so that this analysis's outputs 
 **Table 2**
 
 -   *MMF at transplant, total:* 1,121 is printed as 90.2%. The row's own survivor and death percentages imply about 958 and 275 people with records, so 1,121 of about 1,233 (90.9%). The total is an average of the two groups weighted by their size, so with about 3.5 survivors for each death it should lie near the survivors' 91.1%, not near the deaths' 90.1%.
+
+**Figures**
+
+-   Figure 1 shows the denominators and the final cohort but none of the exclusions the Methods describe (age, cryptococcosis before transplant). "Hospitalizations" could mean hospital records or stays merged from overlapping records; this analysis merges records into stays.
+-   Figure 2 starts with 1,263 at risk, not 1,265. Stata's survival setup drops anyone with no follow-up time, so the two are most likely people who died on the day of admission.
+-   Figure 2 gives only the number at risk, at 5-year intervals, and no confidence band; the 22% in its label is the share who died within 6 months (280 of 1,265), not a reading from the curve.
+-   Figure 3 uses a linear axis, on which an odds ratio of 0.5 and one of 2 look unequal although they are the same size of effect in opposite directions. It labels the time variable "Posttransplant ≥2 years" where the Results say "more than 2 years"; counted in whole days against 2 × 365.25 days, the two pick out the same people. No model N or number of deaths is given.
 
 **Text and tables**
 
