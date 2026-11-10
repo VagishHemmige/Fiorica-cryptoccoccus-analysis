@@ -118,3 +118,97 @@ A stay admitted on the day of the first transplant counts; a stay admitted the d
 #| label: build-cohort-candidates
 #| eval: false
 ```
+
+## Flagging concepts on records
+
+`flag_concepts()` adds one yes/no column per concept to hospitalization records. A record gets "yes" when any of the named columns holds a code from that concept's list.
+
+```{r}
+#| label: flag-concepts
+#| eval: false
+```
+
+## Loading and flagging hospitalizations
+
+`load_flagged_hospitalizations()` loads one hospitalization file for a set of people through usRds. It flags the diagnosis and procedure concepts on each record, and keeps the dates, ICU and CCU days, and the flags.
+
+```{r}
+#| label: load-flagged-hospitalizations
+#| eval: false
+```
+
+## Index stay covariates
+
+`summarise_index_stay()` takes the records that fall within each person's index stay, meaning those admitted between the stay's first and last dates. A concept counts if any of those records has it. ICU admission means any ICU or CCU days on the stay.
+
+```{r}
+#| label: summarise-index-stay
+#| eval: false
+```
+
+## Earlier hospitalizations
+
+`summarise_prior_hospitalizations()` reports whether any hospitalization admitted before the index admission carries a given flag, such as a transplant-complication code. People with no earlier hospitalizations get "no".
+
+```{r}
+#| label: summarise-prior-hospitalizations
+#| eval: false
+```
+
+## Transplant history
+
+`summarise_transplant_history()` takes everyone's transplants and, for each person, counts:
+
+- transplants on or before the index admission;
+- graft failures before it;
+- the days since the most recent transplant.
+
+```{r}
+#| label: summarise-transplant-history
+#| eval: false
+```
+
+## The transplant whose registry data are used
+
+`select_index_registration()` picks each person's UNOS registration for the most recent transplant on or before the index admission. The transplant-time covariates come from that registration.
+
+```{r}
+#| label: select-index-registration
+#| eval: false
+```
+
+## Acute rejection
+
+`unos_rejection_any()` turns the UNOS rejection code into yes or no. Codes 1 and 2 (an episode, treated or not) are "yes", and 3 is "no". Unknown codes are missing.
+
+```{r}
+#| label: unos-rejection-any
+#| eval: false
+```
+
+## Drug classes
+
+`classify_immunosuppressants()` gives one row per registration or follow-up, with a yes/no column per drug class. A class is "yes" when any drug record maps to it, by code or by free text.
+
+```{r}
+#| label: classify-immunosuppressants
+#| eval: false
+```
+
+## Demographic recodes
+
+These turn the USRDS codes for sex, race and Hispanic ethnicity into labels. Hispanic ethnicity follows the official format, in which "no" is coded 2 or N. The reconstruction treated 2 as missing.
+
+```{r}
+#| label: recode-demographics
+#| eval: false
+```
+
+## Combining yes/no values
+
+`any_known()` combines several yes/no values while keeping missing distinct from "no". The result is "yes" if any value is yes, "no" if none is yes and at least one is no, and missing if every value is missing.
+
+```{r}
+#| label: any-known
+#| eval: false
+```

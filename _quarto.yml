@@ -54,6 +54,9 @@ website:
           - href: quarto/create_cohort.qmd
             text: Building the cohort
             icon: laptop
+          - href: quarto/create_covariates.qmd
+            text: Covariates
+            icon: laptop
           - section: Setup and helper functions
             contents:
               - href: quarto/setup.qmd

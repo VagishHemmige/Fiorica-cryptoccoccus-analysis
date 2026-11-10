@@ -42,3 +42,22 @@ hosp_to2009_dx_columns <- str_c("HSDIAG", 1:10)
 hosp_2010on_dx_columns <- c("PRIMDIAG", str_c("HSDIAG", 1:26))
 hosp_to2009_proc_columns <- str_c("HSSURG", 1:10)
 hosp_2010on_proc_columns <- str_c("HSSURG", 1:25)
+
+## ---- define-unos-keys
+# Keys linking the UNOS files. The registration key is the one the
+# reconstruction uses (TRR_ID), matching the maintainer's release. The
+# follow-up key is NOT VERIFIED: the 2024 layout names it TRRFU_ID_CODE
+# (and the registration key TRR_ID_CODE); check both against Appendix B for
+# the release in use before running.
+unos_registration_id <- "TRR_ID"
+unos_followup_id <- "TRRFU_ID"
+
+# Concepts flagged on the index stay (diagnoses and procedures) and on earlier
+# hospitalizations (plan §5)
+index_stay_dx_concepts <- c(
+  "cryptococcal_meningitis", "acute_kidney_injury", "diabetes", "cirrhosis"
+)
+index_stay_proc_concepts <- c(
+  "lumbar_puncture", "spinal_procedure", "neurosurgical_procedure",
+  "lung_procedure", "vp_shunt"
+)

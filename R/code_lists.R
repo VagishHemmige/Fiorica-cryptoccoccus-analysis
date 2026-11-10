@@ -1391,3 +1391,88 @@ code_lists <- code_lists %>%
       .default = source
     )
   )
+
+## ---- immunosuppressant-classes
+# UNOS immunosuppression drug codes (RX_CD; Appendix C 2024 format DRUG) mapped
+# to the drug classes the paper reports. From the reconstruction's mapping
+# (issue #2), checked against Appendix C; codes 57, 58 and 59 are added because
+# the reconstruction missed them (decided 2026-11-10). Rituximab, IVIG and
+# muromonab, which the reconstruction also flagged, are not reported by the
+# paper and are left out.
+immunosuppressant_classes <- tribble(
+  ~rx_cd, ~drug_class, ~label,
+  -1, "antithymocyte_globulin", "ALG",
+  14, "antithymocyte_globulin", "ATGAM (ATG)",
+  15, "antithymocyte_globulin", "NRATG/NRATS",
+  41, "antithymocyte_globulin", "THYMOGLOBULIN",
+  50, "alemtuzumab", "CAMPATH - ALEMTUZUMAB",
+  42, "il2_receptor_antibody", "ZENAPAX - DACLIZUMAB",
+  43, "il2_receptor_antibody", "SIMULECT - BASILIXIMAB",
+  5, "tacrolimus", "PROGRAF (TACROLIMUS)",
+  53, "tacrolimus", "MODIFIED RELEASE TACROLIMUS",
+  54, "tacrolimus", "GENERIC TACROLIMUS",
+  59, "tacrolimus", "ENVARSUS XR (TACROLIMUS XR)",
+  -2, "cyclosporine", "CYCLOSPORINE",
+  3, "cyclosporine", "SANDIMMUNE (CYCLOSPORINE A)",
+  4, "cyclosporine", "NEORAL",
+  40, "cyclosporine", "SANG CY A",
+  44, "cyclosporine", "GENGRAF",
+  46, "cyclosporine", "EON (GENERIC CYCLOSPORINE)",
+  48, "cyclosporine", "OTHER GENERIC CYCLOSPORINE",
+  9, "mycophenolate", "CELLCEPT (MMF)",
+  47, "mycophenolate", "MYFORTIC",
+  55, "mycophenolate", "GENERIC MMF",
+  57, "mycophenolate", "GENERIC MYFORTIC",
+  6, "mtor_inhibitor", "SIROLIMUS",
+  45, "mtor_inhibitor", "EVEROLIMUS",
+  58, "mtor_inhibitor", "GENERIC SIROLIMUS",
+  8, "azathioprine", "AZATHIOPRINE",
+  1, "steroids", "PREDNISONE",
+  2, "steroids", "METHYLPREDNISOLONE",
+  49, "steroids", "STEROIDS"
+) %>%
+  mutate(source = if_else(rx_cd %in% c(57, 58, 59), "official code sets", "reconstruction"))
+
+# Free-text entries (DRUG_CD_OSTXT) the reconstruction assigns to a class,
+# exactly as it spells them (including misspellings found in the data).
+immunosuppressant_free_text <- tribble(
+  ~drug_text, ~drug_class,
+  "Methlyprednisolone", "steroids",
+  "Methylprednisolone", "steroids",
+  "dexamethasone", "steroids",
+  "dexamethoasone", "steroids",
+  "Mycophenelate", "mycophenolate",
+  "Myfortic", "mycophenolate",
+  "cellcept", "mycophenolate",
+  "cellecept", "mycophenolate",
+  "myfortic", "mycophenolate",
+  "Simulect", "il2_receptor_antibody",
+  "CAMPATH", "alemtuzumab",
+  "CSA - Cyclosporine", "cyclosporine"
+)
+
+## ---- state-regions
+# USRDS STATE (FIPS; Appendix C format STATFIP) to Census region and division.
+# The 48 contiguous states and DC follow the Census Bureau. As in the
+# reconstruction, Alaska and Hawaii are grouped with the territories as
+# "Outside" rather than in the West (to confirm). Every other valid
+# non-state code (territories, foreign) is "Outside"; 99 and unlisted codes
+# are missing.
+state_regions <- tribble(
+  ~region, ~division, ~states,
+  "Northeast", "New England", c("09", "23", "25", "33", "44", "50"),
+  "Northeast", "Mid-Atlantic", c("34", "36", "42"),
+  "Midwest", "East North Central", c("17", "18", "26", "39", "55"),
+  "Midwest", "West North Central", c("19", "20", "27", "29", "31", "38", "46"),
+  "South", "South Atlantic", c("10", "11", "12", "13", "24", "37", "45", "51", "54"),
+  "South", "East South Central", c("01", "21", "28", "47"),
+  "South", "West South Central", c("05", "22", "40", "48"),
+  "West", "Mountain", c("04", "08", "16", "30", "32", "35", "49", "56"),
+  "West", "Pacific (not Alaska or Hawaii)", c("06", "41", "53"),
+  "Outside", "Outside", c(
+    "02", "15", "03", "43", "60", "61", "62", "64", "66", "67", "68", "69",
+    "70", "71", "72", "74", "75", "76", "77", "78", "79", "81", "84", "86",
+    "89", "95", "98", "FR", "OC", "UP"
+  )
+) %>%
+  unnest_longer(states, values_to = "STATE")

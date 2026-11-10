@@ -176,3 +176,210 @@ build_cohort_candidates <- function(crypto_stays, first_transplants, patients) {
     mutate(age_at_index = age_in_years(BORN, index_admit_date)) %>%
     select(-BORN)
 }
+
+## ---- flag-concepts
+# Add one logical column per concept to hospitalization records: TRUE when any
+# of `columns` holds a code from that concept's list. Columns are named
+# <concept> (for example, diabetes).
+flag_concepts <- function(records, columns, code_lists, concepts) {
+  for (concept_name in concepts) {
+    records[[concept_name]] <- flag_codes_wide(
+      records,
+      columns,
+      codes_for_concept(code_lists, concept_name)
+    )
+  }
+  records
+}
+
+## ---- summarise-index-stay
+# Stay-level covariates for the index stay. A record belongs to the index stay
+# when it is admitted within the stay's span (true of every record that
+# collapse_stays() combined into it). Returns one row per person: each
+# concept flag (TRUE if any record of the stay has it) and icu_admission
+# (any ICU or CCU days on the stay).
+summarise_index_stay <- function(records, cohort_index, concepts) {
+  records %>%
+    inner_join(
+      cohort_index %>% select(USRDS_ID, index_admit_date, index_discharge_date),
+      by = "USRDS_ID",
+      relationship = "many-to-one"
+    ) %>%
+    filter(
+      CLM_FROM >= index_admit_date,
+      CLM_FROM <= index_discharge_date
+    ) %>%
+    group_by(USRDS_ID) %>%
+    summarise(
+      across(all_of(concepts), any),
+      icu_days = sum(coalesce(ICU_DAYS, 0) + coalesce(CCU_DAYS, 0)),
+      .groups = "drop"
+    ) %>%
+    mutate(icu_admission = icu_days > 0) %>%
+    select(-icu_days)
+}
+
+## ---- summarise-prior-hospitalizations
+# TRUE when any hospitalization record admitted before the index admission has
+# `flag_column` set (for example, a transplant-complication code).
+summarise_prior_hospitalizations <- function(records, cohort_index, flag_column) {
+  prior <- records %>%
+    inner_join(
+      cohort_index %>% select(USRDS_ID, index_admit_date),
+      by = "USRDS_ID",
+      relationship = "many-to-one"
+    ) %>%
+    filter(CLM_FROM < index_admit_date) %>%
+    group_by(USRDS_ID) %>%
+    summarise(prior = any(.data[[flag_column]]), .groups = "drop")
+
+  cohort_index %>%
+    select(USRDS_ID) %>%
+    left_join(prior, by = "USRDS_ID", relationship = "one-to-one") %>%
+    mutate(prior = coalesce(prior, FALSE))
+}
+
+## ---- summarise-transplant-history
+# Transplant history at the index admission, from the USRDS transplant file
+# (one row per transplant; needs USRDS_ID, TDATE, FAILDATE):
+#   transplants_before_index: transplants dated on or before index admission;
+#   failures_before_index: graft failures dated before index admission;
+#   last_transplant_date, days_since_last_transplant: most recent transplant
+#     on or before index admission.
+summarise_transplant_history <- function(transplants, cohort_index) {
+  transplants %>%
+    inner_join(
+      cohort_index %>% select(USRDS_ID, index_admit_date),
+      by = "USRDS_ID",
+      relationship = "many-to-one"
+    ) %>%
+    filter(!is.na(TDATE), TDATE <= index_admit_date) %>%
+    group_by(USRDS_ID) %>%
+    summarise(
+      transplants_before_index = n(),
+      failures_before_index = sum(!is.na(FAILDATE) & FAILDATE < index_admit_date),
+      last_transplant_date = max(TDATE),
+      days_since_last_transplant = as.numeric(first(index_admit_date) - max(TDATE)),
+      .groups = "drop"
+    )
+}
+
+## ---- select-index-registration
+# The UNOS registration of each person's most recent transplant on or before
+# the index admission (decided 2026-11-10). `registrations` needs USRDS_ID and
+# TDATE; returns one row per person.
+select_index_registration <- function(registrations, cohort_index) {
+  registrations %>%
+    inner_join(
+      cohort_index %>% select(USRDS_ID, index_admit_date),
+      by = "USRDS_ID",
+      relationship = "many-to-one"
+    ) %>%
+    filter(!is.na(TDATE), TDATE <= index_admit_date) %>%
+    group_by(USRDS_ID) %>%
+    slice_max(TDATE, n = 1, with_ties = FALSE) %>%
+    ungroup() %>%
+    select(-index_admit_date)
+}
+
+## ---- unos-rejection-any
+# UNOS acute rejection (format ACREJEPI): 1 (treated) or 2 (not treated with
+# an additional agent) is an episode; 3 is none; blank, 990 and 998 (unknown)
+# are missing (decided 2026-11-10).
+unos_rejection_any <- function(code) {
+  code <- as.character(code)
+  case_when(
+    code %in% c("1", "2") ~ TRUE,
+    code == "3" ~ FALSE,
+    .default = NA
+  )
+}
+
+## ---- classify-immunosuppressants
+# One row per key with one logical column per drug class: TRUE when any of the
+# key's drug records maps to the class, by drug code (RX_CD) or by free text
+# (DRUG_CD_OSTXT). Keys with no records are absent; callers decide whether
+# absence means "not on" or missing.
+classify_immunosuppressants <- function(drug_records, key, rx_classes, free_text) {
+  by_code <- drug_records %>%
+    inner_join(
+      rx_classes %>% select(rx_cd, drug_class),
+      by = c("RX_CD" = "rx_cd"),
+      relationship = "many-to-one"
+    )
+  by_text <- drug_records %>%
+    inner_join(
+      free_text,
+      by = c("DRUG_CD_OSTXT" = "drug_text"),
+      relationship = "many-to-one"
+    )
+  all_classes <- sort(unique(rx_classes$drug_class))
+
+  bind_rows(by_code, by_text) %>%
+    distinct(.data[[key]], drug_class) %>%
+    mutate(on_drug = TRUE, drug_class = factor(drug_class, levels = all_classes)) %>%
+    pivot_wider(
+      names_from = drug_class,
+      values_from = on_drug,
+      values_fill = FALSE,
+      names_expand = TRUE
+    ) %>%
+    right_join(distinct(drug_records, .data[[key]]), by = key) %>%
+    mutate(across(all_of(all_classes), \(x) coalesce(x, FALSE)))
+}
+
+## ---- recode-demographics
+# Sex and race (USRDS transplant file codes) and Hispanic ethnicity (patients
+# file, format $YNUFMT: 1 or Y yes, 2 or N no, anything else missing).
+recode_sex <- function(code) {
+  case_when(code == "1" ~ "Male", code == "2" ~ "Female", .default = NA)
+}
+
+recode_race <- function(code) {
+  case_when(
+    code == "1" ~ "White",
+    code == "2" ~ "Black",
+    code %in% c("3", "4", "5", "6") ~ "Other",
+    .default = NA
+  )
+}
+
+recode_hispanic <- function(code) {
+  case_when(
+    code %in% c("1", "Y") ~ "Hispanic",
+    code %in% c("2", "N") ~ "Non-Hispanic",
+    .default = NA
+  )
+}
+
+## ---- any-known
+# Combine logical values, keeping missing distinct from "no": TRUE if any value
+# is TRUE; FALSE if none is TRUE and at least one is FALSE; NA if all are
+# missing (or there are none).
+any_known <- function(x) {
+  case_when(
+    any(x %in% TRUE) ~ TRUE,
+    any(x %in% FALSE) ~ FALSE,
+    .default = NA
+  )
+}
+
+## ---- load-flagged-hospitalizations
+# Load one hospitalization file for a set of people (usRds::load_usrds_file())
+# and flag diagnosis and procedure concepts on each record, keeping the key
+# fields, ICU/CCU days and the flags. Codes stay character
+# (factor_labels = FALSE). usRds gap (coverage map, steps 4-9).
+load_flagged_hospitalizations <- function(file_root, ids, dx_columns, proc_columns,
+                                          dx_concepts, proc_concepts, code_lists) {
+  key_columns <- c("USRDS_ID", "CLM_FROM", "CLM_THRU", "ICU_DAYS", "CCU_DAYS")
+
+  load_usrds_file(
+    file_root,
+    factor_labels = FALSE,
+    usrds_ids = ids,
+    col_select = all_of(c(key_columns, dx_columns, proc_columns))
+  ) %>%
+    flag_concepts(dx_columns, code_lists, dx_concepts) %>%
+    flag_concepts(proc_columns, code_lists, proc_concepts) %>%
+    select(all_of(c(key_columns, dx_concepts, proc_concepts)))
+}

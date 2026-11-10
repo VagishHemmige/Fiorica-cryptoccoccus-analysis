@@ -207,3 +207,134 @@ test_that("a stay spanning the first transplant is not an index stay", {
   expect_true(is.na(result$index_stay_id))
   expect_true(result$in_transplant_file)
 })
+
+# ---- Covariate helpers -------------------------------------------------------
+
+test_that("summarise_index_stay uses only records within the index stay", {
+  d <- as.Date
+  synthetic_records <- tibble(
+    USRDS_ID = c(1, 1, 1, 2),
+    CLM_FROM = d(c("2010-01-01", "2010-01-04", "2010-03-01", "2012-05-01")),
+    CLM_THRU = d(c("2010-01-05", "2010-01-08", "2010-03-02", "2012-05-03")),
+    HSDIAG1 = c("B451", "5849", "25000", NA),
+    ICU_DAYS = c(0, 2, 5, NA),
+    CCU_DAYS = c(NA, 0, 0, 0)
+  ) %>%
+    flag_concepts("HSDIAG1", code_lists, c("cryptococcal_meningitis", "acute_kidney_injury", "diabetes"))
+  synthetic_index <- tibble(
+    USRDS_ID = c(1, 2),
+    index_admit_date = d(c("2010-01-01", "2012-05-01")),
+    index_discharge_date = d(c("2010-01-08", "2012-05-03"))
+  )
+  result <- summarise_index_stay(
+    synthetic_records, synthetic_index,
+    c("cryptococcal_meningitis", "acute_kidney_injury", "diabetes")
+  )
+  # Person 1: the March record (diabetes, ICU) is a later stay and is ignored
+  expect_equal(result$cryptococcal_meningitis, c(TRUE, FALSE))
+  expect_equal(result$acute_kidney_injury, c(TRUE, FALSE))
+  expect_equal(result$diabetes, c(FALSE, FALSE))
+  expect_equal(result$icu_admission, c(TRUE, FALSE))
+})
+
+test_that("summarise_prior_hospitalizations looks only before the index admission", {
+  d <- as.Date
+  synthetic_records <- tibble(
+    USRDS_ID = c(1, 1, 2),
+    CLM_FROM = d(c("2009-01-01", "2010-01-01", "2010-02-01")),
+    complication = c(TRUE, FALSE, TRUE)
+  )
+  synthetic_index <- tibble(
+    USRDS_ID = c(1, 2, 3),
+    index_admit_date = d(c("2010-01-01", "2010-02-01", "2010-03-01"))
+  )
+  result <- summarise_prior_hospitalizations(synthetic_records, synthetic_index, "complication")
+  # Person 2's complication record is the index admission itself, not prior;
+  # person 3 has no hospitalization records at all
+  expect_equal(result$prior, c(TRUE, FALSE, FALSE))
+})
+
+test_that("summarise_transplant_history counts transplants and failures before index", {
+  d <- as.Date
+  synthetic_tx <- tibble(
+    USRDS_ID = c(1, 1, 1, 2),
+    TDATE = d(c("2001-01-01", "2005-06-01", "2012-01-01", "2010-03-01")),
+    FAILDATE = d(c("2005-01-01", "2010-03-01", NA, NA))
+  )
+  synthetic_index <- tibble(
+    USRDS_ID = c(1, 2),
+    index_admit_date = d(c("2010-03-01", "2010-03-01"))
+  )
+  result <- summarise_transplant_history(synthetic_tx, synthetic_index)
+  # Person 1: the 2012 transplant is after index; the second graft failed on
+  # the index date, which is not before it
+  expect_equal(result$transplants_before_index, c(2, 1))
+  expect_equal(result$failures_before_index, c(1, 0))
+  expect_equal(result$last_transplant_date, d(c("2005-06-01", "2010-03-01")))
+  expect_equal(result$days_since_last_transplant, c(1734, 0))
+})
+
+test_that("select_index_registration picks the most recent registration on or before index", {
+  d <- as.Date
+  synthetic_trr <- tibble(
+    USRDS_ID = c(1, 1, 1),
+    TRR_ID = c("a", "b", "c"),
+    TDATE = d(c("2001-01-01", "2005-06-01", "2012-01-01"))
+  )
+  result <- select_index_registration(
+    synthetic_trr, tibble(USRDS_ID = 1, index_admit_date = d("2010-03-01"))
+  )
+  expect_equal(result$TRR_ID, "b")
+})
+
+test_that("unos_rejection_any follows the ACREJEPI format", {
+  expect_equal(
+    unos_rejection_any(c(1, 2, 3, 990, 998, NA)),
+    c(TRUE, TRUE, FALSE, NA, NA, NA)
+  )
+})
+
+test_that("classify_immunosuppressants maps codes and free text to classes", {
+  synthetic_drugs <- tibble(
+    TRR_ID = c("a", "a", "a", "b", "c"),
+    RX_CD = c(5, 47, 98, 59, 98),
+    DRUG_CD_OSTXT = c(NA, NA, "Methylprednisolone", NA, "something else")
+  )
+  result <- classify_immunosuppressants(
+    synthetic_drugs, "TRR_ID", immunosuppressant_classes, immunosuppressant_free_text
+  ) %>%
+    arrange(TRR_ID)
+  expect_equal(result$TRR_ID, c("a", "b", "c"))
+  expect_equal(result$tacrolimus, c(TRUE, TRUE, FALSE))
+  expect_equal(result$mycophenolate, c(TRUE, FALSE, FALSE))
+  expect_equal(result$steroids, c(TRUE, FALSE, FALSE))
+  expect_equal(result$cyclosporine, c(FALSE, FALSE, FALSE))
+  expect_setequal(
+    setdiff(names(result), "TRR_ID"),
+    unique(immunosuppressant_classes$drug_class)
+  )
+})
+
+test_that("demographic recodes follow the Appendix C formats", {
+  expect_equal(recode_sex(c("1", "2", "9")), c("Male", "Female", NA))
+  expect_equal(recode_race(c("1", "2", "4", "9")), c("White", "Black", "Other", NA))
+  # Hispanic: 2 is "No" in $YNUFMT (the reconstruction treated it as missing)
+  expect_equal(
+    recode_hispanic(c("1", "Y", "2", "N", "3", "9", "U", NA)),
+    c("Hispanic", "Hispanic", "Non-Hispanic", "Non-Hispanic", NA, NA, NA, NA)
+  )
+})
+
+test_that("state_regions places every state and DC once, and AK and HI outside", {
+  regions <- state_regions %>% filter(region != "Outside")
+  expect_equal(nrow(regions), 49)
+  expect_equal(state_regions$region[state_regions$STATE %in% c("02", "15")], c("Outside", "Outside"))
+  expect_equal(state_regions$division[state_regions$STATE == "06"], "Pacific (not Alaska or Hawaii)")
+})
+
+test_that("any_known keeps missing distinct from no", {
+  expect_true(any_known(c(NA, FALSE, TRUE)))
+  expect_false(any_known(c(NA, FALSE)))
+  expect_true(is.na(any_known(c(NA, NA))))
+  expect_true(is.na(any_known(logical(0))))
+})
