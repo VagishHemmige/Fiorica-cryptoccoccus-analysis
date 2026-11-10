@@ -57,6 +57,8 @@ All candidates go in together. The variable with the largest P value is then rem
 
 The paper's eight-variable final model is also fitted exactly as published, on the same people as the backward elimination. Its odds ratios can then be compared with the published ones directly, whether or not the selection here keeps the same eight variables.
 
+The two approaches answer different questions. Rerunning the selection asks whether the paper's method, applied to this data release, picks the same characteristics; selection by P value is unstable, so it may not, even when nothing is wrong. Refitting the published model asks whether the same characteristics have similar odds ratios here. The [Study design and methods](study_methods.qmd#outcome-and-analysis) page sets out these and the other choices in how the model is built.
+
 ```{r}
 #| label: models-published
 #| eval: false

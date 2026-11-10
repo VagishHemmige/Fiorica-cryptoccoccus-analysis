@@ -3,11 +3,12 @@ title: "Study design and methods"
 format: html
 ---
 
-This page explains, in plain language and without code, what this study chose and why. The formal specification is the [analysis plan](analysis-plan.qmd); each section below ends by linking the part of the plan that governs it. Three kinds of note mark where the description stands:
+This page explains, in plain language and without code, what this study chose and why. The formal specification is the [analysis plan](analysis-plan.qmd); each section below ends by linking the part of the plan that governs it. Four kinds of note mark where the description stands:
 
 - **Specified in:** the section of the analysis plan that defines the method.
 - **Current code:** where the code does not yet do what the plan says, what it does now, with a link to the GitHub issue tracking the difference.
 - **Decision pending:** a choice the plan has not yet made, linked to its decision issue. A paragraph that starts with **Decision pending:** is highlighted in yellow automatically.
+- **Alternatives considered:** other reasonable ways the step could have been done, what each would change, and why this study chose as it did, linked to the decision issue where the choice was argued. A study built from claims involves many such choices; seeing them is part of reading the results.
 
 ## The question and the design in brief
 
@@ -21,6 +22,12 @@ This project rebuilds the published study from its paper and supplement, and the
 
 A hospitalization counts if a cryptococcosis code appears in any of its diagnosis positions, not only the principal diagnosis. The stays come from the USRDS hospitalization files. These are the inpatient part of the Medicare institutional claims, already organised by stay, and they carry the details the study needs: ICU days, procedures and discharge status. Hospital records that overlap in time are treated as one stay. A stay counts only if it began on or after the first transplant: a stay that began before it, even if it continued past the transplant, is cryptococcosis before transplant, which the paper excludes.
 
+**Alternatives considered:**
+
+- *Medicare institutional claims instead of the hospitalization files.* Claims are the raw billing records; the hospitalization files are built from them and already grouped into stays. Using claims would exercise more of the usRds package, but it would add nothing as a check, because the USRDS Researcher's Guide describes the hospitalization files as a subset of the claims. Not done ([#1](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/1)).
+- *Which code set applies around October 2015.* A stay that straddles the switch from ICD-9 to ICD-10 is coded by its discharge date, which is Medicare's rule; its admission date would be the other choice ([#8](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/8)).
+- *Where the code lists come from.* The paper's supplement and the 2025 reconstruction list the same codes, with a few gaps: neither lists codes for ventriculoperitoneal shunt, which the paper reports, so that list was rebuilt from the official code sets; and the reconstruction's diabetes codes, read literally, would miss most ICD-10 diabetes codes, so they are matched as open prefixes, as the supplement does ([#8](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/8)).
+
 **Specified in:** [§3 Data source](analysis-plan.qmd#3-data-source), [§5](analysis-plan.qmd#5-exposure-index-event-and-covariates).
 
 ## Who is included
@@ -28,6 +35,12 @@ A hospitalization counts if a cryptococcosis code appears in any of its diagnosi
 The cohort is adults aged 18 to 90 with a kidney or kidney–pancreas transplant whose first cryptococcosis hospitalization came after their transplant. People who had a cryptococcosis claim before their first transplant are excluded. The paper's cohort is described as having Medicare as primary insurance. Because every index stay is a Medicare-paid record, no separate payer check is applied. An explicit check is described as a possible variation.
 
 **Decision pending:** which claim sources count toward the pre-transplant exclusion, and whether one claim is enough ([#4](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/4)).
+
+**Alternatives considered:**
+
+- *Checking Medicare as primary payer.* The paper's cohort had Medicare as primary insurance but the paper gives no time window. One could require it on the admission date, for the year before, or from transplant onward; a longer window makes claims-based measures more complete and shrinks the cohort. Here no explicit check is made, and the check is kept as a variation ([#3](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/3)).
+- *A stay that begins before the first transplant and ends after it.* The reconstruction kept such stays, with time since transplant set to zero. The paper excludes cryptococcosis before transplant, so here they are excluded ([#4](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/4)).
+- *Alaska and Hawaii.* They could be counted in the West census region; here they are grouped with the territories as "Outside", as in the reconstruction, because they are hard to compare with the mainland for a study like this. No one is excluded for where they live ([#12](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/12)).
 
 **Specified in:** [§4 Study population](analysis-plan.qmd#4-study-population), [§9](analysis-plan.qmd#9-sensitivity-analyses).
 
@@ -45,6 +58,12 @@ Immunosuppressive drugs come from the transplant registry records (UNOS) held in
 
 **Decision pending:** whether physician (CPT) billing codes for procedures are used as well as the hospital's ICD procedure codes ([#5](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/5)).
 
+**Alternatives considered:**
+
+- *Which transplant's records to use.* The reconstruction used the first transplant. For someone transplanted more than once, the most recent transplant before the hospitalization describes the graft and drugs they had at the time, so that one is used ([#12](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/12)).
+- *Acute rejection from the registry or from claims.* The registry records any episode at transplant or follow-up. Hospital claims coded for kidney transplant rejection are the alternative, but ICD-9 has no code specific to rejection, so a claims definition would only work from October 2015 ([#12](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/12); plan §9).
+- *Immunosuppression from the registry or from billing codes.* The paper's Methods mention billing codes, and its supplement lists drug billing codes for cyclosporine and tacrolimus; the reconstruction used the registry. Billing codes would show drugs actually dispensed, but only for some drugs and only where Medicare paid. The registry is used, at transplant and at the first follow-up visit, as the paper's Methods describe. The paper's Discussion speaks of a "1-year follow-up"; the Methods' "first post-transplant visit" is followed ([#2](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/2)).
+
 **Specified in:** [§5](analysis-plan.qmd#5-exposure-index-event-and-covariates).
 
 ## Outcome and analysis
@@ -54,5 +73,13 @@ The main outcome is death from any cause within 180 days of admission. The metho
 - survivors and non-survivors are compared;
 - survival over time is drawn as a Kaplan–Meier curve;
 - the factors associated with death are found with logistic regression, using backward elimination as the paper did.
+
+The paper's own final model is also refitted exactly as published, with its eight characteristics, so its odds ratios can be compared with the published ones directly (Table 4).
+
+**Alternatives considered:**
+
+- *Rerunning the selection, or fitting the published model.* Rerunning backward elimination repeats what the paper did, but a small change in the data can change which characteristics survive, and then the odds ratios cannot be compared one for one. Fitting the paper's eight characteristics directly compares the estimates, but not the selection. Both are done, and Table 4 shows them side by side.
+- *Backward elimination at all.* Selecting variables by their P values gives P values that look smaller than they should and a model that may not repeat in other data. Choosing the variables beforehand on clinical grounds, or using penalized regression, are the usual alternatives. Elimination is kept because the aim is to repeat the paper; its limits are listed in plan §11.
+- *How each step is tested.* A characteristic with several categories (such as region) gets one joint test, not one per category, and every step uses the same people: everyone with all candidates known. This is how Stata, the paper's software, does it. Testing with likelihood ratios, or letting the sample grow as variables are removed, are reasonable alternatives that can give a different final model.
 
 **Specified in:** [§7 Outcomes](analysis-plan.qmd#7-outcomes), [§8 Statistical analysis](analysis-plan.qmd#8-statistical-analysis).
