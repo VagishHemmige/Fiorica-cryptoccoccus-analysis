@@ -425,6 +425,10 @@ wald_term_p <- function(model, term) {
   estimates <- coef(model)[columns]
   keep <- !is.na(estimates)
   estimates <- estimates[keep]
+  if (length(estimates) == 0) {
+    # No estimable coefficient (the term does not vary in the sample)
+    return(NA_real_)
+  }
   covariance <- vcov(model)[names(estimates), names(estimates), drop = FALSE]
   statistic <- as.numeric(t(estimates) %*% solve(covariance) %*% estimates)
   pchisq(statistic, df = length(estimates), lower.tail = FALSE)
@@ -432,7 +436,8 @@ wald_term_p <- function(model, term) {
 
 ## ---- bivariable-models
 # One logistic model per candidate (outcome ~ candidate), each on the people
-# with that candidate known. Returns the term, people used, and Wald P value.
+# with that candidate known. Returns the term, people used, and Wald P value
+# (NA when the candidate does not vary among them).
 bivariable_models <- function(data, outcome, candidates) {
   map(candidates, \(candidate) {
     model_data <- data %>%
@@ -457,8 +462,10 @@ bivariable_models <- function(data, outcome, candidates) {
 # Backward elimination for a logistic model (plan §8): start from every
 # candidate on the complete cases for all of them (the sample stays fixed, as
 # in Stata's stepwise), and repeatedly remove the term with the largest Wald
-# P value while it is at or above `threshold`. Returns the final model, the
-# fixed sample and the removal steps.
+# P value while it is at or above `threshold`. A term with no estimable
+# coefficient in that sample (no variation, P value NA) is removed first, as
+# Stata omits it. Returns the final model, the fixed sample and the removal
+# steps.
 backward_eliminate <- function(data, outcome, candidates, threshold) {
   model_data <- data %>%
     select(all_of(c(outcome, candidates))) %>%
@@ -469,8 +476,8 @@ backward_eliminate <- function(data, outcome, candidates, threshold) {
   repeat {
     model <- glm(reformulate(remaining, response = outcome), family = binomial(), data = model_data)
     p_values <- map_dbl(remaining, \(term) wald_term_p(model, term))
-    worst <- which.max(p_values)
-    if (length(remaining) == 0 || p_values[worst] < threshold) {
+    worst <- if (anyNA(p_values)) which(is.na(p_values))[1] else which.max(p_values)
+    if (!is.na(p_values[worst]) && p_values[worst] < threshold) {
       break
     }
     steps <- add_row(steps, step = nrow(steps) + 1L, removed = remaining[worst], p_value = p_values[worst])
@@ -502,4 +509,211 @@ hosmer_lemeshow <- function(observed, predicted, groups = 10) {
     p_value = pchisq(statistic, df = df, lower.tail = FALSE),
     table = table
   )
+}
+
+## ---- count-table-cells
+# The counts behind a descriptive table, one row per variable, level and
+# group: every level of a categorical variable, both TRUE and FALSE for a
+# logical variable (only TRUE is shown in the table; FALSE can be derived),
+# and the missing count. `groups` is the grouping column; an "Overall" group
+# is added. Continuous variables contribute only their missing count.
+count_table_cells <- function(data, variables, group) {
+  long_data <- bind_rows(
+    data %>% mutate(.group = as.character(.data[[group]])),
+    data %>% mutate(.group = "Overall")
+  )
+
+  map(variables, \(variable) {
+    values <- long_data[[variable]]
+    level <- case_when(
+      is.na(values) ~ "(missing)",
+      is.numeric(values) ~ "(value)",
+      .default = as.character(values)
+    )
+    tibble(variable = variable, level = level, group = long_data$.group) %>%
+      count(variable, level, group) %>%
+      complete(variable, level, group, fill = list(n = 0L)) %>%
+      mutate(
+        shown = case_when(
+          level == "(value)" ~ FALSE,
+          is.logical(values) & level == "FALSE" ~ FALSE,
+          .default = TRUE
+        )
+      )
+  }) %>%
+    list_rbind()
+}
+
+## ---- flag-small-cells
+# Small-cell suppression (plan §10; USRDS rule: no count from 1 to
+# `threshold`, including counts recoverable by subtraction). Input: one row
+# per variable, level and group, with n and whether the cell is shown
+# (FALSE for cells that are only derivable, such as the FALSE count of a
+# logical variable, or continuous values). Returns the input with
+# `suppress`: TRUE for every shown cell that must be hidden.
+#   1. Primary: any cell (shown or derivable) with 1 to `threshold`.
+#   2. Within a variable and group, the levels sum to the group size, so if
+#      exactly one cell is unknown it can be recovered: hide the smallest
+#      other non-zero shown cell.
+#   3. Across groups, the groups sum to "Overall", so if exactly one cell of
+#      a variable and level is unknown, hide the smallest other non-zero
+#      shown cell.
+# Rules 2 and 3 repeat until nothing changes. A derivable small cell counts
+# as unknown only once another cell in its sum is hidden, which these rules
+# ensure.
+flag_small_cells <- function(counts, threshold = 10) {
+  cells <- counts %>%
+    mutate(unknown = n >= 1 & n <= threshold, .row = row_number())
+
+  hide_one_more <- function(cells, by) {
+    cells %>%
+      group_by(across(all_of(by))) %>%
+      mutate(
+        .needs = sum(unknown) == 1,
+        .candidate = shown & !unknown & n > 0,
+        .pick = .needs & .candidate &
+          n == suppressWarnings(min(n[.candidate])) &
+          .row == suppressWarnings(min(.row[.candidate & n == min(n[.candidate])]))
+      ) %>%
+      ungroup() %>%
+      mutate(unknown = unknown | .pick) %>%
+      select(-.needs, -.candidate, -.pick)
+  }
+
+  repeat {
+    before <- sum(cells$unknown)
+    cells <- cells %>%
+      hide_one_more(c("variable", "group")) %>%
+      hide_one_more(c("variable", "level"))
+    if (sum(cells$unknown) == before) {
+      break
+    }
+  }
+
+  unresolved <- cells %>%
+    filter(unknown) %>%
+    group_by(variable) %>%
+    filter(!any(shown & unknown))
+  if (nrow(unresolved) > 0) {
+    warning(
+      "Small derivable cells with no shown cell to hide in: ",
+      str_flatten_comma(unique(unresolved$variable)),
+      call. = FALSE
+    )
+  }
+
+  cells %>%
+    mutate(suppress = shown & unknown) %>%
+    select(-unknown, -.row)
+}
+
+## ---- km-reportable-times
+# Times at which a Kaplan-Meier curve and risk table can be shown under the
+# small-cell rule: more than `threshold` people still at risk (so the curve
+# stops before its tail reveals small numbers), cumulative events and
+# cumulative censored each 0 or above `threshold`, and every change since the
+# previous time shown 0 or above `threshold`. Candidate times are tried in
+# order; a time that fails is dropped and the next is compared with the last
+# time kept. The curve should be drawn only up to the last time returned.
+km_reportable_times <- function(km_fit, candidate_times, threshold = 10) {
+  fit_summary <- summary(km_fit, times = candidate_times, extend = TRUE)
+  table <- tibble(
+    time = fit_summary$time,
+    n_risk = fit_summary$n.risk,
+    cum_event = cumsum(fit_summary$n.event),
+    cum_censor = cumsum(fit_summary$n.censor)
+  )
+  allowed <- function(x) x == 0 | x > threshold
+
+  kept <- integer()
+  for (i in seq_len(nrow(table))) {
+    current <- table[i, ]
+    ok <- current$n_risk > threshold & allowed(current$cum_event) & allowed(current$cum_censor)
+    if (length(kept) > 0) {
+      previous <- table[last(kept), ]
+      ok <- ok &
+        allowed(previous$n_risk - current$n_risk) &
+        allowed(current$cum_event - previous$cum_event) &
+        allowed(current$cum_censor - previous$cum_censor)
+    }
+    if (ok) {
+      kept <- c(kept, i)
+    }
+  }
+  table$time[kept]
+}
+
+## ---- flowchart-small-counts
+# Boxes of a flowchart (the tibble from flowchart::fc_view(x, "fc"), with
+# columns id, type, label and n) whose count is from 1 to `threshold`. Every
+# exclusion is drawn with its own count (show_exc = TRUE), so no count is
+# left to be recovered by subtraction; exported diagrams must return no rows.
+flowchart_small_counts <- function(fc_boxes, threshold = 10) {
+  fc_boxes %>%
+    filter(!is.na(n), n >= 1, n <= threshold) %>%
+    select(id, type, label, n)
+}
+
+## ---- tidy-odds-ratios
+# Adjusted odds ratios with 95% Wald confidence intervals (as Stata's
+# logistic reports them) from a logistic glm, one row per coefficient, with readable term labels from `labels` (a
+# named character vector: variable name -> label) and the level appended for
+# factors.
+tidy_odds_ratios <- function(model, labels) {
+  broom::tidy(model) %>%
+    filter(term != "(Intercept)") %>%
+    mutate(
+      conf.low = exp(estimate - qnorm(0.975) * std.error),
+      conf.high = exp(estimate + qnorm(0.975) * std.error),
+      estimate = exp(estimate)
+    ) %>%
+    mutate(
+      variable = map_chr(term, \(x) {
+        matches <- names(labels)[str_starts(x, fixed(names(labels)))]
+        if (length(matches) == 0) x else matches[which.max(nchar(matches))]
+      }),
+      level = str_remove(term, fixed(variable)),
+      level = if_else(level %in% c("", "TRUE"), NA, level),
+      term_label = if_else(
+        is.na(level),
+        unname(labels[variable]),
+        str_c(unname(labels[variable]), ": ", level)
+      )
+    ) %>%
+    select(term, term_label, estimate, conf.low, conf.high, p.value)
+}
+
+## ---- suppress-table-body
+# Apply small-cell flags (flag_small_cells()) to a gtsummary table body: the
+# cells to hide are replaced with `mask`, and the P value of any variable
+# with a hidden cell is removed (with the margins, a test statistic can
+# reveal the hidden counts). `group_columns` maps group names in the flags to
+# table columns (for example, c(Overall = "stat_0", ...)). Logical variables
+# appear on their "label" row, other levels on "level" rows, and missing
+# counts on the "missing" row.
+suppress_table_body <- function(table_body, flags, group_columns, mask = "≤10") {
+  hidden <- flags %>%
+    filter(suppress) %>%
+    mutate(
+      row_type = case_when(
+        level == "(missing)" ~ "missing",
+        level == "TRUE" ~ "label",
+        .default = "level"
+      ),
+      column = unname(group_columns[group])
+    )
+
+  for (i in seq_len(nrow(hidden))) {
+    cell <- hidden[i, ]
+    rows <- table_body$variable == cell$variable & table_body$row_type == cell$row_type
+    if (cell$row_type == "level") {
+      rows <- rows & table_body$label == cell$level
+    }
+    table_body[[cell$column]][rows] <- mask
+  }
+
+  if ("p.value" %in% names(table_body)) {
+    table_body$p.value[table_body$variable %in% hidden$variable] <- NA
+  }
+  table_body
 }

@@ -46,3 +46,4 @@
 
 # Approved public or synthetic files: add narrow exceptions here, never a whole format.
 # !tests/fixtures/synthetic_cohort.csv
+Rplots.pdf

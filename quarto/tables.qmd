@@ -1,0 +1,95 @@
+---
+title: "Tables"
+format: html
+---
+
+This script makes Tables 1 and 2 (characteristics and immunosuppression by vital status 6 months after admission) and the odds-ratio table, following plan [§8](analysis-plan.qmd#8-statistical-analysis) and the disclosure rules in [§10](analysis-plan.qmd#10-disclosure-control). The tables are written to `tables/`, which is not in the repository; they appear on this site only after USRDS review clears them.
+
+::: {.Rcode title="Source code"}
+The full R script is available at:
+
+-   [`R/tables.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/tables.R)
+
+This R script file is itself reliant on the following helper files:
+
+-   [`R/setup.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/setup.R)
+-   [`R/functions.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/functions.R)
+-   [`R/create_outcomes.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/create_outcomes.R)
+-   [`R/fit_models.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/fit_models.R)
+
+The code sections below are imported directly from the script when this page is rendered.
+:::
+
+```{r}
+#| include: false
+#| eval: true
+#| cache: false
+knitr::read_chunk("../R/tables.R")
+```
+
+## Readable names
+
+Every variable in a table or figure gets a readable name here, so no column name reaches an output.
+
+```{r}
+#| label: report-labels
+#| eval: false
+```
+
+```{r}
+#| label: table-variables
+#| eval: false
+```
+
+## Descriptive tables
+
+One function makes both descriptive tables. Continuous variables are shown as mean (SD), time since transplant as median (IQR), and everything else as a count and percentage, with the number unknown always shown. Continuous variables are compared with Student's t test; categorical ones with the chi-squared test, or Fisher's exact test when an expected count is under 5.
+
+Before the table is shown, every count from 1 to 10 is hidden, along with any other count that would let it be worked out by subtraction, and the P value of that variable is removed (`flag_small_cells()` and `suppress_table_body()` on the [Functions](functions.qmd) page).
+
+```{r}
+#| label: descriptive-table
+#| eval: false
+```
+
+```{r}
+#| label: table-1
+#| eval: false
+```
+
+```{r}
+#| label: table-2
+#| eval: false
+```
+
+## Follow-up
+
+Before any model, how long people were followed and how many died or were censored. Median follow-up uses the reverse Kaplan–Meier method, which treats censoring as the event.
+
+```{r}
+#| label: follow-up
+#| eval: false
+```
+
+## Odds ratios
+
+Each variable alone, and the final model after backward elimination, side by side. The P value shown for each variable is the single joint test the selection used, so a variable with several categories has one P value, not one per category.
+
+```{r}
+#| label: table-models
+#| eval: false
+```
+
+## Disclosure checks
+
+Some counts cannot be hidden inside a table, such as how many people the model left out for missing data. They are collected here for the reviewer; any row marked for review must be resolved before results leave the approved environment.
+
+```{r}
+#| label: disclosure-checks
+#| eval: false
+```
+
+```{r}
+#| label: save-tables
+#| eval: false
+```

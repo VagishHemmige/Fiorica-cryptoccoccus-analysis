@@ -395,6 +395,22 @@ test_that("backward_eliminate keeps a strong predictor, drops noise, and fixes t
   expect_equal(nobs(result$model), n - 50)
 })
 
+test_that("a term that does not vary gives an NA P value and is removed first", {
+  set.seed(20261110)
+  n <- 1000
+  synthetic <- tibble(
+    strong = rbinom(n, 1, 0.4),
+    never = FALSE,
+    y = rbinom(n, 1, plogis(-1.5 + 1.5 * strong))
+  )
+  model <- glm(y ~ strong + never, family = binomial(), data = synthetic)
+  expect_true(is.na(wald_term_p(model, "never")))
+  result <- backward_eliminate(synthetic, "y", c("never", "strong"), 0.05)
+  expect_equal(result$retained, "strong")
+  expect_equal(result$steps$removed, "never")
+  expect_true(is.na(result$steps$p_value))
+})
+
 test_that("hosmer_lemeshow reproduces the statistic by hand", {
   observed <- c(0, 0, 1, 0, 1, 1, 0, 1, 1, 1)
   predicted <- c(0.1, 0.2, 0.3, 0.3, 0.5, 0.6, 0.4, 0.8, 0.9, 0.7)
@@ -405,4 +421,144 @@ test_that("hosmer_lemeshow reproduces the statistic by hand", {
   by_hand <- (1 - 1.3)^2 / (1.3 * (1 - 1.3 / 5)) + (5 - 3.5)^2 / (3.5 * (1 - 3.5 / 5))
   expect_equal(result$statistic, by_hand)
   expect_equal(result$df, 0)
+})
+
+# ---- Reporting helpers ---------------------------------------------------------
+
+test_that("count_table_cells counts levels, hidden FALSE cells and missing, with Overall", {
+  synthetic <- tibble(
+    status = c("A", "A", "B", "B", "B"),
+    flag = c(TRUE, FALSE, TRUE, NA, TRUE),
+    bmi = c(20, NA, 25, 30, 22)
+  )
+  result <- count_table_cells(synthetic, c("flag", "bmi"), "status")
+  flag_b <- result %>% filter(variable == "flag", group == "B")
+  expect_equal(flag_b$n[flag_b$level == "TRUE"], 2)
+  expect_equal(flag_b$n[flag_b$level == "(missing)"], 1)
+  expect_false(flag_b$shown[flag_b$level == "FALSE"])
+  expect_equal(result$n[result$variable == "flag" & result$group == "Overall" & result$level == "TRUE"], 3)
+  expect_false(any(result$shown[result$variable == "bmi" & result$level == "(value)"]))
+})
+
+test_that("flag_small_cells hides a small cell and a second cell in its column and row", {
+  # One categorical variable, three levels, two groups plus Overall
+  counts <- tribble(
+    ~variable, ~level, ~group, ~n, ~shown,
+    "race", "White", "Alive", 500, TRUE,
+    "race", "Black", "Alive", 300, TRUE,
+    "race", "Other", "Alive", 5, TRUE,
+    "race", "White", "Died", 100, TRUE,
+    "race", "Black", "Died", 60, TRUE,
+    "race", "Other", "Died", 40, TRUE,
+    "race", "White", "Overall", 600, TRUE,
+    "race", "Black", "Overall", 360, TRUE,
+    "race", "Other", "Overall", 45, TRUE
+  )
+  result <- flag_small_cells(counts)
+  hidden <- result %>% filter(suppress) %>% arrange(group, level)
+  # Alive/Other (5) is small; in its column the next smallest, Alive/Black,
+  # is hidden; in its row, Died/Other (smaller than Overall) is hidden; then
+  # Died needs a second hidden cell (Died/Black), and the Black row is then
+  # covered by Alive/Black and Died/Black
+  expect_true(all(c("Alive|Other", "Alive|Black", "Died|Other") %in% str_c(hidden$group, "|", hidden$level)))
+  # No column or row is left with exactly one hidden cell
+  expect_true(all(count(hidden, group)$n != 1))
+  expect_true(all(count(hidden, level)$n != 1))
+})
+
+test_that("flag_small_cells protects a small derivable FALSE cell by hiding the TRUE cell", {
+  counts <- tribble(
+    ~variable, ~level, ~group, ~n, ~shown,
+    "dialysis", "TRUE", "Alive", 495, TRUE,
+    "dialysis", "FALSE", "Alive", 5, FALSE,
+    "dialysis", "(missing)", "Alive", 0, TRUE,
+    "dialysis", "TRUE", "Died", 200, TRUE,
+    "dialysis", "FALSE", "Died", 50, FALSE,
+    "dialysis", "(missing)", "Died", 0, TRUE,
+    "dialysis", "TRUE", "Overall", 695, TRUE,
+    "dialysis", "FALSE", "Overall", 55, FALSE,
+    "dialysis", "(missing)", "Overall", 0, TRUE
+  )
+  result <- flag_small_cells(counts)
+  expect_true(result$suppress[result$level == "TRUE" & result$group == "Alive"])
+  # Hiding Alive/TRUE leaves the TRUE row with one hidden cell, so another goes
+  expect_equal(sum(result$suppress & result$level == "TRUE"), 2)
+  expect_false(any(result$suppress[!result$shown]))
+})
+
+test_that("flag_small_cells leaves a table with no small cells alone", {
+  counts <- tibble(
+    variable = "x", level = c("a", "b", "a", "b", "a", "b"),
+    group = rep(c("Alive", "Died", "Overall"), each = 2),
+    n = c(100, 200, 30, 40, 130, 240), shown = TRUE
+  )
+  expect_false(any(flag_small_cells(counts)$suppress))
+})
+
+test_that("km_reportable_times drops times with small counts or small changes", {
+  library(survival)
+  # 30 people: 25 die on day 1 (so the early risk table is fine), then 5
+  # deaths spread later leave fewer than 11 at risk
+  synthetic <- tibble(time = c(rep(1, 25), 50, 60, 70, 80, 90), event = 1)
+  fit <- survfit(Surv(time, event) ~ 1, data = synthetic)
+  times <- km_reportable_times(fit, c(0, 30, 60, 100))
+  # Day 0: 30 at risk, nothing yet. Days 30, 60 and 100 have 10 or fewer at
+  # risk, so the curve must stop at day 0
+  expect_equal(times, 0)
+  # With more people the curve continues while more than 10 remain at risk
+  bigger <- tibble(time = c(rep(10, 40), rep(200, 60)), event = c(rep(1, 40), rep(0, 60)))
+  fit_bigger <- survfit(Surv(time, event) ~ 1, data = bigger)
+  expect_equal(km_reportable_times(fit_bigger, c(0, 5, 20, 100, 250)), c(0, 5, 20, 100))
+})
+
+test_that("flowchart_small_counts finds boxes with 1 to 10 people", {
+  boxes <- tibble(
+    id = 1:5, type = c("init", "filter", "exclude", "filter", "exclude"),
+    label = c("Start", "Kept", "Dropped", "Kept", "Dropped"),
+    n = c(1000, 995, 5, 995, 0)
+  )
+  result <- flowchart_small_counts(boxes)
+  expect_equal(result$id, 3)
+})
+
+test_that("tidy_odds_ratios gives Wald intervals and readable labels", {
+  set.seed(20261110)
+  synthetic <- tibble(
+    icu_admission = rbinom(500, 1, 0.3) == 1,
+    region = factor(sample(c("South", "West", "Midwest"), 500, TRUE)),
+    y = rbinom(500, 1, plogis(-1 + 1 * icu_admission))
+  )
+  model <- glm(y ~ icu_admission + region, family = binomial(), data = synthetic)
+  result <- tidy_odds_ratios(model, c(icu_admission = "ICU admission", region = "Region"))
+  icu <- result %>% filter(term == "icu_admissionTRUE")
+  se <- coef(summary(model))["icu_admissionTRUE", "Std. Error"]
+  expect_equal(icu$conf.low, exp(coef(model)[["icu_admissionTRUE"]] - qnorm(0.975) * se))
+  expect_equal(icu$term_label, "ICU admission")
+  expect_setequal(result$term_label[str_starts(result$term, "region")], c("Region: South", "Region: West"))
+})
+
+test_that("suppress_table_body masks the right rows and drops the variable's P value", {
+  # A table body shaped like gtsummary's (variable, row_type, label, stat_*)
+  body <- tribble(
+    ~variable, ~row_type, ~label, ~stat_0, ~stat_1, ~stat_2, ~p.value,
+    "cirrhosis", "label", "Cirrhosis", "60 (5%)", "5 (0.5%)", "55 (20%)", 0.001,
+    "cirrhosis", "missing", "Unknown", "0", "0", "0", NA,
+    "race", "label", "Race", NA, NA, NA, 0.4,
+    "race", "level", "White", "600", "500", "100", NA,
+    "race", "level", "Other", "45", "5", "40", NA
+  )
+  flags <- tribble(
+    ~variable, ~level, ~group, ~suppress,
+    "cirrhosis", "TRUE", "Alive", TRUE,
+    "cirrhosis", "TRUE", "Died", TRUE,
+    "race", "Other", "Alive", TRUE,
+    "race", "White", "Alive", FALSE
+  )
+  result <- suppress_table_body(body, flags, c(Overall = "stat_0", Alive = "stat_1", Died = "stat_2"))
+  expect_equal(result$stat_1[1], "≤10")
+  expect_equal(result$stat_2[1], "≤10")
+  expect_equal(result$stat_0[1], "60 (5%)")
+  expect_equal(result$stat_1[5], "≤10")
+  expect_equal(result$stat_1[4], "500")
+  expect_true(all(is.na(result$p.value)))
 })

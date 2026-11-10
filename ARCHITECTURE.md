@@ -24,9 +24,17 @@ flowchart TD
   outcomes --> modeldata["analysis_data + outcomes,<br/>model_data"]
   modeldata --> models["R/fit_models.R"]
   models --> fits["km_fit, bivariable_results,<br/>multivariable, hosmer_lemeshow_result"]
+  fits --> tables["R/tables.R"]
+  modeldata --> tables
+  tables --> tableout[/"tables/ (gitignored)<br/>Tables 1-3"/]
+  style["R/plot_style.R<br/>house style (from COHERO)"] --> figures["R/figures.R"]
+  fits --> figures
+  flow --> figures
+  tables --> figures
+  figures --> figout[/"figures/ (gitignored)<br/>Figures 1-3, captions, alt text"/]
 ```
 
-`R/main.R` sources the scripts in this order: `setup.R` (which sources `code_lists.R`), `functions.R`, `create_cohort.R`, `create_covariates.R`, `create_outcomes.R`, `fit_models.R`. USRDS files are reached only through usRds, located by `usRds::set_USRDS_wd()` on the machine that holds them.
+`R/main.R` sources the scripts in this order: `setup.R` (which sources `code_lists.R`), `functions.R`, `create_cohort.R`, `create_covariates.R`, `create_outcomes.R`, `fit_models.R`, `plot_style.R`, `tables.R`, `figures.R`. USRDS files are reached only through usRds, located by `usRds::set_USRDS_wd()` on the machine that holds them.
 
 ## Scripts
 
@@ -38,6 +46,9 @@ flowchart TD
 | `R/create_cohort.R` | Builds the cohort (plan §4): flags cryptococcosis on hospitalization records, combines records into stays, picks each person's index stay, and applies every exclusion through `flowchart` | `setup.R`, `functions.R`, USRDS files | `cohort_flowchart`, `cohort` |
 | `R/create_outcomes.R` | Adds 6-month mortality and survival time from the patients file's death dates, censored at `death_data_end_date`; derives the model-ready variables (age 60 or older, not on tacrolimus, and so on) | `analysis_data`, USRDS patients file | `analysis_data` with outcomes, `model_data` |
 | `R/fit_models.R` | Kaplan–Meier fit; one logistic model per candidate; all candidates with backward elimination (joint Wald P, fixed complete-case sample); Hosmer–Lemeshow test | `analysis_data`, `model_data` | `km_fit`, `bivariable_results`, `multivariable`, `hosmer_lemeshow_result` |
+| `R/plot_style.R` | The maintainer's house style for figures, copied unchanged from the COHERO RCT analysis (commit `e8c4fa5`): `theme_publication()`, Okabe-Ito palettes, `save_figure()` in millimetres | ggplot2 ≥ 4.0, scales, svglite, ragg | functions, `publication_colors` |
+| `R/tables.R` | Follow-up summary (deaths, censored, reverse Kaplan–Meier median); Tables 1 and 2 by 6-month vital status in the paper's row order (gtsummary; t, χ² or Fisher tests; missing counts; small cells hidden with `flag_small_cells()` and `suppress_table_body()`); Table 3, unadjusted and adjusted odds ratios with the joint Wald P values the selection used; disclosure checks | `analysis_data`, `model_data`, `km_fit`, `bivariable_results`, `multivariable`, `hosmer_lemeshow_result` | `report_labels`, `follow_up_summary`, `table_1`, `table_2`, `table_models`, `disclosure_checks`; `tables/*.html`, `*.docx` |
+| `R/figures.R` | Figure 1 from `cohort_flowchart` (not exported if a box has 1–10 people); Figure 2, Kaplan–Meier with ggsurvfit's risk table at times passing `km_reportable_times()`; Figure 3, forest plot of adjusted odds ratios; captions and alt text from the fitted objects | `cohort_flowchart`, `km_fit`, `multivariable`, `report_labels` | `figure_2`, `figure_3`, `figure_text`; `figures/*` |
 | `R/create_covariates.R` | Builds the covariates (plan §5): index-stay diagnoses, procedures and ICU; earlier transplant-complication hospitalizations; transplant history; demographics and region; UNOS registration and follow-up of the most recent transplant (rejection, serostatus, BMI, dialysis); immunosuppression at transplant and first follow-up | `cohort`, USRDS hospitalization, transplant, patients and UNOS files | `analysis_data` |
 
 ## Design choices in the code
@@ -52,7 +63,9 @@ flowchart TD
 
 ## Tests
 
-`tests/test-functions.R` tests every helper on synthetic data with known answers, including boundary dates (window edges, a stay admitted on or spanning the transplant date, birthdays). Run with `testthat::test_file("tests/test-functions.R")` from the project root. The scripts themselves need usRds and the USRDS files and are not run by the tests.
+`tests/test-functions.R` tests every helper on synthetic data with known answers, including boundary dates (window edges, a stay admitted on or spanning the transplant date, birthdays). Run with `testthat::test_file("tests/test-functions.R")` from the project root. The scripts themselves need usRds and the USRDS files and are not run by the unit tests.
+
+`tests/run_synthetic.R` runs the whole of `R/main.R` end to end on an invented USRDS folder written by `tests/make_synthetic_usrds.R` (Parquet files in the layout usRds maps; every value made up, none derived from records). It points usRds at that folder for the session only and sets `death_data_end_date` for the synthetic run. Its tables and figures land in the gitignored `tables/` and `figures/` folders like real ones; they contain no restricted data but are not committed either.
 
 ## Website
 
