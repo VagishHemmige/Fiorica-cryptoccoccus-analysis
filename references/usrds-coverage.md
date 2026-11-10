@@ -185,6 +185,8 @@ These are not tied to one step, but affect several.
 
 - **Which copy `load_usrds_file()` reads.** It takes the first registry match (`slice(1)`). The registry is built CSV first, then SAS, then Parquet. So when a file exists in more than one format, it appears to read the CSV, contradicting the vignette's statement that Parquet is preferred. **To verify** on synthetic files.
 - **`apply_usrds_varlabels()`** stops unless `metadata_b` exists in the global environment. The data are internal to the package, so with `var_labels = TRUE` it may always fail. `apply_usrds_factors()` has the same check commented out. **To verify.**
+- **`load_usrds_file()` with `col_select` on Parquet fails with current arrow.** It reads the column names with `arrow::open_dataset(full_path)$head(1)`, but a Dataset in arrow 26.0.1 has no `$head()` method (only the S3 `head()`), so the call stops with "attempt to apply non-function". `head(arrow::open_dataset(full_path), 1)` or `names(arrow::open_dataset(full_path)$schema)` works. Found in the synthetic end-to-end run (2026-11-10); the run used a workspace-only copy of usRds with that one line changed, and the package itself was not modified.
+- **`load_usrds_file()` forces `col_select` early.** `is.null(col_select)` evaluates the argument outside a selecting function, so `col_select = all_of(x)` gives tidyselect's deprecation warning. Capturing it with `rlang::enquo()` and testing `rlang::quo_is_null()` would avoid that.
 - **Documentation.** Facts this project relies on are not yet in the package documentation: claim-year assignment, ICD transition handling, and hospitalization file structure by release. Where these shape this analysis they are noted in `AGENTS.md` ("USRDS data facts"); they belong in usRds.
 
 ## Proposed usRds issues
@@ -201,7 +203,7 @@ Possible follow-ups for usRds, listed so the assessment is actionable. Acting on
 8. `RX_CD` immunosuppression crosswalk as package data (step 15).
 9. State code to Census region and division crosswalk (step 17).
 10. Cohort functions for a terminal event (step 18): `add_cohort_event()` keeps follow-up after death (`cumevent()`), drops events on the start date, and fails when follow-up ends at a same-day death; the date helper's comment says bare column names work, but they fail.
-11. Defects: `get_PS_specialty()` (debug prints, SAS branch); SAS branch of `get_IN_ICD()` dropping `HCFASAF`; `load_usrds_file()` format priority; `apply_usrds_varlabels()` global-environment check.
+11. Defects: `get_PS_specialty()` (debug prints, SAS branch); SAS branch of `get_IN_ICD()` dropping `HCFASAF`; `load_usrds_file()` format priority; `apply_usrds_varlabels()` global-environment check; `load_usrds_file()` column lookup on Parquet under current arrow (`$head(1)`) and early evaluation of `col_select`.
 
 ## Provenance
 
