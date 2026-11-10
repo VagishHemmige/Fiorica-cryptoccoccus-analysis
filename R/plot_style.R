@@ -1,14 +1,14 @@
 # Copied from the COHERO RCT analysis (github.com/VagishHemmige/COHERO-RCT-analysis,
 #   R/plot_style.R at commit e8c4fa5, 2026-11-09), the maintainer's house
-#   style for figures. Unchanged except this note and the reference to where
-#   the theme is set as the default (report_figures.R here).
+#   style for figures. Unchanged except this note; here too, figures.R sets
+#   the theme as the default.
 
 # Purpose: the house style for figures: a publication theme with its color,
 #   shape and line-type palettes, readable labels for variables, and one way
 #   to save a figure at print size. Reads no global objects and changes no
 #   settings when loaded, so it can be copied into another project together
 #   with functions.R; this project sets the theme as the default in
-#   report_figures.R.
+#   figures.R.
 # Needs: ggplot2 4.0.0 or later (palettes carried by the theme, labels by
 #   dictionary); installed: scales, svglite, ragg.
 # Produces: theme_publication(), label_figure(), figure_label(),

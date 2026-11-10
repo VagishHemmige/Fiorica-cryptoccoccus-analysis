@@ -2,7 +2,7 @@
 #   risk table) and Figure 3 (forest plot of adjusted odds ratios), in the
 #   house style (plot_style.R), with captions and alt text (plan §4, §8, §10).
 # Needs: setup.R, functions.R, plot_style.R, create_cohort.R
-#   (cohort_flowchart), fit_models.R (km_fit, multivariable), report_tables.R
+#   (cohort_flowchart), fit_models.R (km_fit, multivariable), tables.R
 #   (report_labels, disclosure_checks); installed: ggsurvfit, ragg, svglite.
 # Produces: figure_2, figure_3 (ggplot objects), figure_text (caption and
 #   alt text per figure), disclosure_checks (with the figure checks added),
@@ -10,6 +10,9 @@
 
 ## ---- figure-defaults
 ggplot2::theme_set(theme_publication())
+# One series per figure: the palette's first colour after the gray kept for
+# a reference group (plot_style.R)
+series_color <- dplyr::nth(publication_colors, 2)
 dir.create("figures", showWarnings = FALSE)
 
 ## ---- figure-1
@@ -47,18 +50,18 @@ months_label <- \(days) round(days / days_per_month)
 figure_2 <- ggsurvfit::ggsurvfit(
   km_fit,
   theme = theme_publication(),
-  color = publication_colors[2],
+  color = series_color,
   linewidth = 0.5
 ) +
-  ggsurvfit::add_confidence_interval(fill = publication_colors[2], alpha = 0.15) +
+  ggsurvfit::add_confidence_interval(fill = series_color, alpha = 0.15) +
   ggplot2::geom_vline(
     xintercept = mortality_window_days,
     linetype = "22", color = "gray40", linewidth = 0.3
   ) +
   ggsurvfit::add_risktable(
     times = km_times,
-    risktable_stats = c("n.risk", "cum.event", "cum.censor"),
-    stats_label = list(n.risk = "At risk", cum.event = "Deaths", cum.censor = "Censored"),
+    risktable_stats = c("n.risk", "cum.censor", "cum.event"),
+    stats_label = list(n.risk = "At risk", cum.censor = "Censored", cum.event = "Deaths"),
     theme = ggsurvfit::theme_risktable_default(axis.text.y.size = 8, plot.title.size = 8),
     size = 2.4
   ) +
@@ -73,19 +76,21 @@ figure_2 <- ggsurvfit::ggsurvfit(
     limits = c(0, 1),
     expand = ggplot2::expansion(mult = c(0, 0.02))
   ) +
-  ggplot2::labs(x = "Months since index admission", y = "Overall survival")
+  ggplot2::labs(x = "Months since index admission", y = "Probability of survival")
 
 save_figure(figure_2, file.path("figures", "figure_2"), width = 170, height = 120)
 
 ## ---- figure-3
 # Adjusted odds ratios from the final model, with 95% Wald CIs, on a log
-# scale; the estimate and interval are printed beside each row.
+# scale (halving and doubling the odds are equal distances), with ticks at
+# 0.25, 0.5, 1, 2, 4 and 8 so the scale is plain; the estimate and interval
+# are printed beside each row.
 odds_ratios <- tidy_odds_ratios(multivariable$model, report_labels) %>%
   mutate(
     term_label = fct_rev(fct_inorder(term_label)),
     or_text = str_glue(
-      "{style_or(estimate)} ({style_or(conf.low)}–{style_or(conf.high)})",
-      style_or = \(x) formatC(x, format = "f", digits = 2)
+      "{scales::number(estimate, accuracy = 0.01)} ",
+      "({scales::number(conf.low, accuracy = 0.01)}\u2013{scales::number(conf.high, accuracy = 0.01)})"
     )
   )
 or_text_x <- max(odds_ratios$conf.high) * 1.6
@@ -94,13 +99,17 @@ figure_3 <- ggplot2::ggplot(odds_ratios, ggplot2::aes(x = estimate, y = term_lab
   ggplot2::geom_vline(xintercept = 1, linetype = "22", color = "gray40", linewidth = 0.3) +
   ggplot2::geom_pointrange(
     ggplot2::aes(xmin = conf.low, xmax = conf.high),
-    color = publication_colors[2], size = 0.3, linewidth = 0.4
+    color = series_color, size = 0.3, linewidth = 0.4
   ) +
   ggplot2::geom_text(
     ggplot2::aes(x = or_text_x, label = or_text),
     hjust = 0, size = 2.6, color = "gray20"
   ) +
-  ggplot2::scale_x_log10(expand = ggplot2::expansion(mult = c(0.05, 0.45))) +
+  ggplot2::scale_x_log10(
+    breaks = c(0.25, 0.5, 1, 2, 4, 8),
+    labels = scales::label_number(drop0trailing = TRUE),
+    expand = ggplot2::expansion(mult = c(0.05, 0.45))
+  ) +
   ggplot2::coord_cartesian(clip = "off") +
   ggplot2::labs(x = "Adjusted odds ratio (95% CI), log scale", y = NULL) +
   ggplot2::theme(panel.grid.major.y = ggplot2::element_blank())
@@ -116,14 +125,14 @@ save_figure(
 list_or_none <- \(x) if (length(x) == 0) "none" else str_flatten_comma(as.character(x), ", and ")
 six_month_survival <- summary(km_fit, times = mortality_window_days)$surv
 reference_levels <- multivariable$model$xlevels %>%
-  imap_chr(\(levels, variable) str_c(report_labels[[variable]], ": ", levels[1]))
+  imap_chr(\(levels, variable) str_c(report_labels[[variable]], ": ", dplyr::first(levels)))
 figure_text <- tibble(
   figure = c("figure_1", "figure_2", "figure_3"),
   caption = c(
     "Figure 1. Selection of kidney transplant recipients hospitalized with cryptococcosis, USRDS 2006-2016.",
     str_glue(
       "Figure 2. Kaplan-Meier estimate of overall survival from the index admission, with 95% confidence interval. ",
-      "The dashed line marks 6 months. Numbers below are people at risk and cumulative deaths and censored; ",
+      "The dashed line marks 6 months. Numbers below are people at risk and cumulative censored and deaths; ",
       "the curve stops at the last time with more than 10 people at risk (USRDS data use agreement)."
     ),
     str_c(

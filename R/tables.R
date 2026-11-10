@@ -2,9 +2,9 @@
 #   vital status) and the model table (unadjusted and adjusted odds ratios),
 #   with small-cell suppression (plan §8, §10).
 # Needs: setup.R, functions.R, create_outcomes.R (model_data), fit_models.R
-#   (bivariable_results, multivariable, hosmer_lemeshow_result); installed:
+#   (km_fit, bivariable_results, multivariable, hosmer_lemeshow_result); installed:
 #   gtsummary, gt, cardx, broom.helpers.
-# Produces: report_labels, table_1, table_2, table_models (gtsummary tables),
+# Produces: report_labels, follow_up_summary, table_1, table_2, table_models (gtsummary tables),
 #   disclosure_checks, and HTML and Word copies in tables/ (gitignored until
 #   USRDS review; plan §10).
 
@@ -69,9 +69,16 @@ table_1_variables <- c(
   "icu_admission", "lumbar_puncture", "spinal_procedure",
   "neurosurgical_procedure", "lung_procedure", "vp_shunt"
 )
+# Table 2 follows the paper's rows and order: induction agents only at
+# transplant, steroids first in both blocks.
 table_2_variables <- c(
-  str_c("tx_", names(drug_labels)),
-  str_c("fu_", names(drug_labels))
+  str_c("tx_", c(
+    "steroids", "antithymocyte_globulin", "alemtuzumab", "il2_receptor_antibody",
+    "tacrolimus", "cyclosporine", "mycophenolate", "mtor_inhibitor", "azathioprine"
+  )),
+  str_c("fu_", c(
+    "steroids", "tacrolimus", "cyclosporine", "mycophenolate", "mtor_inhibitor", "azathioprine"
+  ))
 )
 
 # The grouping column: 6-month vital status, survivors first
@@ -143,6 +150,32 @@ table_1 <- table_1_result$table %>%
 table_2_result <- describe_by_vital_status(table_data, table_2_variables, report_labels)
 table_2 <- table_2_result$table %>%
   gtsummary::modify_caption("**Table 2.** Immunosuppression at transplant and at the first follow-up visit, by vital status 6 months after admission")
+
+## ---- follow-up
+# Follow-up before any model (time to event): deaths, censoring, and median
+# follow-up by the reverse Kaplan-Meier method (censoring treated as the
+# event). Counts here pass the same small-count rule as the tables.
+reverse_km <- survival::survfit(
+  survival::Surv(survival_days, 1 - survival_event) ~ 1,
+  data = analysis_data
+)
+follow_up_summary <- tibble(
+  measure = c(
+    "People", "Deaths", "Censored",
+    "Deaths within 6 months", "Median follow-up, days (95% CI)"
+  ),
+  value = c(
+    nrow(analysis_data),
+    sum(analysis_data$survival_event),
+    sum(analysis_data$survival_event == 0),
+    sum(model_data$died_within_window),
+    str_glue(
+      "{summary(reverse_km)$table[['median']]} ",
+      "({summary(reverse_km)$table[['0.95LCL']]}, {summary(reverse_km)$table[['0.95UCL']]})"
+    )
+  ) %>%
+    as.character()
+)
 
 ## ---- table-models
 # Unadjusted (each candidate alone) and adjusted (final backward-elimination
@@ -229,21 +262,24 @@ disclosure_checks <- tibble(
     "Table 2: cells hidden",
     "Smallest vital-status group",
     "People excluded from the adjusted model for missing data",
-    "Deaths in the adjusted model"
+    "Deaths in the adjusted model",
+    "Smallest of deaths and censored in follow-up"
   ),
   value = c(
     sum(table_1_result$flags$suppress),
     sum(table_2_result$flags$suppress),
     min(group_sizes),
     model_excluded,
-    model_events
+    model_events,
+    min(sum(analysis_data$survival_event), sum(analysis_data$survival_event == 0))
   ),
   needs_review = c(
     FALSE,
     FALSE,
     min(group_sizes) <= 10,
     between(model_excluded, 1, 10),
-    between(model_events, 1, 10)
+    between(model_events, 1, 10),
+    between(min(sum(analysis_data$survival_event), sum(analysis_data$survival_event == 0)), 1, 10)
   )
 )
 

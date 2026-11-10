@@ -8,7 +8,7 @@ This script draws the three figures: the cohort flowchart (Figure 1), the surviv
 ::: {.Rcode title="Source code"}
 The full R script is available at:
 
--   [`R/report_figures.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/report_figures.R)
+-   [`R/figures.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/figures.R)
 
 This R script file is itself reliant on the following helper files:
 
@@ -17,7 +17,7 @@ This R script file is itself reliant on the following helper files:
 -   [`R/plot_style.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/plot_style.R)
 -   [`R/create_cohort.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/create_cohort.R)
 -   [`R/fit_models.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/fit_models.R)
--   [`R/report_tables.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/report_tables.R)
+-   [`R/tables.R`](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/blob/main/R/tables.R)
 
 The code sections below are imported directly from the script when this page is rendered.
 :::
@@ -26,7 +26,7 @@ The code sections below are imported directly from the script when this page is 
 #| include: false
 #| eval: true
 #| cache: false
-knitr::read_chunk("../R/report_figures.R")
+knitr::read_chunk("../R/figures.R")
 ```
 
 ```{r}

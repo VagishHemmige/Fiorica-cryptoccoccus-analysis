@@ -63,10 +63,10 @@ website:
           - href: quarto/fit_models.qmd
             text: Survival and models
             icon: laptop
-          - href: quarto/report_tables.qmd
+          - href: quarto/tables.qmd
             text: Tables
             icon: laptop
-          - href: quarto/report_figures.qmd
+          - href: quarto/figures.qmd
             text: Figures
             icon: laptop
           - section: Setup and helper functions
