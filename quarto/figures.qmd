@@ -54,7 +54,7 @@ The survival curve has its 95% confidence band and, below it, the number still a
 #| eval: false
 ```
 
-**How this differs from the published figure.** The [published curve](results.qmd#figure-2.-kaplan-meier-survival-curve-for-the-1265-kidney-transplant-recipients-hospitalized-with-cryptococcosis) shows years on the axis, the number at risk every 5 years, and no confidence band. This one follows the KMunicate recommendations: the 95% confidence band, and below the curve the numbers at risk, censored and dead at each time shown, so a reader can see how much information lies behind each part of the curve. Time is in months, because the outcome is at 6 months. The published curve also starts with 2 fewer people than the cohort, most likely because Stata's survival setup drops people who died on the day of admission; this curve keeps them.
+**How this differs from the published figure.** The [published curve](results.qmd#figure-2.-kaplan-meier-survival-curve-for-the-1265-kidney-transplant-recipients-hospitalized-with-cryptococcosis) shows years on the axis, the number at risk every 5 years, and no confidence band. This one follows the KMunicate recommendations: the 95% confidence band, and below the curve the numbers at risk, censored and dead at each time shown, so a reader can see how much information lies behind each part of the curve. Time is in months, because the outcome is at 6 months.
 
 ## Figure 3: odds ratios
 
