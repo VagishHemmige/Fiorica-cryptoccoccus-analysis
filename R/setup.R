@@ -86,7 +86,7 @@ model_candidates <- c(
   "icu_admission", "lumbar_puncture", "spinal_procedure",
   "neurosurgical_procedure", "lung_procedure", "vp_shunt",
   "prior_transplant_complication", "more_than_one_transplant",
-  "prior_graft_failure", "over_cutoff_since_transplant", "organ", "bmi",
+  "prior_graft_failure", "over_cutoff_since_transplant", "bmi",
   "pretransplant_dialysis", "hiv_status", "cmv_status", "acute_rejection",
   "tx_antithymocyte_globulin", "tx_alemtuzumab", "tx_il2_receptor_antibody",
   "no_tacrolimus_at_transplant", "tx_cyclosporine", "tx_mycophenolate",

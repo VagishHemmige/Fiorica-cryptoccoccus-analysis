@@ -75,7 +75,7 @@ report_labels <- c(
 ## ---- table-variables
 table_1_variables <- c(
   "age_at_index", "age_60_or_older", "sex", "race", "hispanic", "region",
-  "organ", "bmi", "pretransplant_dialysis", "hiv_status", "cmv_status",
+  "bmi", "pretransplant_dialysis", "hiv_status", "cmv_status",
   "more_than_one_transplant", "prior_graft_failure",
   "months_since_last_transplant", "over_cutoff_since_transplant",
   "acute_rejection", "prior_transplant_complication",
