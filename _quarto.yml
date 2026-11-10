@@ -45,30 +45,29 @@ website:
         text: Home
         icon: house
 
-      - href: quarto/study_methods.qmd
-        text: Study design and methods
-        icon: diagram-3
+      - section: Background
+        contents:
+          - href: quarto/background.qmd
+            text: Clinical background
+            icon: book
+          - href: quarto/data_sources.qmd
+            text: Data sources
+            icon: book
+          - href: quarto/statistical_methods.qmd
+            text: Statistical methods
+            icon: book
+
+      - section: Study design and methods
+        contents:
+          - href: quarto/study_methods.qmd
+            text: Overview
+            icon: diagram-3
+          - href: quarto/differences.qmd
+            text: Differences from the reconstruction
+            icon: diagram-3
 
       - section: Code
         contents:
-          - href: quarto/create_cohort.qmd
-            text: Building the cohort
-            icon: laptop
-          - href: quarto/create_covariates.qmd
-            text: Covariates
-            icon: laptop
-          - href: quarto/create_outcomes.qmd
-            text: Outcomes
-            icon: laptop
-          - href: quarto/fit_models.qmd
-            text: Survival and models
-            icon: laptop
-          - href: quarto/tables.qmd
-            text: Tables
-            icon: laptop
-          - href: quarto/figures.qmd
-            text: Figures
-            icon: laptop
           - section: Setup and helper functions
             contents:
               - href: quarto/setup.qmd
@@ -80,11 +79,41 @@ website:
               - href: quarto/functions.qmd
                 text: Functions
                 icon: laptop
+              - href: quarto/plot_style.qmd
+                text: Figure style
+                icon: laptop
+
+          - section: Data processing and analysis
+            contents:
+              - href: quarto/create_cohort.qmd
+                text: 1. Building the cohort
+                icon: laptop
+              - href: quarto/create_covariates.qmd
+                text: 2. Covariates
+                icon: laptop
+              - href: quarto/create_outcomes.qmd
+                text: 3. Outcomes
+                icon: laptop
+              - href: quarto/fit_models.qmd
+                text: 4. Survival and models
+                icon: laptop
+
+          - section: Tables and figures
+            contents:
+              - href: quarto/tables.qmd
+                text: Tables
+                icon: laptop
+              - href: quarto/figures.qmd
+                text: Figures
+                icon: laptop
 
       - section: Published results
         contents:
           - href: quarto/results.qmd
             text: Published figures and tables
+            icon: clipboard-data
+          - href: quarto/supplement.qmd
+            text: Published supplement
             icon: clipboard-data
 
       - section: Project documents
