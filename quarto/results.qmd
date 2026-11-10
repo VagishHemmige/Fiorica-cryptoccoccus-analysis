@@ -1,0 +1,142 @@
+---
+title: "Published results"
+format: html
+---
+
+::: {.Results title="Reproduced from the published article"}
+The tables on this page are reproduced, unchanged, from Fiorica G, Cervera-Hernandez ME, Pirofski L, Hemmige VS, Yoon H. High mortality and associated risk factors in kidney transplant recipients with cryptococcosis: a nationwide cohort study over a decade using USRDS data. *Open Forum Infectious Diseases*. 2025;12(5):ofaf263 [@fiorica2025], © The Author(s) 2025, published by Oxford University Press on behalf of the Infectious Diseases Society of America under a [CC BY-NC-ND 4.0 license](https://creativecommons.org/licenses/by-nc-nd/4.0/). They are transcribed cell for cell from the article, and the figures are shown as published. These are the outputs cleared by USRDS for publication; they were **not** produced by this repository's code. This analysis's own numbers are not expected to match them exactly: the original analysis was run in Stata, that code is no longer available, and the data release may differ (see the [analysis plan](analysis-plan.qmd), §11).
+:::
+
+Apparent errors in the published tables are kept as printed and listed under [Notes on the published results](#notes-on-the-published-results). The final model's adjusted odds ratios (Figure 3) are also set beside this analysis's refitted model in [Table 4](tables.qmd).
+
+## Figure 1. Flowchart of selection of relevant KTRs from the USRDS database
+
+::: callout-note
+The published image is to be added. It is in the [article's full text](https://pmc.ncbi.nlm.nih.gov/articles/PMC12089938/).
+:::
+
+The Results report 1,848,170 hospitalizations among 257,958 kidney transplant recipients in the data set, and 1,265 recipients with 2,885 hospitalizations with a diagnosis of cryptococcosis during the study period; each recipient's first such hospitalization is the index hospitalization.
+
+Abbreviations: KTRs, kidney transplant recipients; USRDS, United States Renal Data System.
+
+## Table 1. Demographic and Clinical Characteristics of Kidney Transplant Recipients During the Index Hospitalization for Cryptococcosis
+
+| Variables | Total (n = 1265) | Alive at 6 Months (n = 985) | Dead at 6 Months^a^ (n = 280) | *P* Value |
+|---|---|---|---|---|
+| **Demographic characteristics** | | | | |
+| Age at diagnosis, mean ± SD, y | 59.1 ± 11.2 | 58.1 ± 10.9 | 62.8 ± 11.3 | <.001 |
+| Sex, No. (%) | | | | |
+|   Female | 408 (32.3) | 332 (33.7) | 76 (27.1) | .04 |
+|   Male | 857 (67.7) | 653 (66.2) | 204 (72.8) | |
+| Race, No. (%) | | | | |
+|   White | 852 (67.4) | 655 (66.6) | 197 (70.3) | .1 |
+|   Black | 332 (26.2) | 270 (27.4) | 62 (22.1) | |
+|   Other | 79 (6.2) | 58 (5.9) | 21 (7.5) | |
+| Ethnicity, No. (%) | | | | |
+|   Hispanic | 256 (20.6) | 203 (20.9) | 53 (19.4) | .5 |
+| BMI at registration, mean ± SD, kg/m^2^ | 27.3 ± 7.8 | 27.3 ± 8.1 | 27.6 ± 6.6 | .5 |
+| US region, No. (%) | | | | |
+|   West | 216 (17) | 166 (16.8) | 50 (17.8) | .6 |
+|   Midwest | 274 (21.6) | 217 (22) | 57 (20.3) | |
+|   South | 603 (47.7) | 472 (47.9) | 131 (46.7) | |
+|   Northeast | 164 (12.9) | 125 (12.7) | 39 (13.9) | |
+| **Clinical variables** | | | | |
+| Cryptococcal meningitis, No. (%) | 648 (51.2) | 489 (49.6) | 159 (56.7) | .04 |
+| Procedures performed, No. (%) | | | | |
+|   Lumbar puncture(s) | 878 (69.4) | 690 (70) | 188 (67.1) | .3 |
+|   Other spinal procedures | 70 (5.5) | 48 (4.8) | 22 (7.8) | .054 |
+|   Neurosurgical procedures | 30 (2.3) | 19 (1.9) | 11 (3.9) | .052 |
+|   Lung procedures | 354 (27.9) | 84 (30) | 270 (27.4) | .3 |
+| Comorbid conditions, No. (%) | | | | |
+|   ICU admission | 558 (44.1) | 367 (37.2) | 191 (68.2) | <.001 |
+|   AKI | 622 (49.1) | 449 (45.5) | 173 (61.7) | <.001 |
+|   Diabetes | 606 (47.9) | 485 (49.2) | 121 (43.2) | .07 |
+|   Cirrhosis | 36 (2.8) | 18 (1.8) | 18 (6.4) | <.001 |
+| CMV serostatus, positive | 740/1047^b^ (70.6) | 582 (71.2) | 158 (68.7) | .4 |
+| Pretransplant dialysis | 1030/1180 (87.2) | 783 (85.4) | 247 (93.5) | .001 |
+| **Transplant complications** | | | | |
+| Time post–last transplant, median (IQR), mo | 30.5 (12.8–74.5) | 28.3 (12.4–69.3) | 43.6 (14.8–91.2) | <.001 |
+| No. of transplants, median (min–max) | 1 (1–5) | n/a | n/a | |
+| Rejection episodes, any, No. (%) | 178 (14) | 144 (14.2) | 34 (12.1) | .2 |
+| Transplant failures, any, No. (%) | 238 (18.8) | 187 (18.9) | 51 (18.2) | .7 |
+| Prior hospitalization for complications of transplanted kidney, No. (%) | 806 (63.7) | 602 (61.1) | 204 (72.8) | <.001 |
+
+Abbreviations: AKI, acute kidney injury; BMI, body mass index; CMV, cytomegalovirus; ICU, intensive care unit; IQR, interquartile range; n/a, not available.
+
+^a^ Mortality indicates all-cause deaths occurring within 6 months following the index hospitalization for cryptococcosis.
+
+^b^ Denominator indicates the total number available for each variable when data were missing.
+
+## Figure 2. Kaplan-Meier survival curve for the 1265 kidney transplant recipients hospitalized with cryptococcosis
+
+::: callout-note
+The published image is to be added. It is in the [article's full text](https://pmc.ncbi.nlm.nih.gov/articles/PMC12089938/).
+:::
+
+The vertical dashed line indicates the 6-month time point. The Results report an overall 6-month mortality of 22% (280/1265).
+
+## Table 2. Immunosuppressive Drug Use Among Kidney Transplant Recipients at the Time of Transplantation (UNOS Registration) and at the UNOS Follow-up Appointment
+
+| Immunosuppressive Drugs | Total (n = 1265) | Alive at 6 Months (n = 985) | Dead at 6 Months (n = 280) | *P* Value |
+|---|---|---|---|---|
+| **Time of transplantation (UNOS registration)** | | | | |
+| Steroids | 1199 (97.2) | 928 (96.8) | 271 (98.5) | .1 |
+| ATG | 552 (44.7) | 428 (44.6) | 124 (45) | .9 |
+| Alemtuzumab | 112 (9) | 93 (9.7) | 19 (6.9) | .1 |
+| Anti-IL-2 receptor antibody | 366 (29.6) | 280 (29.2) | 86 (31.2) | .5 |
+| Tacrolimus | 1013 (82.1) | 807 (84.2) | 206 (74.9) | <.001 |
+| Cyclosporine | 228 (18.4) | 162 (16.9) | 66 (24) | .008 |
+| MMF | 1121 (90.2) | 873 (91.1) | 248 (90.1) | .6 |
+| mTOR inhibitor | 75 (6) | 57 (5.9) | 18 (6.5) | .7 |
+| Azathioprine | 85 (6.8) | 67 (6.9) | 18 (6.5) | .7 |
+| **UNOS follow-up appointment** | | | | |
+| Steroids | 963 (90.1) | 748 (89.9) | 215 (91.1) | .5 |
+| Tacrolimus | 905 (84.7) | 725 (87.1) | 180 (76.2) | <.001 |
+| Cyclosporine | 245 (22.9) | 180 (21.6) | 65 (27.5) | .057 |
+| Mycophenolate mofetil | 999 (93.5) | 777 (93.3) | 222 (94) | .7 |
+| mTOR inhibitor | 156 (14.6) | 115 (13.8) | 41 (17.3) | .1 |
+| Azathioprine | 106 (9.9) | 86 (10.3) | 20 (8.4) | .3 |
+
+Abbreviations: ATG, antithymocyte globulin; IL-2, interleukin-2; mTOR, mechanistic target of rapamycin; MMF, mycophenolate mofetil; UNOS, United Network for Organ Sharing.
+
+## Figure 3. Multivariable logistic regression analysis of predictors of 6-month mortality
+
+::: callout-note
+The published image is to be added. It is in the [article's full text](https://pmc.ncbi.nlm.nih.gov/articles/PMC12089938/).
+:::
+
+The Results give the adjusted odds ratios (95% CI) shown in the figure, in order of size: cirrhosis during the index hospitalization, 3.1 (1.2–7.7); ICU admission, 2.9 (2.0–4.0); pretransplant dialysis, 2.7 (1.5–4.9); not on tacrolimus at follow-up, 2.2 (1.4–3.3); age ≥60 years, 2.0 (1.4–2.8); AKI during the index hospitalization, 1.7 (1.2–2.4); more than 2 years since transplant, 1.7 (1.1–2.4); and previous hospitalization for complications of the transplanted kidney, 1.5 (1.1–2.2).
+
+Abbreviations: AKI, acute kidney injury; ICU, intensive care unit; OR, odds ratio.
+
+## Notes on the published results
+
+These are kept above as printed. Each is listed so that this analysis's outputs can be compared with what was intended. Every percentage was recomputed from its count and column size.
+
+**How percentages are printed**
+
+-   Most percentages are cut to one decimal place rather than rounded: for example, 204 of 280 (72.86%) is printed 72.8, and 449 of 985 (45.58%) is printed 45.5. This analysis's tables round, so many of its percentages will differ from the published ones by 0.1 even when the counts agree.
+-   Where a variable has missing values, percentages use the people with known values, although the table gives a denominator only for CMV serostatus and pretransplant dialysis. For example, the race rows sum to 1,263, not 1,265, and 655 of 983 (66.6%) matches the printed White survivor percentage where 655 of 985 (66.5%) would not; Hispanic ethnicity implies about 1,243 people with known ethnicity. In Table 2, the percentages imply about 1,234 people with drug records at transplant and about 1,068 at follow-up.
+
+**Table 1**
+
+-   *Lung procedures:* the survivor and death cells appear swapped. 84 (30) fits the 280 deaths (84/280 is 30.0%), and 270 (27.4) fits the 985 survivors (270/985 is 27.4%); read as printed (84/985 and 270/280), they would be 8.5% and 96.4%. The total, 354, is their sum.
+-   *Rejection episodes, survivors:* 144 is printed as 14.2%; 144/985 is 14.6%. A denominator that gives 14.2% would be over 1,000, more than the 985 survivors. The total (178, 14%) and the deaths (34, 12.1%) match their counts.
+-   *US region:* the four regions sum to 1,257 of 1,265; the table has no row for the other 8. This analysis shows Outside and Unknown as their own rows (plan §5, [#12](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/12)).
+-   *Continuous variables:* the Methods describe continuous variables as mean ± SD; time since the last transplant is given as median (IQR), and the number of transplants as median (min–max), without a comparison by group.
+
+**Table 2**
+
+-   *MMF at transplant, total:* 1,121 is printed as 90.2%. The row's own survivor and death percentages imply about 958 and 275 people with records, so 1,121 of about 1,233 (90.9%). The total is an average of the two groups weighted by their size, so with about 3.5 survivors for each death it should lie near the survivors' 91.1%, not near the deaths' 90.1%.
+
+**Text and tables**
+
+-   The Results give male sex in survivors as 66.3% and CMV seropositivity as 70.7%; Table 1 gives 66.2% and 70.6%, the same counts cut rather than rounded.
+-   The Methods take immunosuppression from "the first post-transplant visit", obtained "using relevant billing codes"; the Results and Discussion refer to a 1-year follow-up. This analysis uses the UNOS records and the earliest follow-up report (plan §5, [#2](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/2)).
+-   The Methods name CPT codes for procedures; Supplementary Table 1 lists ICD procedure codes (plan §5, [#5](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/5)).
+-   The Limitations say cases were identified by 2 ICD-9 codes; the case definition in Supplementary Table 1 also lists ICD-10-CM codes (plan §5).
+
+## References
+
+::: {#refs}
+:::
