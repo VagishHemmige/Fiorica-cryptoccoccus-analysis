@@ -33,11 +33,9 @@ Four documents describe the project, plus a coverage assessment:
 
 ## Pages
 
--   [**Study design and methods**](study_methods.qmd): the study's choices in plain language.
--   [**Building the cohort**](create_cohort.qmd): the index hospitalizations and the cohort flowchart.
--   [**Covariates**](create_covariates.qmd): the characteristics compared and modelled.
--   [**Outcomes**](create_outcomes.qmd): 6-month mortality and survival time.
--   [**Survival and models**](fit_models.qmd): the Kaplan–Meier fit and logistic models.
--   [**Setup**](setup.qmd): packages and shared constants.
--   [**Code lists**](code_lists.qmd): the diagnosis, procedure and billing codes from the paper's supplement.
--   [**Functions**](functions.qmd): helper functions, including those that fill usRds gaps.
+-   **Background:** [Clinical background](background.qmd), [Data sources](data_sources.qmd) and [Statistical methods](statistical_methods.qmd), for readers new to the disease, the data or the methods.
+-   [**Study design and methods**](study_methods.qmd): the study's choices in plain language, with the alternatives considered.
+-   [**Differences from the reconstruction**](differences.qmd): where this analysis departs from the 2025 reconstruction of the original analysis, and why.
+-   **Code, setup and helpers:** [Setup](setup.qmd) (packages and shared constants), [Code lists](code_lists.qmd) (the diagnosis, procedure and billing codes), [Functions](functions.qmd) (helper functions, including those that fill usRds gaps) and [Figure style](plot_style.qmd) (the house style for figures).
+-   **Code, in the order it runs:** [1. Building the cohort](create_cohort.qmd), [2. Covariates](create_covariates.qmd), [3. Outcomes](create_outcomes.qmd) and [4. Survival and models](fit_models.qmd), then [Tables](tables.qmd) and [Figures](figures.qmd).
+-   **Published results:** the paper's [figures and tables](results.qmd) and its [supplement](supplement.qmd), as published.
