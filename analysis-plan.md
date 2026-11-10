@@ -113,7 +113,8 @@ Not applicable. Comparisons are between people who died within 6 months and thos
   - Table 2: immunosuppression by 6-month vital status;
   - continuous variables as mean (SD), and median (IQR) for time since transplant;
   - categorical variables as n (%), with small cells suppressed (§10);
-  - missingness reported per variable.
+  - missingness reported per variable;
+  - tables and figures in the style shared by *Open Forum Infectious Diseases*, *Clinical Infectious Diseases* and the *Journal of Infectious Diseases*, which follow the AMA Manual of Style, 11th edition ([OFID author guidelines](https://academic.oup.com/ofid/pages/author-guidelines)): P values without a leading zero, confidence intervals written "a to b", table footnotes marked with lowercase letters, and abbreviations defined in the footnotes.
 - **Tests:** Student t test for continuous variables; χ² test, or Fisher exact test for sparse tables. Two-sided α = 0.05, with no adjustment for multiple comparisons [@fiorica2025].
 - **Survival:** Kaplan–Meier curve of time to death from the index admission, with a 6-month reference line (Figure 2).
 - **Model:** logistic regression for 6-month mortality.

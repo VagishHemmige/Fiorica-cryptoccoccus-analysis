@@ -683,6 +683,15 @@ tidy_odds_ratios <- function(model, labels) {
     select(term, term_label, estimate, conf.low, conf.high, p.value)
 }
 
+## ---- style-pvalue-ama
+# P values in AMA style (the house style of OFID, CID and JID): 2 decimals as
+# gtsummary's JAMA theme rounds them, without the leading zero (".040",
+# "<.001", ">.99").
+style_pvalue_ama <- function(x) {
+  gtsummary::style_pvalue(x, digits = 2) %>%
+    str_replace("^([<>]?)0\\.", "\\1.")
+}
+
 ## ---- suppress-table-body
 # Apply small-cell flags (flag_small_cells()) to a gtsummary table body: the
 # cells to hide are replaced with `mask`, and the P value of any variable

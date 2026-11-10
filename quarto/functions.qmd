@@ -277,6 +277,15 @@ USRDS does not allow any count from 1 to 10 to be published, including one that 
 #| eval: false
 ```
 
+## P values in AMA style
+
+`style_pvalue_ama()` rounds P values as gtsummary's JAMA theme does and drops the leading zero (".040", "<.001"), as AMA style asks.
+
+```{r}
+#| label: style-pvalue-ama
+#| eval: false
+```
+
 ## Small-count rules for figures
 
 `km_reportable_times()` picks the times the survival figure can show: more than 10 people still at risk, and every count and every change between times shown either 0 or above 10. `flowchart_small_counts()` lists any flowchart box with 1 to 10 people.

@@ -562,3 +562,10 @@ test_that("suppress_table_body masks the right rows and drops the variable's P v
   expect_equal(result$stat_1[4], "500")
   expect_true(all(is.na(result$p.value)))
 })
+
+test_that("style_pvalue_ama drops the leading zero and keeps the bounds", {
+  expect_equal(
+    style_pvalue_ama(c(0.0004, 0.0123, 0.04, 0.5, 0.999, NA)),
+    c("<.001", ".012", ".040", ".50", ">.99", NA)
+  )
+})

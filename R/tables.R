@@ -8,6 +8,20 @@
 #   disclosure_checks, and HTML and Word copies in tables/ (gitignored until
 #   USRDS review; plan §10).
 
+## ---- table-style
+# OFID, CID and JID share one house style, which follows the AMA Manual of
+# Style (OFID author guidelines; plan §8). gtsummary's JAMA theme gives the
+# AMA conventions: P values to 2 decimals without a leading zero, "No. (%)"
+# and the statistic named beside each variable, and CIs written "a to b".
+# On top of it, P values drop the leading zero (style_pvalue_ama()), and
+# footnotes use lowercase letters when the tables are saved.
+gtsummary::theme_gtsummary_journal("jama")
+gtsummary::set_gtsummary_theme(list(
+  "pkgwide-fn:pvalue_fun" = style_pvalue_ama,
+  "pkgwide-fn:prependpvalue_fun" = \(x) str_c("P", if_else(str_detect(style_pvalue_ama(x), "^[<>]"), " ", " = "), style_pvalue_ama(x))
+))
+p_value_header <- "***P*** **value**"
+
 ## ---- report-labels
 # Readable names for every variable in a table or figure, so no column name
 # reaches an output. Drug labels are shared by the at-transplant (tx_) and
@@ -93,7 +107,7 @@ table_group_columns <- c(Overall = "stat_0", Survived = "stat_1", Died = "stat_2
 
 ## ---- descriptive-table
 # One descriptive table by vital status (plan §8): mean (SD) for continuous
-# variables, median (IQR) for time since transplant, n (%) otherwise, with
+# variables, median (IQR) for time since transplant, No. (%) otherwise, with
 # missing counts always shown. Student t test for continuous variables; for
 # categorical ones, the chi-squared test without continuity correction, or
 # Fisher's exact test when an expected count is under 5 (gtsummary's
@@ -108,11 +122,8 @@ describe_by_vital_status <- function(data, variables, labels, medians = characte
       by = vital_status,
       label = as.list(labels[variables]),
       statistic = c(
-        list(
-          gtsummary::all_continuous() ~ "{mean} ({sd})",
-          gtsummary::all_categorical() ~ "{n} ({p}%)"
-        ),
-        as.list(set_names(rep("{median} ({p25}, {p75})", length(medians)), medians))
+        list(gtsummary::all_continuous() ~ "{mean} ({sd})"),
+        as.list(set_names(rep("{median} ({p25} \u2013 {p75})", length(medians)), medians))
       ),
       digits = list(gtsummary::all_categorical() ~ c(0, 1)),
       missing = "always",
@@ -121,12 +132,13 @@ describe_by_vital_status <- function(data, variables, labels, medians = characte
     gtsummary::add_overall(last = FALSE) %>%
     gtsummary::add_p(
       test = list(gtsummary::all_continuous() ~ "t.test"),
-      test.args = list(gtsummary::all_continuous() ~ list(var.equal = TRUE)),
-      pvalue_fun = gtsummary::label_style_pvalue(digits = 2)
+      test.args = list(gtsummary::all_continuous() ~ list(var.equal = TRUE))
     ) %>%
     gtsummary::modify_table_body(
-      \(body) suppress_table_body(body, flags, table_group_columns)
+      \(body) suppress_table_body(body, flags, table_group_columns) %>%
+        mutate(stat_label = str_replace(stat_label, "^n \\(%\\)$", "No. (%)"))
     ) %>%
+    gtsummary::modify_header(p.value = p_value_header) %>%
     gtsummary::modify_footnote_header(
       "Cells with 1 to 10 people, and cells from which they could be recovered, are shown as ≤10, and their P values are removed (USRDS data use agreement).",
       columns = gtsummary::all_stat_cols(),
@@ -142,14 +154,20 @@ table_1_result <- describe_by_vital_status(
   medians = "months_since_last_transplant"
 )
 table_1 <- table_1_result$table %>%
-  gtsummary::modify_caption("**Table 1.** Characteristics of kidney transplant recipients hospitalized with cryptococcosis, by vital status 6 months after admission")
+  gtsummary::modify_caption("**Table 1.** Characteristics of kidney transplant recipients hospitalized with cryptococcosis, by vital status 6 months after admission") %>%
+  gtsummary::modify_abbreviation("BMI = body mass index") %>%
+  gtsummary::modify_abbreviation("CMV = cytomegalovirus") %>%
+  gtsummary::modify_abbreviation("HIV = human immunodeficiency virus") %>%
+  gtsummary::modify_abbreviation("ICU = intensive care unit")
 
 ## ---- table-2
 # Immunosuppression at transplant and at the first follow-up visit, from the
 # UNOS records (plan §5), as two blocks of one table.
 table_2_result <- describe_by_vital_status(table_data, table_2_variables, report_labels)
 table_2 <- table_2_result$table %>%
-  gtsummary::modify_caption("**Table 2.** Immunosuppression at transplant and at the first follow-up visit, by vital status 6 months after admission")
+  gtsummary::modify_caption("**Table 2.** Immunosuppression at transplant and at the first follow-up visit, by vital status 6 months after admission") %>%
+  gtsummary::modify_abbreviation("IL-2 = interleukin 2") %>%
+  gtsummary::modify_abbreviation("mTOR = mechanistic target of rapamycin")
 
 ## ---- follow-up
 # Follow-up before any model (time to event): deaths, censoring, and median
@@ -204,7 +222,6 @@ table_unadjusted <- model_data %>%
     exponentiate = TRUE,
     label = as.list(report_labels[estimable$term]),
     show_single_row = all_of(logical_terms),
-    pvalue_fun = gtsummary::label_style_pvalue(digits = 2),
     hide_n = TRUE
   ) %>%
   gtsummary::modify_table_body(
@@ -219,8 +236,7 @@ table_adjusted <- multivariable$model %>%
   gtsummary::tbl_regression(
     exponentiate = TRUE,
     label = as.list(report_labels[multivariable$retained]),
-    show_single_row = all_of(intersect(logical_terms, multivariable$retained)),
-    pvalue_fun = gtsummary::label_style_pvalue(digits = 2)
+    show_single_row = all_of(intersect(logical_terms, multivariable$retained))
   ) %>%
   gtsummary::modify_table_body(\(body) replace_term_p(body, adjusted_p))
 
@@ -232,6 +248,7 @@ table_models <- gtsummary::tbl_merge(
   list(table_unadjusted, table_adjusted),
   tab_spanner = c("**Unadjusted**", "**Adjusted**")
 ) %>%
+  gtsummary::modify_header(p.value_1 = p_value_header, p.value_2 = p_value_header) %>%
   gtsummary::modify_caption("**Table 3.** Odds ratios for death within 6 months of admission") %>%
   gtsummary::modify_source_note(
     str_glue(
@@ -289,7 +306,8 @@ walk2(
   list(table_1, table_2, table_models),
   c("table_1", "table_2", "table_models"),
   \(table, name) {
-    gt_table <- gtsummary::as_gt(table)
+    gt_table <- gtsummary::as_gt(table) %>%
+      gt::opt_footnote_marks(marks = "letters")
     gt::gtsave(gt_table, file.path("tables", str_c(name, ".html")))
     gt::gtsave(gt_table, file.path("tables", str_c(name, ".docx")))
   }
