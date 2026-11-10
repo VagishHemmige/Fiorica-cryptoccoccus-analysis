@@ -29,7 +29,8 @@ The plan governs what each step must do. This document records only how the pack
 | 15 | Immunosuppression from UNOS records (at transplant and first follow-up) | `load_usrds_file("txirunos")`, `("txifunos")` | Partial ([#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2)) |
 | 16 | Immunosuppression from HCPCS claims (not used) | `get_PS_HCPCS()`, `get_IN_HCPCS()` | Covered; not used in the main analysis ([#2](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/2)) |
 | 17 | Age, region and division | none for state to Census region | Gap (small) |
-| 18 | 6-month mortality and Kaplan–Meier | `create_usrds_cohort()`, `add_cohort_event()`, `finalize_usrds_cohort()` | Covered |
+| — | Cohort selection: index event, exclusions, flowchart | none (`create_usrds_cohort()` needs the selected cohort as input) | Gap |
+| 18 | 6-month mortality and Kaplan–Meier | `create_usrds_cohort()`, `add_cohort_event()`, `finalize_usrds_cohort()` | Covered (`add_cohort_covariate()` not used) |
 | 19 | Logistic regression, Table 1, figures | outside usRds's scope | Not applicable |
 | — | Infectious diseases specialist claims (legacy Rmd only, not in the paper) | `get_PS_specialty()` | Covered, with defects |
 
@@ -136,7 +137,13 @@ Age comes from `BORN`. The legacy Rmd maps USRDS `STATE` codes to Census regions
 
 ### 18. Mortality and survival
 
-`create_usrds_cohort(df, start_date = index_admit_date, end_date = censor_date)`, then `add_cohort_event(cohort, deaths, "DIED", "death")` and `finalize_usrds_cohort(cohort)` give a counting-process data set for `survival::survfit()`. Covered. This analysis exercises these functions on a simple one-row-per-person cohort. **To verify:** that a death on the cohort stop date is counted (`tmerge` event at `tstop`).
+`create_usrds_cohort(df, start_date = index_admit_date, end_date = censor_date)`, then `add_cohort_event(cohort, deaths, "DIED", "death")` and `finalize_usrds_cohort(cohort)` give a counting-process data set for `survival::survfit()`. Covered. This analysis exercises these functions on a simple one-row-per-person cohort. **To verify:** that a death on the cohort stop date is counted (`tmerge` event at `tstop`), and how `.resolve_date()` treats a column name passed as `start_date` or `end_date`.
+
+`add_cohort_covariate()` is not used: every covariate in this study is fixed at transplant or measured on the index stay, so nothing changes during follow-up, and adding fixed covariates through it would split each person's time for no purpose. This replication therefore leaves it untested.
+
+### Cohort selection
+
+The usRds cohort functions handle follow-up time, not entry: `create_usrds_cohort()` requires a data frame that already has one row per person (it stops on a repeated `USRDS_ID`), with start and end dates. Finding each person's index event and applying the exclusions is done in project code: `R/create_cohort.R`, with helpers in `R/functions.R` and every exclusion through `flowchart`. That part is a **gap**, but a mostly study-specific one. The reusable pieces (searching the hospitalization files, combining records into stays, first transplant date) are already listed as gaps at steps 3, 4 and 7, so no separate usRds follow-up is proposed.
 
 ### Infectious diseases specialist claims (legacy Rmd only)
 
