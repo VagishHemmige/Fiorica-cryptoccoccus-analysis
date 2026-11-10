@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Vagish Hemmige">
+
+<title>Published supplement – Cryptococcosis in KTRs: a usRds replication</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../quarto/analysis-plan.html" rel="next">
+<link href="../quarto/results.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-66ae90e4418e9d0ac3caa4b8c3bef75c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>
+div.callout-Pending.callout {
+  border-left-color: #f0c400;
+}
+div.callout-Pending.callout-style-default > .callout-header {
+  background-color: rgba(240, 196, 0, 0.13);
+}
+div.callout-Pending .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pending.callout-titled .callout-icon::before {
+  content: '⏳';
+  background-image: none;
+}
+div.callout-Results.callout {
+  border-left-color: #198754;
+}
+div.callout-Results.callout-style-default > .callout-header {
+  background-color: rgba(25, 135, 84, 0.13);
+}
+div.callout-Results .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-Results.callout-style-default .callout-icon::before, div.callout-Results.callout-titled .callout-icon::before {
+  content: '📊';
+  background-image: none;
+}
+div.callout-Rcode.callout {
+  border-left-color: #d63384;
+}
+div.callout-Rcode.callout-style-default > .callout-header {
+  background-color: rgba(214, 51, 132, 0.13);
+}
+div.callout-Rcode .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-Rcode.callout-style-default .callout-icon::before, div.callout-Rcode.callout-titled .callout-icon::before {
+  content: '💻';
+  background-image: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar docked quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../quarto/results.html">Published results</a></li><li class="breadcrumb-item"><a href="../quarto/supplement.html">Published supplement</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Cryptococcosis in KTRs: a usRds replication</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link"><i class="bi bi-house" role="img">
+</i> 
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Background</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../quarto/background.html" class="sidebar-item-text sidebar-link"><i class="bi bi-book" role="img">
+</i> 
+ <span class="menu-text">Clinical background</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../quarto/data_sources.html" class="sidebar-item-text sidebar-link"><i class="bi bi-book" role="img">
+</i> 
+ <span class="menu-text">Data sources</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../quarto/statistical_methods.html" class="sidebar-item-text sidebar-link"><i class="bi bi-book" role="img">
+</i> 
+ <span class="menu-text">Statistical methods</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Study design and methods</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../quarto/study_methods.html" class="sidebar-item-text sidebar-link"><i class="bi bi-diagram-3" role="img">
+</i> 
+ <span class="menu-text">Overview</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../quarto/differences.html" class="sidebar-item-text sidebar-link"><i class="bi bi-diagram-3" role="img">
+</i> 
+ <span class="menu-text">Differences from the reconstruction</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Code</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Setup and helper functions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../quarto/setup.html" class="sidebar-item-text sidebar-link"><i class="bi bi-laptop" role="img">
+</i> 
+ <span class="menu-text">Setup</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../quarto/code_lists.html" class="sidebar-item-text sidebar-link"><i class="bi bi-laptop" role="img">
+</i> 
+ <span class="menu-text">Code lists</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../quarto/functions.html" class="sidebar-item-text sidebar-link"><i class="bi bi-laptop" role="img">
+</i> 
+ <span class="menu-text">Functions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../quarto/plot_style.html" class="sidebar-item-text sidebar-link"><i class="bi bi-laptop" role="img">
+</i> 
+ <span class="menu-text">Figure style</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">Data processing and analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../quarto/create_cohort.html" class="sidebar-item-text sidebar-link"><i class="bi bi-laptop" role="img">
+</i> 
+ <span class="menu-text">1. Building the cohort</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../quarto/create_covariates.html" class="sidebar-item-text sidebar-link"><i class="bi bi-laptop" role="img">
+</i> 
+ <span class="menu-text">2. Covariates</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../quarto/create_outcomes.html" class="sidebar-item-text sidebar-link"><i class="bi bi-laptop" role="img">
+</i> 
+ <span class="menu-text">3. Outcomes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../quarto/fit_models.html" class="sidebar-item-text sidebar-link"><i class="bi bi-laptop" role="img">
+</i> 
+ <span class="menu-text">4. Survival and models</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">Tables and figures</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../quarto/tables.html" class="sidebar-item-text sidebar-link"><i class="bi bi-laptop" role="img">
+</i> 
+ <span class="menu-text">Tables</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../quarto/figures.html" class="sidebar-item-text sidebar-link"><i class="bi bi-laptop" role="img">
+</i> 
+ <span class="menu-text">Figures</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text">Published results</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../quarto/results.html" class="sidebar-item-text sidebar-link"><i class="bi bi-clipboard-data" role="img">
+</i> 
+ <span class="menu-text">Published figures and tables</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../quarto/supplement.html" class="sidebar-item-text sidebar-link active"><i class="bi bi-clipboard-data" role="img">
+</i> 
+ <span class="menu-text">Published supplement</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
+ <span class="menu-text">Project documents</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../quarto/analysis-plan.html" class="sidebar-item-text sidebar-link"><i class="bi bi-file-earmark-ruled" role="img">
+</i> 
+ <span class="menu-text">Analysis plan</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../quarto/usrds-coverage.html" class="sidebar-item-text sidebar-link"><i class="bi bi-file-earmark-ruled" role="img">
+</i> 
+ <span class="menu-text">usRds coverage</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../quarto/architecture.html" class="sidebar-item-text sidebar-link"><i class="bi bi-file-earmark-ruled" role="img">
+</i> 
+ <span class="menu-text">Architecture</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../quarto/agents.html" class="sidebar-item-text sidebar-link"><i class="bi bi-file-earmark-ruled" role="img">
+</i> 
+ <span class="menu-text">AGENTS.md</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../quarto/repository-blueprint.html" class="sidebar-item-text sidebar-link"><i class="bi bi-file-earmark-ruled" role="img">
+</i> 
+ <span class="menu-text">Repository blueprint</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../quarto/about.html" class="sidebar-item-text sidebar-link"><i class="bi bi-info-circle" role="img">
+</i> 
+ <span class="menu-text">About</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#supplementary-figure-1.-data-sources-of-the-usrds-database-and-resultant-data" id="toc-supplementary-figure-1.-data-sources-of-the-usrds-database-and-resultant-data" class="nav-link active" data-scroll-target="#supplementary-figure-1.-data-sources-of-the-usrds-database-and-resultant-data">Supplementary Figure 1. Data Sources of the USRDS Database and Resultant Data</a></li>
+  <li><a href="#supplementary-table-1.-diagnosis-billing-and-procedure-codes-used-to-extract-data-from-the-usrds-database" id="toc-supplementary-table-1.-diagnosis-billing-and-procedure-codes-used-to-extract-data-from-the-usrds-database" class="nav-link" data-scroll-target="#supplementary-table-1.-diagnosis-billing-and-procedure-codes-used-to-extract-data-from-the-usrds-database">Supplementary Table 1. Diagnosis, Billing, and Procedure Codes Used to Extract Data from the USRDS Database</a></li>
+  <li><a href="#notes-on-the-supplement" id="toc-notes-on-the-supplement" class="nav-link" data-scroll-target="#notes-on-the-supplement">Notes on the supplement</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/edit/main/quarto/supplement.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content column-body" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../quarto/results.html">Published results</a></li><li class="breadcrumb-item"><a href="../quarto/supplement.html">Published supplement</a></li></ol></nav>
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">Published supplement</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta column-body">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Vagish Hemmige <a href="mailto:vagish.hemmige@gmail.com" class="quarto-title-author-email"><i class="bi bi-envelope"></i></a> </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-default callout-Results callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Results</span>Reproduced from the published supplement
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Everything on this page is reproduced, unchanged, from the Supplementary Data of Fiorica G, Cervera-Hernandez ME, Pirofski L, Hemmige VS, Yoon H. High mortality and associated risk factors in kidney transplant recipients with cryptococcosis: a nationwide cohort study over a decade using USRDS data. <em>Open Forum Infectious Diseases</em>. 2025;12(5):ofaf263<span class="citation" data-cites="fiorica2025"><sup><a href="#ref-fiorica2025" role="doc-biblioref">1</a></sup></span>, © The Author(s) 2025, published by Oxford University Press on behalf of the Infectious Diseases Society of America under a <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0 license</a>. It was <strong>not</strong> produced by this repository’s code.</p>
+</div>
+</div>
+<p>The code lists are transcribed cell for cell from the supplement, with codes as printed: ICD-9 codes with their decimal points in the diagnosis table and without them in the procedure table, and an asterisk marking a code that stands for every code beginning with it. Points to bear in mind when comparing them with this analysis’s <a href="../quarto/code_lists.html">code lists</a> are under <a href="#notes-on-the-supplement">Notes on the supplement</a>.</p>
+<section id="supplementary-figure-1.-data-sources-of-the-usrds-database-and-resultant-data" class="level2">
+<h2 class="anchored" data-anchor-id="supplementary-figure-1.-data-sources-of-the-usrds-database-and-resultant-data">Supplementary Figure 1. Data Sources of the USRDS Database and Resultant Data</h2>
+<p>For more detailed information, refer to the <a href="https://usrds.org/media/2461/usrds_researcher_guide_2020.pdf">USRDS Researcher Guide</a>. (The link is as printed; the current guide is on the NIDDK site<span class="citation" data-cites="usrds2024guide"><sup><a href="#ref-usrds2024guide" role="doc-biblioref">2</a></sup></span>.)</p>
+<p><img src="images/supplementary_figure_1.png" class="img-fluid" style="width:100.0%" alt="Diagram of the sources that feed the USRDS database and the data it provides. Sources: CMS/PMMIS/REBUS/REMIS/CROWNWeb; CMS ESRD Part A claims (outpatient, inpatient, skilled nursing facility, home health, hospice); CMS ESRD Part B claims (physician/supplier, durable medical equipment); CMS ESRD Part D; 5% general Medicare SAF claims; UNOS transplant data; CMS ESRD facility data; and census data. These feed the USRDS database (3.2 million patients), which provides patient profile, medical evidence, treatment history, payer history, residency history, CMS ESRD and 5% general Medicare claims (dialysis claims and Parts A, B and D), UNOS transplant data, CROWNWeb clinical data, USRDS special studies, CKD cohort and claims data, and census data."></p>
+</section>
+<section id="supplementary-table-1.-diagnosis-billing-and-procedure-codes-used-to-extract-data-from-the-usrds-database" class="level2">
+<h2 class="anchored" data-anchor-id="supplementary-table-1.-diagnosis-billing-and-procedure-codes-used-to-extract-data-from-the-usrds-database">Supplementary Table 1. Diagnosis, Billing, and Procedure Codes Used to Extract Data from the USRDS Database</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Diagnosis</th>
+<th>ICD code</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Cryptococcosis</td>
+<td>117.5, 321.0, B45, B45.0, B45.1, B45.2, B45.3, B45.7, B45.8, B45.9</td>
+</tr>
+<tr class="even">
+<td>Cryptococcal meningitis</td>
+<td>321.0, B45.1</td>
+</tr>
+<tr class="odd">
+<td>Transplant complication</td>
+<td>996.81, T86.10, T86.11, T86.12</td>
+</tr>
+<tr class="even">
+<td>Acute kidney injury</td>
+<td>584.5, 584.6, 584.7, 584.8, 584.9, N17.0, N17.1, N17.2, N17.8, N17.9</td>
+</tr>
+<tr class="odd">
+<td>Diabetes</td>
+<td>250*, E08*, E09*, E10*, E11*, E13*, 357.2, 362.02, 362.0, 366.41</td>
+</tr>
+<tr class="even">
+<td>Cirrhosis</td>
+<td>456.0, 456.1, 456.2, 456.21, 567.23, 571.2, 571.5, 572.2, 572.3, 572.4, 789.59, K70.3, K70.30, K70.31, K70.4, K70.40, K70.41, K74.6, K74.60, K74.69, I85.0, I85.00, I85.01, I85.1, I85.10, I85.11, I85.9, K72.90, K76.6, K76.7, K65.2</td>
+</tr>
+</tbody>
+</table>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Medication</th>
+<th>HCPCS code</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Cyclosporine</td>
+<td>J7502, J7515, J7516</td>
+</tr>
+<tr class="even">
+<td>Tacrolimus</td>
+<td>J7503, J7507, J7508, J7525</td>
+</tr>
+</tbody>
+</table>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Procedure</th>
+<th>ICD code</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Lumbar puncture</td>
+<td>009U00Z, 009U0ZX, 009U0ZZ, 009U30Z, 009U3ZX, 009U3ZZ, 009U40Z, 009U4ZX, 009U4ZZ, 0331</td>
+</tr>
+<tr class="even">
+<td>Spinal procedure</td>
+<td>009W00Z, 009W0ZX, 009W0ZZ, 009W30Z, 009W3ZX, 009W3ZZ, 009W40Z, 009W4ZX, 009W4ZZ, 009X00Z, 009X0ZX, 009X0ZZ, 009X30Z, 009X3ZX, 009X3ZZ, 009X40Z, 009X4ZX, 009X4ZZ, 009Y00Z, 009Y0ZX, 009Y0ZZ, 009Y30Z, 009Y3ZX, 009Y3ZZ, 009Y40Z, 009Y4ZX, 009Y4ZZ, 00BT0ZX, 00BT0ZZ, 00BT3ZX, 00BT3ZZ, 00BT4ZX, 00BT4ZZ, 00BW0ZX, 00BW0ZZ, 00BW3ZX, 00BW3ZZ, 00BW4ZX, 00BW4ZZ, 00BX0ZX, 00BX0ZZ, 00BX3ZX, 00BX3ZZ, 00BX4ZX, 00BX4ZZ, 00BY0ZX, 00BY0ZZ, 00BY3ZX, 00BY3ZZ, 00BY4ZX, 00BY4ZZ, 00JU0ZZ, 00JU3ZZ, 00JU4ZZ, 00JV0ZZ, 00JV3ZZ, 00JV4ZZ, B01B0ZZ, B01B1ZZ, B01BYZZ, B01BZZZ, 0359, 0309, 0395, 0339, 0391, 0390, 0392, 0393, 031, 0321, 0329, 0332, 034, 0351, 0352, 0371, 0379, 0397, 0398, 0399</td>
+</tr>
+<tr class="odd">
+<td>Neurosurgical procedures</td>
+<td>0016070, 0016071, 0016072, 0016073, 0016074, 0016075, 0016076, 0016077, 0016078, 001607A, 001607B, 00160J0, 00160J1, 00160J2, 00160J3, 00160J4, 00160J5, 00160J6, 00160J7, 00160J8, 00160JA, 00160JB, 00160K0, 00160K1, 00160K2, 00160K3, 00160K4, 00160K5, 00160K6, 00160K7, 00160K8, 00160KA, 00160KB, 00160ZB, 0016370, 0016371, 0016372, 0016373, 0016374, 0016375, 0016376, 0016377, 0016378, 001637A, 001637B, 00163J0, 00163J1, 00163J2, 00163J3, 00163J4, 00163J5, 00163J6, 00163J7, 00163J8, 00163JA, 00163JB, 00163K0, 00163K1, 00163K2, 00163K3, 00163K4, 00163K5, 00163K6, 00163K7, 00163K8, 00163KA, 00163KB, 00163ZB, 0016470, 0016471, 0016472, 0016473, 0016474, 0016475, 0016476, 0016477, 0016478, 001647A, 001647B, 00164J0, 00164J1, 00164J2, 00164J3, 00164J4, 00164J5, 00164J6, 00164J7, 00164J8, 00164JA, 00164JB, 00164K0, 00164K1, 00164K2, 00164K3, 00164K4, 00164K5, 00164K6, 00164K7, 00164K8, 00164KA, 00164KB, 00164ZB, 009000Z, 00900ZX, 00900ZZ, 009030Z, 00903ZX, 00903ZZ, 009040Z, 00904ZX, 00904ZZ, 009100Z, 00910ZX, 00910ZZ, 009130Z, 00913ZX, 00913ZZ, 009140Z, 00914ZX, 00914ZZ, 009200Z, 00920ZX, 00920ZZ, 009230Z, 00923ZX, 00923ZZ, 009240Z, 00924ZX, 00924ZZ, 009300Z, 00930ZX, 00930ZZ, 009330Z, 00933ZX, 00933ZZ, 009340Z, 00934ZX, 00934ZZ, 009400Z, 00940ZX, 00940ZZ, 009430Z, 00943ZX, 00943ZZ, 009440Z, 00944ZX, 00944ZZ, 009500Z, 00950ZX, 00950ZZ, 009530Z, 00953ZX, 00953ZZ, 009540Z, 00954ZX, 00954ZZ, 009600Z, 00960ZX, 00960ZZ, 009630Z, 00963ZX, 00963ZZ, 009640Z, 00964ZX, 00964ZZ, 009700Z, 00970ZX, 00970ZZ, 009730Z, 00973ZX, 00973ZZ, 009740Z, 00974ZX, 00974ZZ, 009800Z, 00980ZX, 00980ZZ, 009830Z, 00983ZX, 00983ZZ, 009840Z, 00984ZX, 00984ZZ, 009900Z, 00990ZX, 00990ZZ, 009930Z, 00993ZX, 00993ZZ, 009940Z, 00994ZX, 00994ZZ, 009A00Z, 009A0ZX, 009A0ZZ, 009A30Z, 009A3ZX, 009A3ZZ, 009A40Z, 009A4ZX, 009A4ZZ, 009B00Z, 009B0ZX, 009B0ZZ, 009B30Z, 009B3ZX, 009B3ZZ, 009B40Z, 009B4ZX, 009B4ZZ, 009C00Z, 009C0ZX, 009C0ZZ, 009C30Z, 009C3ZX, 009C3ZZ, 009C40Z, 009C4ZX, 009C4ZZ, 009D00Z, 009D0ZX, 009D0ZZ, 009D30Z, 009D3ZX, 009D3ZZ, 009D40Z, 009D4ZX, 009D4ZZ, 00J00ZZ, 00J03ZZ, 00J04ZZ, 4A103BD, 4A103KD, 4A103RD, 4A107BD, 4A107KD, 4A107RD, 4A108BD, 4A108KD, 4A108RD, 0101, 0102, 0109, 0110, 0111, 0112, 0113, 0114, 0118, 0121, 0123, 0124, 0125, 0126, 0127, 0128, 0131, 0132, 0139, 0141, 0142, 0151, 0152, 0153, 0159, 0201, 0203, 0204, 0205, 0206, 0207, 0211, 0212, 0213, 022, 0221, 0222, 0231, 0232, 0233, 0234, 0235, 0239, 0241, 0242, 0243, 0291, 0292, 0299</td>
+</tr>
+<tr class="even">
+<td>Lung procedures</td>
+<td>07B70ZX, 07B70ZZ, 07B73ZX, 07B73ZZ, 07B74ZX, 07B74ZZ, 0B9300Z, 0B930ZX, 0B930ZZ, 0B9330Z, 0B933ZX, 0B933ZZ, 0B9340Z, 0B934ZX, 0B934ZZ, 0B9370Z, 0B937ZX, 0B937ZZ, 0B9380Z, 0B938ZX, 0B938ZZ, 0B9400Z, 0B940ZX, 0B940ZZ, 0B9430Z, 0B943ZX, 0B943ZZ, 0B9440Z, 0B944ZX, 0B944ZZ, 0B9470Z, 0B947ZX, 0B947ZZ, 0B9480Z, 0B948ZX, 0B9500Z, 0B950ZX, 0B950ZZ, 0B9530Z, 0B953ZX, 0B953ZZ, 0B9540Z, 0B954ZX, 0B954ZZ, 0B9570Z, 0B957ZX, 0B957ZZ, 0B9580Z, 0B958ZX, 0B958ZZ, 0B9600Z, 0B960ZX, 0B960ZZ, 0B9630Z, 0B963ZX, 0B963ZZ, 0B9640Z, 0B964ZX, 0B964ZZ, 0B9670Z, 0B967ZX, 0B967ZZ, 0B9680Z, 0B968ZX, 0B968ZZ, 0B9700Z, 0B970ZX, 0B970ZZ, 0B9730Z, 0B973ZX, 0B973ZZ, 0B9740Z, 0B974ZX, 0B974ZZ, 0B9770Z, 0B977ZX, 0B977ZZ, 0B9780Z, 0B978ZX, 0B978ZZ, 0B9800Z, 0B980ZX, 0B980ZZ, 0B9830Z, 0B983ZX, 0B983ZZ, 0B9840Z, 0B984ZX, 0B984ZZ, 0B9870Z, 0B987ZX, 0B987ZZ, 0B9880Z, 0B988ZX, 0B988ZZ, 0B9900Z, 0B990ZX, 0B990ZZ, 0B9930Z, 0B993ZX, 0B993ZZ, 0B9940Z, 0B994ZX, 0B994ZZ, 0B9970Z, 0B997ZX, 0B997ZZ, 0B9980Z, 0B998ZX, 0B9B00Z, 0B9B0ZX, 0B9B0ZZ, 0B9B30Z, 0B9B3ZX, 0B9B3ZZ, 0B9B40Z, 0B9B4ZX, 0B9B4ZZ, 0B9B70Z, 0B9B7ZX, 0B9B7ZZ, 0B9B80Z, 0B9B8ZX, 0B9B8ZZ, 0B9C00Z, 0B9C0ZX, 0B9C0ZZ, 0B9C30Z, 0B9C3ZX, 0B9C3ZZ, 0B9C40Z, 0B9C4ZX, 0B9C4ZZ, 0B9C70Z, 0B9C7ZX, 0B9C7ZZ, 0B9C80Z, 0B9C8ZX, 0B9C8ZZ, 0B9D00Z, 0B9D0ZX, 0B9D0ZZ, 0B9D30Z, 0B9D3ZX, 0B9D3ZZ, 0B9D40Z, 0B9D4ZX, 0B9D4ZZ, 0B9D70Z, 0B9D7ZX, 0B9D7ZZ, 0B9D80Z, 0B9D8ZX, 0B9D8ZZ, 0B9F00Z, 0B9F0ZX, 0B9F0ZZ, 0B9F30Z, 0B9F3ZX, 0B9F3ZZ, 0B9F40Z, 0B9F4ZX, 0B9F4ZZ, 0B9F70Z, 0B9F7ZX, 0B9F7ZZ, 0B9F80Z, 0B9F8ZX, 0B9F8ZZ, 0B9G00Z, 0B9G0ZX, 0B9G0ZZ, 0B9G30Z, 0B9G3ZX, 0B9G3ZZ, 0B9G40Z, 0B9G4ZX, 0B9G4ZZ, 0B9G70Z, 0B9G7ZX, 0B9G7ZZ, 0B9G80Z, 0B9G8ZX, 0B9G8ZZ, 0B9H00Z, 0B9H0ZX, 0B9H0ZZ, 0B9H30Z, 0B9H3ZX, 0B9H3ZZ, 0B9H40Z, 0B9H4ZX, 0B9H4ZZ, 0B9H70Z, 0B9H7ZX, 0B9H7ZZ, 0B9H80Z, 0B9H8ZX, 0B9H8ZZ, 0B9J00Z, 0B9J0ZX, 0B9J0ZZ, 0B9J30Z, 0B9J3ZX, 0B9J3ZZ, 0B9J40Z, 0B9J4ZX, 0B9J4ZZ, 0B9J70Z, 0B9J7ZX, 0B9J7ZZ, 0B9J80Z, 0B9J8ZX, 0B9J8ZZ, 0B9K00Z, 0B9K0ZX, 0B9K0ZZ, 0B9K30Z, 0B9K3ZX, 0B9K3ZZ, 0B9K40Z, 0B9K4ZX, 0B9K4ZZ, 0B9K70Z, 0B9K7ZX, 0B9K7ZZ, 0B9K80Z, 0B9K8ZX, 0B9K8ZZ, 0B9L00Z, 0B9L0ZX, 0B9L0ZZ, 0B9L30Z, 0B9L3ZX, 0B9L3ZZ, 0B9L40Z, 0B9L4ZX, 0B9L4ZZ, 0B9L70Z, 0B9L7ZX, 0B9L7ZZ, 0B9L80Z, 0B9L8ZX, 0B9L8ZZ, 0B9M00Z, 0B9M0ZX, 0B9M0ZZ, 0B9M30Z, 0B9M3ZX, 0B9M3ZZ, 0B9M40Z, 0B9M4ZX, 0B9M4ZZ, 0B9M70Z, 0B9M7ZX, 0B9M7ZZ, 0B9M80Z, 0B9M8ZX, 0B9M8ZZ, 0B9N00Z, 0B9N0ZX, 0B9N0ZZ, 0B9N30Z, 0B9N3ZX, 0B9N3ZZ, 0B9N40Z, 0B9N4ZX, 0B9N4ZZ, 0B9N80Z, 0B9N8ZX, 0B9N8ZZ, 0B9P00Z, 0B9P0ZX, 0B9P0ZZ, 0B9P30Z, 0B9P3ZX, 0B9P3ZZ, 0B9P40Z, 0B9P4ZX, 0B9P4ZZ, 0B9P80Z, 0B9P8ZX, 0B9P8ZZ, 0BB30ZX, 0BB30ZZ, 0BB33ZX, 0BB33ZZ, 0BB34ZX, 0BB34ZZ, 0BB37ZX, 0BB37ZZ, 0BB38ZX, 0BB38ZZ, 0BB40ZX, 0BB40ZZ, 0BB43ZX, 0BB43ZZ, 0BB44ZX, 0BB44ZZ, 0BB47ZX, 0BB47ZZ, 0BB48ZX, 0BB48ZZ, 0BB50ZX, 0BB50ZZ, 0BB53ZX, 0BB53ZZ, 0BB54ZX, 0BB54ZZ, 0BB57ZX, 0BB57ZZ, 0BB58ZX, 0BB58ZZ, 0BB60ZX, 0BB60ZZ, 0BB63ZX, 0BB63ZZ, 0BB64ZX, 0BB64ZZ, 0BB67ZX, 0BB67ZZ, 0BB68ZX, 0BB68ZZ, 0BB70ZX, 0BB70ZZ, 0BB73ZX, 0BB73ZZ, 0BB74ZX, 0BB74ZZ, 0BB77ZX, 0BB77ZZ, 0BB78ZX, 0BB78ZZ, 0BB80ZX, 0BB80ZZ, 0BB83ZX, 0BB83ZZ, 0BB84ZX, 0BB84ZZ, 0BB87ZX, 0BB87ZZ, 0BB88ZX, 0BB88ZZ, 0BB90ZX, 0BB90ZZ, 0BB93ZX, 0BB93ZZ, 0BB94ZX, 0BB94ZZ, 0BB97ZX, 0BB97ZZ, 0BB98ZX, 0BB98ZZ, 0BBB0ZX, 0BBB0ZZ, 0BBB3ZX, 0BBB3ZZ, 0BBB4ZX, 0BBB4ZZ, 0BBB7ZX, 0BBB7ZZ, 0BBB8ZX, 0BBB8ZZ, 0BBC0ZX, 0BBC0ZZ, 0BBC3ZX, 0BBC3ZZ, 0BBC4ZX, 0BBC4ZZ, 0BBC7ZX, 0BBC7ZZ, 0BBC8ZX, 0BBC8ZZ, 0BBD0ZX, 0BBD0ZZ, 0BBD3ZX, 0BBD3ZZ, 0BBD4ZX, 0BBD4ZZ, 0BBD7ZX, 0BBD7ZZ, 0BBD8ZX, 0BBD8ZZ, 0BBF0ZX, 0BBF0ZZ, 0BBF3ZX, 0BBF3ZZ, 0BBF4ZX, 0BBF4ZZ, 0BBF7ZX, 0BBF7ZZ, 0BBF8ZX, 0BBF8ZZ, 0BBG0ZX, 0BBG0ZZ, 0BBG3ZX, 0BBG3ZZ, 0BBG4ZX, 0BBG4ZZ, 0BBG7ZX, 0BBG7ZZ, 0BBG8ZX, 0BBG8ZZ, 0BBH0ZX, 0BBH0ZZ, 0BBH3ZX, 0BBH3ZZ, 0BBH4ZX, 0BBH4ZZ, 0BBH7ZX, 0BBH7ZZ, 0BBH8ZX, 0BBH8ZZ, 0BBJ0ZX, 0BBJ0ZZ, 0BBJ3ZX, 0BBJ3ZZ, 0BBJ4ZX, 0BBJ4ZZ, 0BBJ7ZX, 0BBJ7ZZ, 0BBJ8ZX, 0BBJ8ZZ, 0BBK0ZX, 0BBK0ZZ, 0BBK3ZX, 0BBK3ZZ, 0BBK4ZX, 0BBK4ZZ, 0BBK7ZX, 0BBK7ZZ, 0BBK8ZX, 0BBK8ZZ, 0BBL0ZX, 0BBL0ZZ, 0BBL3ZX, 0BBL3ZZ, 0BBL4ZX, 0BBL4ZZ, 0BBL7ZX, 0BBL7ZZ, 0BBL8ZX, 0BBL8ZZ, 0BBM0ZX, 0BBM0ZZ, 0BBM3ZX, 0BBM3ZZ, 0BBM4ZX, 0BBM4ZZ, 0BBM7ZX, 0BBM7ZZ, 0BBM8ZX, 0BBM8ZZ, 0BBN0ZX, 0BBN0ZZ, 0BBN3ZX, 0BBN3ZZ, 0BBN4ZX, 0BBN4ZZ, 0BBN8ZX, 0BBN8ZZ, 0BBP0ZX, 0BBP0ZZ, 0BBP3ZX, 0BBP3ZZ, 0BBP4ZX, 0BBP4ZZ, 0BBP8ZX, 0BBP8ZZ, 0BC30ZZ, 0BC33ZZ, 0BC34ZZ, 0BC37ZZ, 0BC38ZZ, 0BC40ZZ, 0BC43ZZ, 0BC44ZZ, 0BC47ZZ, 0BC48ZZ, 0BC50ZZ, 0BC53ZZ, 0BC54ZZ, 0BC57ZZ, 0BC58ZZ, 0BC60ZZ, 0BC63ZZ, 0BC64ZZ, 0BC67ZZ, 0BC68ZZ, 0BC70ZZ, 0BC73ZZ, 0BC74ZZ, 0BC77ZZ, 0BC78ZZ, 0BC80ZZ, 0BC83ZZ, 0BC84ZZ, 0BC87ZZ, 0BC88ZZ, 0BC90ZZ, 0BC93ZZ, 0BC94ZZ, 0BC97ZZ, 0BC98ZZ, 0BCB0ZZ, 0BCB3ZZ, 0BCB4ZZ, 0BCB7ZZ, 0BCB8ZZ, 0BCC0ZZ, 0BCC3ZZ, 0BCC4ZZ, 0BCC7ZZ, 0BCC8ZZ, 0BCD0ZZ, 0BCD3ZZ, 0BCD4ZZ, 0BCD7ZZ, 0BCD8ZZ, 0BCF0ZZ, 0BCF3ZZ, 0BCF4ZZ, 0BCF7ZZ, 0BCF8ZZ, 0BCG0ZZ, 0BCG3ZZ, 0BCG4ZZ, 0BCG7ZZ, 0BCG8ZZ, 0BCH0ZZ, 0BCH3ZZ, 0BCH4ZZ, 0BCH7ZZ, 0BCH8ZZ, 0BCJ0ZZ, 0BCJ3ZZ, 0BCJ4ZZ, 0BCJ7ZZ, 0BCJ8ZZ, 0BCK0ZZ, 0BCK3ZZ, 0BCK4ZZ, 0BCK7ZZ, 0BCK8ZZ, 0BCL0ZZ, 0BCL3ZZ, 0BCL4ZZ, 0BCL7ZZ, 0BCL8ZZ, 0BCM0ZZ, 0BCM3ZZ, 0BCM4ZZ, 0BCM7ZZ, 0BCM8ZZ, 0BCN0ZZ, 0BCN3ZZ, 0BCN4ZZ, 0BCP0ZZ, 0BCP3ZZ, 0BCP4ZZ, 0BD34ZX, 0BD38ZX, 0BD44ZX, 0BD48ZX, 0BD54ZX, 0BD58ZX, 0BD64ZX, 0BD68ZX, 0BD74ZX, 0BD78ZX, 0BD84ZX, 0BD88ZX, 0BD94ZX, 0BD98ZX, 0BDB4ZX, 0BDB8ZX, 0BDC4ZX, 0BDC8ZX, 0BDD4ZX, 0BDD8ZX, 0BDF4ZX, 0BDF8ZX, 0BDG4ZX, 0BDG8ZX, 0BDH4ZX, 0BDH8ZX, 0BDJ4ZX, 0BDJ8ZX, 0BDK4ZX, 0BDK8ZX, 0BDL4ZX, 0BDL8ZX, 0BDM4ZX, 0BDM8ZX, 0BDN0ZX, 0BDN0ZZ, 0BDN3ZX, 0BDN3ZZ, 0BDN4ZX, 0BDN4ZZ, 0BDP0ZX, 0BDP0ZZ, 0BDP3ZX, 0BDP3ZZ, 0BDP4ZX, 0BDP4ZZ, 0BJ00ZZ, 0BJ03ZZ, 0BJ04ZZ, 0BJ07ZZ, 0BJ08ZZ, 0BJ0XZZ, 0BJ10ZZ, 0BJ13ZZ, 0BJ14ZZ, 0BJ17ZZ, 0BJ18ZZ, 0BJ1XZZ, 0BJK0ZZ, 0BJK3ZZ, 0BJK4ZZ, 0BJK7ZZ, 0BJK8ZZ, 0BJKXZZ, 0BJL0ZZ, 0BJL3ZZ, 0BJL4ZZ, 0BJL7ZZ, 0BJL8ZZ, 0BJLXZZ, 0BJQ0ZZ, 0BJQ3ZZ, 0BJQ4ZZ, 0BJQ7ZZ, 0BJQ8ZZ, 0BJQXZZ, 0BN30ZZ, 0BN33ZZ, 0BN34ZZ, 0BN37ZZ, 0BN38ZZ, 0BN40ZZ, 0BN43ZZ, 0BN44ZZ, 0BN47ZZ, 0BN48ZZ, 0BN50ZZ, 0BN53ZZ, 0BN54ZZ, 0BN57ZZ, 0BN58ZZ, 0BN60ZZ, 0BN63ZZ, 0BN64ZZ, 0BN67ZZ, 0BN68ZZ, 0BN70ZZ, 0BN73ZZ, 0BN74ZZ, 0BN77ZZ, 0BN78ZZ, 0BN80ZZ, 0BN83ZZ, 0BN84ZZ, 0BN87ZZ, 0BN88ZZ, 0BN90ZZ, 0BN93ZZ, 0BN94ZZ, 0BN97ZZ, 0BN98ZZ, 0BNB0ZZ, 0BNB3ZZ, 0BNB4ZZ, 0BNB7ZZ, 0BNB8ZZ, 0BNC0ZZ, 0BNC3ZZ, 0BNC4ZZ, 0BNC7ZZ, 0BNC8ZZ, 0BND0ZZ, 0BND3ZZ, 0BND4ZZ, 0BND7ZZ, 0BND8ZZ, 0BNF0ZZ, 0BNF3ZZ, 0BNF4ZZ, 0BNF7ZZ, 0BNF8ZZ, 0BNG0ZZ, 0BNG3ZZ, 0BNG4ZZ, 0BNG7ZZ, 0BNG8ZZ, 0BNH0ZZ, 0BNH3ZZ, 0BNH4ZZ, 0BNH7ZZ, 0BNH8ZZ, 0BNJ0ZZ, 0BNJ3ZZ, 0BNJ4ZZ, 0BNJ7ZZ, 0BNJ8ZZ, 0BNK0ZZ, 0BNK3ZZ, 0BNK4ZZ, 0BNK7ZZ, 0BNK8ZZ, 0BNL0ZZ, 0BNL3ZZ, 0BNL4ZZ, 0BNL7ZZ, 0BNL8ZZ, 0BNM0ZZ, 0BNM3ZZ, 0BNM4ZZ, 0BNM7ZZ, 0BNM8ZZ, 0BNN0ZZ, 0BNN3ZZ, 0BNN4ZZ, 0BNP0ZZ, 0BNP3ZZ, 0BNP4ZZ, 0BT30ZZ, 0BT34ZZ, 0BT40ZZ, 0BT44ZZ, 0BT50ZZ, 0BT54ZZ, 0BT60ZZ, 0BT64ZZ, 0BT70ZZ, 0BT74ZZ, 0BT80ZZ, 0BT84ZZ, 0BT90ZZ, 0BT94ZZ, 0BTB0ZZ, 0BTB4ZZ, 0BTC0ZZ, 0BTC4ZZ, 0BTD0ZZ, 0BTD4ZZ, 0BTF0ZZ, 0BTF4ZZ, 0BTG0ZZ, 0BTG4ZZ, 0BTH0ZZ, 0BTH4ZZ, 0BTJ0ZZ, 0BTJ4ZZ, 0BTK0ZZ, 0BTK4ZZ, 0BTL0ZZ, 0BTL4ZZ, 0BTM0ZZ, 0BTM4ZZ, 0W9900Z, 0W990ZX, 0W990ZZ, 0W9930Z, 0W993ZX, 0W993ZZ, 0W9940Z, 0W994ZX, 0W994ZZ, 0W9B00Z, 0W9B0ZX, 0W9B0ZZ, 0W9B30Z, 0W9B3ZX, 0W9B3ZZ, 0W9B40Z, 0W9B4ZX, 0W9B4ZZ, 0W9C00Z, 0W9C0ZX, 0W9C0ZZ, 0W9C30Z, 0W9C3ZX, 0W9C3ZZ, 0W9C40Z, 0W9C4ZX, 0W9C4ZZ, 0WBC0ZX, 0WBC0ZZ, 0WBC3ZX, 0WBC3ZZ, 0WBC4ZX, 0WBC4ZZ, 1745, 3201, 3209, 321, 3220, 3228, 3229, 3230, 3239, 3241, 3249, 3250, 3259, 326, 329, 3320, 3321, 3322, 3323, 3324, 3325, 3326, 3327, 3328, 3329, 3339, 3402, 3404, 3406, 3409, 3420, 3421, 3422, 3424, 3451, 3452, 3459, 3491, 3492, 3493, 3499, 9656</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="notes-on-the-supplement" class="level2">
+<h2 class="anchored" data-anchor-id="notes-on-the-supplement">Notes on the supplement</h2>
+<p>These are kept above as printed and listed so this analysis’s code lists can be compared with them. How each was handled is on the <a href="../quarto/code_lists.html">Code lists</a> page and in the linked issues.</p>
+<ul>
+<li><strong>Cryptococcosis</strong> lists the ICD-10-CM category B45 itself as well as its subcodes. ICD-10-CM has no codes B45.4 to B45.6, so the subcodes listed are all of them.</li>
+<li><strong>Diabetes</strong> marks 250, E08, E09, E10, E11 and E13 with an asterisk, meaning every code beginning with them; the other codes are matched exactly (<a href="https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/8">#8</a>).</li>
+<li><strong>Procedures</strong> are ICD procedure codes only. The paper’s Methods mention CPT codes, which the supplement does not list (<a href="https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/5">#5</a>). There is no separate row for the ventriculoperitoneal shunts the paper reports; the shunt codes are among the neurosurgical procedures (<a href="https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/8">#8</a>).</li>
+<li><strong>Medications</strong> are listed as HCPCS billing codes for cyclosporine and tacrolimus. The paper describes its drug data both ways: its Methods say drug information at UNOS registration and the first post-transplant visit “was obtained using relevant billing codes”, while the title of its Table 2 names the UNOS registration and follow-up appointment. This analysis uses the UNOS records (<a href="https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/2">#2</a>).</li>
+<li>Some ICD-9 procedure codes have only three digits (031, 034, 321, 326 and 329). These are complete codes with no subcodes, and are matched exactly. 022 was also a complete code until October 2012, when it was split into 02.21 and 02.22, both of which are listed too.</li>
+</ul>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<div id="refs" class="references csl-bib-body" role="list">
+<div id="ref-fiorica2025" class="csl-entry" role="listitem">
+<div class="csl-left-margin">1. </div><div class="csl-right-inline">Fiorica G, Cervera-Hernandez ME, Pirofski L, Hemmige VS, Yoon H. High mortality and associated risk factors in kidney transplant recipients with cryptococcosis: A nationwide cohort study over a decade using <span>USRDS</span> data. <em>Open Forum Infectious Diseases</em>. 2025;12(5):ofaf263. doi:<a href="https://doi.org/10.1093/ofid/ofaf263">10.1093/ofid/ofaf263</a></div>
+</div>
+<div id="ref-usrds2024guide" class="csl-entry" role="listitem">
+<div class="csl-left-margin">2. </div><div class="csl-right-inline">United States Renal Data System. <em>2024 Researcher’s Guide to the <span>USRDS</span> Database</em>. National Institutes of Health, National Institute of Diabetes; Digestive; Kidney Diseases; 2024. <a href="https://www.niddk.nih.gov/-/media/Files/USRDS/For-Researchers/2024-update/USRDS_Researcher_Guide_2024.pdf">https://www.niddk.nih.gov/-/media/Files/USRDS/For-Researchers/2024-update/USRDS_Researcher_Guide_2024.pdf</a></div>
+</div>
+</div>
+
+
+<!-- -->
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const cellDetails = window.document.querySelectorAll(".cell details.code-fold");
+        for (let i=0; i<cellDetails.length; i++) {
+          const details = cellDetails[i];
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell div.sourceCode.cell-code");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/vagishhemmige\.github\.io\/Fiorica-cryptoccoccus-analysis");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation column-body">
+  <div class="nav-page nav-page-previous">
+      <a href="../quarto/results.html" class="pagination-link" aria-label="Published figures and tables">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Published figures and tables</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../quarto/analysis-plan.html" class="pagination-link" aria-label="Analysis plan">
+        <span class="nav-page-text">Analysis plan</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Published supplement"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span><span class="co"> html</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>::: {.Results title="Reproduced from the published supplement"}</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>Everything on this page is reproduced, unchanged, from the Supplementary Data of Fiorica G, Cervera-Hernandez ME, Pirofski L, Hemmige VS, Yoon H. High mortality and associated risk factors in kidney transplant recipients with cryptococcosis: a nationwide cohort study over a decade using USRDS data. *Open Forum Infectious Diseases*. 2025;12(5):ofaf263 [@fiorica2025], © The Author(s) 2025, published by Oxford University Press on behalf of the Infectious Diseases Society of America under a [CC BY-NC-ND 4.0 license](https://creativecommons.org/licenses/by-nc-nd/4.0/). It was **not** produced by this repository's code.</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>The code lists are transcribed cell for cell from the supplement, with codes as printed: ICD-9 codes with their decimal points in the diagnosis table and without them in the procedure table, and an asterisk marking a code that stands for every code beginning with it. Points to bear in mind when comparing them with this analysis's <span class="co">[</span><span class="ot">code lists</span><span class="co">](code_lists.qmd)</span> are under <span class="co">[</span><span class="ot">Notes on the supplement</span><span class="co">](#notes-on-the-supplement)</span>.</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">## Supplementary Figure 1. Data Sources of the USRDS Database and Resultant Data</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>For more detailed information, refer to the <span class="co">[</span><span class="ot">USRDS Researcher Guide</span><span class="co">](https://usrds.org/media/2461/usrds_researcher_guide_2020.pdf)</span>. (The link is as printed; the current guide is on the NIDDK site <span class="co">[</span><span class="ot">@usrds2024guide</span><span class="co">]</span>.)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="al">![](images/supplementary_figure_1.png)</span>{fig-alt="Diagram of the sources that feed the USRDS database and the data it provides. Sources: CMS/PMMIS/REBUS/REMIS/CROWNWeb; CMS ESRD Part A claims (outpatient, inpatient, skilled nursing facility, home health, hospice); CMS ESRD Part B claims (physician/supplier, durable medical equipment); CMS ESRD Part D; 5% general Medicare SAF claims; UNOS transplant data; CMS ESRD facility data; and census data. These feed the USRDS database (3.2 million patients), which provides patient profile, medical evidence, treatment history, payer history, residency history, CMS ESRD and 5% general Medicare claims (dialysis claims and Parts A, B and D), UNOS transplant data, CROWNWeb clinical data, USRDS special studies, CKD cohort and claims data, and census data." width="100%"}</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">## Supplementary Table 1. Diagnosis, Billing, and Procedure Codes Used to Extract Data from the USRDS Database</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Diagnosis <span class="pp">|</span> ICD code <span class="pp">|</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Cryptococcosis <span class="pp">|</span> 117.5, 321.0, B45, B45.0, B45.1, B45.2, B45.3, B45.7, B45.8, B45.9 <span class="pp">|</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Cryptococcal meningitis <span class="pp">|</span> 321.0, B45.1 <span class="pp">|</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Transplant complication <span class="pp">|</span> 996.81, T86.10, T86.11, T86.12 <span class="pp">|</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Acute kidney injury <span class="pp">|</span> 584.5, 584.6, 584.7, 584.8, 584.9, N17.0, N17.1, N17.2, N17.8, N17.9 <span class="pp">|</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Diabetes <span class="pp">|</span> 250<span class="sc">\*</span>, E08<span class="sc">\*</span>, E09<span class="sc">\*</span>, E10<span class="sc">\*</span>, E11<span class="sc">\*</span>, E13<span class="sc">\*</span>, 357.2, 362.02, 362.0, 366.41 <span class="pp">|</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Cirrhosis <span class="pp">|</span> 456.0, 456.1, 456.2, 456.21, 567.23, 571.2, 571.5, 572.2, 572.3, 572.4, 789.59, K70.3, K70.30, K70.31, K70.4, K70.40, K70.41, K74.6, K74.60, K74.69, I85.0, I85.00, I85.01, I85.1, I85.10, I85.11, I85.9, K72.90, K76.6, K76.7, K65.2 <span class="pp">|</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Medication <span class="pp">|</span> HCPCS code <span class="pp">|</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Cyclosporine <span class="pp">|</span> J7502, J7515, J7516 <span class="pp">|</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Tacrolimus <span class="pp">|</span> J7503, J7507, J7508, J7525 <span class="pp">|</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Procedure <span class="pp">|</span> ICD code <span class="pp">|</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Lumbar puncture <span class="pp">|</span> 009U00Z, 009U0ZX, 009U0ZZ, 009U30Z, 009U3ZX, 009U3ZZ, 009U40Z, 009U4ZX, 009U4ZZ, 0331 <span class="pp">|</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Spinal procedure <span class="pp">|</span> 009W00Z, 009W0ZX, 009W0ZZ, 009W30Z, 009W3ZX, 009W3ZZ, 009W40Z, 009W4ZX, 009W4ZZ, 009X00Z, 009X0ZX, 009X0ZZ, 009X30Z, 009X3ZX, 009X3ZZ, 009X40Z, 009X4ZX, 009X4ZZ, 009Y00Z, 009Y0ZX, 009Y0ZZ, 009Y30Z, 009Y3ZX, 009Y3ZZ, 009Y40Z, 009Y4ZX, 009Y4ZZ, 00BT0ZX, 00BT0ZZ, 00BT3ZX, 00BT3ZZ, 00BT4ZX, 00BT4ZZ, 00BW0ZX, 00BW0ZZ, 00BW3ZX, 00BW3ZZ, 00BW4ZX, 00BW4ZZ, 00BX0ZX, 00BX0ZZ, 00BX3ZX, 00BX3ZZ, 00BX4ZX, 00BX4ZZ, 00BY0ZX, 00BY0ZZ, 00BY3ZX, 00BY3ZZ, 00BY4ZX, 00BY4ZZ, 00JU0ZZ, 00JU3ZZ, 00JU4ZZ, 00JV0ZZ, 00JV3ZZ, 00JV4ZZ, B01B0ZZ, B01B1ZZ, B01BYZZ, B01BZZZ, 0359, 0309, 0395, 0339, 0391, 0390, 0392, 0393, 031, 0321, 0329, 0332, 034, 0351, 0352, 0371, 0379, 0397, 0398, 0399 <span class="pp">|</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Neurosurgical procedures <span class="pp">|</span> 0016070, 0016071, 0016072, 0016073, 0016074, 0016075, 0016076, 0016077, 0016078, 001607A, 001607B, 00160J0, 00160J1, 00160J2, 00160J3, 00160J4, 00160J5, 00160J6, 00160J7, 00160J8, 00160JA, 00160JB, 00160K0, 00160K1, 00160K2, 00160K3, 00160K4, 00160K5, 00160K6, 00160K7, 00160K8, 00160KA, 00160KB, 00160ZB, 0016370, 0016371, 0016372, 0016373, 0016374, 0016375, 0016376, 0016377, 0016378, 001637A, 001637B, 00163J0, 00163J1, 00163J2, 00163J3, 00163J4, 00163J5, 00163J6, 00163J7, 00163J8, 00163JA, 00163JB, 00163K0, 00163K1, 00163K2, 00163K3, 00163K4, 00163K5, 00163K6, 00163K7, 00163K8, 00163KA, 00163KB, 00163ZB, 0016470, 0016471, 0016472, 0016473, 0016474, 0016475, 0016476, 0016477, 0016478, 001647A, 001647B, 00164J0, 00164J1, 00164J2, 00164J3, 00164J4, 00164J5, 00164J6, 00164J7, 00164J8, 00164JA, 00164JB, 00164K0, 00164K1, 00164K2, 00164K3, 00164K4, 00164K5, 00164K6, 00164K7, 00164K8, 00164KA, 00164KB, 00164ZB, 009000Z, 00900ZX, 00900ZZ, 009030Z, 00903ZX, 00903ZZ, 009040Z, 00904ZX, 00904ZZ, 009100Z, 00910ZX, 00910ZZ, 009130Z, 00913ZX, 00913ZZ, 009140Z, 00914ZX, 00914ZZ, 009200Z, 00920ZX, 00920ZZ, 009230Z, 00923ZX, 00923ZZ, 009240Z, 00924ZX, 00924ZZ, 009300Z, 00930ZX, 00930ZZ, 009330Z, 00933ZX, 00933ZZ, 009340Z, 00934ZX, 00934ZZ, 009400Z, 00940ZX, 00940ZZ, 009430Z, 00943ZX, 00943ZZ, 009440Z, 00944ZX, 00944ZZ, 009500Z, 00950ZX, 00950ZZ, 009530Z, 00953ZX, 00953ZZ, 009540Z, 00954ZX, 00954ZZ, 009600Z, 00960ZX, 00960ZZ, 009630Z, 00963ZX, 00963ZZ, 009640Z, 00964ZX, 00964ZZ, 009700Z, 00970ZX, 00970ZZ, 009730Z, 00973ZX, 00973ZZ, 009740Z, 00974ZX, 00974ZZ, 009800Z, 00980ZX, 00980ZZ, 009830Z, 00983ZX, 00983ZZ, 009840Z, 00984ZX, 00984ZZ, 009900Z, 00990ZX, 00990ZZ, 009930Z, 00993ZX, 00993ZZ, 009940Z, 00994ZX, 00994ZZ, 009A00Z, 009A0ZX, 009A0ZZ, 009A30Z, 009A3ZX, 009A3ZZ, 009A40Z, 009A4ZX, 009A4ZZ, 009B00Z, 009B0ZX, 009B0ZZ, 009B30Z, 009B3ZX, 009B3ZZ, 009B40Z, 009B4ZX, 009B4ZZ, 009C00Z, 009C0ZX, 009C0ZZ, 009C30Z, 009C3ZX, 009C3ZZ, 009C40Z, 009C4ZX, 009C4ZZ, 009D00Z, 009D0ZX, 009D0ZZ, 009D30Z, 009D3ZX, 009D3ZZ, 009D40Z, 009D4ZX, 009D4ZZ, 00J00ZZ, 00J03ZZ, 00J04ZZ, 4A103BD, 4A103KD, 4A103RD, 4A107BD, 4A107KD, 4A107RD, 4A108BD, 4A108KD, 4A108RD, 0101, 0102, 0109, 0110, 0111, 0112, 0113, 0114, 0118, 0121, 0123, 0124, 0125, 0126, 0127, 0128, 0131, 0132, 0139, 0141, 0142, 0151, 0152, 0153, 0159, 0201, 0203, 0204, 0205, 0206, 0207, 0211, 0212, 0213, 022, 0221, 0222, 0231, 0232, 0233, 0234, 0235, 0239, 0241, 0242, 0243, 0291, 0292, 0299 <span class="pp">|</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Lung procedures <span class="pp">|</span> 07B70ZX, 07B70ZZ, 07B73ZX, 07B73ZZ, 07B74ZX, 07B74ZZ, 0B9300Z, 0B930ZX, 0B930ZZ, 0B9330Z, 0B933ZX, 0B933ZZ, 0B9340Z, 0B934ZX, 0B934ZZ, 0B9370Z, 0B937ZX, 0B937ZZ, 0B9380Z, 0B938ZX, 0B938ZZ, 0B9400Z, 0B940ZX, 0B940ZZ, 0B9430Z, 0B943ZX, 0B943ZZ, 0B9440Z, 0B944ZX, 0B944ZZ, 0B9470Z, 0B947ZX, 0B947ZZ, 0B9480Z, 0B948ZX, 0B9500Z, 0B950ZX, 0B950ZZ, 0B9530Z, 0B953ZX, 0B953ZZ, 0B9540Z, 0B954ZX, 0B954ZZ, 0B9570Z, 0B957ZX, 0B957ZZ, 0B9580Z, 0B958ZX, 0B958ZZ, 0B9600Z, 0B960ZX, 0B960ZZ, 0B9630Z, 0B963ZX, 0B963ZZ, 0B9640Z, 0B964ZX, 0B964ZZ, 0B9670Z, 0B967ZX, 0B967ZZ, 0B9680Z, 0B968ZX, 0B968ZZ, 0B9700Z, 0B970ZX, 0B970ZZ, 0B9730Z, 0B973ZX, 0B973ZZ, 0B9740Z, 0B974ZX, 0B974ZZ, 0B9770Z, 0B977ZX, 0B977ZZ, 0B9780Z, 0B978ZX, 0B978ZZ, 0B9800Z, 0B980ZX, 0B980ZZ, 0B9830Z, 0B983ZX, 0B983ZZ, 0B9840Z, 0B984ZX, 0B984ZZ, 0B9870Z, 0B987ZX, 0B987ZZ, 0B9880Z, 0B988ZX, 0B988ZZ, 0B9900Z, 0B990ZX, 0B990ZZ, 0B9930Z, 0B993ZX, 0B993ZZ, 0B9940Z, 0B994ZX, 0B994ZZ, 0B9970Z, 0B997ZX, 0B997ZZ, 0B9980Z, 0B998ZX, 0B9B00Z, 0B9B0ZX, 0B9B0ZZ, 0B9B30Z, 0B9B3ZX, 0B9B3ZZ, 0B9B40Z, 0B9B4ZX, 0B9B4ZZ, 0B9B70Z, 0B9B7ZX, 0B9B7ZZ, 0B9B80Z, 0B9B8ZX, 0B9B8ZZ, 0B9C00Z, 0B9C0ZX, 0B9C0ZZ, 0B9C30Z, 0B9C3ZX, 0B9C3ZZ, 0B9C40Z, 0B9C4ZX, 0B9C4ZZ, 0B9C70Z, 0B9C7ZX, 0B9C7ZZ, 0B9C80Z, 0B9C8ZX, 0B9C8ZZ, 0B9D00Z, 0B9D0ZX, 0B9D0ZZ, 0B9D30Z, 0B9D3ZX, 0B9D3ZZ, 0B9D40Z, 0B9D4ZX, 0B9D4ZZ, 0B9D70Z, 0B9D7ZX, 0B9D7ZZ, 0B9D80Z, 0B9D8ZX, 0B9D8ZZ, 0B9F00Z, 0B9F0ZX, 0B9F0ZZ, 0B9F30Z, 0B9F3ZX, 0B9F3ZZ, 0B9F40Z, 0B9F4ZX, 0B9F4ZZ, 0B9F70Z, 0B9F7ZX, 0B9F7ZZ, 0B9F80Z, 0B9F8ZX, 0B9F8ZZ, 0B9G00Z, 0B9G0ZX, 0B9G0ZZ, 0B9G30Z, 0B9G3ZX, 0B9G3ZZ, 0B9G40Z, 0B9G4ZX, 0B9G4ZZ, 0B9G70Z, 0B9G7ZX, 0B9G7ZZ, 0B9G80Z, 0B9G8ZX, 0B9G8ZZ, 0B9H00Z, 0B9H0ZX, 0B9H0ZZ, 0B9H30Z, 0B9H3ZX, 0B9H3ZZ, 0B9H40Z, 0B9H4ZX, 0B9H4ZZ, 0B9H70Z, 0B9H7ZX, 0B9H7ZZ, 0B9H80Z, 0B9H8ZX, 0B9H8ZZ, 0B9J00Z, 0B9J0ZX, 0B9J0ZZ, 0B9J30Z, 0B9J3ZX, 0B9J3ZZ, 0B9J40Z, 0B9J4ZX, 0B9J4ZZ, 0B9J70Z, 0B9J7ZX, 0B9J7ZZ, 0B9J80Z, 0B9J8ZX, 0B9J8ZZ, 0B9K00Z, 0B9K0ZX, 0B9K0ZZ, 0B9K30Z, 0B9K3ZX, 0B9K3ZZ, 0B9K40Z, 0B9K4ZX, 0B9K4ZZ, 0B9K70Z, 0B9K7ZX, 0B9K7ZZ, 0B9K80Z, 0B9K8ZX, 0B9K8ZZ, 0B9L00Z, 0B9L0ZX, 0B9L0ZZ, 0B9L30Z, 0B9L3ZX, 0B9L3ZZ, 0B9L40Z, 0B9L4ZX, 0B9L4ZZ, 0B9L70Z, 0B9L7ZX, 0B9L7ZZ, 0B9L80Z, 0B9L8ZX, 0B9L8ZZ, 0B9M00Z, 0B9M0ZX, 0B9M0ZZ, 0B9M30Z, 0B9M3ZX, 0B9M3ZZ, 0B9M40Z, 0B9M4ZX, 0B9M4ZZ, 0B9M70Z, 0B9M7ZX, 0B9M7ZZ, 0B9M80Z, 0B9M8ZX, 0B9M8ZZ, 0B9N00Z, 0B9N0ZX, 0B9N0ZZ, 0B9N30Z, 0B9N3ZX, 0B9N3ZZ, 0B9N40Z, 0B9N4ZX, 0B9N4ZZ, 0B9N80Z, 0B9N8ZX, 0B9N8ZZ, 0B9P00Z, 0B9P0ZX, 0B9P0ZZ, 0B9P30Z, 0B9P3ZX, 0B9P3ZZ, 0B9P40Z, 0B9P4ZX, 0B9P4ZZ, 0B9P80Z, 0B9P8ZX, 0B9P8ZZ, 0BB30ZX, 0BB30ZZ, 0BB33ZX, 0BB33ZZ, 0BB34ZX, 0BB34ZZ, 0BB37ZX, 0BB37ZZ, 0BB38ZX, 0BB38ZZ, 0BB40ZX, 0BB40ZZ, 0BB43ZX, 0BB43ZZ, 0BB44ZX, 0BB44ZZ, 0BB47ZX, 0BB47ZZ, 0BB48ZX, 0BB48ZZ, 0BB50ZX, 0BB50ZZ, 0BB53ZX, 0BB53ZZ, 0BB54ZX, 0BB54ZZ, 0BB57ZX, 0BB57ZZ, 0BB58ZX, 0BB58ZZ, 0BB60ZX, 0BB60ZZ, 0BB63ZX, 0BB63ZZ, 0BB64ZX, 0BB64ZZ, 0BB67ZX, 0BB67ZZ, 0BB68ZX, 0BB68ZZ, 0BB70ZX, 0BB70ZZ, 0BB73ZX, 0BB73ZZ, 0BB74ZX, 0BB74ZZ, 0BB77ZX, 0BB77ZZ, 0BB78ZX, 0BB78ZZ, 0BB80ZX, 0BB80ZZ, 0BB83ZX, 0BB83ZZ, 0BB84ZX, 0BB84ZZ, 0BB87ZX, 0BB87ZZ, 0BB88ZX, 0BB88ZZ, 0BB90ZX, 0BB90ZZ, 0BB93ZX, 0BB93ZZ, 0BB94ZX, 0BB94ZZ, 0BB97ZX, 0BB97ZZ, 0BB98ZX, 0BB98ZZ, 0BBB0ZX, 0BBB0ZZ, 0BBB3ZX, 0BBB3ZZ, 0BBB4ZX, 0BBB4ZZ, 0BBB7ZX, 0BBB7ZZ, 0BBB8ZX, 0BBB8ZZ, 0BBC0ZX, 0BBC0ZZ, 0BBC3ZX, 0BBC3ZZ, 0BBC4ZX, 0BBC4ZZ, 0BBC7ZX, 0BBC7ZZ, 0BBC8ZX, 0BBC8ZZ, 0BBD0ZX, 0BBD0ZZ, 0BBD3ZX, 0BBD3ZZ, 0BBD4ZX, 0BBD4ZZ, 0BBD7ZX, 0BBD7ZZ, 0BBD8ZX, 0BBD8ZZ, 0BBF0ZX, 0BBF0ZZ, 0BBF3ZX, 0BBF3ZZ, 0BBF4ZX, 0BBF4ZZ, 0BBF7ZX, 0BBF7ZZ, 0BBF8ZX, 0BBF8ZZ, 0BBG0ZX, 0BBG0ZZ, 0BBG3ZX, 0BBG3ZZ, 0BBG4ZX, 0BBG4ZZ, 0BBG7ZX, 0BBG7ZZ, 0BBG8ZX, 0BBG8ZZ, 0BBH0ZX, 0BBH0ZZ, 0BBH3ZX, 0BBH3ZZ, 0BBH4ZX, 0BBH4ZZ, 0BBH7ZX, 0BBH7ZZ, 0BBH8ZX, 0BBH8ZZ, 0BBJ0ZX, 0BBJ0ZZ, 0BBJ3ZX, 0BBJ3ZZ, 0BBJ4ZX, 0BBJ4ZZ, 0BBJ7ZX, 0BBJ7ZZ, 0BBJ8ZX, 0BBJ8ZZ, 0BBK0ZX, 0BBK0ZZ, 0BBK3ZX, 0BBK3ZZ, 0BBK4ZX, 0BBK4ZZ, 0BBK7ZX, 0BBK7ZZ, 0BBK8ZX, 0BBK8ZZ, 0BBL0ZX, 0BBL0ZZ, 0BBL3ZX, 0BBL3ZZ, 0BBL4ZX, 0BBL4ZZ, 0BBL7ZX, 0BBL7ZZ, 0BBL8ZX, 0BBL8ZZ, 0BBM0ZX, 0BBM0ZZ, 0BBM3ZX, 0BBM3ZZ, 0BBM4ZX, 0BBM4ZZ, 0BBM7ZX, 0BBM7ZZ, 0BBM8ZX, 0BBM8ZZ, 0BBN0ZX, 0BBN0ZZ, 0BBN3ZX, 0BBN3ZZ, 0BBN4ZX, 0BBN4ZZ, 0BBN8ZX, 0BBN8ZZ, 0BBP0ZX, 0BBP0ZZ, 0BBP3ZX, 0BBP3ZZ, 0BBP4ZX, 0BBP4ZZ, 0BBP8ZX, 0BBP8ZZ, 0BC30ZZ, 0BC33ZZ, 0BC34ZZ, 0BC37ZZ, 0BC38ZZ, 0BC40ZZ, 0BC43ZZ, 0BC44ZZ, 0BC47ZZ, 0BC48ZZ, 0BC50ZZ, 0BC53ZZ, 0BC54ZZ, 0BC57ZZ, 0BC58ZZ, 0BC60ZZ, 0BC63ZZ, 0BC64ZZ, 0BC67ZZ, 0BC68ZZ, 0BC70ZZ, 0BC73ZZ, 0BC74ZZ, 0BC77ZZ, 0BC78ZZ, 0BC80ZZ, 0BC83ZZ, 0BC84ZZ, 0BC87ZZ, 0BC88ZZ, 0BC90ZZ, 0BC93ZZ, 0BC94ZZ, 0BC97ZZ, 0BC98ZZ, 0BCB0ZZ, 0BCB3ZZ, 0BCB4ZZ, 0BCB7ZZ, 0BCB8ZZ, 0BCC0ZZ, 0BCC3ZZ, 0BCC4ZZ, 0BCC7ZZ, 0BCC8ZZ, 0BCD0ZZ, 0BCD3ZZ, 0BCD4ZZ, 0BCD7ZZ, 0BCD8ZZ, 0BCF0ZZ, 0BCF3ZZ, 0BCF4ZZ, 0BCF7ZZ, 0BCF8ZZ, 0BCG0ZZ, 0BCG3ZZ, 0BCG4ZZ, 0BCG7ZZ, 0BCG8ZZ, 0BCH0ZZ, 0BCH3ZZ, 0BCH4ZZ, 0BCH7ZZ, 0BCH8ZZ, 0BCJ0ZZ, 0BCJ3ZZ, 0BCJ4ZZ, 0BCJ7ZZ, 0BCJ8ZZ, 0BCK0ZZ, 0BCK3ZZ, 0BCK4ZZ, 0BCK7ZZ, 0BCK8ZZ, 0BCL0ZZ, 0BCL3ZZ, 0BCL4ZZ, 0BCL7ZZ, 0BCL8ZZ, 0BCM0ZZ, 0BCM3ZZ, 0BCM4ZZ, 0BCM7ZZ, 0BCM8ZZ, 0BCN0ZZ, 0BCN3ZZ, 0BCN4ZZ, 0BCP0ZZ, 0BCP3ZZ, 0BCP4ZZ, 0BD34ZX, 0BD38ZX, 0BD44ZX, 0BD48ZX, 0BD54ZX, 0BD58ZX, 0BD64ZX, 0BD68ZX, 0BD74ZX, 0BD78ZX, 0BD84ZX, 0BD88ZX, 0BD94ZX, 0BD98ZX, 0BDB4ZX, 0BDB8ZX, 0BDC4ZX, 0BDC8ZX, 0BDD4ZX, 0BDD8ZX, 0BDF4ZX, 0BDF8ZX, 0BDG4ZX, 0BDG8ZX, 0BDH4ZX, 0BDH8ZX, 0BDJ4ZX, 0BDJ8ZX, 0BDK4ZX, 0BDK8ZX, 0BDL4ZX, 0BDL8ZX, 0BDM4ZX, 0BDM8ZX, 0BDN0ZX, 0BDN0ZZ, 0BDN3ZX, 0BDN3ZZ, 0BDN4ZX, 0BDN4ZZ, 0BDP0ZX, 0BDP0ZZ, 0BDP3ZX, 0BDP3ZZ, 0BDP4ZX, 0BDP4ZZ, 0BJ00ZZ, 0BJ03ZZ, 0BJ04ZZ, 0BJ07ZZ, 0BJ08ZZ, 0BJ0XZZ, 0BJ10ZZ, 0BJ13ZZ, 0BJ14ZZ, 0BJ17ZZ, 0BJ18ZZ, 0BJ1XZZ, 0BJK0ZZ, 0BJK3ZZ, 0BJK4ZZ, 0BJK7ZZ, 0BJK8ZZ, 0BJKXZZ, 0BJL0ZZ, 0BJL3ZZ, 0BJL4ZZ, 0BJL7ZZ, 0BJL8ZZ, 0BJLXZZ, 0BJQ0ZZ, 0BJQ3ZZ, 0BJQ4ZZ, 0BJQ7ZZ, 0BJQ8ZZ, 0BJQXZZ, 0BN30ZZ, 0BN33ZZ, 0BN34ZZ, 0BN37ZZ, 0BN38ZZ, 0BN40ZZ, 0BN43ZZ, 0BN44ZZ, 0BN47ZZ, 0BN48ZZ, 0BN50ZZ, 0BN53ZZ, 0BN54ZZ, 0BN57ZZ, 0BN58ZZ, 0BN60ZZ, 0BN63ZZ, 0BN64ZZ, 0BN67ZZ, 0BN68ZZ, 0BN70ZZ, 0BN73ZZ, 0BN74ZZ, 0BN77ZZ, 0BN78ZZ, 0BN80ZZ, 0BN83ZZ, 0BN84ZZ, 0BN87ZZ, 0BN88ZZ, 0BN90ZZ, 0BN93ZZ, 0BN94ZZ, 0BN97ZZ, 0BN98ZZ, 0BNB0ZZ, 0BNB3ZZ, 0BNB4ZZ, 0BNB7ZZ, 0BNB8ZZ, 0BNC0ZZ, 0BNC3ZZ, 0BNC4ZZ, 0BNC7ZZ, 0BNC8ZZ, 0BND0ZZ, 0BND3ZZ, 0BND4ZZ, 0BND7ZZ, 0BND8ZZ, 0BNF0ZZ, 0BNF3ZZ, 0BNF4ZZ, 0BNF7ZZ, 0BNF8ZZ, 0BNG0ZZ, 0BNG3ZZ, 0BNG4ZZ, 0BNG7ZZ, 0BNG8ZZ, 0BNH0ZZ, 0BNH3ZZ, 0BNH4ZZ, 0BNH7ZZ, 0BNH8ZZ, 0BNJ0ZZ, 0BNJ3ZZ, 0BNJ4ZZ, 0BNJ7ZZ, 0BNJ8ZZ, 0BNK0ZZ, 0BNK3ZZ, 0BNK4ZZ, 0BNK7ZZ, 0BNK8ZZ, 0BNL0ZZ, 0BNL3ZZ, 0BNL4ZZ, 0BNL7ZZ, 0BNL8ZZ, 0BNM0ZZ, 0BNM3ZZ, 0BNM4ZZ, 0BNM7ZZ, 0BNM8ZZ, 0BNN0ZZ, 0BNN3ZZ, 0BNN4ZZ, 0BNP0ZZ, 0BNP3ZZ, 0BNP4ZZ, 0BT30ZZ, 0BT34ZZ, 0BT40ZZ, 0BT44ZZ, 0BT50ZZ, 0BT54ZZ, 0BT60ZZ, 0BT64ZZ, 0BT70ZZ, 0BT74ZZ, 0BT80ZZ, 0BT84ZZ, 0BT90ZZ, 0BT94ZZ, 0BTB0ZZ, 0BTB4ZZ, 0BTC0ZZ, 0BTC4ZZ, 0BTD0ZZ, 0BTD4ZZ, 0BTF0ZZ, 0BTF4ZZ, 0BTG0ZZ, 0BTG4ZZ, 0BTH0ZZ, 0BTH4ZZ, 0BTJ0ZZ, 0BTJ4ZZ, 0BTK0ZZ, 0BTK4ZZ, 0BTL0ZZ, 0BTL4ZZ, 0BTM0ZZ, 0BTM4ZZ, 0W9900Z, 0W990ZX, 0W990ZZ, 0W9930Z, 0W993ZX, 0W993ZZ, 0W9940Z, 0W994ZX, 0W994ZZ, 0W9B00Z, 0W9B0ZX, 0W9B0ZZ, 0W9B30Z, 0W9B3ZX, 0W9B3ZZ, 0W9B40Z, 0W9B4ZX, 0W9B4ZZ, 0W9C00Z, 0W9C0ZX, 0W9C0ZZ, 0W9C30Z, 0W9C3ZX, 0W9C3ZZ, 0W9C40Z, 0W9C4ZX, 0W9C4ZZ, 0WBC0ZX, 0WBC0ZZ, 0WBC3ZX, 0WBC3ZZ, 0WBC4ZX, 0WBC4ZZ, 1745, 3201, 3209, 321, 3220, 3228, 3229, 3230, 3239, 3241, 3249, 3250, 3259, 326, 329, 3320, 3321, 3322, 3323, 3324, 3325, 3326, 3327, 3328, 3329, 3339, 3402, 3404, 3406, 3409, 3420, 3421, 3422, 3424, 3451, 3452, 3459, 3491, 3492, 3493, 3499, 9656 <span class="pp">|</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="fu">## Notes on the supplement</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>These are kept above as printed and listed so this analysis's code lists can be compared with them. How each was handled is on the <span class="co">[</span><span class="ot">Code lists</span><span class="co">](code_lists.qmd)</span> page and in the linked issues.</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Cryptococcosis** lists the ICD-10-CM category B45 itself as well as its subcodes. ICD-10-CM has no codes B45.4 to B45.6, so the subcodes listed are all of them.</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Diabetes** marks 250, E08, E09, E10, E11 and E13 with an asterisk, meaning every code beginning with them; the other codes are matched exactly (<span class="co">[</span><span class="ot">#8</span><span class="co">](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/8)</span>).</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Procedures** are ICD procedure codes only. The paper's Methods mention CPT codes, which the supplement does not list (<span class="co">[</span><span class="ot">#5</span><span class="co">](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/5)</span>). There is no separate row for the ventriculoperitoneal shunts the paper reports; the shunt codes are among the neurosurgical procedures (<span class="co">[</span><span class="ot">#8</span><span class="co">](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/8)</span>).</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Medications** are listed as HCPCS billing codes for cyclosporine and tacrolimus. The paper describes its drug data both ways: its Methods say drug information at UNOS registration and the first post-transplant visit "was obtained using relevant billing codes", while the title of its Table 2 names the UNOS registration and follow-up appointment. This analysis uses the UNOS records (<span class="co">[</span><span class="ot">#2</span><span class="co">](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/2)</span>).</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Some ICD-9 procedure codes have only three digits (031, 034, 321, 326 and 329). These are complete codes with no subcodes, and are matched exactly. 022 was also a complete code until October 2012, when it was split into 02.21 and 02.22, both of which are listed too.</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="fu">## References</span></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>:::</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/edit/main/quarto/supplement.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

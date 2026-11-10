@@ -91,8 +91,8 @@ div.csl-indent {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../quarto/analysis-plan.html" rel="next">
-<link href="../quarto/functions.html" rel="prev">
+<link href="../quarto/supplement.html" rel="next">
+<link href="../quarto/figures.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -131,6 +131,17 @@ div.csl-indent {
   }
 }</script>
 <style>
+div.callout-Rcode.callout {
+  border-left-color: #d63384;
+}
+div.callout-Rcode.callout-style-default > .callout-header {
+  background-color: rgba(214, 51, 132, 0.13);
+}
+div.callout-Rcode .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-Rcode.callout-style-default .callout-icon::before, div.callout-Rcode.callout-titled .callout-icon::before {
+  content: '💻';
+  background-image: none;
+}
 div.callout-Pending.callout {
   border-left-color: #f0c400;
 }
@@ -151,17 +162,6 @@ div.callout-Results.callout-style-default > .callout-header {
 div.callout-Results .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
 div.callout-Results.callout-style-default .callout-icon::before, div.callout-Results.callout-titled .callout-icon::before {
   content: '📊';
-  background-image: none;
-}
-div.callout-Rcode.callout {
-  border-left-color: #d63384;
-}
-div.callout-Rcode.callout-style-default > .callout-header {
-  background-color: rgba(214, 51, 132, 0.13);
-}
-div.callout-Rcode .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-Rcode.callout-style-default .callout-icon::before, div.callout-Rcode.callout-titled .callout-icon::before {
-  content: '💻';
   background-image: none;
 }
 </style>
@@ -211,17 +211,10 @@ div.callout-Rcode.callout-style-default .callout-icon::before, div.callout-Rcode
  <span class="menu-text">Home</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../quarto/study_methods.html" class="sidebar-item-text sidebar-link"><i class="bi bi-diagram-3" role="img">
-</i> 
- <span class="menu-text">Study design and methods</span></a>
-  </div>
-</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
- <span class="menu-text">Code</span></a>
+ <span class="menu-text">Background</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -229,55 +222,70 @@ div.callout-Rcode.callout-style-default .callout-icon::before, div.callout-Rcode
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../quarto/create_cohort.html" class="sidebar-item-text sidebar-link"><i class="bi bi-laptop" role="img">
+  <a href="../quarto/background.html" class="sidebar-item-text sidebar-link"><i class="bi bi-book" role="img">
 </i> 
- <span class="menu-text">Building the cohort</span></a>
+ <span class="menu-text">Clinical background</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../quarto/create_covariates.html" class="sidebar-item-text sidebar-link"><i class="bi bi-laptop" role="img">
+  <a href="../quarto/data_sources.html" class="sidebar-item-text sidebar-link"><i class="bi bi-book" role="img">
 </i> 
- <span class="menu-text">Covariates</span></a>
+ <span class="menu-text">Data sources</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../quarto/create_outcomes.html" class="sidebar-item-text sidebar-link"><i class="bi bi-laptop" role="img">
+  <a href="../quarto/statistical_methods.html" class="sidebar-item-text sidebar-link"><i class="bi bi-book" role="img">
 </i> 
- <span class="menu-text">Outcomes</span></a>
+ <span class="menu-text">Statistical methods</span></a>
   </div>
 </li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../quarto/fit_models.html" class="sidebar-item-text sidebar-link"><i class="bi bi-laptop" role="img">
-</i> 
- <span class="menu-text">Survival and models</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../quarto/tables.html" class="sidebar-item-text sidebar-link"><i class="bi bi-laptop" role="img">
-</i> 
- <span class="menu-text">Tables</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../quarto/figures.html" class="sidebar-item-text sidebar-link"><i class="bi bi-laptop" role="img">
-</i> 
- <span class="menu-text">Figures</span></a>
-  </div>
-</li>
-          <li class="sidebar-item sidebar-item-section">
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
- <span class="menu-text">Setup and helper functions</span></a>
+ <span class="menu-text">Study design and methods</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 show">  
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../quarto/study_methods.html" class="sidebar-item-text sidebar-link"><i class="bi bi-diagram-3" role="img">
+</i> 
+ <span class="menu-text">Overview</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../quarto/differences.html" class="sidebar-item-text sidebar-link"><i class="bi bi-diagram-3" role="img">
+</i> 
+ <span class="menu-text">Differences from the reconstruction</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Code</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Setup and helper functions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../quarto/setup.html" class="sidebar-item-text sidebar-link"><i class="bi bi-laptop" role="img">
@@ -299,19 +307,90 @@ div.callout-Rcode.callout-style-default .callout-icon::before, div.callout-Rcode
  <span class="menu-text">Functions</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../quarto/plot_style.html" class="sidebar-item-text sidebar-link"><i class="bi bi-laptop" role="img">
+</i> 
+ <span class="menu-text">Figure style</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">Data processing and analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../quarto/create_cohort.html" class="sidebar-item-text sidebar-link"><i class="bi bi-laptop" role="img">
+</i> 
+ <span class="menu-text">1. Building the cohort</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../quarto/create_covariates.html" class="sidebar-item-text sidebar-link"><i class="bi bi-laptop" role="img">
+</i> 
+ <span class="menu-text">2. Covariates</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../quarto/create_outcomes.html" class="sidebar-item-text sidebar-link"><i class="bi bi-laptop" role="img">
+</i> 
+ <span class="menu-text">3. Outcomes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../quarto/fit_models.html" class="sidebar-item-text sidebar-link"><i class="bi bi-laptop" role="img">
+</i> 
+ <span class="menu-text">4. Survival and models</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">Tables and figures</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../quarto/tables.html" class="sidebar-item-text sidebar-link"><i class="bi bi-laptop" role="img">
+</i> 
+ <span class="menu-text">Tables</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../quarto/figures.html" class="sidebar-item-text sidebar-link"><i class="bi bi-laptop" role="img">
+</i> 
+ <span class="menu-text">Figures</span></a>
+  </div>
+</li>
       </ul>
   </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
  <span class="menu-text">Published results</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../quarto/results.html" class="sidebar-item-text sidebar-link active"><i class="bi bi-clipboard-data" role="img">
@@ -319,17 +398,24 @@ div.callout-Rcode.callout-style-default .callout-icon::before, div.callout-Rcode
  <span class="menu-text">Published figures and tables</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../quarto/supplement.html" class="sidebar-item-text sidebar-link"><i class="bi bi-clipboard-data" role="img">
+</i> 
+ <span class="menu-text">Published supplement</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
  <span class="menu-text">Project documents</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../quarto/analysis-plan.html" class="sidebar-item-text sidebar-link"><i class="bi bi-file-earmark-ruled" role="img">
@@ -729,7 +815,7 @@ div.callout-Rcode.callout-style-default .callout-icon::before, div.callout-Rcode
 </section>
 <section id="figure-2.-kaplan-meier-survival-curve-for-the-1265-kidney-transplant-recipients-hospitalized-with-cryptococcosis" class="level2">
 <h2 class="anchored" data-anchor-id="figure-2.-kaplan-meier-survival-curve-for-the-1265-kidney-transplant-recipients-hospitalized-with-cryptococcosis">Figure 2. Kaplan-Meier survival curve for the 1265 kidney transplant recipients hospitalized with cryptococcosis</h2>
-<p><img src="images/published_figure_2.png" class="img-fluid" style="width:100.0%" alt="Published Kaplan-Meier survival curve over 15 years, falling steeply in the first months and then steadily to about 18% at about 12.5 years. A dashed vertical line marks 6 months, labelled '6-month mortality rate of 22%'. Numbers at risk: 1,263 at 0 years, 403 at 5, 71 at 10 and 0 at 15."></p>
+<p><img src="images/published_figure_2.png" class="img-fluid" style="width:100.0%" alt="Published Kaplan-Meier survival curve over 15 years, falling steeply in the first months and then steadily to about 18% at about 12.5 years. A dashed vertical line marks 6 months, labelled '6-month mortality rate of 22%'. A table of numbers at risk is shown beneath, at 0, 5, 10 and 15 years."></p>
 <p>The vertical dashed line indicates the 6-month time point. The Results report an overall 6-month mortality of 22% (280/1265).</p>
 </section>
 <section id="table-2.-immunosuppressive-drug-use-among-kidney-transplant-recipients-at-the-time-of-transplantation-unos-registration-and-at-the-unos-follow-up-appointment" class="level2">
@@ -903,7 +989,6 @@ div.callout-Rcode.callout-style-default .callout-icon::before, div.callout-Rcode
 <p><strong>Figures</strong></p>
 <ul>
 <li>Figure 1 shows the denominators and the final cohort but none of the exclusions the Methods describe (age, cryptococcosis before transplant). “Hospitalizations” could mean hospital records or stays merged from overlapping records; this analysis merges records into stays.</li>
-<li>Figure 2 starts with 1,263 at risk, not 1,265. Stata’s survival setup drops anyone with no follow-up time, so the two are most likely people who died on the day of admission.</li>
 <li>Figure 2 gives only the number at risk, at 5-year intervals, and no confidence band; the 22% in its label is the share who died within 6 months (280 of 1,265), not a reading from the curve.</li>
 <li>Figure 3 uses a linear axis, on which an odds ratio of 0.5 and one of 2 look unequal although they are the same size of effect in opposite directions. It labels the time variable “Posttransplant ≥2 years” where the Results say “more than 2 years”; counted in whole days against 2 × 365.25 days, the two pick out the same people. No model N or number of deaths is given.</li>
 </ul>
@@ -1382,13 +1467,13 @@ div.callout-Rcode.callout-style-default .callout-icon::before, div.callout-Rcode
   </script>
 <nav class="page-navigation column-body">
   <div class="nav-page nav-page-previous">
-      <a href="../quarto/functions.html" class="pagination-link" aria-label="Functions">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Functions</span>
+      <a href="../quarto/figures.html" class="pagination-link" aria-label="Figures">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Figures</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../quarto/analysis-plan.html" class="pagination-link" aria-label="Analysis plan">
-        <span class="nav-page-text">Analysis plan</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../quarto/supplement.html" class="pagination-link" aria-label="Published supplement">
+        <span class="nav-page-text">Published supplement</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
@@ -1461,7 +1546,7 @@ div.callout-Rcode.callout-style-default .callout-icon::before, div.callout-Rcode
 <span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a><span class="fu">## Figure 2. Kaplan-Meier survival curve for the 1265 kidney transplant recipients hospitalized with cryptococcosis</span></span>
 <span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a><span class="al">![](images/published_figure_2.png)</span>{fig-alt="Published Kaplan-Meier survival curve over 15 years, falling steeply in the first months and then steadily to about 18% at about 12.5 years. A dashed vertical line marks 6 months, labelled '6-month mortality rate of 22%'. Numbers at risk: 1,263 at 0 years, 403 at 5, 71 at 10 and 0 at 15." width="100%"}</span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a><span class="al">![](images/published_figure_2.png)</span>{fig-alt="Published Kaplan-Meier survival curve over 15 years, falling steeply in the first months and then steadily to about 18% at about 12.5 years. A dashed vertical line marks 6 months, labelled '6-month mortality rate of 22%'. A table of numbers at risk is shown beneath, at 0, 5, 10 and 15 years." width="100%"}</span>
 <span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>The vertical dashed line indicates the 6-month time point. The Results report an overall 6-month mortality of 22% (280/1265).</span>
 <span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a></span>
@@ -1520,21 +1605,20 @@ div.callout-Rcode.callout-style-default .callout-icon::before, div.callout-Rcode
 <span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a>**Figures**</span>
 <span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Figure 1 shows the denominators and the final cohort but none of the exclusions the Methods describe (age, cryptococcosis before transplant). "Hospitalizations" could mean hospital records or stays merged from overlapping records; this analysis merges records into stays.</span>
-<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Figure 2 starts with 1,263 at risk, not 1,265. Stata's survival setup drops anyone with no follow-up time, so the two are most likely people who died on the day of admission.</span>
-<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Figure 2 gives only the number at risk, at 5-year intervals, and no confidence band; the 22% in its label is the share who died within 6 months (280 of 1,265), not a reading from the curve.</span>
-<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Figure 3 uses a linear axis, on which an odds ratio of 0.5 and one of 2 look unequal although they are the same size of effect in opposite directions. It labels the time variable "Posttransplant ≥2 years" where the Results say "more than 2 years"; counted in whole days against 2 × 365.25 days, the two pick out the same people. No model N or number of deaths is given.</span>
-<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a>**Text and tables**</span>
-<span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>The Results give male sex in survivors as 66.3% and CMV seropositivity as 70.7%; Table 1 gives 66.2% and 70.6%, the same counts cut rather than rounded.</span>
-<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>The Methods take immunosuppression from "the first post-transplant visit", obtained "using relevant billing codes"; the Results and Discussion refer to a 1-year follow-up. This analysis uses the UNOS records and the earliest follow-up report (plan §5, <span class="co">[</span><span class="ot">#2</span><span class="co">](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/2)</span>).</span>
-<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>The Methods name CPT codes for procedures; Supplementary Table 1 lists ICD procedure codes (plan §5, <span class="co">[</span><span class="ot">#5</span><span class="co">](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/5)</span>).</span>
-<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>The Limitations say cases were identified by 2 ICD-9 codes; the case definition in Supplementary Table 1 also lists ICD-10-CM codes (plan §5).</span>
-<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a><span class="fu">## References</span></span>
-<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
-<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a>:::</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Figure 2 gives only the number at risk, at 5-year intervals, and no confidence band; the 22% in its label is the share who died within 6 months (280 of 1,265), not a reading from the curve.</span>
+<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Figure 3 uses a linear axis, on which an odds ratio of 0.5 and one of 2 look unequal although they are the same size of effect in opposite directions. It labels the time variable "Posttransplant ≥2 years" where the Results say "more than 2 years"; counted in whole days against 2 × 365.25 days, the two pick out the same people. No model N or number of deaths is given.</span>
+<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a>**Text and tables**</span>
+<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>The Results give male sex in survivors as 66.3% and CMV seropositivity as 70.7%; Table 1 gives 66.2% and 70.6%, the same counts cut rather than rounded.</span>
+<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>The Methods take immunosuppression from "the first post-transplant visit", obtained "using relevant billing codes"; the Results and Discussion refer to a 1-year follow-up. This analysis uses the UNOS records and the earliest follow-up report (plan §5, <span class="co">[</span><span class="ot">#2</span><span class="co">](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/2)</span>).</span>
+<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>The Methods name CPT codes for procedures; Supplementary Table 1 lists ICD procedure codes (plan §5, <span class="co">[</span><span class="ot">#5</span><span class="co">](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/5)</span>).</span>
+<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>The Limitations say cases were identified by 2 ICD-9 codes; the case definition in Supplementary Table 1 also lists ICD-10-CM codes (plan §5).</span>
+<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a><span class="fu">## References</span></span>
+<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
+<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a>:::</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
