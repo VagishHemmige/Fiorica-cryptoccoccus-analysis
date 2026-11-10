@@ -2,9 +2,10 @@
 #   vital status) and the model table (unadjusted and adjusted odds ratios),
 #   with small-cell suppression (plan §8, §10).
 # Needs: setup.R, functions.R, create_outcomes.R (model_data), fit_models.R
-#   (km_fit, bivariable_results, multivariable, hosmer_lemeshow_result); installed:
+#   (km_fit, bivariable_results, multivariable, hosmer_lemeshow_result, published_fit); installed:
 #   gtsummary, gt, cardx, broom.helpers.
 # Produces: report_labels, follow_up_summary, table_1, table_2, table_models (gtsummary tables),
+#   table_published_model (gt),
 #   disclosure_checks, and HTML and Word copies in tables/ (gitignored until
 #   USRDS review; plan §10).
 
@@ -267,6 +268,39 @@ if (nrow(not_estimable) > 0) {
     )
 }
 
+## ---- table-published-model
+# Table 4: the paper's final model refitted here, beside the odds ratios the
+# paper reports, with whether the backward elimination kept each term. Same
+# people as the adjusted model in Table 3.
+# Published values keep the paper's one decimal place
+format_or <- function(estimate, low, high, accuracy = 0.01) {
+  str_glue(
+    "{scales::number(estimate, accuracy = accuracy)} ",
+    "({scales::number(low, accuracy = accuracy)} to {scales::number(high, accuracy = accuracy)})"
+  )
+}
+published_comparison <- published_model %>%
+  left_join(
+    tidy_odds_ratios(published_fit, report_labels) %>%
+      mutate(term = str_remove(term, "TRUE$")) %>%
+      select(term, term_label, estimate, conf.low, conf.high),
+    by = "term"
+  ) %>%
+  transmute(
+    Characteristic = term_label,
+    `Published aOR (95% CI)` = format_or(published_or, published_low, published_high, accuracy = 0.1),
+    `This analysis, aOR (95% CI)` = format_or(estimate, conf.low, conf.high),
+    `Kept by backward elimination` = if_else(term %in% multivariable$retained, "Yes", "No")
+  )
+table_published_model <- published_comparison %>%
+  gt::gt() %>%
+  gt::tab_caption(gt::md("**Table 4.** The paper's final model refitted, beside the published adjusted odds ratios")) %>%
+  gt::tab_source_note(str_glue(
+    "Published estimates: Fiorica et al. 2025, Results. This analysis: the same eight terms in one logistic model, ",
+    "on the {nobs(published_fit)} people with every candidate known ({sum(multivariable$data$died_within_window)} deaths), as in Table 3. ",
+    "Abbreviation: aOR = adjusted odds ratio."
+  ))
+
 ## ---- disclosure-checks
 # What a reviewer needs before release (plan §10): cells hidden in each
 # table, and counts the tables cannot hide themselves. Rows with
@@ -312,3 +346,5 @@ walk2(
     gt::gtsave(gt_table, file.path("tables", str_c(name, ".docx")))
   }
 )
+gt::gtsave(table_published_model, file.path("tables", "table_published_model.html"))
+gt::gtsave(table_published_model, file.path("tables", "table_published_model.docx"))

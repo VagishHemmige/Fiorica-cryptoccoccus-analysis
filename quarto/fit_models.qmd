@@ -53,6 +53,15 @@ All candidates go in together. The variable with the largest P value is then rem
 #| eval: false
 ```
 
+## The paper's final model
+
+The paper's eight-variable final model is also fitted exactly as published, on the same people as the backward elimination. Its odds ratios can then be compared with the published ones directly, whether or not the selection here keeps the same eight variables.
+
+```{r}
+#| label: models-published
+#| eval: false
+```
+
 ## Goodness of fit
 
 The Hosmer–Lemeshow test compares predicted with observed deaths across tenths of predicted risk.

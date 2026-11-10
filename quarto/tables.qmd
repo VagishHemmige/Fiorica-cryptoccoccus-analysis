@@ -89,6 +89,15 @@ Each variable alone, and the final model after backward elimination, side by sid
 #| eval: false
 ```
 
+## The paper's final model
+
+Table 4 sets the odds ratios from the refitted eight-variable model beside the ones the paper reports, and says whether the backward elimination here kept each variable.
+
+```{r}
+#| label: table-published-model
+#| eval: false
+```
+
 ## Disclosure checks
 
 Some counts cannot be hidden inside a table, such as how many people the model left out for missing data. They are collected here for the reviewer; any row marked for review must be resolved before results leave the approved environment.

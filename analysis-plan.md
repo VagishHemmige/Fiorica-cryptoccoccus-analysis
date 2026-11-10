@@ -123,6 +123,7 @@ Not applicable. Comparisons are between people who died within 6 months and thos
   - P values for elimination are joint Wald tests, one per term, as in Stata's `stepwise` (the paper's analysis software). The sample is fixed at the complete cases for all candidates, as Stata does.
   - Fit is assessed by the Hosmer–Lemeshow test, with deciles of predicted risk.
   - Adjusted odds ratios with 95% CIs are shown as a forest plot (Figure 3).
+  - The paper's final model is also fitted as published: its eight terms (cirrhosis, ICU admission, dialysis before transplant, not on tacrolimus at follow-up, age 60 or older, acute kidney injury, more than 2 years since transplant, and an earlier hospitalization for a transplant complication; `published_model` in `R/setup.R`) [@fiorica2025]. It uses the same people as the backward elimination, because the paper's estimates come from the end of that selection. Table 4 sets its odds ratios beside the published ones, with whether the elimination kept each term. This separates differences in the estimates from differences in which variables the selection keeps.
   - Backward elimination is kept to mirror the paper. Its limitations are noted in §11.
 - **Missing data:** complete-case, as in the paper. The number excluded from the model is reported.
 - **Software:** R, with usRds (version and commit recorded with each result), survival, and flowchart for Figure 1.
