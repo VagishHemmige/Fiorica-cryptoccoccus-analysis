@@ -3,7 +3,7 @@ title: "Differences from the reconstruction"
 format: html
 ---
 
-The original analysis was run in Stata, and that code is no longer available. In 2025 the maintainer rebuilt it in R as an R Markdown file dated 25 March 2025, his best reconstruction of what was done. That file did not produce the published numbers, and it is not in this repository, because of how it was put together. The specification for this analysis is the paper and its supplement [@fiorica2025]; the reconstruction is secondary evidence.
+The original analysis was run in Stata (the paper also lists R and RStudio among its software), and that code is no longer available. In 2025 the maintainer rebuilt it in R as an R Markdown file dated 25 March 2025, his best reconstruction of what was done. That file did not produce the published numbers, and it is not in this repository, because of how it was put together. The specification for this analysis is the paper and its supplement [@fiorica2025]; the reconstruction is secondary evidence.
 
 This page lists every place where this analysis differs from the reconstruction, and every place where the reconstruction differs from the paper. It describes the reconstruction without reproducing it. Each entry is one of five kinds:
 
@@ -25,7 +25,7 @@ This analysis has not yet been run on the USRDS data. Its numbers are not expect
 | Searches the USRDS hospitalization files for the cryptococcosis codes. | Decided ([#1](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/1)) | The same files. Medicare institutional claims were considered and not used, because the hospitalization files are built from them. | None |
 | Checks the first-diagnosis field for a code in both hospitalization files. In the file for stays before 2010 that field is a yes/no flag, not a code; the codes are in the numbered fields, which the reconstruction also searches. | Corrected error | Each file is read by its own layout. | None found: the numbered fields catch the same codes |
 | Combines a person's first record with the records that overlap it, chaining up to seven. | Corrected error | Every record is combined into stays however many overlap, so a code on any record of a stay counts for the whole stay. | Stays with more than seven overlapping records |
-| Matches the ICD-9 and ICD-10 codes on every record, whatever its date. | Decided ([#8](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/8)) | ICD-9 or ICD-10 by discharge date, Medicare's rule for inpatient stays. | Codes from the wrong code set, which should be rare |
+| Matches the ICD-9 and ICD-10 codes on every record, whatever its date. | Decided ([#8](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/8)) | ICD-9 or ICD-10 by discharge date, Medicare's rule for inpatient stays [@cmsmm7492]. | Codes from the wrong code set, which should be rare |
 
 ## Who is included
 
@@ -46,7 +46,7 @@ This analysis has not yet been run on the USRDS data. Its numbers are not expect
 | Cirrhosis lists 456.21 but not 456.20, its pair (esophageal varices in diseases classified elsewhere, with and without bleeding). | Corrected error ([#8](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/8)) | 456.20 added. | Cirrhosis before October 2015, slightly |
 | Procedures from the ICD procedure codes on the hospitalization record. The paper's Methods mention CPT codes. | Open decision ([#5](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/5)) | ICD procedure codes, as the supplement lists; whether to add CPT codes from physician claims is open. | Procedure counts |
 | Transplant characteristics from the first transplant's registration. | Decided ([#12](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/12)) | From the most recent transplant on or before the index admission, which describes the graft the person had at the time. | People with more than one transplant |
-| Immunosuppression from the registry at transplant only. | Decided ([#2](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/2)) | From the registry at transplant and at the first follow-up visit, as the paper's Table 2 reports. | Table 2's follow-up block |
+| Immunosuppression from the registry at transplant only. | Decided ([#2](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/2)) | From the registry at transplant and at the first follow-up visit, as the title of the paper's Table 2 says; the paper's Methods say billing codes, and the supplement lists drug billing codes. | Table 2's follow-up block |
 | Registry drug codes mapped by hand; the codes for generic Myfortic, generic sirolimus and Envarsus XR are missing. | Corrected error ([#12](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/12)) | Those three added; the rest of the mapping is correct. | Drug use, for recipients on those drugs |
 | Hispanic ethnicity recoded so that the USRDS code for "no" became missing. | Corrected error | Coded as the USRDS format defines it. | Missing ethnicity |
 | Counts infectious diseases specialist claims during the stay. | Not in the paper | Not carried over. | None |

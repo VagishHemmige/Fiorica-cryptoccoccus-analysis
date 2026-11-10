@@ -11,7 +11,7 @@ The code lists are transcribed cell for cell from the supplement, with codes as 
 
 ## Supplementary Figure 1. Data Sources of the USRDS Database and Resultant Data
 
-For more detailed information, refer to the [USRDS Researcher Guide](https://usrds.org/media/2461/usrds_researcher_guide_2020.pdf).
+For more detailed information, refer to the [USRDS Researcher Guide](https://usrds.org/media/2461/usrds_researcher_guide_2020.pdf). (The link is as printed; the current guide is on the NIDDK site [@usrds2024guide].)
 
 ![](images/supplementary_figure_1.png){fig-alt="Diagram of the sources that feed the USRDS database and the data it provides. Sources: CMS/PMMIS/REBUS/REMIS/CROWNWeb; CMS ESRD Part A claims (outpatient, inpatient, skilled nursing facility, home health, hospice); CMS ESRD Part B claims (physician/supplier, durable medical equipment); CMS ESRD Part D; 5% general Medicare SAF claims; UNOS transplant data; CMS ESRD facility data; and census data. These feed the USRDS database (3.2 million patients), which provides patient profile, medical evidence, treatment history, payer history, residency history, CMS ESRD and 5% general Medicare claims (dialysis claims and Parts A, B and D), UNOS transplant data, CROWNWeb clinical data, USRDS special studies, CKD cohort and claims data, and census data." width="100%"}
 
@@ -45,8 +45,8 @@ These are kept above as printed and listed so this analysis's code lists can be 
 -   **Cryptococcosis** lists the ICD-10-CM category B45 itself as well as its subcodes. ICD-10-CM has no codes B45.4 to B45.6, so the subcodes listed are all of them.
 -   **Diabetes** marks 250, E08, E09, E10, E11 and E13 with an asterisk, meaning every code beginning with them; the other codes are matched exactly ([#8](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/8)).
 -   **Procedures** are ICD procedure codes only. The paper's Methods mention CPT codes, which the supplement does not list ([#5](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/5)). There is no separate row for the ventriculoperitoneal shunts the paper reports; the shunt codes are among the neurosurgical procedures ([#8](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/8)).
--   **Medications** are listed as HCPCS billing codes for cyclosporine and tacrolimus, although the paper's Table 2 reports drug use from the UNOS registration and follow-up records, which is what this analysis uses ([#2](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/2)).
--   Some ICD-9 procedure codes are three-digit categories (for example 031, 034, 022, 321, 326 and 329), which stand for the codes beneath them.
+-   **Medications** are listed as HCPCS billing codes for cyclosporine and tacrolimus. The paper describes its drug data both ways: its Methods say drug information at UNOS registration and the first post-transplant visit "was obtained using relevant billing codes", while the title of its Table 2 names the UNOS registration and follow-up appointment. This analysis uses the UNOS records ([#2](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/2)).
+-   Some ICD-9 procedure codes have only three digits (031, 034, 321, 326 and 329). These are complete codes with no subcodes, and are matched exactly. 022 was also a complete code until October 2012, when it was split into 02.21 and 02.22, both of which are listed too.
 
 ## References
 

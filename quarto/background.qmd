@@ -7,11 +7,11 @@ This page is for readers who want the clinical context before the methods. It su
 
 ## The infection
 
-Cryptococcosis is an infection with the yeast *Cryptococcus*, usually *C. neoformans*, which is inhaled from the environment. In people with weakened immunity it can stay in the lungs or spread, most importantly to the brain and its linings as meningitis. Treatment of meningitis and disseminated disease starts with an induction phase of amphotericin B with flucytosine, followed by fluconazole [@perfect2010; @baddley2019].
+Cryptococcosis is an infection with the yeast *Cryptococcus*, usually *C. neoformans*, which is inhaled from the environment. In people with weakened immunity it can stay in the lungs or spread, most importantly to the brain and its linings as meningitis [@chang2024global; @baddley2019]. Treatment of meningitis and disseminated disease starts with an induction phase of amphotericin B with flucytosine, a lipid formulation of amphotericin B for transplant recipients, followed by fluconazole [@chang2024global; @baddley2019; @perfect2010].
 
 ## After organ transplant
 
-Among invasive fungal infections in solid organ transplant recipients, cryptococcosis is the third most common, after invasive candidiasis and aspergillosis; in a US surveillance network of transplant centres it made up 8% of first invasive fungal infections [@pappas2010; @baddley2019]. Unlike most infections after transplant it tends to come late: the median time to onset was 575 days across organs in that network, and 616 days in kidney recipients in a large US hospital-records study [@pappas2010; @george2017].
+Among invasive fungal infections in solid organ transplant recipients, cryptococcosis is the third most common, after invasive candidiasis and aspergillosis; in a US surveillance network of transplant centres it made up 8% of invasive fungal infections [@pappas2010; @baddley2019]. Unlike most infections after transplant it tends to come late: the median time to onset was 575 days across organs in that network, and 616 days in kidney recipients in a large US hospital-records study [@pappas2010; @george2017].
 
 Which form the infection takes depends partly on immunosuppression. In a review of published cases, recipients on tacrolimus were less likely to have central nervous system involvement [@husain2001], and over time transplant recipients have more often presented with disease confined to the lungs [@sun2009].
 
@@ -25,13 +25,13 @@ Several factors have been associated with death:
 -   **Calcineurin inhibitors** (tacrolimus, cyclosporine): associated with *lower* mortality in the prospective study [@singh2007].
 -   **Liver disease**: end-stage liver disease was a strong predictor of early death in cryptococcosis in general [@spec2015], and mortality in people with cirrhosis has been high [@singh2004].
 
-Not every study agrees. In the French kidney cohort, mortality did not differ by whether patients had meningitis [@tardieu2022]. Compared with patients who had neither HIV nor a transplant, transplant recipients have had similar or lower odds of death in single-centre studies [@brizendine2013].
+Not every study agrees. In the French kidney cohort, mortality did not differ by whether patients had meningitis [@tardieu2022]. Compared with patients who had neither HIV nor a transplant, transplant recipients have had similar or lower mortality, in a single-centre study and in US insurance-claims and health-record data [@brizendine2013; @chastain2024; @taylor2026].
 
 ## Earlier studies with national data
 
-Earlier USRDS studies looked at fungal infections after kidney transplant as a group, not at cryptococcosis on its own [@abbott2001; @leitheiser2020]. One of them found maintenance tacrolimus associated with *more* hospitalizations for fungal infection [@abbott2001]; that was about how often infection occurred, not about death. Studies of US hospital records that did single out cryptococcosis were small for transplant recipients: 158 cases across all organs in one [@george2017; @george2018].
+Earlier USRDS studies looked at how often fungal infections occurred after kidney transplant and what predicted them, grouping cryptococcosis with other fungi or modelling only the risk of infection; neither studied death after cryptococcosis [@abbott2001; @leitheiser2020; @fiorica2025]. One of them found maintenance tacrolimus associated with *more* hospitalizations for fungal infection [@abbott2001]; that was about how often infection occurred, not about death. Studies of US hospital records that did single out cryptococcosis were small for transplant recipients: 158 cases across all organs in one [@george2017; @george2018].
 
-Fiorica et al. studied 1,265 kidney transplant recipients hospitalized with cryptococcosis from 2006 to 2016, the largest such cohort reported, and found that 22% had died within 6 months [@fiorica2025]. This project rebuilds that analysis. No study was found that checks how accurately billing codes identify cryptococcosis (see [Data sources](data_sources.qmd)), so cases here are cases by code, not by laboratory confirmation.
+Fiorica et al. studied 1,265 kidney transplant recipients hospitalized with cryptococcosis from 2006 to 2016, which the authors describe as, to their knowledge, the largest such cohort studied over a 10-year period, and found that 22% had died within 6 months [@fiorica2025]. This project rebuilds that analysis. No study was found that checks how accurately billing codes identify cryptococcosis (see [Data sources](data_sources.qmd)), so cases here are cases by code, not by laboratory confirmation.
 
 ## References
 
