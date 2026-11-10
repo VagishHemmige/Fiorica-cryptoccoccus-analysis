@@ -1455,7 +1455,7 @@ immunosuppressant_free_text <- tribble(
 # USRDS STATE (FIPS; Appendix C format STATFIP) to Census region and division.
 # The 48 contiguous states and DC follow the Census Bureau. As in the
 # reconstruction, Alaska and Hawaii are grouped with the territories as
-# "Outside" rather than in the West (to confirm). Every other valid
+# "Outside" rather than in the West (decided, issue #12). Every other valid
 # non-state code (territories, foreign) is "Outside"; 99 and unlisted codes
 # are missing.
 state_regions <- tribble(

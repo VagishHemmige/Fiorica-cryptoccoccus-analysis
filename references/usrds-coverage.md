@@ -142,7 +142,7 @@ Not used in the main analysis ([#2](https://github.com/VagishHemmige/fiorica-cry
 
 ### 17. Age, region and division
 
-Age comes from `BORN`. `STATE` uses FIPS codes (Appendix C format `STATFIP`, which also lists 03 American Samoa and 43 Puerto Rico, older codes). The legacy Rmd maps them to Census regions by hand; territory codes it does not list (for example 66 Guam, 78 Virgin Islands) fall through to missing, which `R/code_lists.R` corrects by mapping every valid non-state code to "Outside". It also groups Alaska and Hawaii with the territories, unlike the Census Bureau (to confirm).
+Age comes from `BORN`. `STATE` uses FIPS codes (Appendix C format `STATFIP`, which also lists 03 American Samoa and 43 Puerto Rico, older codes). The legacy Rmd maps them to Census regions by hand; territory codes it does not list (for example 66 Guam, 78 Virgin Islands) fall through to missing, which `R/code_lists.R` corrects by mapping every valid non-state code to "Outside". It also groups Alaska and Hawaii with the territories, unlike the Census Bureau; the analysis keeps that grouping ([#12](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/12)).
 
 Hispanic ethnicity (format `$YNUFMT`) codes "no" as 2 or N. The legacy Rmd recoded 0 or N as non-Hispanic, so code 2 would have become missing; the analysis follows the format. Sex and race (`$SEXFMT`, `$RACEFMT`) are recoded as in the legacy Rmd.
 
