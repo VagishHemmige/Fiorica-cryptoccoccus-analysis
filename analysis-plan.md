@@ -101,9 +101,9 @@ Not applicable. Comparisons are between people who died within 6 months and thos
 
 ## 7. Outcomes
 
-- **Primary:** death from any cause within 180 days of the index admission date (`DIED` from the `patients` file). A death on day 180 counts.
+- **Primary:** death from any cause within 180 days of the index admission date (`DIED` from the `patients` file), with the admission day as day 0. A death on day 180 counts, and so does a death on the admission day.
 - **Secondary:**
-  - time from index admission to death, censored at the release's death-date currency;
+  - time from index admission to death, censored at the release's death-date currency (`death_data_end_date` in `R/setup.R`, set by whoever runs the analysis for the release in use; the paper does not state it). Every covariate is fixed and death is the only event, so the survival data has one row per person;
   - time from most recent kidney transplant to index admission.
 
 ## 8. Statistical analysis
@@ -117,8 +117,10 @@ Not applicable. Comparisons are between people who died within 6 months and thos
 - **Tests:** Student t test for continuous variables; χ² test, or Fisher exact test for sparse tables. Two-sided α = 0.05, with no adjustment for multiple comparisons [@fiorica2025].
 - **Survival:** Kaplan–Meier curve of time to death from the index admission, with a 6-month reference line (Figure 2).
 - **Model:** logistic regression for 6-month mortality.
-  - Variables are first tested in bivariable models, then entered into a multivariable model with backward elimination (retain P < .05).
-  - Fit is assessed by the Hosmer–Lemeshow test.
+  - Every characteristic in Tables 1 and 2 is a candidate (`model_candidates` in `R/setup.R`), in the form the paper's model reports: age as 60 or older [@fiorica2025], time since transplant as more than 2 years, and tacrolimus as "not on" at transplant and at follow-up.
+  - Each candidate is first tested alone, then all are entered into a multivariable model with backward elimination: the term with the largest P value is removed while P ≥ .05. The paper reports no entry threshold and no forced variables.
+  - P values for elimination are joint Wald tests, one per term, as in Stata's `stepwise` (the paper's analysis software). The sample is fixed at the complete cases for all candidates, as Stata does.
+  - Fit is assessed by the Hosmer–Lemeshow test, with deciles of predicted risk.
   - Adjusted odds ratios with 95% CIs are shown as a forest plot (Figure 3).
   - Backward elimination is kept to mirror the paper. Its limitations are noted in §11.
 - **Missing data:** complete-case, as in the paper. The number excluded from the model is reported.

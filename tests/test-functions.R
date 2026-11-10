@@ -6,6 +6,7 @@ library(dplyr)
 library(tidyr)
 library(stringr)
 library(lubridate)
+library(purrr)
 library(testthat)
 # testthat runs this file from tests/, so find the project root either way
 project_root <- if (file.exists("R/functions.R")) "." else ".."
@@ -337,4 +338,71 @@ test_that("any_known keeps missing distinct from no", {
   expect_false(any_known(c(NA, FALSE)))
   expect_true(is.na(any_known(c(NA, NA))))
   expect_true(is.na(any_known(logical(0))))
+})
+
+# ---- Outcome and model helpers -----------------------------------------------
+
+test_that("six_month_outcomes counts day 180, day 0, and censors at the data end", {
+  d <- as.Date
+  synthetic_index <- tibble(USRDS_ID = 1:5, index_admit_date = d(rep("2016-01-01", 5)))
+  synthetic_deaths <- tibble(
+    USRDS_ID = 1:5,
+    # Day 0, day 180, day 181, alive, death after the data end
+    DIED = d(c("2016-01-01", "2016-06-29", "2016-06-30", NA, "2018-01-01"))
+  )
+  result <- six_month_outcomes(synthetic_index, synthetic_deaths, 180, d("2017-12-31"))
+  expect_equal(result$days_to_death, c(0, 180, 181, NA, NA))
+  expect_equal(result$died_within_window, c(TRUE, TRUE, FALSE, FALSE, FALSE))
+  expect_equal(result$survival_days, c(0, 180, 181, 730, 730))
+  expect_equal(result$survival_event, c(1L, 1L, 1L, 0L, 0L))
+})
+
+test_that("six_month_outcomes stops while the data end date is unset", {
+  expect_error(
+    six_month_outcomes(tibble(USRDS_ID = 1, index_admit_date = as.Date("2016-01-01")),
+                       tibble(USRDS_ID = 1, DIED = as.Date(NA)), 180, as.Date(NA)),
+    "death_data_end_date must be set"
+  )
+})
+
+test_that("wald_term_p matches summary() for a one-coefficient term and gives one P for a factor", {
+  set.seed(20261110)
+  synthetic <- tibble(
+    x = rnorm(300),
+    group = factor(sample(c("a", "b", "c"), 300, replace = TRUE)),
+    y = rbinom(300, 1, plogis(-0.5 + 0.8 * x))
+  )
+  model <- glm(y ~ x + group, family = binomial(), data = synthetic)
+  expect_equal(wald_term_p(model, "x"), coef(summary(model))["x", "Pr(>|z|)"])
+  expect_length(wald_term_p(model, "group"), 1)
+})
+
+test_that("backward_eliminate keeps a strong predictor, drops noise, and fixes the sample", {
+  set.seed(20261110)
+  n <- 2000
+  synthetic <- tibble(
+    strong = rbinom(n, 1, 0.4),
+    noise_1 = rbinom(n, 1, 0.5),
+    noise_2 = rnorm(n),
+    y = rbinom(n, 1, plogis(-1.5 + 1.5 * strong))
+  )
+  synthetic$noise_2[1:50] <- NA
+  result <- backward_eliminate(synthetic, "y", c("strong", "noise_1", "noise_2"), 0.05)
+  expect_equal(result$retained, "strong")
+  expect_setequal(result$steps$removed, c("noise_1", "noise_2"))
+  # The complete-case sample is fixed by all candidates, even after noise_2 is removed
+  expect_equal(nrow(result$data), n - 50)
+  expect_equal(nobs(result$model), n - 50)
+})
+
+test_that("hosmer_lemeshow reproduces the statistic by hand", {
+  observed <- c(0, 0, 1, 0, 1, 1, 0, 1, 1, 1)
+  predicted <- c(0.1, 0.2, 0.3, 0.3, 0.5, 0.6, 0.4, 0.8, 0.9, 0.7)
+  result <- hosmer_lemeshow(observed, predicted, groups = 2)
+  # Two groups split at the median predicted risk (0.45):
+  # low (0.1, 0.2, 0.3, 0.3, 0.4): observed 1, expected 1.3, n 5
+  # high (0.5, 0.6, 0.8, 0.9, 0.7): observed 5, expected 3.5, n 5
+  by_hand <- (1 - 1.3)^2 / (1.3 * (1 - 1.3 / 5)) + (5 - 3.5)^2 / (3.5 * (1 - 3.5 / 5))
+  expect_equal(result$statistic, by_hand)
+  expect_equal(result$df, 0)
 })

@@ -57,6 +57,12 @@ website:
           - href: quarto/create_covariates.qmd
             text: Covariates
             icon: laptop
+          - href: quarto/create_outcomes.qmd
+            text: Outcomes
+            icon: laptop
+          - href: quarto/fit_models.qmd
+            text: Survival and models
+            icon: laptop
           - section: Setup and helper functions
             contents:
               - href: quarto/setup.qmd

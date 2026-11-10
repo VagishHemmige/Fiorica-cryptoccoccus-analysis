@@ -81,3 +81,19 @@ The concept lists name which diagnoses and procedures are flagged on the index s
 #| label: define-unos-keys
 #| eval: false
 ```
+
+## Outcome and model settings
+
+These settings control the outcomes and models:
+
+- **The end of death data for the USRDS release in use.** It is set by whoever runs the analysis, because the paper doesn't give it and it varies by release.
+- **The age cut-off of 60** that the paper's model uses.
+- **The P value for backward elimination.**
+- **The list of candidate variables:** every characteristic in Tables 1 and 2, in the form the paper reports them.
+
+**Decision pending:** `death_data_end_date` has to be set for the release in use; the outcomes script stops until it is.
+
+```{r}
+#| label: define-outcome-constants
+#| eval: false
+```

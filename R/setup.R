@@ -61,3 +61,36 @@ index_stay_proc_concepts <- c(
   "lumbar_puncture", "spinal_procedure", "neurosurgical_procedure",
   "lung_procedure", "vp_shunt"
 )
+
+## ---- define-outcome-constants
+# End of death ascertainment for the USRDS release in use: deaths after this
+# date are not observed, and survival time is censored here (plan §7). It
+# depends on the release, so it is set by whoever runs the analysis; the
+# outcome script stops while it is missing.
+death_data_end_date <- as.Date(NA)
+
+# Age cut-off used in the paper's model ("age >= 60 years"; plan §8)
+age_model_cutoff <- 60
+
+# Significance level for backward elimination (plan §8)
+elimination_threshold <- 0.05
+
+# Candidate variables for the bivariable and multivariable models: every
+# characteristic in Tables 1 and 2, in model-ready form (plan §8). The paper
+# examined "each variable" and entered them all, so there is no entry
+# threshold. Drug classes at follow-up are entered as "not on" for
+# tacrolimus, as the paper reports it.
+model_candidates <- c(
+  "age_60_or_older", "sex", "race", "hispanic", "region",
+  "cryptococcal_meningitis", "acute_kidney_injury", "diabetes", "cirrhosis",
+  "icu_admission", "lumbar_puncture", "spinal_procedure",
+  "neurosurgical_procedure", "lung_procedure", "vp_shunt",
+  "prior_transplant_complication", "more_than_one_transplant",
+  "prior_graft_failure", "over_cutoff_since_transplant", "organ", "bmi",
+  "pretransplant_dialysis", "hiv_status", "cmv_status", "acute_rejection",
+  "tx_antithymocyte_globulin", "tx_alemtuzumab", "tx_il2_receptor_antibody",
+  "no_tacrolimus_at_transplant", "tx_cyclosporine", "tx_mycophenolate",
+  "tx_mtor_inhibitor", "tx_azathioprine", "tx_steroids",
+  "no_tacrolimus_at_followup", "fu_cyclosporine", "fu_mycophenolate",
+  "fu_mtor_inhibitor", "fu_azathioprine", "fu_steroids"
+)

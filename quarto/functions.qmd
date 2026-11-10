@@ -212,3 +212,48 @@ These turn the USRDS codes for sex, race and Hispanic ethnicity into labels. His
 #| label: any-known
 #| eval: false
 ```
+
+## Mortality outcomes
+
+`six_month_outcomes()` counts days from the index admission to death, with the admission day as day 0, and flags death within the 180-day window. Deaths on day 180, and on the admission day itself, both count. For the survival curve, people still alive are followed to the end of the release's death data. The function stops if that date hasn't been set.
+
+```{r}
+#| label: six-month-outcomes
+#| eval: false
+```
+
+## One P value per variable
+
+`wald_term_p()` tests all of a variable's coefficients together. A variable with several categories, such as region, therefore gets one P value, as in Stata's stepwise procedure, which the paper used.
+
+```{r}
+#| label: wald-term-p
+#| eval: false
+```
+
+## Bivariable models
+
+`bivariable_models()` fits one logistic model per candidate variable. Each model uses everyone whose value of that variable is known.
+
+```{r}
+#| label: bivariable-models
+#| eval: false
+```
+
+## Backward elimination
+
+`backward_eliminate()` starts with every candidate and repeatedly removes the variable with the largest P value, until all remaining variables have P below 0.05. The people analysed stay the same throughout: everyone with every candidate known, as Stata does.
+
+```{r}
+#| label: backward-eliminate
+#| eval: false
+```
+
+## Goodness of fit
+
+`hosmer_lemeshow()` splits people into tenths by predicted risk and compares observed with expected deaths in each tenth.
+
+```{r}
+#| label: hosmer-lemeshow
+#| eval: false
+```
