@@ -81,6 +81,12 @@ website:
                 text: Functions
                 icon: laptop
 
+      - section: Published results
+        contents:
+          - href: quarto/results.qmd
+            text: Published figures and tables
+            icon: clipboard-data
+
       - section: Project documents
         contents:
           - href: quarto/analysis-plan.qmd
