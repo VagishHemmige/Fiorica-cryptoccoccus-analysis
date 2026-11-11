@@ -28,6 +28,10 @@ knitr::read_chunk("../R/functions.R")
 
 `codes_for_concept()` picks one concept's codes out of the `code_lists` table, and can limit them to one code type: diagnosis, procedure or HCPCS. It stops with an error if the concept name is misspelled, rather than silently returning no codes.
 
+**Used in the analysis:** 1. Building the cohort: [Flagging cryptococcosis](create_cohort.qmd#flagging-cryptococcosis).
+
+**Used by:** [`flag_concepts()`](#flagging-concepts-on-records).
+
 ```{r}
 #| label: codes-for-concept
 #| eval: false
@@ -36,6 +40,8 @@ knitr::read_chunk("../R/functions.R")
 ## Matching codes
 
 `code_matches()` compares a vector of recorded codes with a code list. It handles both exact codes and prefixes, so the diabetes stems match all their subcodes. The usRds `get_*_ICD()` functions match exactly only, which is why this exists (coverage step 6).
+
+**Used by:** [`flag_codes_wide()`](#searching-wide-code-columns).
 
 ```{r}
 #| label: code-matches
@@ -52,6 +58,8 @@ The USRDS hospitalization files record each stay's codes in separate columns:
 
 `flag_codes_wide()` flags each row where any of the named columns holds a listed code. It skips columns a file does not have, so the same call works on both files (coverage steps 4–6 and 9).
 
+**Used by:** [`flag_cryptococcosis_records()`](#flagging-cryptococcosis-records) and [`flag_concepts()`](#flagging-concepts-on-records).
+
 ```{r}
 #| label: flag-codes-wide
 #| eval: false
@@ -63,6 +71,8 @@ A single hospital stay can appear as several hospitalization records. `collapse_
 
 The function adds a stay identifier and the stay's first and last dates. The plan treats overlapping or contiguous records as one stay (§5); usRds has no equivalent (coverage step 7).
 
+**Used by:** [`summarise_cryptococcosis_stays()`](#cryptococcosis-stays).
+
 ```{r}
 #| label: collapse-stays
 #| eval: false
@@ -71,6 +81,8 @@ The function adds a stay identifier and the stay's first and last dates. The pla
 ## Age in years
 
 `age_in_years()` gives age at last birthday on a given date, so a person is 18 on their 18th birthday. The plan's age range, 18 to 90 years, is applied to this.
+
+**Used by:** [`build_cohort_candidates()`](#cohort-candidates).
 
 ```{r}
 #| label: age-in-years
@@ -81,6 +93,8 @@ The function adds a stay identifier and the stay's first and last dates. The pla
 
 `first_transplant_dates()` reduces the transplant file, which has one row per transplant, to each person's earliest transplant date. Rows without a date are ignored.
 
+**Used in the analysis:** 1. Building the cohort: [Transplant and birth dates](create_cohort.qmd#transplant-and-birth-dates).
+
 ```{r}
 #| label: first-transplant-dates
 #| eval: false
@@ -90,6 +104,8 @@ The function adds a stay identifier and the stay's first and last dates. The pla
 
 `flag_cryptococcosis_records()` marks each hospitalization record that has a cryptococcosis code in any diagnosis column. It's told which columns to search, because the two hospitalization files differ (see [Setup](setup.qmd#hospitalization-file-columns)).
 
+**Used in the analysis:** 1. Building the cohort: [Flagging cryptococcosis](create_cohort.qmd#flagging-cryptococcosis).
+
 ```{r}
 #| label: flag-cryptococcosis-records
 #| eval: false
@@ -98,6 +114,8 @@ The function adds a stay identifier and the stay's first and last dates. The pla
 ## Cryptococcosis stays
 
 `summarise_cryptococcosis_stays()` combines a person's records into stays with `collapse_stays()`. A stay counts as a cryptococcosis stay if any of its records has the code. The function keeps stays admitted within the study window, with both boundary dates included.
+
+**Used in the analysis:** 1. Building the cohort: [Building stays](create_cohort.qmd#building-stays).
 
 ```{r}
 #| label: summarise-cryptococcosis-stays
@@ -114,12 +132,16 @@ The function adds a stay identifier and the stay's first and last dates. The pla
 
 A stay admitted on the day of the first transplant counts; a stay admitted the day before does not, even if it continues past the transplant. The function excludes no one itself; the exclusions happen in the [flowchart](create_cohort.qmd#flowchart).
 
+**Used in the analysis:** 1. Building the cohort: [Cohort candidates](create_cohort.qmd#cohort-candidates).
+
 ```{r}
 #| label: build-cohort-candidates
 #| eval: false
 ```
 
 `prior_cryptococcosis_ids()` takes every cryptococcosis claim (hospital records and physician claims together, one row per claim with its first day of service) and returns the people with any claim before their first transplant. A claim on the transplant date itself does not count as before it, the same rule as for hospital stays.
+
+**Used in the analysis:** 1. Building the cohort: [Cohort candidates](create_cohort.qmd#cohort-candidates).
 
 ```{r}
 #| label: prior-cryptococcosis
@@ -130,6 +152,8 @@ A stay admitted on the day of the first transplant counts; a stay admitted the d
 
 `flag_concepts()` adds one yes/no column per concept to hospitalization records. A record gets "yes" when any of the named columns holds a code from that concept's list.
 
+**Used by:** [`load_flagged_hospitalizations()`](#loading-and-flagging-hospitalizations).
+
 ```{r}
 #| label: flag-concepts
 #| eval: false
@@ -138,6 +162,8 @@ A stay admitted on the day of the first transplant counts; a stay admitted the d
 ## Loading and flagging hospitalizations
 
 `load_flagged_hospitalizations()` loads one hospitalization file for a set of people through usRds. It flags the diagnosis and procedure concepts on each record, and keeps the dates, ICU and CCU days, and the flags.
+
+**Used in the analysis:** 2. Covariates: [Hospitalization records](create_covariates.qmd#hospitalization-records).
 
 ```{r}
 #| label: load-flagged-hospitalizations
@@ -148,6 +174,8 @@ A stay admitted on the day of the first transplant counts; a stay admitted the d
 
 `summarise_index_stay()` takes the records that fall within each person's index stay, meaning those admitted between the stay's first and last dates. A concept counts if any of those records has it. ICU admission means any ICU or CCU days on the stay.
 
+**Used in the analysis:** 2. Covariates: [On the index stay](create_covariates.qmd#on-the-index-stay).
+
 ```{r}
 #| label: summarise-index-stay
 #| eval: false
@@ -156,6 +184,8 @@ A stay admitted on the day of the first transplant counts; a stay admitted the d
 ## Earlier hospitalizations
 
 `summarise_prior_hospitalizations()` reports whether any hospitalization admitted before the index admission carries a given flag, such as a transplant-complication code. People with no earlier hospitalizations get "no".
+
+**Used in the analysis:** 2. Covariates: [Earlier hospitalization for a transplant complication](create_covariates.qmd#earlier-hospitalization-for-a-transplant-complication).
 
 ```{r}
 #| label: summarise-prior-hospitalizations
@@ -170,6 +200,8 @@ A stay admitted on the day of the first transplant counts; a stay admitted the d
 - graft failures before it;
 - the days since the most recent transplant.
 
+**Used in the analysis:** 2. Covariates: [Transplant history, sex and race](create_covariates.qmd#transplant-history-sex-and-race).
+
 ```{r}
 #| label: summarise-transplant-history
 #| eval: false
@@ -178,6 +210,8 @@ A stay admitted on the day of the first transplant counts; a stay admitted the d
 ## The transplant whose registry data are used
 
 `select_index_registration()` picks each person's UNOS registration for the most recent transplant on or before the index admission. The transplant-time covariates come from that registration.
+
+**Used in the analysis:** 2. Covariates: [Registry data at transplant](create_covariates.qmd#registry-data-at-transplant).
 
 ```{r}
 #| label: select-index-registration
@@ -188,6 +222,8 @@ A stay admitted on the day of the first transplant counts; a stay admitted the d
 
 `unos_rejection_any()` turns the UNOS rejection code into yes or no. Codes 1 and 2 (an episode, treated or not) are "yes", and 3 is "no". Unknown codes are missing.
 
+**Used in the analysis:** 2. Covariates: [Acute rejection](create_covariates.qmd#acute-rejection).
+
 ```{r}
 #| label: unos-rejection-any
 #| eval: false
@@ -196,6 +232,8 @@ A stay admitted on the day of the first transplant counts; a stay admitted the d
 ## Drug classes
 
 `classify_immunosuppressants()` gives one row per registration or follow-up, with a yes/no column per drug class. A class is "yes" when any drug record maps to it, by code or by free text.
+
+**Used in the analysis:** 2. Covariates: [Immunosuppression at transplant](create_covariates.qmd#immunosuppression-at-transplant); 2. Covariates: [Immunosuppression at first follow-up](create_covariates.qmd#immunosuppression-at-first-follow-up).
 
 ```{r}
 #| label: classify-immunosuppressants
@@ -206,6 +244,8 @@ A stay admitted on the day of the first transplant counts; a stay admitted the d
 
 These turn the USRDS codes for sex, race and Hispanic ethnicity into labels. Hispanic ethnicity follows the official format, in which "no" is coded 2 or N. The reconstruction treated 2 as missing.
 
+**Used in the analysis:** 2. Covariates: [Transplant history, sex and race](create_covariates.qmd#transplant-history-sex-and-race); 2. Covariates: [Ethnicity and region](create_covariates.qmd#ethnicity-and-region).
+
 ```{r}
 #| label: recode-demographics
 #| eval: false
@@ -214,6 +254,8 @@ These turn the USRDS codes for sex, race and Hispanic ethnicity into labels. His
 ## Combining yes/no values
 
 `any_known()` combines several yes/no values while keeping missing distinct from "no". The result is "yes" if any value is yes, "no" if none is yes and at least one is no, and missing if every value is missing.
+
+**Used in the analysis:** 2. Covariates: [Acute rejection](create_covariates.qmd#acute-rejection).
 
 ```{r}
 #| label: any-known
@@ -224,6 +266,8 @@ These turn the USRDS codes for sex, race and Hispanic ethnicity into labels. His
 
 `six_month_outcomes()` counts days from the index admission to death, with the admission day as day 0, and flags death within the 180-day window. Deaths on day 180, and on the admission day itself, both count. For the survival curve, people still alive are followed to the end of the release's death data. The function stops if that date hasn't been set.
 
+**Used in the analysis:** 3. Outcomes: [Mortality](create_outcomes.qmd#mortality).
+
 ```{r}
 #| label: six-month-outcomes
 #| eval: false
@@ -232,6 +276,10 @@ These turn the USRDS codes for sex, race and Hispanic ethnicity into labels. His
 ## One P value per variable
 
 `wald_term_p()` tests all of a variable's coefficients together. A variable with several categories, such as region, therefore gets one P value, as in Stata's stepwise procedure, which the paper used.
+
+**Used in the analysis:** Tables: [Odds ratios](tables.qmd#odds-ratios).
+
+**Used by:** [`bivariable_models()`](#bivariable-models) and [`backward_eliminate()`](#backward-elimination).
 
 ```{r}
 #| label: wald-term-p
@@ -242,6 +290,8 @@ These turn the USRDS codes for sex, race and Hispanic ethnicity into labels. His
 
 `bivariable_models()` fits one logistic model per candidate variable. Each model uses everyone whose value of that variable is known.
 
+**Used in the analysis:** 4. Survival and models: [Each variable alone](fit_models.qmd#each-variable-alone).
+
 ```{r}
 #| label: bivariable-models
 #| eval: false
@@ -250,6 +300,8 @@ These turn the USRDS codes for sex, race and Hispanic ethnicity into labels. His
 ## Backward elimination
 
 `backward_eliminate()` starts with every candidate and repeatedly removes the variable with the largest P value, until all remaining variables have P below 0.05. The people analysed stay the same throughout: everyone with every candidate known, as Stata does. A variable that cannot be estimated in that group (it does not vary, or is fully determined by others) has no P value and is removed first, as Stata omits it.
+
+**Used in the analysis:** 4. Survival and models: [Multivariable model](fit_models.qmd#multivariable-model).
 
 ```{r}
 #| label: backward-eliminate
@@ -260,6 +312,8 @@ These turn the USRDS codes for sex, race and Hispanic ethnicity into labels. His
 
 `hosmer_lemeshow()` splits people into tenths by predicted risk and compares observed with expected deaths in each tenth.
 
+**Used in the analysis:** 4. Survival and models: [Goodness of fit](fit_models.qmd#goodness-of-fit).
+
 ```{r}
 #| label: hosmer-lemeshow
 #| eval: false
@@ -269,15 +323,21 @@ These turn the USRDS codes for sex, race and Hispanic ethnicity into labels. His
 
 USRDS does not allow any count from 1 to 10 to be published, including one that can be worked out by subtraction. `count_table_cells()` lists every count behind a descriptive table, including the ones not printed (such as the number *without* a condition). `flag_small_cells()` marks the small ones and then, wherever a single hidden count could be recovered from a total, hides the next smallest count as well, repeating until nothing more changes. `suppress_table_body()` then puts "≤10" in those cells and removes the P value for that variable.
 
+**Used in the analysis:** Tables: [Descriptive tables](tables.qmd#descriptive-tables).
+
 ```{r}
 #| label: count-table-cells
 #| eval: false
 ```
 
+**Used in the analysis:** Tables: [Descriptive tables](tables.qmd#descriptive-tables).
+
 ```{r}
 #| label: flag-small-cells
 #| eval: false
 ```
+
+**Used in the analysis:** Tables: [Descriptive tables](tables.qmd#descriptive-tables).
 
 ```{r}
 #| label: suppress-table-body
@@ -288,6 +348,8 @@ USRDS does not allow any count from 1 to 10 to be published, including one that 
 
 `style_pvalue_ama()` rounds P values as gtsummary's JAMA theme does and drops the leading zero (".040", "<.001"), as AMA style asks.
 
+**Used in the analysis:** Tables: [Journal style](tables.qmd#journal-style).
+
 ```{r}
 #| label: style-pvalue-ama
 #| eval: false
@@ -297,10 +359,14 @@ USRDS does not allow any count from 1 to 10 to be published, including one that 
 
 `km_reportable_times()` picks the times the survival figure can show: more than 10 people still at risk, and every count and every change between times shown either 0 or above 10. `flowchart_small_counts()` lists any flowchart box with 1 to 10 people.
 
+**Used in the analysis:** Figures: [Figure 2: survival](figures.qmd#figure-2-survival).
+
 ```{r}
 #| label: km-reportable-times
 #| eval: false
 ```
+
+**Used in the analysis:** Figures: [Figure 1: the cohort](figures.qmd#figure-1-the-cohort).
 
 ```{r}
 #| label: flowchart-small-counts
@@ -310,6 +376,8 @@ USRDS does not allow any count from 1 to 10 to be published, including one that 
 ## Odds ratios
 
 `tidy_odds_ratios()` turns a fitted logistic model into odds ratios with 95% Wald confidence intervals (as Stata reports them) and readable labels.
+
+**Used in the analysis:** Tables: [The paper's final model](tables.qmd#the-papers-final-model); Figures: [Figure 3: odds ratios](figures.qmd#figure-3-odds-ratios).
 
 ```{r}
 #| label: tidy-odds-ratios

@@ -29,7 +29,9 @@ knitr::read_chunk("../R/tables.R")
 
 ## Journal style
 
-The tables follow the style shared by OFID, CID and JID, which is AMA style: gtsummary's JAMA theme, with P values shown without a leading zero (`style_pvalue_ama()` on the [Functions](functions.qmd) page).
+The tables follow the style shared by OFID, CID and JID, which is AMA style: gtsummary's JAMA theme, with P values shown without a leading zero (`style_pvalue_ama()` on the [Functions](functions.qmd#p-values-in-ama-style) page).
+
+**Functions used:** [`style_pvalue_ama()`](functions.qmd#p-values-in-ama-style).
 
 ```{r}
 #| label: table-style
@@ -54,7 +56,9 @@ Every variable in a table or figure gets a readable name here, so no column name
 
 One function makes both descriptive tables. Continuous variables are shown as mean (SD), time since transplant as median (IQR), and everything else as a count and percentage, with the number unknown always shown. Continuous variables are compared with Student's t test; categorical ones with the chi-squared test, or Fisher's exact test when an expected count is under 5.
 
-Before the table is shown, every count from 1 to 10 is hidden, along with any other count that would let it be worked out by subtraction, and the P value of that variable is removed (`flag_small_cells()` and `suppress_table_body()` on the [Functions](functions.qmd) page).
+Before the table is shown, every count from 1 to 10 is hidden, along with any other count that would let it be worked out by subtraction, and the P value of that variable is removed (`flag_small_cells()` and `suppress_table_body()` on the [Functions](functions.qmd#small-count-rules-for-tables) page).
+
+**Functions used:** [`count_table_cells()`](functions.qmd#small-count-rules-for-tables), [`flag_small_cells()`](functions.qmd#small-count-rules-for-tables) and [`suppress_table_body()`](functions.qmd#small-count-rules-for-tables).
 
 ```{r}
 #| label: descriptive-table
@@ -84,6 +88,8 @@ Before any model, how long people were followed and how many died or were censor
 
 Each variable alone, and the final model after backward elimination, side by side. The P value shown for each variable is the single joint test the selection used, so a variable with several categories has one P value, not one per category.
 
+**Functions used:** [`wald_term_p()`](functions.qmd#one-p-value-per-variable).
+
 ```{r}
 #| label: table-models
 #| eval: false
@@ -92,6 +98,8 @@ Each variable alone, and the final model after backward elimination, side by sid
 ## The paper's final model
 
 Table 4 sets the odds ratios from the refitted eight-variable model beside the ones the paper reports, and says whether the backward elimination here kept each variable.
+
+**Functions used:** [`tidy_odds_ratios()`](functions.qmd#odds-ratios).
 
 ```{r}
 #| label: table-published-model

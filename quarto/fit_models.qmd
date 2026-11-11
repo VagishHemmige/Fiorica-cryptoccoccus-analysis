@@ -39,6 +39,8 @@ A Kaplan–Meier estimate of survival from the index admission (Figure 2).
 
 Every candidate variable is tested on its own, using everyone whose value is known.
 
+**Functions used:** [`bivariable_models()`](functions.qmd#bivariable-models).
+
 ```{r}
 #| label: models-bivariable
 #| eval: false
@@ -47,6 +49,8 @@ Every candidate variable is tested on its own, using everyone whose value is kno
 ## Multivariable model
 
 All candidates go in together. The variable with the largest P value is then removed, one at a time, until every remaining variable has P below 0.05. The paper gave no threshold for entry and kept no variable in by force. The model uses everyone with every candidate known, and the number left out is reported.
+
+**Functions used:** [`backward_eliminate()`](functions.qmd#backward-elimination).
 
 ```{r}
 #| label: models-multivariable
@@ -67,6 +71,8 @@ The two approaches answer different questions. Rerunning the selection asks whet
 ## Goodness of fit
 
 The Hosmer–Lemeshow test compares predicted with observed deaths across tenths of predicted risk.
+
+**Functions used:** [`hosmer_lemeshow()`](functions.qmd#goodness-of-fit).
 
 ```{r}
 #| label: models-goodness-of-fit

@@ -29,6 +29,8 @@ The code sections below are imported directly from the script when this page is 
 knitr::read_chunk("../R/figures.R")
 ```
 
+**Functions used:** [`theme_publication()`](plot_style.qmd#the-publication-theme).
+
 ```{r}
 #| label: figure-defaults
 #| eval: false
@@ -37,6 +39,8 @@ knitr::read_chunk("../R/figures.R")
 ## Figure 1: the cohort
 
 The flowchart is drawn from the same object that built the cohort, so the two cannot disagree. If any box holds 1 to 10 people, the figure is not saved and the run warns.
+
+**Functions used:** [`flowchart_small_counts()`](functions.qmd#small-count-rules-for-figures).
 
 ```{r}
 #| label: figure-1
@@ -47,7 +51,9 @@ The flowchart is drawn from the same object that built the cohort, so the two ca
 
 ## Figure 2: survival
 
-The survival curve has its 95% confidence band and, below it, the number still at risk and the running totals of deaths and censored people. A time appears in that table only if no count shown there, or the change since the previous time, is from 1 to 10, and the curve stops at the last such time (`km_reportable_times()` on the [Functions](functions.qmd) page). A dashed line marks 6 months.
+The survival curve has its 95% confidence band and, below it, the number still at risk and the running totals of deaths and censored people. A time appears in that table only if no count shown there, or the change since the previous time, is from 1 to 10, and the curve stops at the last such time (`km_reportable_times()` on the [Functions](functions.qmd#small-count-rules-for-figures) page). A dashed line marks 6 months.
+
+**Functions used:** [`km_reportable_times()`](functions.qmd#small-count-rules-for-figures), [`theme_publication()`](plot_style.qmd#the-publication-theme) and [`save_figure()`](plot_style.qmd#saving-a-figure).
 
 ```{r}
 #| label: figure-2
@@ -59,6 +65,8 @@ The survival curve has its 95% confidence band and, below it, the number still a
 ## Figure 3: odds ratios
 
 Each variable kept in the final model, with its adjusted odds ratio and 95% confidence interval on a log scale, and the numbers printed beside it.
+
+**Functions used:** [`tidy_odds_ratios()`](functions.qmd#odds-ratios) and [`save_figure()`](plot_style.qmd#saving-a-figure).
 
 ```{r}
 #| label: figure-3
