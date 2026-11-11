@@ -112,6 +112,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <style>
+div.callout-Pending.callout {
+  border-left-color: #f0c400;
+}
+div.callout-Pending.callout-style-default > .callout-header {
+  background-color: rgba(240, 196, 0, 0.13);
+}
+div.callout-Pending .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pending.callout-titled .callout-icon::before {
+  content: '⏳';
+  background-image: none;
+}
 div.callout-Rcode.callout {
   border-left-color: #d63384;
 }
@@ -132,17 +143,6 @@ div.callout-Results.callout-style-default > .callout-header {
 div.callout-Results .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
 div.callout-Results.callout-style-default .callout-icon::before, div.callout-Results.callout-titled .callout-icon::before {
   content: '📊';
-  background-image: none;
-}
-div.callout-Pending.callout {
-  border-left-color: #f0c400;
-}
-div.callout-Pending.callout-style-default > .callout-header {
-  background-color: rgba(240, 196, 0, 0.13);
-}
-div.callout-Pending .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pending.callout-titled .callout-icon::before {
-  content: '⏳';
   background-image: none;
 }
 </style>
@@ -513,6 +513,7 @@ div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pen
 <p>The code sections below are imported directly from the script when this page is rendered.</p>
 </div>
 </div>
+<p><strong>Functions used:</strong> <a href="../quarto/plot_style.html#the-publication-theme"><code>theme_publication()</code></a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -526,6 +527,7 @@ div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pen
 <section id="figure-1-the-cohort" class="level2">
 <h2 class="anchored" data-anchor-id="figure-1-the-cohort">Figure 1: the cohort</h2>
 <p>The flowchart is drawn from the same object that built the cohort, so the two cannot disagree. If any box holds 1 to 10 people, the figure is not saved and the run warns.</p>
+<p><strong>Functions used:</strong> <a href="../quarto/functions.html#small-count-rules-for-figures"><code>flowchart_small_counts()</code></a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -553,7 +555,8 @@ div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pen
 </section>
 <section id="figure-2-survival" class="level2">
 <h2 class="anchored" data-anchor-id="figure-2-survival">Figure 2: survival</h2>
-<p>The survival curve has its 95% confidence band and, below it, the number still at risk and the running totals of deaths and censored people. A time appears in that table only if no count shown there, or the change since the previous time, is from 1 to 10, and the curve stops at the last such time (<code>km_reportable_times()</code> on the <a href="../quarto/functions.html">Functions</a> page). A dashed line marks 6 months.</p>
+<p>The survival curve has its 95% confidence band and, below it, the number still at risk and the running totals of deaths and censored people. A time appears in that table only if no count shown there, or the change since the previous time, is from 1 to 10, and the curve stops at the last such time (<code>km_reportable_times()</code> on the <a href="../quarto/functions.html#small-count-rules-for-figures">Functions</a> page). A dashed line marks 6 months.</p>
+<p><strong>Functions used:</strong> <a href="../quarto/functions.html#small-count-rules-for-figures"><code>km_reportable_times()</code></a>, <a href="../quarto/plot_style.html#the-publication-theme"><code>theme_publication()</code></a> and <a href="../quarto/plot_style.html#saving-a-figure"><code>save_figure()</code></a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -607,6 +610,7 @@ div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pen
 <section id="figure-3-odds-ratios" class="level2">
 <h2 class="anchored" data-anchor-id="figure-3-odds-ratios">Figure 3: odds ratios</h2>
 <p>Each variable kept in the final model, with its adjusted odds ratio and 95% confidence interval on a log scale, and the numbers printed beside it.</p>
+<p><strong>Functions used:</strong> <a href="../quarto/functions.html#odds-ratios"><code>tidy_odds_ratios()</code></a> and <a href="../quarto/plot_style.html#saving-a-figure"><code>save_figure()</code></a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -1215,57 +1219,65 @@ div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pen
 <span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">read_chunk</span>(<span class="st">"../R/figures.R"</span>)</span>
 <span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: figure-defaults</span></span>
-<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a><span class="fu">## Figure 1: the cohort</span></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>**Functions used:** <span class="co">[</span><span class="ot">`theme_publication()`</span><span class="co">](plot_style.qmd#the-publication-theme)</span>.</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: figure-defaults</span></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>The flowchart is drawn from the same object that built the cohort, so the two cannot disagree. If any box holds 1 to 10 people, the figure is not saved and the run warns.</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a><span class="fu">## Figure 1: the cohort</span></span>
 <span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: figure-1</span></span>
-<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>**How this differs from the published figure.** The <span class="co">[</span><span class="ot">published flowchart</span><span class="co">](results.qmd#figure-1.-flowchart-of-selection-of-relevant-ktrs-from-the-usrds-database)</span> shows the starting totals and the final cohort only. This one shows every exclusion in the plan's order, with its count, because a reader cannot judge who was left out otherwise (STROBE and RECORD item 13). Its boxes therefore will not line up one for one with the published ones.</span>
-<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a><span class="fu">## Figure 2: survival</span></span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>The flowchart is drawn from the same object that built the cohort, so the two cannot disagree. If any box holds 1 to 10 people, the figure is not saved and the run warns.</span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>**Functions used:** <span class="co">[</span><span class="ot">`flowchart_small_counts()`</span><span class="co">](functions.qmd#small-count-rules-for-figures)</span>.</span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: figure-1</span></span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>The survival curve has its 95% confidence band and, below it, the number still at risk and the running totals of deaths and censored people. A time appears in that table only if no count shown there, or the change since the previous time, is from 1 to 10, and the curve stops at the last such time (<span class="in">`km_reportable_times()`</span> on the <span class="co">[</span><span class="ot">Functions</span><span class="co">](functions.qmd)</span> page). A dashed line marks 6 months.</span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>**How this differs from the published figure.** The <span class="co">[</span><span class="ot">published flowchart</span><span class="co">](results.qmd#figure-1.-flowchart-of-selection-of-relevant-ktrs-from-the-usrds-database)</span> shows the starting totals and the final cohort only. This one shows every exclusion in the plan's order, with its count, because a reader cannot judge who was left out otherwise (STROBE and RECORD item 13). Its boxes therefore will not line up one for one with the published ones.</span>
 <span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: figure-2</span></span>
-<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a>**How this differs from the published figure.** The <span class="co">[</span><span class="ot">published curve</span><span class="co">](results.qmd#figure-2.-kaplan-meier-survival-curve-for-the-1265-kidney-transplant-recipients-hospitalized-with-cryptococcosis)</span> shows years on the axis, the number at risk every 5 years, and no confidence band. This one follows the KMunicate recommendations: the 95% confidence band, and below the curve the numbers at risk, censored and dead at each time shown, so a reader can see how much information lies behind each part of the curve. Time is in months, because the outcome is at 6 months.</span>
-<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a><span class="fu">## Figure 3: odds ratios</span></span>
-<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a>Each variable kept in the final model, with its adjusted odds ratio and 95% confidence interval on a log scale, and the numbers printed beside it.</span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a><span class="fu">## Figure 2: survival</span></span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a>The survival curve has its 95% confidence band and, below it, the number still at risk and the running totals of deaths and censored people. A time appears in that table only if no count shown there, or the change since the previous time, is from 1 to 10, and the curve stops at the last such time (<span class="in">`km_reportable_times()`</span> on the <span class="co">[</span><span class="ot">Functions</span><span class="co">](functions.qmd#small-count-rules-for-figures)</span> page). A dashed line marks 6 months.</span>
+<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a>**Functions used:** <span class="co">[</span><span class="ot">`km_reportable_times()`</span><span class="co">](functions.qmd#small-count-rules-for-figures)</span>, <span class="co">[</span><span class="ot">`theme_publication()`</span><span class="co">](plot_style.qmd#the-publication-theme)</span> and <span class="co">[</span><span class="ot">`save_figure()`</span><span class="co">](plot_style.qmd#saving-a-figure)</span>.</span>
+<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: figure-2</span></span>
+<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-73"><a href="#cb7-73" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb7-74"><a href="#cb7-74" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: figure-3</span></span>
-<span id="cb7-75"><a href="#cb7-75" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb7-76"><a href="#cb7-76" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb7-77"><a href="#cb7-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-78"><a href="#cb7-78" aria-hidden="true" tabindex="-1"></a>**How this differs from the published figure.** The <span class="co">[</span><span class="ot">published forest plot</span><span class="co">](results.qmd#figure-3.-multivariable-logistic-regression-analysis-of-predictors-of-6-month-mortality)</span> uses a linear axis from 0 to 10. This one uses a log scale, on which halving and doubling the odds are the same distance from 1, so effects in either direction can be compared by eye; the estimate and interval are printed beside each row so no value has to be read off the axis.</span>
-<span id="cb7-79"><a href="#cb7-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-80"><a href="#cb7-80" aria-hidden="true" tabindex="-1"></a><span class="fu">## Captions and alt text</span></span>
-<span id="cb7-81"><a href="#cb7-81" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-82"><a href="#cb7-82" aria-hidden="true" tabindex="-1"></a>Captions and descriptions for screen readers are built from the fitted results, so no number is typed by hand.</span>
-<span id="cb7-83"><a href="#cb7-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-86"><a href="#cb7-86" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb7-87"><a href="#cb7-87" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: figure-text</span></span>
-<span id="cb7-88"><a href="#cb7-88" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb7-89"><a href="#cb7-89" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb7-90"><a href="#cb7-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-93"><a href="#cb7-93" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb7-94"><a href="#cb7-94" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: figure-disclosure-checks</span></span>
-<span id="cb7-95"><a href="#cb7-95" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb7-96"><a href="#cb7-96" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a>**How this differs from the published figure.** The <span class="co">[</span><span class="ot">published curve</span><span class="co">](results.qmd#figure-2.-kaplan-meier-survival-curve-for-the-1265-kidney-transplant-recipients-hospitalized-with-cryptococcosis)</span> shows years on the axis, the number at risk every 5 years, and no confidence band. This one follows the KMunicate recommendations: the 95% confidence band, and below the curve the numbers at risk, censored and dead at each time shown, so a reader can see how much information lies behind each part of the curve. Time is in months, because the outcome is at 6 months.</span>
+<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-73"><a href="#cb7-73" aria-hidden="true" tabindex="-1"></a><span class="fu">## Figure 3: odds ratios</span></span>
+<span id="cb7-74"><a href="#cb7-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-75"><a href="#cb7-75" aria-hidden="true" tabindex="-1"></a>Each variable kept in the final model, with its adjusted odds ratio and 95% confidence interval on a log scale, and the numbers printed beside it.</span>
+<span id="cb7-76"><a href="#cb7-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-77"><a href="#cb7-77" aria-hidden="true" tabindex="-1"></a>**Functions used:** <span class="co">[</span><span class="ot">`tidy_odds_ratios()`</span><span class="co">](functions.qmd#odds-ratios)</span> and <span class="co">[</span><span class="ot">`save_figure()`</span><span class="co">](plot_style.qmd#saving-a-figure)</span>.</span>
+<span id="cb7-78"><a href="#cb7-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-81"><a href="#cb7-81" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb7-82"><a href="#cb7-82" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: figure-3</span></span>
+<span id="cb7-83"><a href="#cb7-83" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb7-84"><a href="#cb7-84" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-85"><a href="#cb7-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-86"><a href="#cb7-86" aria-hidden="true" tabindex="-1"></a>**How this differs from the published figure.** The <span class="co">[</span><span class="ot">published forest plot</span><span class="co">](results.qmd#figure-3.-multivariable-logistic-regression-analysis-of-predictors-of-6-month-mortality)</span> uses a linear axis from 0 to 10. This one uses a log scale, on which halving and doubling the odds are the same distance from 1, so effects in either direction can be compared by eye; the estimate and interval are printed beside each row so no value has to be read off the axis.</span>
+<span id="cb7-87"><a href="#cb7-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-88"><a href="#cb7-88" aria-hidden="true" tabindex="-1"></a><span class="fu">## Captions and alt text</span></span>
+<span id="cb7-89"><a href="#cb7-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-90"><a href="#cb7-90" aria-hidden="true" tabindex="-1"></a>Captions and descriptions for screen readers are built from the fitted results, so no number is typed by hand.</span>
+<span id="cb7-91"><a href="#cb7-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-94"><a href="#cb7-94" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb7-95"><a href="#cb7-95" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: figure-text</span></span>
+<span id="cb7-96"><a href="#cb7-96" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb7-97"><a href="#cb7-97" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-98"><a href="#cb7-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-101"><a href="#cb7-101" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb7-102"><a href="#cb7-102" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: figure-disclosure-checks</span></span>
+<span id="cb7-103"><a href="#cb7-103" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb7-104"><a href="#cb7-104" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

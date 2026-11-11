@@ -112,17 +112,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <style>
-div.callout-Pending.callout {
-  border-left-color: #f0c400;
-}
-div.callout-Pending.callout-style-default > .callout-header {
-  background-color: rgba(240, 196, 0, 0.13);
-}
-div.callout-Pending .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pending.callout-titled .callout-icon::before {
-  content: '⏳';
-  background-image: none;
-}
 div.callout-Rcode.callout {
   border-left-color: #d63384;
 }
@@ -143,6 +132,17 @@ div.callout-Results.callout-style-default > .callout-header {
 div.callout-Results .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
 div.callout-Results.callout-style-default .callout-icon::before, div.callout-Results.callout-titled .callout-icon::before {
   content: '📊';
+  background-image: none;
+}
+div.callout-Pending.callout {
+  border-left-color: #f0c400;
+}
+div.callout-Pending.callout-style-default > .callout-header {
+  background-color: rgba(240, 196, 0, 0.13);
+}
+div.callout-Pending .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pending.callout-titled .callout-icon::before {
+  content: '⏳';
   background-image: none;
 }
 </style>
@@ -535,6 +535,8 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <section id="codes-for-a-concept" class="level2">
 <h2 class="anchored" data-anchor-id="codes-for-a-concept">Codes for a concept</h2>
 <p><code>codes_for_concept()</code> picks one concept’s codes out of the <code>code_lists</code> table, and can limit them to one code type: diagnosis, procedure or HCPCS. It stops with an error if the concept name is misspelled, rather than silently returning no codes.</p>
+<p><strong>Used in the analysis:</strong> 1. Building the cohort: <a href="../quarto/create_cohort.html#flagging-cryptococcosis">Flagging cryptococcosis</a>.</p>
+<p><strong>Used by:</strong> <a href="#flagging-concepts-on-records"><code>flag_concepts()</code></a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -562,6 +564,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <section id="matching-codes" class="level2">
 <h2 class="anchored" data-anchor-id="matching-codes">Matching codes</h2>
 <p><code>code_matches()</code> compares a vector of recorded codes with a code list. It handles both exact codes and prefixes, so the diabetes stems match all their subcodes. The usRds <code>get_*_ICD()</code> functions match exactly only, which is why this exists (coverage step 6).</p>
+<p><strong>Used by:</strong> <a href="#searching-wide-code-columns"><code>flag_codes_wide()</code></a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -594,6 +597,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <li>procedures <code>HSSURG1</code> onwards.</li>
 </ul>
 <p><code>flag_codes_wide()</code> flags each row where any of the named columns holds a listed code. It skips columns a file does not have, so the same call works on both files (coverage steps 4–6 and 9).</p>
+<p><strong>Used by:</strong> <a href="#flagging-cryptococcosis-records"><code>flag_cryptococcosis_records()</code></a> and <a href="#flagging-concepts-on-records"><code>flag_concepts()</code></a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -621,6 +625,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <h2 class="anchored" data-anchor-id="combining-records-into-stays">Combining records into stays</h2>
 <p>A single hospital stay can appear as several hospitalization records. <code>collapse_stays()</code> puts a person’s records in date order. It starts a new stay only when a record’s admission date falls after the latest discharge date seen so far, so the stays it builds never overlap. A record admitted on the day of the previous discharge joins the same stay. The optional <code>gap_days</code> argument also joins records that start within that many days of discharge.</p>
 <p>The function adds a stay identifier and the stay’s first and last dates. The plan treats overlapping or contiguous records as one stay (§5); usRds has no equivalent (coverage step 7).</p>
+<p><strong>Used by:</strong> <a href="#cryptococcosis-stays"><code>summarise_cryptococcosis_stays()</code></a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -656,6 +661,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <section id="age-in-years" class="level2">
 <h2 class="anchored" data-anchor-id="age-in-years">Age in years</h2>
 <p><code>age_in_years()</code> gives age at last birthday on a given date, so a person is 18 on their 18th birthday. The plan’s age range, 18 to 90 years, is applied to this.</p>
+<p><strong>Used by:</strong> <a href="#cohort-candidates"><code>build_cohort_candidates()</code></a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -669,6 +675,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <section id="first-transplant-date" class="level2">
 <h2 class="anchored" data-anchor-id="first-transplant-date">First transplant date</h2>
 <p><code>first_transplant_dates()</code> reduces the transplant file, which has one row per transplant, to each person’s earliest transplant date. Rows without a date are ignored.</p>
+<p><strong>Used in the analysis:</strong> 1. Building the cohort: <a href="../quarto/create_cohort.html#transplant-and-birth-dates">Transplant and birth dates</a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -686,6 +693,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <section id="flagging-cryptococcosis-records" class="level2">
 <h2 class="anchored" data-anchor-id="flagging-cryptococcosis-records">Flagging cryptococcosis records</h2>
 <p><code>flag_cryptococcosis_records()</code> marks each hospitalization record that has a cryptococcosis code in any diagnosis column. It’s told which columns to search, because the two hospitalization files differ (see <a href="../quarto/setup.html#hospitalization-file-columns">Setup</a>).</p>
+<p><strong>Used in the analysis:</strong> 1. Building the cohort: <a href="../quarto/create_cohort.html#flagging-cryptococcosis">Flagging cryptococcosis</a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -705,6 +713,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <section id="cryptococcosis-stays" class="level2">
 <h2 class="anchored" data-anchor-id="cryptococcosis-stays">Cryptococcosis stays</h2>
 <p><code>summarise_cryptococcosis_stays()</code> combines a person’s records into stays with <code>collapse_stays()</code>. A stay counts as a cryptococcosis stay if any of its records has the code. The function keeps stays admitted within the study window, with both boundary dates included.</p>
+<p><strong>Used in the analysis:</strong> 1. Building the cohort: <a href="../quarto/create_cohort.html#building-stays">Building stays</a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -738,6 +747,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <li>their age on the index admission date.</li>
 </ul>
 <p>A stay admitted on the day of the first transplant counts; a stay admitted the day before does not, even if it continues past the transplant. The function excludes no one itself; the exclusions happen in the <a href="../quarto/create_cohort.html#flowchart">flowchart</a>.</p>
+<p><strong>Used in the analysis:</strong> 1. Building the cohort: <a href="../quarto/create_cohort.html#cohort-candidates">Cohort candidates</a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -780,6 +790,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 </details>
 </div>
 <p><code>prior_cryptococcosis_ids()</code> takes every cryptococcosis claim (hospital records and physician claims together, one row per claim with its first day of service) and returns the people with any claim before their first transplant. A claim on the transplant date itself does not count as before it, the same rule as for hospital stays.</p>
+<p><strong>Used in the analysis:</strong> 1. Building the cohort: <a href="../quarto/create_cohort.html#cohort-candidates">Cohort candidates</a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -802,6 +813,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <section id="flagging-concepts-on-records" class="level2">
 <h2 class="anchored" data-anchor-id="flagging-concepts-on-records">Flagging concepts on records</h2>
 <p><code>flag_concepts()</code> adds one yes/no column per concept to hospitalization records. A record gets “yes” when any of the named columns holds a code from that concept’s list.</p>
+<p><strong>Used by:</strong> <a href="#loading-and-flagging-hospitalizations"><code>load_flagged_hospitalizations()</code></a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -824,6 +836,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <section id="loading-and-flagging-hospitalizations" class="level2">
 <h2 class="anchored" data-anchor-id="loading-and-flagging-hospitalizations">Loading and flagging hospitalizations</h2>
 <p><code>load_flagged_hospitalizations()</code> loads one hospitalization file for a set of people through usRds. It flags the diagnosis and procedure concepts on each record, and keeps the dates, ICU and CCU days, and the flags.</p>
+<p><strong>Used in the analysis:</strong> 2. Covariates: <a href="../quarto/create_covariates.html#hospitalization-records">Hospitalization records</a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -852,6 +865,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <section id="index-stay-covariates" class="level2">
 <h2 class="anchored" data-anchor-id="index-stay-covariates">Index stay covariates</h2>
 <p><code>summarise_index_stay()</code> takes the records that fall within each person’s index stay, meaning those admitted between the stay’s first and last dates. A concept counts if any of those records has it. ICU admission means any ICU or CCU days on the stay.</p>
+<p><strong>Used in the analysis:</strong> 2. Covariates: <a href="../quarto/create_covariates.html#on-the-index-stay">On the index stay</a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -886,6 +900,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <section id="earlier-hospitalizations" class="level2">
 <h2 class="anchored" data-anchor-id="earlier-hospitalizations">Earlier hospitalizations</h2>
 <p><code>summarise_prior_hospitalizations()</code> reports whether any hospitalization admitted before the index admission carries a given flag, such as a transplant-complication code. People with no earlier hospitalizations get “no”.</p>
+<p><strong>Used in the analysis:</strong> 2. Covariates: <a href="../quarto/create_covariates.html#earlier-hospitalization-for-a-transplant-complication">Earlier hospitalization for a transplant complication</a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -918,6 +933,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <li>graft failures before it;</li>
 <li>the days since the most recent transplant.</li>
 </ul>
+<p><strong>Used in the analysis:</strong> 2. Covariates: <a href="../quarto/create_covariates.html#transplant-history-sex-and-race">Transplant history, sex and race</a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -950,6 +966,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <section id="the-transplant-whose-registry-data-are-used" class="level2">
 <h2 class="anchored" data-anchor-id="the-transplant-whose-registry-data-are-used">The transplant whose registry data are used</h2>
 <p><code>select_index_registration()</code> picks each person’s UNOS registration for the most recent transplant on or before the index admission. The transplant-time covariates come from that registration.</p>
+<p><strong>Used in the analysis:</strong> 2. Covariates: <a href="../quarto/create_covariates.html#registry-data-at-transplant">Registry data at transplant</a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -975,6 +992,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <section id="acute-rejection" class="level2">
 <h2 class="anchored" data-anchor-id="acute-rejection">Acute rejection</h2>
 <p><code>unos_rejection_any()</code> turns the UNOS rejection code into yes or no. Codes 1 and 2 (an episode, treated or not) are “yes”, and 3 is “no”. Unknown codes are missing.</p>
+<p><strong>Used in the analysis:</strong> 2. Covariates: <a href="../quarto/create_covariates.html#acute-rejection">Acute rejection</a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -995,6 +1013,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <section id="drug-classes" class="level2">
 <h2 class="anchored" data-anchor-id="drug-classes">Drug classes</h2>
 <p><code>classify_immunosuppressants()</code> gives one row per registration or follow-up, with a yes/no column per drug class. A class is “yes” when any drug record maps to it, by code or by free text.</p>
+<p><strong>Used in the analysis:</strong> 2. Covariates: <a href="../quarto/create_covariates.html#immunosuppression-at-transplant">Immunosuppression at transplant</a>; 2. Covariates: <a href="../quarto/create_covariates.html#immunosuppression-at-first-follow-up">Immunosuppression at first follow-up</a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -1035,6 +1054,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <section id="demographic-recodes" class="level2">
 <h2 class="anchored" data-anchor-id="demographic-recodes">Demographic recodes</h2>
 <p>These turn the USRDS codes for sex, race and Hispanic ethnicity into labels. Hispanic ethnicity follows the official format, in which “no” is coded 2 or N. The reconstruction treated 2 as missing.</p>
+<p><strong>Used in the analysis:</strong> 2. Covariates: <a href="../quarto/create_covariates.html#transplant-history-sex-and-race">Transplant history, sex and race</a>; 2. Covariates: <a href="../quarto/create_covariates.html#ethnicity-and-region">Ethnicity and region</a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -1066,6 +1086,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <section id="combining-yesno-values" class="level2">
 <h2 class="anchored" data-anchor-id="combining-yesno-values">Combining yes/no values</h2>
 <p><code>any_known()</code> combines several yes/no values while keeping missing distinct from “no”. The result is “yes” if any value is yes, “no” if none is yes and at least one is no, and missing if every value is missing.</p>
+<p><strong>Used in the analysis:</strong> 2. Covariates: <a href="../quarto/create_covariates.html#acute-rejection">Acute rejection</a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -1085,6 +1106,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <section id="mortality-outcomes" class="level2">
 <h2 class="anchored" data-anchor-id="mortality-outcomes">Mortality outcomes</h2>
 <p><code>six_month_outcomes()</code> counts days from the index admission to death, with the admission day as day 0, and flags death within the 180-day window. Deaths on day 180, and on the admission day itself, both count. For the survival curve, people still alive are followed to the end of the release’s death data. The function stops if that date hasn’t been set.</p>
+<p><strong>Used in the analysis:</strong> 3. Outcomes: <a href="../quarto/create_outcomes.html#mortality">Mortality</a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -1123,6 +1145,8 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <section id="one-p-value-per-variable" class="level2">
 <h2 class="anchored" data-anchor-id="one-p-value-per-variable">One P value per variable</h2>
 <p><code>wald_term_p()</code> tests all of a variable’s coefficients together. A variable with several categories, such as region, therefore gets one P value, as in Stata’s stepwise procedure, which the paper used.</p>
+<p><strong>Used in the analysis:</strong> Tables: <a href="../quarto/tables.html#odds-ratios">Odds ratios</a>.</p>
+<p><strong>Used by:</strong> <a href="#bivariable-models"><code>bivariable_models()</code></a> and <a href="#backward-elimination"><code>backward_eliminate()</code></a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -1149,6 +1173,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <section id="bivariable-models" class="level2">
 <h2 class="anchored" data-anchor-id="bivariable-models">Bivariable models</h2>
 <p><code>bivariable_models()</code> fits one logistic model per candidate variable. Each model uses everyone whose value of that variable is known.</p>
+<p><strong>Used in the analysis:</strong> 4. Survival and models: <a href="../quarto/fit_models.html#each-variable-alone">Each variable alone</a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -1180,6 +1205,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <section id="backward-elimination" class="level2">
 <h2 class="anchored" data-anchor-id="backward-elimination">Backward elimination</h2>
 <p><code>backward_eliminate()</code> starts with every candidate and repeatedly removes the variable with the largest P value, until all remaining variables have P below 0.05. The people analysed stay the same throughout: everyone with every candidate known, as Stata does. A variable that cannot be estimated in that group (it does not vary, or is fully determined by others) has no P value and is removed first, as Stata omits it.</p>
+<p><strong>Used in the analysis:</strong> 4. Survival and models: <a href="../quarto/fit_models.html#multivariable-model">Multivariable model</a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -1220,6 +1246,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <section id="goodness-of-fit" class="level2">
 <h2 class="anchored" data-anchor-id="goodness-of-fit">Goodness of fit</h2>
 <p><code>hosmer_lemeshow()</code> splits people into tenths by predicted risk and compares observed with expected deaths in each tenth.</p>
+<p><strong>Used in the analysis:</strong> 4. Survival and models: <a href="../quarto/fit_models.html#goodness-of-fit">Goodness of fit</a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -1247,6 +1274,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <section id="small-count-rules-for-tables" class="level2">
 <h2 class="anchored" data-anchor-id="small-count-rules-for-tables">Small-count rules for tables</h2>
 <p>USRDS does not allow any count from 1 to 10 to be published, including one that can be worked out by subtraction. <code>count_table_cells()</code> lists every count behind a descriptive table, including the ones not printed (such as the number <em>without</em> a condition). <code>flag_small_cells()</code> marks the small ones and then, wherever a single hidden count could be recovered from a total, hides the next smallest count as well, repeating until nothing more changes. <code>suppress_table_body()</code> then puts “≤10” in those cells and removes the P value for that variable.</p>
+<p><strong>Used in the analysis:</strong> Tables: <a href="../quarto/tables.html#descriptive-tables">Descriptive tables</a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -1283,6 +1311,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <span id="cb26-31"><a href="#cb26-31" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
+<p><strong>Used in the analysis:</strong> Tables: <a href="../quarto/tables.html#descriptive-tables">Descriptive tables</a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -1349,6 +1378,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <span id="cb27-61"><a href="#cb27-61" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
+<p><strong>Used in the analysis:</strong> Tables: <a href="../quarto/tables.html#descriptive-tables">Descriptive tables</a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -1391,6 +1421,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <section id="p-values-in-ama-style" class="level2">
 <h2 class="anchored" data-anchor-id="p-values-in-ama-style">P values in AMA style</h2>
 <p><code>style_pvalue_ama()</code> rounds P values as gtsummary’s JAMA theme does and drops the leading zero (“.040”, “&lt;.001”), as AMA style asks.</p>
+<p><strong>Used in the analysis:</strong> Tables: <a href="../quarto/tables.html#journal-style">Journal style</a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -1407,6 +1438,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <section id="small-count-rules-for-figures" class="level2">
 <h2 class="anchored" data-anchor-id="small-count-rules-for-figures">Small-count rules for figures</h2>
 <p><code>km_reportable_times()</code> picks the times the survival figure can show: more than 10 people still at risk, and every count and every change between times shown either 0 or above 10. <code>flowchart_small_counts()</code> lists any flowchart box with 1 to 10 people.</p>
+<p><strong>Used in the analysis:</strong> Figures: <a href="../quarto/figures.html#figure-2-survival">Figure 2: survival</a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -1446,6 +1478,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <span id="cb30-34"><a href="#cb30-34" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
+<p><strong>Used in the analysis:</strong> Figures: <a href="../quarto/figures.html#figure-1-the-cohort">Figure 1: the cohort</a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -1464,6 +1497,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <section id="odds-ratios" class="level2">
 <h2 class="anchored" data-anchor-id="odds-ratios">Odds ratios</h2>
 <p><code>tidy_odds_ratios()</code> turns a fitted logistic model into odds ratios with 95% Wald confidence intervals (as Stata reports them) and readable labels.</p>
+<p><strong>Used in the analysis:</strong> Tables: <a href="../quarto/tables.html#the-papers-final-model">The paper’s final model</a>; Figures: <a href="../quarto/figures.html#figure-3-odds-ratios">Figure 3: odds ratios</a>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -1996,293 +2030,361 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <span id="cb33-30"><a href="#cb33-30" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-31"><a href="#cb33-31" aria-hidden="true" tabindex="-1"></a><span class="in">`codes_for_concept()`</span> picks one concept's codes out of the <span class="in">`code_lists`</span> table, and can limit them to one code type: diagnosis, procedure or HCPCS. It stops with an error if the concept name is misspelled, rather than silently returning no codes.</span>
 <span id="cb33-32"><a href="#cb33-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-35"><a href="#cb33-35" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb33-36"><a href="#cb33-36" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: codes-for-concept</span></span>
-<span id="cb33-37"><a href="#cb33-37" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb33-38"><a href="#cb33-38" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb33-39"><a href="#cb33-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-40"><a href="#cb33-40" aria-hidden="true" tabindex="-1"></a><span class="fu">## Matching codes</span></span>
-<span id="cb33-41"><a href="#cb33-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-42"><a href="#cb33-42" aria-hidden="true" tabindex="-1"></a><span class="in">`code_matches()`</span> compares a vector of recorded codes with a code list. It handles both exact codes and prefixes, so the diabetes stems match all their subcodes. The usRds <span class="in">`get_*_ICD()`</span> functions match exactly only, which is why this exists (coverage step 6).</span>
+<span id="cb33-33"><a href="#cb33-33" aria-hidden="true" tabindex="-1"></a>**Used in the analysis:** 1. Building the cohort: <span class="co">[</span><span class="ot">Flagging cryptococcosis</span><span class="co">](create_cohort.qmd#flagging-cryptococcosis)</span>.</span>
+<span id="cb33-34"><a href="#cb33-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-35"><a href="#cb33-35" aria-hidden="true" tabindex="-1"></a>**Used by:** <span class="co">[</span><span class="ot">`flag_concepts()`</span><span class="co">](#flagging-concepts-on-records)</span>.</span>
+<span id="cb33-36"><a href="#cb33-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-39"><a href="#cb33-39" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb33-40"><a href="#cb33-40" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: codes-for-concept</span></span>
+<span id="cb33-41"><a href="#cb33-41" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb33-42"><a href="#cb33-42" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb33-43"><a href="#cb33-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-46"><a href="#cb33-46" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb33-47"><a href="#cb33-47" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: code-matches</span></span>
-<span id="cb33-48"><a href="#cb33-48" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb33-49"><a href="#cb33-49" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb33-50"><a href="#cb33-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-51"><a href="#cb33-51" aria-hidden="true" tabindex="-1"></a><span class="fu">## Searching wide code columns</span></span>
-<span id="cb33-52"><a href="#cb33-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-53"><a href="#cb33-53" aria-hidden="true" tabindex="-1"></a>The USRDS hospitalization files record each stay's codes in separate columns:</span>
-<span id="cb33-54"><a href="#cb33-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-55"><a href="#cb33-55" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>the principal diagnosis, <span class="in">`PRIMDIAG`</span>;</span>
-<span id="cb33-56"><a href="#cb33-56" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>secondary diagnoses <span class="in">`HSDIAG1`</span> onwards (10 columns before 2010, 26 from 2010);</span>
-<span id="cb33-57"><a href="#cb33-57" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>procedures <span class="in">`HSSURG1`</span> onwards.</span>
+<span id="cb33-44"><a href="#cb33-44" aria-hidden="true" tabindex="-1"></a><span class="fu">## Matching codes</span></span>
+<span id="cb33-45"><a href="#cb33-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-46"><a href="#cb33-46" aria-hidden="true" tabindex="-1"></a><span class="in">`code_matches()`</span> compares a vector of recorded codes with a code list. It handles both exact codes and prefixes, so the diabetes stems match all their subcodes. The usRds <span class="in">`get_*_ICD()`</span> functions match exactly only, which is why this exists (coverage step 6).</span>
+<span id="cb33-47"><a href="#cb33-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-48"><a href="#cb33-48" aria-hidden="true" tabindex="-1"></a>**Used by:** <span class="co">[</span><span class="ot">`flag_codes_wide()`</span><span class="co">](#searching-wide-code-columns)</span>.</span>
+<span id="cb33-49"><a href="#cb33-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-52"><a href="#cb33-52" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb33-53"><a href="#cb33-53" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: code-matches</span></span>
+<span id="cb33-54"><a href="#cb33-54" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb33-55"><a href="#cb33-55" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-56"><a href="#cb33-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-57"><a href="#cb33-57" aria-hidden="true" tabindex="-1"></a><span class="fu">## Searching wide code columns</span></span>
 <span id="cb33-58"><a href="#cb33-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-59"><a href="#cb33-59" aria-hidden="true" tabindex="-1"></a><span class="in">`flag_codes_wide()`</span> flags each row where any of the named columns holds a listed code. It skips columns a file does not have, so the same call works on both files (coverage steps 4–6 and 9).</span>
+<span id="cb33-59"><a href="#cb33-59" aria-hidden="true" tabindex="-1"></a>The USRDS hospitalization files record each stay's codes in separate columns:</span>
 <span id="cb33-60"><a href="#cb33-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-63"><a href="#cb33-63" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb33-64"><a href="#cb33-64" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: flag-codes-wide</span></span>
-<span id="cb33-65"><a href="#cb33-65" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb33-66"><a href="#cb33-66" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb33-67"><a href="#cb33-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-68"><a href="#cb33-68" aria-hidden="true" tabindex="-1"></a><span class="fu">## Combining records into stays</span></span>
-<span id="cb33-69"><a href="#cb33-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-70"><a href="#cb33-70" aria-hidden="true" tabindex="-1"></a>A single hospital stay can appear as several hospitalization records. <span class="in">`collapse_stays()`</span> puts a person's records in date order. It starts a new stay only when a record's admission date falls after the latest discharge date seen so far, so the stays it builds never overlap. A record admitted on the day of the previous discharge joins the same stay. The optional <span class="in">`gap_days`</span> argument also joins records that start within that many days of discharge.</span>
-<span id="cb33-71"><a href="#cb33-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-72"><a href="#cb33-72" aria-hidden="true" tabindex="-1"></a>The function adds a stay identifier and the stay's first and last dates. The plan treats overlapping or contiguous records as one stay (§5); usRds has no equivalent (coverage step 7).</span>
-<span id="cb33-73"><a href="#cb33-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-76"><a href="#cb33-76" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb33-77"><a href="#cb33-77" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: collapse-stays</span></span>
-<span id="cb33-78"><a href="#cb33-78" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb33-79"><a href="#cb33-79" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb33-80"><a href="#cb33-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-81"><a href="#cb33-81" aria-hidden="true" tabindex="-1"></a><span class="fu">## Age in years</span></span>
-<span id="cb33-82"><a href="#cb33-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-83"><a href="#cb33-83" aria-hidden="true" tabindex="-1"></a><span class="in">`age_in_years()`</span> gives age at last birthday on a given date, so a person is 18 on their 18th birthday. The plan's age range, 18 to 90 years, is applied to this.</span>
-<span id="cb33-84"><a href="#cb33-84" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-87"><a href="#cb33-87" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb33-88"><a href="#cb33-88" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: age-in-years</span></span>
-<span id="cb33-89"><a href="#cb33-89" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb33-90"><a href="#cb33-90" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb33-91"><a href="#cb33-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-92"><a href="#cb33-92" aria-hidden="true" tabindex="-1"></a><span class="fu">## First transplant date</span></span>
-<span id="cb33-93"><a href="#cb33-93" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-94"><a href="#cb33-94" aria-hidden="true" tabindex="-1"></a><span class="in">`first_transplant_dates()`</span> reduces the transplant file, which has one row per transplant, to each person's earliest transplant date. Rows without a date are ignored.</span>
-<span id="cb33-95"><a href="#cb33-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-98"><a href="#cb33-98" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb33-99"><a href="#cb33-99" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: first-transplant-dates</span></span>
-<span id="cb33-100"><a href="#cb33-100" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb33-101"><a href="#cb33-101" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb33-102"><a href="#cb33-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-103"><a href="#cb33-103" aria-hidden="true" tabindex="-1"></a><span class="fu">## Flagging cryptococcosis records</span></span>
-<span id="cb33-104"><a href="#cb33-104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-105"><a href="#cb33-105" aria-hidden="true" tabindex="-1"></a><span class="in">`flag_cryptococcosis_records()`</span> marks each hospitalization record that has a cryptococcosis code in any diagnosis column. It's told which columns to search, because the two hospitalization files differ (see <span class="co">[</span><span class="ot">Setup</span><span class="co">](setup.qmd#hospitalization-file-columns)</span>).</span>
-<span id="cb33-106"><a href="#cb33-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-109"><a href="#cb33-109" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb33-110"><a href="#cb33-110" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: flag-cryptococcosis-records</span></span>
-<span id="cb33-111"><a href="#cb33-111" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb33-112"><a href="#cb33-112" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb33-113"><a href="#cb33-113" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-114"><a href="#cb33-114" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cryptococcosis stays</span></span>
-<span id="cb33-115"><a href="#cb33-115" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-116"><a href="#cb33-116" aria-hidden="true" tabindex="-1"></a><span class="in">`summarise_cryptococcosis_stays()`</span> combines a person's records into stays with <span class="in">`collapse_stays()`</span>. A stay counts as a cryptococcosis stay if any of its records has the code. The function keeps stays admitted within the study window, with both boundary dates included.</span>
-<span id="cb33-117"><a href="#cb33-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-120"><a href="#cb33-120" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb33-121"><a href="#cb33-121" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: summarise-cryptococcosis-stays</span></span>
-<span id="cb33-122"><a href="#cb33-122" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb33-123"><a href="#cb33-123" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb33-124"><a href="#cb33-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-125"><a href="#cb33-125" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cohort candidates</span></span>
-<span id="cb33-126"><a href="#cb33-126" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-127"><a href="#cb33-127" aria-hidden="true" tabindex="-1"></a><span class="in">`build_cohort_candidates()`</span> makes one row per person with a cryptococcosis stay in the window. It adds the facts the cohort flowchart filters on:</span>
-<span id="cb33-128"><a href="#cb33-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-129"><a href="#cb33-129" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>whether the person is in the transplant file;</span>
-<span id="cb33-130"><a href="#cb33-130" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>their index stay: the first cryptococcosis stay admitted on or after their first transplant;</span>
-<span id="cb33-131"><a href="#cb33-131" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>their age on the index admission date.</span>
-<span id="cb33-132"><a href="#cb33-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-133"><a href="#cb33-133" aria-hidden="true" tabindex="-1"></a>A stay admitted on the day of the first transplant counts; a stay admitted the day before does not, even if it continues past the transplant. The function excludes no one itself; the exclusions happen in the <span class="co">[</span><span class="ot">flowchart</span><span class="co">](create_cohort.qmd#flowchart)</span>.</span>
-<span id="cb33-134"><a href="#cb33-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-137"><a href="#cb33-137" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb33-138"><a href="#cb33-138" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: build-cohort-candidates</span></span>
-<span id="cb33-139"><a href="#cb33-139" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb33-140"><a href="#cb33-140" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb33-141"><a href="#cb33-141" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-142"><a href="#cb33-142" aria-hidden="true" tabindex="-1"></a><span class="in">`prior_cryptococcosis_ids()`</span> takes every cryptococcosis claim (hospital records and physician claims together, one row per claim with its first day of service) and returns the people with any claim before their first transplant. A claim on the transplant date itself does not count as before it, the same rule as for hospital stays.</span>
-<span id="cb33-143"><a href="#cb33-143" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-146"><a href="#cb33-146" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb33-147"><a href="#cb33-147" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: prior-cryptococcosis</span></span>
-<span id="cb33-148"><a href="#cb33-148" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb33-149"><a href="#cb33-149" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-61"><a href="#cb33-61" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>the principal diagnosis, <span class="in">`PRIMDIAG`</span>;</span>
+<span id="cb33-62"><a href="#cb33-62" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>secondary diagnoses <span class="in">`HSDIAG1`</span> onwards (10 columns before 2010, 26 from 2010);</span>
+<span id="cb33-63"><a href="#cb33-63" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>procedures <span class="in">`HSSURG1`</span> onwards.</span>
+<span id="cb33-64"><a href="#cb33-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-65"><a href="#cb33-65" aria-hidden="true" tabindex="-1"></a><span class="in">`flag_codes_wide()`</span> flags each row where any of the named columns holds a listed code. It skips columns a file does not have, so the same call works on both files (coverage steps 4–6 and 9).</span>
+<span id="cb33-66"><a href="#cb33-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-67"><a href="#cb33-67" aria-hidden="true" tabindex="-1"></a>**Used by:** <span class="co">[</span><span class="ot">`flag_cryptococcosis_records()`</span><span class="co">](#flagging-cryptococcosis-records)</span> and <span class="co">[</span><span class="ot">`flag_concepts()`</span><span class="co">](#flagging-concepts-on-records)</span>.</span>
+<span id="cb33-68"><a href="#cb33-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-71"><a href="#cb33-71" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb33-72"><a href="#cb33-72" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: flag-codes-wide</span></span>
+<span id="cb33-73"><a href="#cb33-73" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb33-74"><a href="#cb33-74" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-75"><a href="#cb33-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-76"><a href="#cb33-76" aria-hidden="true" tabindex="-1"></a><span class="fu">## Combining records into stays</span></span>
+<span id="cb33-77"><a href="#cb33-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-78"><a href="#cb33-78" aria-hidden="true" tabindex="-1"></a>A single hospital stay can appear as several hospitalization records. <span class="in">`collapse_stays()`</span> puts a person's records in date order. It starts a new stay only when a record's admission date falls after the latest discharge date seen so far, so the stays it builds never overlap. A record admitted on the day of the previous discharge joins the same stay. The optional <span class="in">`gap_days`</span> argument also joins records that start within that many days of discharge.</span>
+<span id="cb33-79"><a href="#cb33-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-80"><a href="#cb33-80" aria-hidden="true" tabindex="-1"></a>The function adds a stay identifier and the stay's first and last dates. The plan treats overlapping or contiguous records as one stay (§5); usRds has no equivalent (coverage step 7).</span>
+<span id="cb33-81"><a href="#cb33-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-82"><a href="#cb33-82" aria-hidden="true" tabindex="-1"></a>**Used by:** <span class="co">[</span><span class="ot">`summarise_cryptococcosis_stays()`</span><span class="co">](#cryptococcosis-stays)</span>.</span>
+<span id="cb33-83"><a href="#cb33-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-86"><a href="#cb33-86" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb33-87"><a href="#cb33-87" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: collapse-stays</span></span>
+<span id="cb33-88"><a href="#cb33-88" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb33-89"><a href="#cb33-89" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-90"><a href="#cb33-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-91"><a href="#cb33-91" aria-hidden="true" tabindex="-1"></a><span class="fu">## Age in years</span></span>
+<span id="cb33-92"><a href="#cb33-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-93"><a href="#cb33-93" aria-hidden="true" tabindex="-1"></a><span class="in">`age_in_years()`</span> gives age at last birthday on a given date, so a person is 18 on their 18th birthday. The plan's age range, 18 to 90 years, is applied to this.</span>
+<span id="cb33-94"><a href="#cb33-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-95"><a href="#cb33-95" aria-hidden="true" tabindex="-1"></a>**Used by:** <span class="co">[</span><span class="ot">`build_cohort_candidates()`</span><span class="co">](#cohort-candidates)</span>.</span>
+<span id="cb33-96"><a href="#cb33-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-99"><a href="#cb33-99" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb33-100"><a href="#cb33-100" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: age-in-years</span></span>
+<span id="cb33-101"><a href="#cb33-101" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb33-102"><a href="#cb33-102" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-103"><a href="#cb33-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-104"><a href="#cb33-104" aria-hidden="true" tabindex="-1"></a><span class="fu">## First transplant date</span></span>
+<span id="cb33-105"><a href="#cb33-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-106"><a href="#cb33-106" aria-hidden="true" tabindex="-1"></a><span class="in">`first_transplant_dates()`</span> reduces the transplant file, which has one row per transplant, to each person's earliest transplant date. Rows without a date are ignored.</span>
+<span id="cb33-107"><a href="#cb33-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-108"><a href="#cb33-108" aria-hidden="true" tabindex="-1"></a>**Used in the analysis:** 1. Building the cohort: <span class="co">[</span><span class="ot">Transplant and birth dates</span><span class="co">](create_cohort.qmd#transplant-and-birth-dates)</span>.</span>
+<span id="cb33-109"><a href="#cb33-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-112"><a href="#cb33-112" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb33-113"><a href="#cb33-113" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: first-transplant-dates</span></span>
+<span id="cb33-114"><a href="#cb33-114" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb33-115"><a href="#cb33-115" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-116"><a href="#cb33-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-117"><a href="#cb33-117" aria-hidden="true" tabindex="-1"></a><span class="fu">## Flagging cryptococcosis records</span></span>
+<span id="cb33-118"><a href="#cb33-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-119"><a href="#cb33-119" aria-hidden="true" tabindex="-1"></a><span class="in">`flag_cryptococcosis_records()`</span> marks each hospitalization record that has a cryptococcosis code in any diagnosis column. It's told which columns to search, because the two hospitalization files differ (see <span class="co">[</span><span class="ot">Setup</span><span class="co">](setup.qmd#hospitalization-file-columns)</span>).</span>
+<span id="cb33-120"><a href="#cb33-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-121"><a href="#cb33-121" aria-hidden="true" tabindex="-1"></a>**Used in the analysis:** 1. Building the cohort: <span class="co">[</span><span class="ot">Flagging cryptococcosis</span><span class="co">](create_cohort.qmd#flagging-cryptococcosis)</span>.</span>
+<span id="cb33-122"><a href="#cb33-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-125"><a href="#cb33-125" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb33-126"><a href="#cb33-126" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: flag-cryptococcosis-records</span></span>
+<span id="cb33-127"><a href="#cb33-127" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb33-128"><a href="#cb33-128" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-129"><a href="#cb33-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-130"><a href="#cb33-130" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cryptococcosis stays</span></span>
+<span id="cb33-131"><a href="#cb33-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-132"><a href="#cb33-132" aria-hidden="true" tabindex="-1"></a><span class="in">`summarise_cryptococcosis_stays()`</span> combines a person's records into stays with <span class="in">`collapse_stays()`</span>. A stay counts as a cryptococcosis stay if any of its records has the code. The function keeps stays admitted within the study window, with both boundary dates included.</span>
+<span id="cb33-133"><a href="#cb33-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-134"><a href="#cb33-134" aria-hidden="true" tabindex="-1"></a>**Used in the analysis:** 1. Building the cohort: <span class="co">[</span><span class="ot">Building stays</span><span class="co">](create_cohort.qmd#building-stays)</span>.</span>
+<span id="cb33-135"><a href="#cb33-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-138"><a href="#cb33-138" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb33-139"><a href="#cb33-139" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: summarise-cryptococcosis-stays</span></span>
+<span id="cb33-140"><a href="#cb33-140" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb33-141"><a href="#cb33-141" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-142"><a href="#cb33-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-143"><a href="#cb33-143" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cohort candidates</span></span>
+<span id="cb33-144"><a href="#cb33-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-145"><a href="#cb33-145" aria-hidden="true" tabindex="-1"></a><span class="in">`build_cohort_candidates()`</span> makes one row per person with a cryptococcosis stay in the window. It adds the facts the cohort flowchart filters on:</span>
+<span id="cb33-146"><a href="#cb33-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-147"><a href="#cb33-147" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>whether the person is in the transplant file;</span>
+<span id="cb33-148"><a href="#cb33-148" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>their index stay: the first cryptococcosis stay admitted on or after their first transplant;</span>
+<span id="cb33-149"><a href="#cb33-149" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>their age on the index admission date.</span>
 <span id="cb33-150"><a href="#cb33-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-151"><a href="#cb33-151" aria-hidden="true" tabindex="-1"></a><span class="fu">## Flagging concepts on records</span></span>
+<span id="cb33-151"><a href="#cb33-151" aria-hidden="true" tabindex="-1"></a>A stay admitted on the day of the first transplant counts; a stay admitted the day before does not, even if it continues past the transplant. The function excludes no one itself; the exclusions happen in the <span class="co">[</span><span class="ot">flowchart</span><span class="co">](create_cohort.qmd#flowchart)</span>.</span>
 <span id="cb33-152"><a href="#cb33-152" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-153"><a href="#cb33-153" aria-hidden="true" tabindex="-1"></a><span class="in">`flag_concepts()`</span> adds one yes/no column per concept to hospitalization records. A record gets "yes" when any of the named columns holds a code from that concept's list.</span>
+<span id="cb33-153"><a href="#cb33-153" aria-hidden="true" tabindex="-1"></a>**Used in the analysis:** 1. Building the cohort: <span class="co">[</span><span class="ot">Cohort candidates</span><span class="co">](create_cohort.qmd#cohort-candidates)</span>.</span>
 <span id="cb33-154"><a href="#cb33-154" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-157"><a href="#cb33-157" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb33-158"><a href="#cb33-158" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: flag-concepts</span></span>
+<span id="cb33-158"><a href="#cb33-158" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: build-cohort-candidates</span></span>
 <span id="cb33-159"><a href="#cb33-159" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
 <span id="cb33-160"><a href="#cb33-160" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb33-161"><a href="#cb33-161" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-162"><a href="#cb33-162" aria-hidden="true" tabindex="-1"></a><span class="fu">## Loading and flagging hospitalizations</span></span>
+<span id="cb33-162"><a href="#cb33-162" aria-hidden="true" tabindex="-1"></a><span class="in">`prior_cryptococcosis_ids()`</span> takes every cryptococcosis claim (hospital records and physician claims together, one row per claim with its first day of service) and returns the people with any claim before their first transplant. A claim on the transplant date itself does not count as before it, the same rule as for hospital stays.</span>
 <span id="cb33-163"><a href="#cb33-163" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-164"><a href="#cb33-164" aria-hidden="true" tabindex="-1"></a><span class="in">`load_flagged_hospitalizations()`</span> loads one hospitalization file for a set of people through usRds. It flags the diagnosis and procedure concepts on each record, and keeps the dates, ICU and CCU days, and the flags.</span>
+<span id="cb33-164"><a href="#cb33-164" aria-hidden="true" tabindex="-1"></a>**Used in the analysis:** 1. Building the cohort: <span class="co">[</span><span class="ot">Cohort candidates</span><span class="co">](create_cohort.qmd#cohort-candidates)</span>.</span>
 <span id="cb33-165"><a href="#cb33-165" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-168"><a href="#cb33-168" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb33-169"><a href="#cb33-169" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: load-flagged-hospitalizations</span></span>
+<span id="cb33-169"><a href="#cb33-169" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: prior-cryptococcosis</span></span>
 <span id="cb33-170"><a href="#cb33-170" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
 <span id="cb33-171"><a href="#cb33-171" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb33-172"><a href="#cb33-172" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-173"><a href="#cb33-173" aria-hidden="true" tabindex="-1"></a><span class="fu">## Index stay covariates</span></span>
+<span id="cb33-173"><a href="#cb33-173" aria-hidden="true" tabindex="-1"></a><span class="fu">## Flagging concepts on records</span></span>
 <span id="cb33-174"><a href="#cb33-174" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-175"><a href="#cb33-175" aria-hidden="true" tabindex="-1"></a><span class="in">`summarise_index_stay()`</span> takes the records that fall within each person's index stay, meaning those admitted between the stay's first and last dates. A concept counts if any of those records has it. ICU admission means any ICU or CCU days on the stay.</span>
+<span id="cb33-175"><a href="#cb33-175" aria-hidden="true" tabindex="-1"></a><span class="in">`flag_concepts()`</span> adds one yes/no column per concept to hospitalization records. A record gets "yes" when any of the named columns holds a code from that concept's list.</span>
 <span id="cb33-176"><a href="#cb33-176" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-179"><a href="#cb33-179" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb33-180"><a href="#cb33-180" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: summarise-index-stay</span></span>
-<span id="cb33-181"><a href="#cb33-181" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb33-182"><a href="#cb33-182" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb33-183"><a href="#cb33-183" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-184"><a href="#cb33-184" aria-hidden="true" tabindex="-1"></a><span class="fu">## Earlier hospitalizations</span></span>
+<span id="cb33-177"><a href="#cb33-177" aria-hidden="true" tabindex="-1"></a>**Used by:** <span class="co">[</span><span class="ot">`load_flagged_hospitalizations()`</span><span class="co">](#loading-and-flagging-hospitalizations)</span>.</span>
+<span id="cb33-178"><a href="#cb33-178" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-181"><a href="#cb33-181" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb33-182"><a href="#cb33-182" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: flag-concepts</span></span>
+<span id="cb33-183"><a href="#cb33-183" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb33-184"><a href="#cb33-184" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb33-185"><a href="#cb33-185" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-186"><a href="#cb33-186" aria-hidden="true" tabindex="-1"></a><span class="in">`summarise_prior_hospitalizations()`</span> reports whether any hospitalization admitted before the index admission carries a given flag, such as a transplant-complication code. People with no earlier hospitalizations get "no".</span>
+<span id="cb33-186"><a href="#cb33-186" aria-hidden="true" tabindex="-1"></a><span class="fu">## Loading and flagging hospitalizations</span></span>
 <span id="cb33-187"><a href="#cb33-187" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-190"><a href="#cb33-190" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb33-191"><a href="#cb33-191" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: summarise-prior-hospitalizations</span></span>
-<span id="cb33-192"><a href="#cb33-192" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb33-193"><a href="#cb33-193" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb33-194"><a href="#cb33-194" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-195"><a href="#cb33-195" aria-hidden="true" tabindex="-1"></a><span class="fu">## Transplant history</span></span>
-<span id="cb33-196"><a href="#cb33-196" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-197"><a href="#cb33-197" aria-hidden="true" tabindex="-1"></a><span class="in">`summarise_transplant_history()`</span> takes everyone's transplants and, for each person, counts:</span>
+<span id="cb33-188"><a href="#cb33-188" aria-hidden="true" tabindex="-1"></a><span class="in">`load_flagged_hospitalizations()`</span> loads one hospitalization file for a set of people through usRds. It flags the diagnosis and procedure concepts on each record, and keeps the dates, ICU and CCU days, and the flags.</span>
+<span id="cb33-189"><a href="#cb33-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-190"><a href="#cb33-190" aria-hidden="true" tabindex="-1"></a>**Used in the analysis:** 2. Covariates: <span class="co">[</span><span class="ot">Hospitalization records</span><span class="co">](create_covariates.qmd#hospitalization-records)</span>.</span>
+<span id="cb33-191"><a href="#cb33-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-194"><a href="#cb33-194" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb33-195"><a href="#cb33-195" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: load-flagged-hospitalizations</span></span>
+<span id="cb33-196"><a href="#cb33-196" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb33-197"><a href="#cb33-197" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb33-198"><a href="#cb33-198" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-199"><a href="#cb33-199" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>transplants on or before the index admission;</span>
-<span id="cb33-200"><a href="#cb33-200" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>graft failures before it;</span>
-<span id="cb33-201"><a href="#cb33-201" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>the days since the most recent transplant.</span>
+<span id="cb33-199"><a href="#cb33-199" aria-hidden="true" tabindex="-1"></a><span class="fu">## Index stay covariates</span></span>
+<span id="cb33-200"><a href="#cb33-200" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-201"><a href="#cb33-201" aria-hidden="true" tabindex="-1"></a><span class="in">`summarise_index_stay()`</span> takes the records that fall within each person's index stay, meaning those admitted between the stay's first and last dates. A concept counts if any of those records has it. ICU admission means any ICU or CCU days on the stay.</span>
 <span id="cb33-202"><a href="#cb33-202" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-205"><a href="#cb33-205" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb33-206"><a href="#cb33-206" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: summarise-transplant-history</span></span>
-<span id="cb33-207"><a href="#cb33-207" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb33-208"><a href="#cb33-208" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb33-209"><a href="#cb33-209" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-210"><a href="#cb33-210" aria-hidden="true" tabindex="-1"></a><span class="fu">## The transplant whose registry data are used</span></span>
+<span id="cb33-203"><a href="#cb33-203" aria-hidden="true" tabindex="-1"></a>**Used in the analysis:** 2. Covariates: <span class="co">[</span><span class="ot">On the index stay</span><span class="co">](create_covariates.qmd#on-the-index-stay)</span>.</span>
+<span id="cb33-204"><a href="#cb33-204" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-207"><a href="#cb33-207" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb33-208"><a href="#cb33-208" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: summarise-index-stay</span></span>
+<span id="cb33-209"><a href="#cb33-209" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb33-210"><a href="#cb33-210" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb33-211"><a href="#cb33-211" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-212"><a href="#cb33-212" aria-hidden="true" tabindex="-1"></a><span class="in">`select_index_registration()`</span> picks each person's UNOS registration for the most recent transplant on or before the index admission. The transplant-time covariates come from that registration.</span>
+<span id="cb33-212"><a href="#cb33-212" aria-hidden="true" tabindex="-1"></a><span class="fu">## Earlier hospitalizations</span></span>
 <span id="cb33-213"><a href="#cb33-213" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-216"><a href="#cb33-216" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb33-217"><a href="#cb33-217" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: select-index-registration</span></span>
-<span id="cb33-218"><a href="#cb33-218" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb33-219"><a href="#cb33-219" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb33-220"><a href="#cb33-220" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-221"><a href="#cb33-221" aria-hidden="true" tabindex="-1"></a><span class="fu">## Acute rejection</span></span>
-<span id="cb33-222"><a href="#cb33-222" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-223"><a href="#cb33-223" aria-hidden="true" tabindex="-1"></a><span class="in">`unos_rejection_any()`</span> turns the UNOS rejection code into yes or no. Codes 1 and 2 (an episode, treated or not) are "yes", and 3 is "no". Unknown codes are missing.</span>
+<span id="cb33-214"><a href="#cb33-214" aria-hidden="true" tabindex="-1"></a><span class="in">`summarise_prior_hospitalizations()`</span> reports whether any hospitalization admitted before the index admission carries a given flag, such as a transplant-complication code. People with no earlier hospitalizations get "no".</span>
+<span id="cb33-215"><a href="#cb33-215" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-216"><a href="#cb33-216" aria-hidden="true" tabindex="-1"></a>**Used in the analysis:** 2. Covariates: <span class="co">[</span><span class="ot">Earlier hospitalization for a transplant complication</span><span class="co">](create_covariates.qmd#earlier-hospitalization-for-a-transplant-complication)</span>.</span>
+<span id="cb33-217"><a href="#cb33-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-220"><a href="#cb33-220" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb33-221"><a href="#cb33-221" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: summarise-prior-hospitalizations</span></span>
+<span id="cb33-222"><a href="#cb33-222" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb33-223"><a href="#cb33-223" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb33-224"><a href="#cb33-224" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-227"><a href="#cb33-227" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb33-228"><a href="#cb33-228" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: unos-rejection-any</span></span>
-<span id="cb33-229"><a href="#cb33-229" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb33-230"><a href="#cb33-230" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb33-231"><a href="#cb33-231" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-232"><a href="#cb33-232" aria-hidden="true" tabindex="-1"></a><span class="fu">## Drug classes</span></span>
-<span id="cb33-233"><a href="#cb33-233" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-234"><a href="#cb33-234" aria-hidden="true" tabindex="-1"></a><span class="in">`classify_immunosuppressants()`</span> gives one row per registration or follow-up, with a yes/no column per drug class. A class is "yes" when any drug record maps to it, by code or by free text.</span>
-<span id="cb33-235"><a href="#cb33-235" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-238"><a href="#cb33-238" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb33-239"><a href="#cb33-239" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: classify-immunosuppressants</span></span>
-<span id="cb33-240"><a href="#cb33-240" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb33-241"><a href="#cb33-241" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb33-242"><a href="#cb33-242" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-243"><a href="#cb33-243" aria-hidden="true" tabindex="-1"></a><span class="fu">## Demographic recodes</span></span>
-<span id="cb33-244"><a href="#cb33-244" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-245"><a href="#cb33-245" aria-hidden="true" tabindex="-1"></a>These turn the USRDS codes for sex, race and Hispanic ethnicity into labels. Hispanic ethnicity follows the official format, in which "no" is coded 2 or N. The reconstruction treated 2 as missing.</span>
-<span id="cb33-246"><a href="#cb33-246" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-249"><a href="#cb33-249" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb33-250"><a href="#cb33-250" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: recode-demographics</span></span>
-<span id="cb33-251"><a href="#cb33-251" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb33-252"><a href="#cb33-252" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb33-253"><a href="#cb33-253" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-254"><a href="#cb33-254" aria-hidden="true" tabindex="-1"></a><span class="fu">## Combining yes/no values</span></span>
-<span id="cb33-255"><a href="#cb33-255" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-256"><a href="#cb33-256" aria-hidden="true" tabindex="-1"></a><span class="in">`any_known()`</span> combines several yes/no values while keeping missing distinct from "no". The result is "yes" if any value is yes, "no" if none is yes and at least one is no, and missing if every value is missing.</span>
-<span id="cb33-257"><a href="#cb33-257" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-260"><a href="#cb33-260" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb33-261"><a href="#cb33-261" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: any-known</span></span>
-<span id="cb33-262"><a href="#cb33-262" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb33-263"><a href="#cb33-263" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb33-264"><a href="#cb33-264" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-265"><a href="#cb33-265" aria-hidden="true" tabindex="-1"></a><span class="fu">## Mortality outcomes</span></span>
-<span id="cb33-266"><a href="#cb33-266" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-267"><a href="#cb33-267" aria-hidden="true" tabindex="-1"></a><span class="in">`six_month_outcomes()`</span> counts days from the index admission to death, with the admission day as day 0, and flags death within the 180-day window. Deaths on day 180, and on the admission day itself, both count. For the survival curve, people still alive are followed to the end of the release's death data. The function stops if that date hasn't been set.</span>
-<span id="cb33-268"><a href="#cb33-268" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-271"><a href="#cb33-271" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb33-272"><a href="#cb33-272" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: six-month-outcomes</span></span>
-<span id="cb33-273"><a href="#cb33-273" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb33-274"><a href="#cb33-274" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb33-275"><a href="#cb33-275" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-276"><a href="#cb33-276" aria-hidden="true" tabindex="-1"></a><span class="fu">## One P value per variable</span></span>
-<span id="cb33-277"><a href="#cb33-277" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-278"><a href="#cb33-278" aria-hidden="true" tabindex="-1"></a><span class="in">`wald_term_p()`</span> tests all of a variable's coefficients together. A variable with several categories, such as region, therefore gets one P value, as in Stata's stepwise procedure, which the paper used.</span>
-<span id="cb33-279"><a href="#cb33-279" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-282"><a href="#cb33-282" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb33-283"><a href="#cb33-283" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: wald-term-p</span></span>
-<span id="cb33-284"><a href="#cb33-284" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb33-285"><a href="#cb33-285" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-225"><a href="#cb33-225" aria-hidden="true" tabindex="-1"></a><span class="fu">## Transplant history</span></span>
+<span id="cb33-226"><a href="#cb33-226" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-227"><a href="#cb33-227" aria-hidden="true" tabindex="-1"></a><span class="in">`summarise_transplant_history()`</span> takes everyone's transplants and, for each person, counts:</span>
+<span id="cb33-228"><a href="#cb33-228" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-229"><a href="#cb33-229" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>transplants on or before the index admission;</span>
+<span id="cb33-230"><a href="#cb33-230" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>graft failures before it;</span>
+<span id="cb33-231"><a href="#cb33-231" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>the days since the most recent transplant.</span>
+<span id="cb33-232"><a href="#cb33-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-233"><a href="#cb33-233" aria-hidden="true" tabindex="-1"></a>**Used in the analysis:** 2. Covariates: <span class="co">[</span><span class="ot">Transplant history, sex and race</span><span class="co">](create_covariates.qmd#transplant-history-sex-and-race)</span>.</span>
+<span id="cb33-234"><a href="#cb33-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-237"><a href="#cb33-237" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb33-238"><a href="#cb33-238" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: summarise-transplant-history</span></span>
+<span id="cb33-239"><a href="#cb33-239" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb33-240"><a href="#cb33-240" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-241"><a href="#cb33-241" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-242"><a href="#cb33-242" aria-hidden="true" tabindex="-1"></a><span class="fu">## The transplant whose registry data are used</span></span>
+<span id="cb33-243"><a href="#cb33-243" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-244"><a href="#cb33-244" aria-hidden="true" tabindex="-1"></a><span class="in">`select_index_registration()`</span> picks each person's UNOS registration for the most recent transplant on or before the index admission. The transplant-time covariates come from that registration.</span>
+<span id="cb33-245"><a href="#cb33-245" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-246"><a href="#cb33-246" aria-hidden="true" tabindex="-1"></a>**Used in the analysis:** 2. Covariates: <span class="co">[</span><span class="ot">Registry data at transplant</span><span class="co">](create_covariates.qmd#registry-data-at-transplant)</span>.</span>
+<span id="cb33-247"><a href="#cb33-247" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-250"><a href="#cb33-250" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb33-251"><a href="#cb33-251" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: select-index-registration</span></span>
+<span id="cb33-252"><a href="#cb33-252" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb33-253"><a href="#cb33-253" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-254"><a href="#cb33-254" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-255"><a href="#cb33-255" aria-hidden="true" tabindex="-1"></a><span class="fu">## Acute rejection</span></span>
+<span id="cb33-256"><a href="#cb33-256" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-257"><a href="#cb33-257" aria-hidden="true" tabindex="-1"></a><span class="in">`unos_rejection_any()`</span> turns the UNOS rejection code into yes or no. Codes 1 and 2 (an episode, treated or not) are "yes", and 3 is "no". Unknown codes are missing.</span>
+<span id="cb33-258"><a href="#cb33-258" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-259"><a href="#cb33-259" aria-hidden="true" tabindex="-1"></a>**Used in the analysis:** 2. Covariates: <span class="co">[</span><span class="ot">Acute rejection</span><span class="co">](create_covariates.qmd#acute-rejection)</span>.</span>
+<span id="cb33-260"><a href="#cb33-260" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-263"><a href="#cb33-263" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb33-264"><a href="#cb33-264" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: unos-rejection-any</span></span>
+<span id="cb33-265"><a href="#cb33-265" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb33-266"><a href="#cb33-266" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-267"><a href="#cb33-267" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-268"><a href="#cb33-268" aria-hidden="true" tabindex="-1"></a><span class="fu">## Drug classes</span></span>
+<span id="cb33-269"><a href="#cb33-269" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-270"><a href="#cb33-270" aria-hidden="true" tabindex="-1"></a><span class="in">`classify_immunosuppressants()`</span> gives one row per registration or follow-up, with a yes/no column per drug class. A class is "yes" when any drug record maps to it, by code or by free text.</span>
+<span id="cb33-271"><a href="#cb33-271" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-272"><a href="#cb33-272" aria-hidden="true" tabindex="-1"></a>**Used in the analysis:** 2. Covariates: <span class="co">[</span><span class="ot">Immunosuppression at transplant</span><span class="co">](create_covariates.qmd#immunosuppression-at-transplant)</span>; 2. Covariates: <span class="co">[</span><span class="ot">Immunosuppression at first follow-up</span><span class="co">](create_covariates.qmd#immunosuppression-at-first-follow-up)</span>.</span>
+<span id="cb33-273"><a href="#cb33-273" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-276"><a href="#cb33-276" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb33-277"><a href="#cb33-277" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: classify-immunosuppressants</span></span>
+<span id="cb33-278"><a href="#cb33-278" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb33-279"><a href="#cb33-279" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-280"><a href="#cb33-280" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-281"><a href="#cb33-281" aria-hidden="true" tabindex="-1"></a><span class="fu">## Demographic recodes</span></span>
+<span id="cb33-282"><a href="#cb33-282" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-283"><a href="#cb33-283" aria-hidden="true" tabindex="-1"></a>These turn the USRDS codes for sex, race and Hispanic ethnicity into labels. Hispanic ethnicity follows the official format, in which "no" is coded 2 or N. The reconstruction treated 2 as missing.</span>
+<span id="cb33-284"><a href="#cb33-284" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-285"><a href="#cb33-285" aria-hidden="true" tabindex="-1"></a>**Used in the analysis:** 2. Covariates: <span class="co">[</span><span class="ot">Transplant history, sex and race</span><span class="co">](create_covariates.qmd#transplant-history-sex-and-race)</span>; 2. Covariates: <span class="co">[</span><span class="ot">Ethnicity and region</span><span class="co">](create_covariates.qmd#ethnicity-and-region)</span>.</span>
 <span id="cb33-286"><a href="#cb33-286" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-287"><a href="#cb33-287" aria-hidden="true" tabindex="-1"></a><span class="fu">## Bivariable models</span></span>
-<span id="cb33-288"><a href="#cb33-288" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-289"><a href="#cb33-289" aria-hidden="true" tabindex="-1"></a><span class="in">`bivariable_models()`</span> fits one logistic model per candidate variable. Each model uses everyone whose value of that variable is known.</span>
-<span id="cb33-290"><a href="#cb33-290" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-293"><a href="#cb33-293" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb33-294"><a href="#cb33-294" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: bivariable-models</span></span>
-<span id="cb33-295"><a href="#cb33-295" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb33-296"><a href="#cb33-296" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-289"><a href="#cb33-289" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb33-290"><a href="#cb33-290" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: recode-demographics</span></span>
+<span id="cb33-291"><a href="#cb33-291" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb33-292"><a href="#cb33-292" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-293"><a href="#cb33-293" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-294"><a href="#cb33-294" aria-hidden="true" tabindex="-1"></a><span class="fu">## Combining yes/no values</span></span>
+<span id="cb33-295"><a href="#cb33-295" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-296"><a href="#cb33-296" aria-hidden="true" tabindex="-1"></a><span class="in">`any_known()`</span> combines several yes/no values while keeping missing distinct from "no". The result is "yes" if any value is yes, "no" if none is yes and at least one is no, and missing if every value is missing.</span>
 <span id="cb33-297"><a href="#cb33-297" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-298"><a href="#cb33-298" aria-hidden="true" tabindex="-1"></a><span class="fu">## Backward elimination</span></span>
+<span id="cb33-298"><a href="#cb33-298" aria-hidden="true" tabindex="-1"></a>**Used in the analysis:** 2. Covariates: <span class="co">[</span><span class="ot">Acute rejection</span><span class="co">](create_covariates.qmd#acute-rejection)</span>.</span>
 <span id="cb33-299"><a href="#cb33-299" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-300"><a href="#cb33-300" aria-hidden="true" tabindex="-1"></a><span class="in">`backward_eliminate()`</span> starts with every candidate and repeatedly removes the variable with the largest P value, until all remaining variables have P below 0.05. The people analysed stay the same throughout: everyone with every candidate known, as Stata does. A variable that cannot be estimated in that group (it does not vary, or is fully determined by others) has no P value and is removed first, as Stata omits it.</span>
-<span id="cb33-301"><a href="#cb33-301" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-304"><a href="#cb33-304" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb33-305"><a href="#cb33-305" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: backward-eliminate</span></span>
-<span id="cb33-306"><a href="#cb33-306" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb33-307"><a href="#cb33-307" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-302"><a href="#cb33-302" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb33-303"><a href="#cb33-303" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: any-known</span></span>
+<span id="cb33-304"><a href="#cb33-304" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb33-305"><a href="#cb33-305" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-306"><a href="#cb33-306" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-307"><a href="#cb33-307" aria-hidden="true" tabindex="-1"></a><span class="fu">## Mortality outcomes</span></span>
 <span id="cb33-308"><a href="#cb33-308" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-309"><a href="#cb33-309" aria-hidden="true" tabindex="-1"></a><span class="fu">## Goodness of fit</span></span>
+<span id="cb33-309"><a href="#cb33-309" aria-hidden="true" tabindex="-1"></a><span class="in">`six_month_outcomes()`</span> counts days from the index admission to death, with the admission day as day 0, and flags death within the 180-day window. Deaths on day 180, and on the admission day itself, both count. For the survival curve, people still alive are followed to the end of the release's death data. The function stops if that date hasn't been set.</span>
 <span id="cb33-310"><a href="#cb33-310" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-311"><a href="#cb33-311" aria-hidden="true" tabindex="-1"></a><span class="in">`hosmer_lemeshow()`</span> splits people into tenths by predicted risk and compares observed with expected deaths in each tenth.</span>
+<span id="cb33-311"><a href="#cb33-311" aria-hidden="true" tabindex="-1"></a>**Used in the analysis:** 3. Outcomes: <span class="co">[</span><span class="ot">Mortality</span><span class="co">](create_outcomes.qmd#mortality)</span>.</span>
 <span id="cb33-312"><a href="#cb33-312" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-315"><a href="#cb33-315" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb33-316"><a href="#cb33-316" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: hosmer-lemeshow</span></span>
+<span id="cb33-316"><a href="#cb33-316" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: six-month-outcomes</span></span>
 <span id="cb33-317"><a href="#cb33-317" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
 <span id="cb33-318"><a href="#cb33-318" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb33-319"><a href="#cb33-319" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-320"><a href="#cb33-320" aria-hidden="true" tabindex="-1"></a><span class="fu">## Small-count rules for tables</span></span>
+<span id="cb33-320"><a href="#cb33-320" aria-hidden="true" tabindex="-1"></a><span class="fu">## One P value per variable</span></span>
 <span id="cb33-321"><a href="#cb33-321" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-322"><a href="#cb33-322" aria-hidden="true" tabindex="-1"></a>USRDS does not allow any count from 1 to 10 to be published, including one that can be worked out by subtraction. <span class="in">`count_table_cells()`</span> lists every count behind a descriptive table, including the ones not printed (such as the number *without* a condition). <span class="in">`flag_small_cells()`</span> marks the small ones and then, wherever a single hidden count could be recovered from a total, hides the next smallest count as well, repeating until nothing more changes. <span class="in">`suppress_table_body()`</span> then puts "≤10" in those cells and removes the P value for that variable.</span>
+<span id="cb33-322"><a href="#cb33-322" aria-hidden="true" tabindex="-1"></a><span class="in">`wald_term_p()`</span> tests all of a variable's coefficients together. A variable with several categories, such as region, therefore gets one P value, as in Stata's stepwise procedure, which the paper used.</span>
 <span id="cb33-323"><a href="#cb33-323" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-326"><a href="#cb33-326" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb33-327"><a href="#cb33-327" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: count-table-cells</span></span>
-<span id="cb33-328"><a href="#cb33-328" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb33-329"><a href="#cb33-329" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb33-330"><a href="#cb33-330" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-333"><a href="#cb33-333" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb33-334"><a href="#cb33-334" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: flag-small-cells</span></span>
-<span id="cb33-335"><a href="#cb33-335" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb33-336"><a href="#cb33-336" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb33-337"><a href="#cb33-337" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-340"><a href="#cb33-340" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb33-341"><a href="#cb33-341" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: suppress-table-body</span></span>
-<span id="cb33-342"><a href="#cb33-342" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb33-343"><a href="#cb33-343" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb33-344"><a href="#cb33-344" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-345"><a href="#cb33-345" aria-hidden="true" tabindex="-1"></a><span class="fu">## P values in AMA style</span></span>
-<span id="cb33-346"><a href="#cb33-346" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-347"><a href="#cb33-347" aria-hidden="true" tabindex="-1"></a><span class="in">`style_pvalue_ama()`</span> rounds P values as gtsummary's JAMA theme does and drops the leading zero (".040", "&lt;.001"), as AMA style asks.</span>
-<span id="cb33-348"><a href="#cb33-348" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-351"><a href="#cb33-351" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb33-352"><a href="#cb33-352" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: style-pvalue-ama</span></span>
-<span id="cb33-353"><a href="#cb33-353" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb33-354"><a href="#cb33-354" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb33-355"><a href="#cb33-355" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-356"><a href="#cb33-356" aria-hidden="true" tabindex="-1"></a><span class="fu">## Small-count rules for figures</span></span>
-<span id="cb33-357"><a href="#cb33-357" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-358"><a href="#cb33-358" aria-hidden="true" tabindex="-1"></a><span class="in">`km_reportable_times()`</span> picks the times the survival figure can show: more than 10 people still at risk, and every count and every change between times shown either 0 or above 10. <span class="in">`flowchart_small_counts()`</span> lists any flowchart box with 1 to 10 people.</span>
-<span id="cb33-359"><a href="#cb33-359" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-362"><a href="#cb33-362" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb33-363"><a href="#cb33-363" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: km-reportable-times</span></span>
-<span id="cb33-364"><a href="#cb33-364" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb33-365"><a href="#cb33-365" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-324"><a href="#cb33-324" aria-hidden="true" tabindex="-1"></a>**Used in the analysis:** Tables: <span class="co">[</span><span class="ot">Odds ratios</span><span class="co">](tables.qmd#odds-ratios)</span>.</span>
+<span id="cb33-325"><a href="#cb33-325" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-326"><a href="#cb33-326" aria-hidden="true" tabindex="-1"></a>**Used by:** <span class="co">[</span><span class="ot">`bivariable_models()`</span><span class="co">](#bivariable-models)</span> and <span class="co">[</span><span class="ot">`backward_eliminate()`</span><span class="co">](#backward-elimination)</span>.</span>
+<span id="cb33-327"><a href="#cb33-327" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-330"><a href="#cb33-330" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb33-331"><a href="#cb33-331" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: wald-term-p</span></span>
+<span id="cb33-332"><a href="#cb33-332" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb33-333"><a href="#cb33-333" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-334"><a href="#cb33-334" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-335"><a href="#cb33-335" aria-hidden="true" tabindex="-1"></a><span class="fu">## Bivariable models</span></span>
+<span id="cb33-336"><a href="#cb33-336" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-337"><a href="#cb33-337" aria-hidden="true" tabindex="-1"></a><span class="in">`bivariable_models()`</span> fits one logistic model per candidate variable. Each model uses everyone whose value of that variable is known.</span>
+<span id="cb33-338"><a href="#cb33-338" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-339"><a href="#cb33-339" aria-hidden="true" tabindex="-1"></a>**Used in the analysis:** 4. Survival and models: <span class="co">[</span><span class="ot">Each variable alone</span><span class="co">](fit_models.qmd#each-variable-alone)</span>.</span>
+<span id="cb33-340"><a href="#cb33-340" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-343"><a href="#cb33-343" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb33-344"><a href="#cb33-344" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: bivariable-models</span></span>
+<span id="cb33-345"><a href="#cb33-345" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb33-346"><a href="#cb33-346" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-347"><a href="#cb33-347" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-348"><a href="#cb33-348" aria-hidden="true" tabindex="-1"></a><span class="fu">## Backward elimination</span></span>
+<span id="cb33-349"><a href="#cb33-349" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-350"><a href="#cb33-350" aria-hidden="true" tabindex="-1"></a><span class="in">`backward_eliminate()`</span> starts with every candidate and repeatedly removes the variable with the largest P value, until all remaining variables have P below 0.05. The people analysed stay the same throughout: everyone with every candidate known, as Stata does. A variable that cannot be estimated in that group (it does not vary, or is fully determined by others) has no P value and is removed first, as Stata omits it.</span>
+<span id="cb33-351"><a href="#cb33-351" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-352"><a href="#cb33-352" aria-hidden="true" tabindex="-1"></a>**Used in the analysis:** 4. Survival and models: <span class="co">[</span><span class="ot">Multivariable model</span><span class="co">](fit_models.qmd#multivariable-model)</span>.</span>
+<span id="cb33-353"><a href="#cb33-353" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-356"><a href="#cb33-356" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb33-357"><a href="#cb33-357" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: backward-eliminate</span></span>
+<span id="cb33-358"><a href="#cb33-358" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb33-359"><a href="#cb33-359" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-360"><a href="#cb33-360" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-361"><a href="#cb33-361" aria-hidden="true" tabindex="-1"></a><span class="fu">## Goodness of fit</span></span>
+<span id="cb33-362"><a href="#cb33-362" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-363"><a href="#cb33-363" aria-hidden="true" tabindex="-1"></a><span class="in">`hosmer_lemeshow()`</span> splits people into tenths by predicted risk and compares observed with expected deaths in each tenth.</span>
+<span id="cb33-364"><a href="#cb33-364" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-365"><a href="#cb33-365" aria-hidden="true" tabindex="-1"></a>**Used in the analysis:** 4. Survival and models: <span class="co">[</span><span class="ot">Goodness of fit</span><span class="co">](fit_models.qmd#goodness-of-fit)</span>.</span>
 <span id="cb33-366"><a href="#cb33-366" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-369"><a href="#cb33-369" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb33-370"><a href="#cb33-370" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: flowchart-small-counts</span></span>
+<span id="cb33-370"><a href="#cb33-370" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: hosmer-lemeshow</span></span>
 <span id="cb33-371"><a href="#cb33-371" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
 <span id="cb33-372"><a href="#cb33-372" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb33-373"><a href="#cb33-373" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-374"><a href="#cb33-374" aria-hidden="true" tabindex="-1"></a><span class="fu">## Odds ratios</span></span>
+<span id="cb33-374"><a href="#cb33-374" aria-hidden="true" tabindex="-1"></a><span class="fu">## Small-count rules for tables</span></span>
 <span id="cb33-375"><a href="#cb33-375" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-376"><a href="#cb33-376" aria-hidden="true" tabindex="-1"></a><span class="in">`tidy_odds_ratios()`</span> turns a fitted logistic model into odds ratios with 95% Wald confidence intervals (as Stata reports them) and readable labels.</span>
+<span id="cb33-376"><a href="#cb33-376" aria-hidden="true" tabindex="-1"></a>USRDS does not allow any count from 1 to 10 to be published, including one that can be worked out by subtraction. <span class="in">`count_table_cells()`</span> lists every count behind a descriptive table, including the ones not printed (such as the number *without* a condition). <span class="in">`flag_small_cells()`</span> marks the small ones and then, wherever a single hidden count could be recovered from a total, hides the next smallest count as well, repeating until nothing more changes. <span class="in">`suppress_table_body()`</span> then puts "≤10" in those cells and removes the P value for that variable.</span>
 <span id="cb33-377"><a href="#cb33-377" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-380"><a href="#cb33-380" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb33-381"><a href="#cb33-381" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tidy-odds-ratios</span></span>
-<span id="cb33-382"><a href="#cb33-382" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb33-383"><a href="#cb33-383" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-378"><a href="#cb33-378" aria-hidden="true" tabindex="-1"></a>**Used in the analysis:** Tables: <span class="co">[</span><span class="ot">Descriptive tables</span><span class="co">](tables.qmd#descriptive-tables)</span>.</span>
+<span id="cb33-379"><a href="#cb33-379" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-382"><a href="#cb33-382" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb33-383"><a href="#cb33-383" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: count-table-cells</span></span>
+<span id="cb33-384"><a href="#cb33-384" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb33-385"><a href="#cb33-385" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-386"><a href="#cb33-386" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-387"><a href="#cb33-387" aria-hidden="true" tabindex="-1"></a>**Used in the analysis:** Tables: <span class="co">[</span><span class="ot">Descriptive tables</span><span class="co">](tables.qmd#descriptive-tables)</span>.</span>
+<span id="cb33-388"><a href="#cb33-388" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-391"><a href="#cb33-391" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb33-392"><a href="#cb33-392" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: flag-small-cells</span></span>
+<span id="cb33-393"><a href="#cb33-393" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb33-394"><a href="#cb33-394" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-395"><a href="#cb33-395" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-396"><a href="#cb33-396" aria-hidden="true" tabindex="-1"></a>**Used in the analysis:** Tables: <span class="co">[</span><span class="ot">Descriptive tables</span><span class="co">](tables.qmd#descriptive-tables)</span>.</span>
+<span id="cb33-397"><a href="#cb33-397" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-400"><a href="#cb33-400" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb33-401"><a href="#cb33-401" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: suppress-table-body</span></span>
+<span id="cb33-402"><a href="#cb33-402" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb33-403"><a href="#cb33-403" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-404"><a href="#cb33-404" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-405"><a href="#cb33-405" aria-hidden="true" tabindex="-1"></a><span class="fu">## P values in AMA style</span></span>
+<span id="cb33-406"><a href="#cb33-406" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-407"><a href="#cb33-407" aria-hidden="true" tabindex="-1"></a><span class="in">`style_pvalue_ama()`</span> rounds P values as gtsummary's JAMA theme does and drops the leading zero (".040", "&lt;.001"), as AMA style asks.</span>
+<span id="cb33-408"><a href="#cb33-408" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-409"><a href="#cb33-409" aria-hidden="true" tabindex="-1"></a>**Used in the analysis:** Tables: <span class="co">[</span><span class="ot">Journal style</span><span class="co">](tables.qmd#journal-style)</span>.</span>
+<span id="cb33-410"><a href="#cb33-410" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-413"><a href="#cb33-413" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb33-414"><a href="#cb33-414" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: style-pvalue-ama</span></span>
+<span id="cb33-415"><a href="#cb33-415" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb33-416"><a href="#cb33-416" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-417"><a href="#cb33-417" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-418"><a href="#cb33-418" aria-hidden="true" tabindex="-1"></a><span class="fu">## Small-count rules for figures</span></span>
+<span id="cb33-419"><a href="#cb33-419" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-420"><a href="#cb33-420" aria-hidden="true" tabindex="-1"></a><span class="in">`km_reportable_times()`</span> picks the times the survival figure can show: more than 10 people still at risk, and every count and every change between times shown either 0 or above 10. <span class="in">`flowchart_small_counts()`</span> lists any flowchart box with 1 to 10 people.</span>
+<span id="cb33-421"><a href="#cb33-421" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-422"><a href="#cb33-422" aria-hidden="true" tabindex="-1"></a>**Used in the analysis:** Figures: <span class="co">[</span><span class="ot">Figure 2: survival</span><span class="co">](figures.qmd#figure-2-survival)</span>.</span>
+<span id="cb33-423"><a href="#cb33-423" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-426"><a href="#cb33-426" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb33-427"><a href="#cb33-427" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: km-reportable-times</span></span>
+<span id="cb33-428"><a href="#cb33-428" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb33-429"><a href="#cb33-429" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-430"><a href="#cb33-430" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-431"><a href="#cb33-431" aria-hidden="true" tabindex="-1"></a>**Used in the analysis:** Figures: <span class="co">[</span><span class="ot">Figure 1: the cohort</span><span class="co">](figures.qmd#figure-1-the-cohort)</span>.</span>
+<span id="cb33-432"><a href="#cb33-432" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-435"><a href="#cb33-435" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb33-436"><a href="#cb33-436" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: flowchart-small-counts</span></span>
+<span id="cb33-437"><a href="#cb33-437" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb33-438"><a href="#cb33-438" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb33-439"><a href="#cb33-439" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-440"><a href="#cb33-440" aria-hidden="true" tabindex="-1"></a><span class="fu">## Odds ratios</span></span>
+<span id="cb33-441"><a href="#cb33-441" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-442"><a href="#cb33-442" aria-hidden="true" tabindex="-1"></a><span class="in">`tidy_odds_ratios()`</span> turns a fitted logistic model into odds ratios with 95% Wald confidence intervals (as Stata reports them) and readable labels.</span>
+<span id="cb33-443"><a href="#cb33-443" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-444"><a href="#cb33-444" aria-hidden="true" tabindex="-1"></a>**Used in the analysis:** Tables: <span class="co">[</span><span class="ot">The paper's final model</span><span class="co">](tables.qmd#the-papers-final-model)</span>; Figures: <span class="co">[</span><span class="ot">Figure 3: odds ratios</span><span class="co">](figures.qmd#figure-3-odds-ratios)</span>.</span>
+<span id="cb33-445"><a href="#cb33-445" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-448"><a href="#cb33-448" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb33-449"><a href="#cb33-449" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tidy-odds-ratios</span></span>
+<span id="cb33-450"><a href="#cb33-450" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb33-451"><a href="#cb33-451" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
