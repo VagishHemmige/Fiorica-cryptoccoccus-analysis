@@ -42,6 +42,8 @@ A palette is the ordered set of colors (or shapes, or line types) given to the g
 
 A theme controls everything in a figure that is not data: background, gridlines, text sizes, legend position. `theme_publication()` keeps only what helps a reader: light horizontal gridlines to read values against, thin axis lines, no panel border. It also carries the palettes above, so a figure needs no color settings of its own. Text sizes are set for the printed figure (9 points by default), so a figure should be saved at the size it will be printed.
 
+**Used in the analysis:** Figures: [settings for every figure](figures.qmd); Figures: [Figure 2: survival](figures.qmd#figure-2-survival).
+
 ```{r}
 #| label: theme-publication
 #| eval: false
@@ -59,6 +61,8 @@ A theme controls everything in a figure that is not data: background, gridlines,
 ## Saving a figure
 
 `save_figure()` writes a figure at its printed size in millimetres, in each format needed: PDF and SVG, which keep lines and text sharp at any zoom, for journals; and PNG for the website. Figures 2 and 3 are saved with it.
+
+**Used in the analysis:** Figures: [Figure 2: survival](figures.qmd#figure-2-survival); Figures: [Figure 3: odds ratios](figures.qmd#figure-3-odds-ratios).
 
 ```{r}
 #| label: save-figure

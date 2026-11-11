@@ -45,6 +45,8 @@ The script adds three things for each person:
 
 **Decision pending:** the end of the death data (`death_data_end_date`) has to be set for the release in use. The script stops until it is.
 
+**Functions used:** [`six_month_outcomes()`](functions.qmd#mortality-outcomes).
+
 ```{r}
 #| label: outcomes-mortality
 #| eval: false

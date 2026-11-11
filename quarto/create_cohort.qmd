@@ -40,6 +40,8 @@ Factor labels are switched off, so codes stay as plain text. usRds has no functi
 
 Each record is flagged if any of its diagnosis columns holds a cryptococcosis code from the [code lists](code_lists.qmd). The search uses each file's own diagnosis columns.
 
+**Functions used:** [`codes_for_concept()`](functions.qmd#codes-for-a-concept) and [`flag_cryptococcosis_records()`](functions.qmd#flagging-cryptococcosis-records).
+
 ```{r}
 #| label: cohort-flag-records
 #| eval: false
@@ -49,6 +51,8 @@ Each record is flagged if any of its diagnosis columns holds a cryptococcosis co
 
 For people with any cryptococcosis record, all their hospitalization records are combined into stays, so a code on any record of a stay counts for the whole stay. Stays admitted from 2006 to 2016 are kept.
 
+**Functions used:** [`summarise_cryptococcosis_stays()`](functions.qmd#cryptococcosis-stays).
+
 ```{r}
 #| label: cohort-build-stays
 #| eval: false
@@ -57,6 +61,8 @@ For people with any cryptococcosis record, all their hospitalization records are
 ## Transplant and birth dates
 
 Each person's first transplant date comes from the USRDS transplant file, and their date of birth from the patients file. Both are loaded only for the people found above.
+
+**Functions used:** [`first_transplant_dates()`](functions.qmd#first-transplant-date).
 
 ```{r}
 #| label: cohort-load-transplants-patients
@@ -75,6 +81,8 @@ The paper excludes anyone with a cryptococcosis claim, "physician or hospitaliza
 ## Cohort candidates
 
 One row per person, with their index stay and age. A single cryptococcosis claim of either kind, dated before the person's first transplant, marks them for exclusion ([#4](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/4)). One claim is enough: a clinician billing for cryptococcosis, even to rule it out, before transplant is a reason to doubt that the later episode is new, and studies that exclude an earlier condition usually take any single claim, because missing an earlier case matters more there than excluding a few people over a rule-out code [@chubak2012].
+
+**Functions used:** [`prior_cryptococcosis_ids()`](functions.qmd#cohort-candidates) and [`build_cohort_candidates()`](functions.qmd#cohort-candidates).
 
 ```{r}
 #| label: cohort-candidates
