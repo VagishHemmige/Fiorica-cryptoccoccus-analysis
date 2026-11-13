@@ -29,7 +29,7 @@ knitr::read_chunk("../R/create_cohort.R")
 
 The cohort starts from the two USRDS hospitalization files, which hold Medicare inpatient stays (decided in [#1](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/1)). Only the dates and diagnosis columns are loaded.
 
-Factor labels are switched off, so codes stay as plain text. usRds has no function that searches these files for codes, so each file is loaded whole and searched by the project's own code. The [usRds coverage](usrds-coverage.qmd) page records this as a gap (step 4).
+Factor labels are switched off, so codes stay as plain text. [{usRds}](https://vagishhemmige.github.io/usRds/) has no function that searches these files for codes, so each file is loaded whole and searched by the project's own code. The [{usRds} coverage](usrds-coverage.qmd) page records this as a gap (step 4).
 
 ```{r}
 #| label: cohort-load-hospitalizations

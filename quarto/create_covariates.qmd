@@ -37,7 +37,7 @@ Each person's index stay, from the cohort.
 
 ## Hospitalization records
 
-All hospitalization records of cohort members are loaded from both files through usRds. Each record is flagged for the diagnoses and procedures of interest, using each file's own code columns.
+All hospitalization records of cohort members are loaded from both files through [{usRds}](https://vagishhemmige.github.io/usRds/). Each record is flagged for the diagnoses and procedures of interest, using each file's own code columns.
 
 **Functions used:** [`load_flagged_hospitalizations()`](functions.qmd#loading-and-flagging-hospitalizations).
 

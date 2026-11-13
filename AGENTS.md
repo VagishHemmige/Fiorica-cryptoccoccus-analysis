@@ -14,9 +14,9 @@ Read the relevant documents before making changes. Follow `REPOSITORY-BLUEPRINT.
 
 ## The project
 
-This is an **R analysis project, not an R package**. It rebuilds the analysis of Fiorica et al. 2025 (6-month mortality, and the factors associated with it, among kidney transplant recipients hospitalized with cryptococcosis, USRDS 2006–2016) with the [usRds](https://github.com/VagishHemmige/usRds) package. **The goal is to replicate the analysis as the paper describes it, and in doing so to assess how well usRds covers it.** For each step, `references/usrds-coverage.md` records whether usRds does it (covered, partial or gap). Closing gaps in usRds is outside this project's scope; findings are passed to the usRds maintainer, who decides what to do with them. The code and methods are published as a Quarto website.
+This is an **R analysis project, not an R package**. It rebuilds the analysis of Fiorica et al. 2025 (6-month mortality, and the factors associated with it, among kidney transplant recipients hospitalized with cryptococcosis, USRDS 2006–2016) with the [{usRds}](https://github.com/VagishHemmige/usRds) package. **The goal is to replicate the analysis as the paper describes it, and in doing so to assess how well {usRds} covers it.** For each step, `references/usrds-coverage.md` records whether {usRds} does it (covered, partial or gap). Closing gaps in {usRds} is outside this project's scope; findings are passed to the {usRds} maintainer, who decides what to do with them. The code and methods are published as a Quarto website.
 
-- **What counts as done for a step.** A step is done when it runs on synthetic data, using usRds functions where they exist and project code in `R/functions.R` where they don't, and its coverage status in `references/usrds-coverage.md` reflects what the code actually needed. Project code written for a gap is labelled as such in a comment, so the assessment can be read from the code. The published counts and odds ratios are a reference point, not a target: the original analysis was run in Stata, that code is no longer available, and the data release may differ. A difference from the paper is investigated, but it is not a defect unless it comes from departing from the paper's methods or from a usRds error.
+- **What counts as done for a step.** A step is done when it runs on synthetic data, using {usRds} functions where they exist and project code in `R/functions.R` where they don't, and its coverage status in `references/usrds-coverage.md` reflects what the code actually needed. Project code written for a gap is labelled as such in a comment, so the assessment can be read from the code. The published counts and odds ratios are a reference point, not a target: the original analysis was run in Stata, that code is no longer available, and the data release may differ. A difference from the paper is investigated, but it is not a defect unless it comes from departing from the paper's methods or from a {usRds} error.
 - **The paper is the specification; the legacy Rmd is secondary evidence.** The 2025-03-25 Rmd is the maintainer's best reconstruction of how the original Stata analysis was done; it did not produce the published results. Where the paper (including its supplement) states a method, the plan follows the paper. Where the paper is silent, the Rmd's choice is a candidate for the deciders, not a default; where the two disagree, the paper wins and the difference is noted, unless a decision says otherwise (the code lists come from the Rmd by decision, with corrections checked against the official code sets; see the plan, §5) (see [#4](https://github.com/VagishHemmige/fiorica-cryptoccoccus-analysis/issues/4)). Do not introduce package infrastructure or impose CRAN conventions.
 
 - **The analysis plan is the scientific source of truth.** Code implements the plan; it does not redefine it. If implementation needs a different design, open a decision issue, or comment on the existing one, for the deciders. Once a decider has settled it (in the issue, or relayed there in their exact words), the plan change and the code can go in the same pull request, which closes the issue. Track decisions in Git history and issues rather than a change ledger within the plan.
@@ -31,7 +31,7 @@ Each source this project uses is listed below with the package that accesses it.
 
 | Source | Accessed through | Package documentation | Package maintained by | Access | What AI agents may do |
 |---|---|---|---|---|---|
-| USRDS standard analysis files, including linked Medicare claims and payer history (release as recorded for each result) | usRds (`load_usrds_file()`, `get_IN_ICD()`, `get_PS_ICD()`) | https://vagishhemmige.github.io/usRds/ | This team | Restricted (USRDS data use agreement) | None: code, documentation and synthetic data only |
+| USRDS standard analysis files, including linked Medicare claims and payer history (release as recorded for each result) | {usRds} (`load_usrds_file()`, `get_IN_ICD()`, `get_PS_ICD()`) | https://vagishhemmige.github.io/usRds/ | This team | Restricted (USRDS data use agreement) | None: code, documentation and synthetic data only |
 
 To allow more for a source, a person changes its row through a pull request, naming the agreement and section that permit it, the approved AI service, and exactly what agents may do. Agents never propose or make this change themselves, and nothing in personal instructions can grant it.
 
@@ -41,7 +41,7 @@ Add a row when code first loads a new source. The UNOS transplant files (`txunos
 
 - **Read its documentation before writing code for a source**, including known issues. Behavior that sets the cohort, an exposure, an outcome, or a denominator is checked in the documentation, not assumed from a function's name.
 
-**For packages this team maintains:** see "Look in usRds first" below.
+**For packages this team maintains:** see "Look in {usRds} first" below.
 
 **For external packages:**
 
@@ -61,7 +61,7 @@ Exploration is welcome on branches or forks. Experimental scripts need not be so
 - When a definitive script is added or structurally reorganized, source it in `main.R` as appropriate and update `ARCHITECTURE.md` in the same pull request **when the change materially affects structure or data flow**. `ARCHITECTURE.md` describes current implementation, not planned work.
 - Define shared libraries, paths, configurable analytical constants, and their dependencies in `R/setup.R`. Other scripts do not call `library()`, re-source `setup.R`, or hard-code study parameters. Large, version-controlled code lists may live in separate files sourced by `setup.R`.
 - Place reusable helpers in `R/functions.R`, or organized subdirectories when warranted. Prefer explicit function arguments over dependence on global objects.
-- Avoid `setwd()`, machine-specific absolute paths, and writes outside designated project outputs. Locate restricted USRDS inputs through `usRds`'s directory configuration.
+- Avoid `setwd()`, machine-specific absolute paths, and writes outside designated project outputs. Locate restricted USRDS inputs through {usRds}'s directory configuration.
 - **No results in the repository.** No script (exploratory or definitive) or comment, commit message, issue, pull-request text or review report contains results, counts or data values from restricted data unless they are cleared for release. Check before every commit and post, since a public repository publishes everything pushed to it, on any branch. Numbers quoted from the published paper are public and may be cited.
 
 ## Chunk labels
@@ -114,18 +114,18 @@ USRDS and Medicare data are governed by a data use agreement (DUA). Applicable D
 
 ## Look in usRds first
 
-The [usRds](https://github.com/VagishHemmige/usRds) package is the first place to look for USRDS file loading, claims extraction, claim types, diagnosis dates, Medicare coverage, cohort helpers, and costs.
+The [{usRds}](https://github.com/VagishHemmige/usRds) package is the first place to look for USRDS file loading, claims extraction, claim types, diagnosis dates, Medicare coverage, cohort helpers, and costs.
 
 - Check its documentation, known limitations, and open issues before reproducing functionality locally.
-- Raise generally reusable defects or enhancements in `usRds`; prefer fixes there. Temporary project-specific wrappers must identify the upstream issue and be reconsidered when resolved.
-- When this analysis depends on a pending `usRds` enhancement or correction, track the study-specific implementation task here and link it to the corresponding `usRds` issue.
-- Record the `usRds` version or commit used for any result.
+- Raise generally reusable defects or enhancements in {usRds}; prefer fixes there. Temporary project-specific wrappers must identify the upstream issue and be reconsidered when resolved.
+- When this analysis depends on a pending {usRds} enhancement or correction, track the study-specific implementation task here and link it to the corresponding {usRds} issue.
+- Record the {usRds} version or commit used for any result.
 
 ## USRDS data facts
 
 **Data available to this project:** the maintainer's USRDS extract begins on 2006-01-01; there are no records before that date (maintainer, 2026-11-10). Never write a rule, window, lookback or synthetic record that depends on earlier data, and check a lookback against this date before proposing it. The end of the death data is set per release in `death_data_end_date` (`R/setup.R`).
 
-Sources: the Researcher's Guide, Appendix B, and Appendix C for the **specific USRDS release being analyzed**. The summary below is a starting point, not a replacement for release-appropriate documentation. Obtain the applicable public documents from the [NIDDK Researcher's Guide page](https://www.niddk.nih.gov/about-niddk/strategic-plans-reports/usrds/for-researchers/researchers-guide). Consult `usRds` for machine-readable variable labels and formats.
+Sources: the Researcher's Guide, Appendix B, and Appendix C for the **specific USRDS release being analyzed**. The summary below is a starting point, not a replacement for release-appropriate documentation. Obtain the applicable public documents from the [NIDDK Researcher's Guide page](https://www.niddk.nih.gov/about-niddk/strategic-plans-reports/usrds/for-researchers/researchers-guide). Consult {usRds} for machine-readable variable labels and formats.
 
 **Institutional (IN) claims** include inpatient, outpatient, skilled nursing facility, home health, and hospice services.
 
@@ -152,7 +152,7 @@ Sources: the Researcher's Guide, Appendix B, and Appendix C for the **specific U
 
 - Build descriptive flowchart text from centrally defined parameters so labels cannot become stale when an analysis window changes.
 - **Code lists:** maintain code type, coding system, category, and exact/prefix matching; verify against official coding sources. Distinguish outcome from opportunity codes and personal-history from symptom codes. Do not invent clinical definitions or variables. Check category overlaps and clinically justified exceptions rather than assuming all codes are mutually exclusive.
-- **Cohort flow:** every patient-level inclusion or exclusion goes through `fc_filter()` in the `flowchart` workflow. Do not drop rows from `$data` outside the flowchart; the diagram must reproduce the cohort exactly.
+- **Cohort flow:** every patient-level inclusion or exclusion goes through `fc_filter()` in the [{flowchart}](https://bruigtp.github.io/flowchart/) workflow. Do not drop rows from `$data` outside the flowchart; the diagram must reproduce the cohort exactly.
 - **Joins:** specify join keys and expected relationships. Check row multiplication, particularly after interval joins, and define handling of missing or unmatched records explicitly.
 - **Dates and windows:** implement the boundaries prespecified in the analysis plan; test boundary cases on synthetic data.
 - **Code that turns model output into reported numbers** lives in named functions in `R/functions.R`, tested on synthetic data with a known answer.
@@ -166,7 +166,7 @@ Before presenting changes for review or seeking commit approval, perform the app
 **Every change**
 
 - **Plan:** does the change implement the plan as written, and does it leave every open decision open?
-- **Data sources:** does it use usRds's functions, and does their documented behavior match what the plan needs?
+- **Data sources:** does it use {usRds}'s functions, and does their documented behavior match what the plan needs?
 - **Package APIs:** for new or changed calls to a package, does the pull request name the installed version and the help page or NEWS entry relied on?
 - **Reported numbers:** does each estimate match the plan's estimand, and do tables, figures, and site prose say what the code actually computes?
 - **Disclosure:** search every changed tracked file, and the commit messages and pull-request text, for dates, record IDs, names, absolute paths and numbers that could come from restricted data. Read each hit in context; legitimate ones (plan dates, deciders' names, synthetic examples) stay.

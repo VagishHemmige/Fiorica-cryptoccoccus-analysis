@@ -22,7 +22,7 @@ knitr::read_chunk("../R/setup.R")
 
 ## Packages
 
-The analysis uses the tidyverse for data handling. **usRds** is the access package for the USRDS files: it locates the files on the machine that holds them and loads or extracts from them. The [coverage assessment](usrds-coverage.qmd) records which steps it does. **flowchart** builds the cohort flow diagram (Figure 1), **survival** the Kaplan–Meier curve (Figure 2), and **labelled** the variable labels.
+The analysis uses the [{tidyverse}](https://www.tidyverse.org/) for data handling. **[{usRds}](https://vagishhemmige.github.io/usRds/)** is the access package for the USRDS files: it locates the files on the machine that holds them and loads or extracts from them. The [coverage assessment](usrds-coverage.qmd) records which steps it does. **[{flowchart}](https://bruigtp.github.io/flowchart/)** builds the cohort flow diagram (Figure 1), **[{survival}](https://CRAN.R-project.org/package=survival)** the Kaplan–Meier curve (Figure 2), and **[{labelled}](https://larmarange.github.io/labelled/)** the variable labels.
 
 ```{r}
 #| label: load-packages

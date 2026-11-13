@@ -3,7 +3,7 @@ title: "Functions"
 format: html
 ---
 
-This script defines the helper functions the analysis scripts share. Three of them do work that usRds does not yet do, and are labelled "usRds gap" in the code. The [coverage assessment](usrds-coverage.qmd) explains each gap.
+This script defines the helper functions the analysis scripts share. Three of them do work that [{usRds}](https://vagishhemmige.github.io/usRds/) does not yet do, and are labelled "{usRds} gap" in the code. The [coverage assessment](usrds-coverage.qmd) explains each gap.
 
 ::: {.Rcode title="Source code"}
 The full R script is available at:
@@ -39,7 +39,7 @@ knitr::read_chunk("../R/functions.R")
 
 ## Matching codes
 
-`code_matches()` compares a vector of recorded codes with a code list. It handles both exact codes and prefixes, so the diabetes stems match all their subcodes. The usRds `get_*_ICD()` functions match exactly only, which is why this exists (coverage step 6).
+`code_matches()` compares a vector of recorded codes with a code list. It handles both exact codes and prefixes, so the diabetes stems match all their subcodes. The {usRds} `get_*_ICD()` functions match exactly only, which is why this exists (coverage step 6).
 
 **Used by:** [`flag_codes_wide()`](#searching-wide-code-columns).
 
@@ -69,7 +69,7 @@ The USRDS hospitalization files record each stay's codes in separate columns:
 
 A single hospital stay can appear as several hospitalization records. `collapse_stays()` puts a person's records in date order. It starts a new stay only when a record's admission date falls after the latest discharge date seen so far, so the stays it builds never overlap. A record admitted on the day of the previous discharge joins the same stay. The optional `gap_days` argument also joins records that start within that many days of discharge.
 
-The function adds a stay identifier and the stay's first and last dates. The plan treats overlapping or contiguous records as one stay (§5); usRds has no equivalent (coverage step 7).
+The function adds a stay identifier and the stay's first and last dates. The plan treats overlapping or contiguous records as one stay (§5); {usRds} has no equivalent (coverage step 7).
 
 **Used by:** [`summarise_cryptococcosis_stays()`](#cryptococcosis-stays).
 
@@ -161,7 +161,7 @@ A stay admitted on the day of the first transplant counts; a stay admitted the d
 
 ## Loading and flagging hospitalizations
 
-`load_flagged_hospitalizations()` loads one hospitalization file for a set of people through usRds. It flags the diagnosis and procedure concepts on each record, and keeps the dates, ICU and CCU days, and the flags.
+`load_flagged_hospitalizations()` loads one hospitalization file for a set of people through {usRds}. It flags the diagnosis and procedure concepts on each record, and keeps the dates, ICU and CCU days, and the flags.
 
 **Used in the analysis:** 2. Covariates: [Hospitalization records](create_covariates.qmd#hospitalization-records).
 
@@ -346,7 +346,7 @@ USRDS does not allow any count from 1 to 10 to be published, including one that 
 
 ## P values in AMA style
 
-`style_pvalue_ama()` rounds P values as gtsummary's JAMA theme does and drops the leading zero (".040", "<.001"), as AMA style asks.
+`style_pvalue_ama()` rounds P values as [{gtsummary}](https://www.danieldsjoberg.com/gtsummary/)'s JAMA theme does and drops the leading zero (".040", "<.001"), as AMA style asks.
 
 **Used in the analysis:** Tables: [Journal style](tables.qmd#journal-style).
 
