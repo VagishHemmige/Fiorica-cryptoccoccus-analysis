@@ -102,7 +102,7 @@ div.csl-indent {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-66ae90e4418e9d0ac3caa4b8c3bef75c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-9c6fd4a99ff4209dd1149a1765198857.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -131,17 +131,6 @@ div.csl-indent {
   }
 }</script>
 <style>
-div.callout-Pending.callout {
-  border-left-color: #f0c400;
-}
-div.callout-Pending.callout-style-default > .callout-header {
-  background-color: rgba(240, 196, 0, 0.13);
-}
-div.callout-Pending .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pending.callout-titled .callout-icon::before {
-  content: '⏳';
-  background-image: none;
-}
 div.callout-Rcode.callout {
   border-left-color: #d63384;
 }
@@ -162,6 +151,17 @@ div.callout-Results.callout-style-default > .callout-header {
 div.callout-Results .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
 div.callout-Results.callout-style-default .callout-icon::before, div.callout-Results.callout-titled .callout-icon::before {
   content: '📊';
+  background-image: none;
+}
+div.callout-Pending.callout {
+  border-left-color: #f0c400;
+}
+div.callout-Pending.callout-style-default > .callout-header {
+  background-color: rgba(240, 196, 0, 0.13);
+}
+div.callout-Pending .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pending.callout-titled .callout-icon::before {
+  content: '⏳';
   background-image: none;
 }
 </style>
@@ -506,7 +506,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 </header>
 
 
-<p>This page describes where the study’s data come from and what they can and cannot show. Which files each step uses is on the <a href="../quarto/study_methods.html">Study design and methods</a> page and in the <a href="../quarto/usrds-coverage.html">usRds coverage</a> assessment.</p>
+<p>This page describes where the study’s data come from and what they can and cannot show. Which files each step uses is on the <a href="../quarto/study_methods.html">Study design and methods</a> page and in the <a href="../quarto/usrds-coverage.html">{usRds} coverage</a> assessment.</p>
 <section id="the-united-states-renal-data-system" class="level2">
 <h2 class="anchored" data-anchor-id="the-united-states-renal-data-system">The United States Renal Data System</h2>
 <p>The United States Renal Data System (USRDS) is the national data system for chronic kidney disease and end-stage kidney disease in the United States, run for the National Institute of Diabetes and Digestive and Kidney Diseases. It links registry information on almost everyone treated for kidney failure with their Medicare billing records and with transplant records from the Organ Procurement and Transplantation Network (OPTN)<span class="citation" data-cites="usrds2024guide foley2013"><sup><a href="#ref-usrds2024guide" role="doc-biblioref">1</a>,<a href="#ref-foley2013" role="doc-biblioref">2</a></sup></span>. The <a href="../quarto/supplement.html#supplementary-figure-1.-data-sources-of-the-usrds-database-and-resultant-data">published supplement</a> shows its sources in a diagram.</p>
@@ -529,7 +529,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 </section>
 <section id="access-and-disclosure" class="level2">
 <h2 class="anchored" data-anchor-id="access-and-disclosure">Access and disclosure</h2>
-<p>USRDS data are released only under a data use agreement. Results may not be published if any table cell, or any number that can be worked out from others, describes fewer than 11 people<span class="citation" data-cites="usrdsdua"><sup><a href="#ref-usrdsdua" role="doc-biblioref">8</a></sup></span>. This is why counts from 1 to 10 are hidden in this project’s tables and figures, and why nothing on this site comes from the data. The data are read through the <a href="https://github.com/VagishHemmige/usRds">usRds</a> package, on a machine with authorized access.</p>
+<p>USRDS data are released only under a data use agreement. Results may not be published if any table cell, or any number that can be worked out from others, describes fewer than 11 people<span class="citation" data-cites="usrdsdua"><sup><a href="#ref-usrdsdua" role="doc-biblioref">8</a></sup></span>. This is why counts from 1 to 10 are hidden in this project’s tables and figures, and why nothing on this site comes from the data. The data are read through the <a href="https://github.com/VagishHemmige/usRds">{usRds}</a> package, on a machine with authorized access.</p>
 </section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>
@@ -1034,7 +1034,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span><span class="co"> html</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>This page describes where the study's data come from and what they can and cannot show. Which files each step uses is on the <span class="co">[</span><span class="ot">Study design and methods</span><span class="co">](study_methods.qmd)</span> page and in the <span class="co">[</span><span class="ot">usRds coverage</span><span class="co">](usrds-coverage.qmd)</span> assessment.</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>This page describes where the study's data come from and what they can and cannot show. Which files each step uses is on the <span class="co">[</span><span class="ot">Study design and methods</span><span class="co">](study_methods.qmd)</span> page and in the <span class="co">[</span><span class="ot">{usRds} coverage</span><span class="co">](usrds-coverage.qmd)</span> assessment.</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">## The United States Renal Data System</span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
@@ -1059,7 +1059,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="fu">## Access and disclosure</span></span>
 <span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>USRDS data are released only under a data use agreement. Results may not be published if any table cell, or any number that can be worked out from others, describes fewer than 11 people <span class="co">[</span><span class="ot">@usrdsdua</span><span class="co">]</span>. This is why counts from 1 to 10 are hidden in this project's tables and figures, and why nothing on this site comes from the data. The data are read through the <span class="co">[</span><span class="ot">usRds</span><span class="co">](https://github.com/VagishHemmige/usRds)</span> package, on a machine with authorized access.</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>USRDS data are released only under a data use agreement. Results may not be published if any table cell, or any number that can be worked out from others, describes fewer than 11 people <span class="co">[</span><span class="ot">@usrdsdua</span><span class="co">]</span>. This is why counts from 1 to 10 are hidden in this project's tables and figures, and why nothing on this site comes from the data. The data are read through the <span class="co">[</span><span class="ot">{usRds}</span><span class="co">](https://github.com/VagishHemmige/usRds)</span> package, on a machine with authorized access.</span>
 <span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="fu">## References</span></span>
 <span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>

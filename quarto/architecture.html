@@ -83,7 +83,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-66ae90e4418e9d0ac3caa4b8c3bef75c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-9c6fd4a99ff4209dd1149a1765198857.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -126,17 +126,6 @@ div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pen
   content: '⏳';
   background-image: none;
 }
-div.callout-Results.callout {
-  border-left-color: #198754;
-}
-div.callout-Results.callout-style-default > .callout-header {
-  background-color: rgba(25, 135, 84, 0.13);
-}
-div.callout-Results .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-Results.callout-style-default .callout-icon::before, div.callout-Results.callout-titled .callout-icon::before {
-  content: '📊';
-  background-image: none;
-}
 div.callout-Rcode.callout {
   border-left-color: #d63384;
 }
@@ -146,6 +135,17 @@ div.callout-Rcode.callout-style-default > .callout-header {
 div.callout-Rcode .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
 div.callout-Rcode.callout-style-default .callout-icon::before, div.callout-Rcode.callout-titled .callout-icon::before {
   content: '💻';
+  background-image: none;
+}
+div.callout-Results.callout {
+  border-left-color: #198754;
+}
+div.callout-Results.callout-style-default > .callout-header {
+  background-color: rgba(25, 135, 84, 0.13);
+}
+div.callout-Results .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-Results.callout-style-default .callout-icon::before, div.callout-Results.callout-titled .callout-icon::before {
+  content: '📊';
   background-image: none;
 }
 </style>
@@ -507,7 +507,7 @@ It reads only ARCHITECTURE.md, never data, and runs no analysis code.
 -->
 <section id="architecture" class="level1">
 <h1>Architecture</h1>
-<p>This document describes how the code is organised today. What the analysis is meant to do is in <code>analysis-plan.md</code>; how each step maps to usRds is in <code>references/usrds-coverage.md</code>.</p>
+<p>This document describes how the code is organised today. What the analysis is meant to do is in <code>analysis-plan.md</code>; how each step maps to <a href="https://vagishhemmige.github.io/usRds/">{usRds}</a> is in <code>references/usrds-coverage.md</code>.</p>
 <section id="data-flow" class="level2">
 <h2 class="anchored" data-anchor-id="data-flow">Data flow</h2>
 <div class="cell" data-eval="true" data-layout-align="default">
@@ -548,17 +548,11 @@ It reads only ARCHITECTURE.md, never data, and runs no analysis code.
 </div>
 </div>
 </div>
-<p><code>R/main.R</code> sources the scripts in this order: <code>setup.R</code> (which sources <code>code_lists.R</code>), <code>functions.R</code>, <code>create_cohort.R</code>, <code>create_covariates.R</code>, <code>create_outcomes.R</code>, <code>fit_models.R</code>, <code>plot_style.R</code>, <code>tables.R</code>, <code>figures.R</code>. USRDS files are reached only through usRds, located by <code>usRds::set_USRDS_wd()</code> on the machine that holds them. Until <a href="https://github.com/VagishHemmige/usRds/issues/22">usRds#22</a> is fixed, columns are chosen with <code>select()</code> after <code>load_usrds_file()</code> rather than with its <code>col_select</code>.</p>
+<p><code>R/main.R</code> sources the scripts in this order: <code>setup.R</code> (which sources <code>code_lists.R</code>), <code>functions.R</code>, <code>create_cohort.R</code>, <code>create_covariates.R</code>, <code>create_outcomes.R</code>, <code>fit_models.R</code>, <code>plot_style.R</code>, <code>tables.R</code>, <code>figures.R</code>. USRDS files are reached only through {usRds}, located by <code>usRds::set_USRDS_wd()</code> on the machine that holds them. Until <a href="https://github.com/VagishHemmige/usRds/issues/22">{usRds}#22</a> is fixed, columns are chosen with <code>select()</code> after <code>load_usrds_file()</code> rather than with its <code>col_select</code>.</p>
 </section>
 <section id="scripts" class="level2">
 <h2 class="anchored" data-anchor-id="scripts">Scripts</h2>
 <table class="caption-top table">
-<colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>Script</th>
@@ -577,18 +571,18 @@ It reads only ARCHITECTURE.md, never data, and runs no analysis code.
 <tr class="even">
 <td><code>R/code_lists.R</code></td>
 <td>Every code list, one row per code, with code type, system, exact or prefix match and source</td>
-<td>dplyr, tidyr, stringr</td>
+<td><a href="https://dplyr.tidyverse.org/">{dplyr}</a>, <a href="https://tidyr.tidyverse.org/">{tidyr}</a>, <a href="https://stringr.tidyverse.org/">{stringr}</a></td>
 <td><code>code_lists</code></td>
 </tr>
 <tr class="odd">
 <td><code>R/functions.R</code></td>
-<td>Helpers. Those marked “usRds gap” do work usRds does not yet do</td>
+<td>Helpers. Those marked “{usRds} gap” do work {usRds} does not yet do</td>
 <td><code>setup.R</code></td>
 <td>functions</td>
 </tr>
 <tr class="even">
 <td><code>R/create_cohort.R</code></td>
-<td>Builds the cohort (plan §4): flags cryptococcosis on hospitalization records, combines records into stays, picks each person’s index stay, finds earlier cryptococcosis in hospital records and physician/supplier claims (<code>usRds::get_PS_ICD()</code>), and applies every exclusion through <code>flowchart</code></td>
+<td>Builds the cohort (plan §4): flags cryptococcosis on hospitalization records, combines records into stays, picks each person’s index stay, finds earlier cryptococcosis in hospital records and physician/supplier claims (<code>usRds::get_PS_ICD()</code>), and applies every exclusion through <a href="https://bruigtp.github.io/flowchart/">{flowchart}</a></td>
 <td><code>setup.R</code>, <code>functions.R</code>, USRDS files</td>
 <td><code>cohort_flowchart</code>, <code>cohort</code></td>
 </tr>
@@ -607,18 +601,18 @@ It reads only ARCHITECTURE.md, never data, and runs no analysis code.
 <tr class="odd">
 <td><code>R/plot_style.R</code></td>
 <td>The maintainer’s house style for figures, copied unchanged from the COHERO RCT analysis (commit <code>e8c4fa5</code>): <code>theme_publication()</code>, Okabe-Ito palettes, <code>save_figure()</code> in millimetres</td>
-<td>ggplot2 ≥ 4.0, scales, svglite, ragg</td>
+<td><a href="https://ggplot2.tidyverse.org/">{ggplot2}</a> ≥ 4.0, <a href="https://scales.r-lib.org/">{scales}</a>, <a href="https://svglite.r-lib.org/">{svglite}</a>, <a href="https://ragg.r-lib.org/">{ragg}</a></td>
 <td>functions, <code>publication_colors</code></td>
 </tr>
 <tr class="even">
 <td><code>R/tables.R</code></td>
-<td>Follow-up summary (deaths, censored, reverse Kaplan–Meier median); Tables 1 and 2 by 6-month vital status in the paper’s row order, in OFID/CID/JID (AMA) style (gtsummary JAMA theme; t, χ² or Fisher tests; missing counts; small cells hidden with <code>flag_small_cells()</code> and <code>suppress_table_body()</code>); Table 3, unadjusted and adjusted odds ratios with the joint Wald P values the selection used; Table 4, the paper’s final model refitted beside its published odds ratios; disclosure checks</td>
+<td>Follow-up summary (deaths, censored, reverse Kaplan–Meier median); Tables 1 and 2 by 6-month vital status in the paper’s row order, in OFID/CID/JID (AMA) style (<a href="https://www.danieldsjoberg.com/gtsummary/">{gtsummary}</a> JAMA theme; t, χ² or Fisher tests; missing counts; small cells hidden with <code>flag_small_cells()</code> and <code>suppress_table_body()</code>); Table 3, unadjusted and adjusted odds ratios with the joint Wald P values the selection used; Table 4, the paper’s final model refitted beside its published odds ratios; disclosure checks</td>
 <td><code>analysis_data</code>, <code>model_data</code>, <code>km_fit</code>, <code>bivariable_results</code>, <code>multivariable</code>, <code>hosmer_lemeshow_result</code></td>
 <td><code>report_labels</code>, <code>follow_up_summary</code>, <code>table_1</code>, <code>table_2</code>, <code>table_models</code>, <code>table_published_model</code>, <code>disclosure_checks</code>; <code>tables/*.html</code>, <code>*.docx</code></td>
 </tr>
 <tr class="odd">
 <td><code>R/figures.R</code></td>
-<td>Figure 1 from <code>cohort_flowchart</code> (not exported if a box has 1–10 people); Figure 2, Kaplan–Meier with ggsurvfit’s risk table at times passing <code>km_reportable_times()</code>; Figure 3, forest plot of adjusted odds ratios; captions and alt text from the fitted objects</td>
+<td>Figure 1 from <code>cohort_flowchart</code> (not exported if a box has 1–10 people); Figure 2, Kaplan–Meier with <a href="https://www.danieldsjoberg.com/ggsurvfit/">{ggsurvfit}</a>’s risk table at times passing <code>km_reportable_times()</code>; Figure 3, forest plot of adjusted odds ratios; captions and alt text from the fitted objects</td>
 <td><code>cohort_flowchart</code>, <code>km_fit</code>, <code>multivariable</code>, <code>report_labels</code></td>
 <td><code>figure_2</code>, <code>figure_3</code>, <code>figure_text</code>; <code>figures/*</code></td>
 </tr>
@@ -639,14 +633,14 @@ It reads only ARCHITECTURE.md, never data, and runs no analysis code.
 <li><strong>One person, one row</strong> from the candidates step on. Joins declare their expected relationships, so an unexpected duplicate stops the run.</li>
 <li><strong>Release-dependent names in one place.</strong> The UNOS key names differ between USRDS releases; the scripts take them from <code>unos_registration_id</code> and <code>unos_followup_id</code> in <code>setup.R</code>.</li>
 <li><strong>Missing is not “no”.</strong> Combining yes/no values uses <code>any_known()</code>, so a person with only unknown rejection codes is missing rather than “no”, and a registration with no drug records is missing rather than “not on”.</li>
-<li><strong>One row per person for survival.</strong> All covariates are fixed and death is the only event, so <code>survfit()</code> takes one row per person; the usRds cohort functions, built for time-varying data, are not used.</li>
-<li><strong>Logic in tested functions, loading in scripts.</strong> The scripts load data through usRds and call functions from <code>functions.R</code>; the functions are tested on synthetic data in <code>tests/test-functions.R</code>.</li>
+<li><strong>One row per person for survival.</strong> All covariates are fixed and death is the only event, so <code>survfit()</code> takes one row per person; the {usRds} cohort functions, built for time-varying data, are not used.</li>
+<li><strong>Logic in tested functions, loading in scripts.</strong> The scripts load data through {usRds} and call functions from <code>functions.R</code>; the functions are tested on synthetic data in <code>tests/test-functions.R</code>.</li>
 </ul>
 </section>
 <section id="tests" class="level2">
 <h2 class="anchored" data-anchor-id="tests">Tests</h2>
-<p><code>tests/test-functions.R</code> tests every helper on synthetic data with known answers, including boundary dates (window edges, a stay admitted on or spanning the transplant date, birthdays). Run with <code>testthat::test_file("tests/test-functions.R")</code> from the project root. The scripts themselves need usRds and the USRDS files and are not run by the unit tests.</p>
-<p><code>tests/run_synthetic.R</code> runs the whole of <code>R/main.R</code> end to end on an invented USRDS folder written by <code>tests/make_synthetic_usrds.R</code> (Parquet files in the layout usRds maps; every value made up, none derived from records). It points usRds at that folder for the session only and sets <code>death_data_end_date</code> for the synthetic run. Its tables and figures land in the gitignored <code>tables/</code> and <code>figures/</code> folders like real ones; they contain no restricted data but are not committed either.</p>
+<p><code>tests/test-functions.R</code> tests every helper on synthetic data with known answers, including boundary dates (window edges, a stay admitted on or spanning the transplant date, birthdays). Run with <code>testthat::test_file("tests/test-functions.R")</code> from the project root. The scripts themselves need {usRds} and the USRDS files and are not run by the unit tests.</p>
+<p><code>tests/run_synthetic.R</code> runs the whole of <code>R/main.R</code> end to end on an invented USRDS folder written by <code>tests/make_synthetic_usrds.R</code> (Parquet files in the layout {usRds} maps; every value made up, none derived from records). It points {usRds} at that folder for the session only and sets <code>death_data_end_date</code> for the synthetic run. Its tables and figures land in the gitignored <code>tables/</code> and <code>figures/</code> folders like real ones; they contain no restricted data but are not committed either.</p>
 </section>
 <section id="website" class="level2">
 <h2 class="anchored" data-anchor-id="website">Website</h2>

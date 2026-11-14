@@ -102,7 +102,7 @@ div.csl-indent {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-66ae90e4418e9d0ac3caa4b8c3bef75c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-9c6fd4a99ff4209dd1149a1765198857.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -131,17 +131,6 @@ div.csl-indent {
   }
 }</script>
 <style>
-div.callout-Rcode.callout {
-  border-left-color: #d63384;
-}
-div.callout-Rcode.callout-style-default > .callout-header {
-  background-color: rgba(214, 51, 132, 0.13);
-}
-div.callout-Rcode .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-Rcode.callout-style-default .callout-icon::before, div.callout-Rcode.callout-titled .callout-icon::before {
-  content: '💻';
-  background-image: none;
-}
 div.callout-Results.callout {
   border-left-color: #198754;
 }
@@ -162,6 +151,17 @@ div.callout-Pending.callout-style-default > .callout-header {
 div.callout-Pending .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
 div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pending.callout-titled .callout-icon::before {
   content: '⏳';
+  background-image: none;
+}
+div.callout-Rcode.callout {
+  border-left-color: #d63384;
+}
+div.callout-Rcode.callout-style-default > .callout-header {
+  background-color: rgba(214, 51, 132, 0.13);
+}
+div.callout-Rcode .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-Rcode.callout-style-default .callout-icon::before, div.callout-Rcode.callout-titled .callout-icon::before {
+  content: '💻';
   background-image: none;
 }
 </style>
@@ -535,7 +535,7 @@ div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pen
 <section id="loading-the-hospitalization-files" class="level2">
 <h2 class="anchored" data-anchor-id="loading-the-hospitalization-files">Loading the hospitalization files</h2>
 <p>The cohort starts from the two USRDS hospitalization files, which hold Medicare inpatient stays (decided in <a href="https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/1">#1</a>). Only the dates and diagnosis columns are loaded.</p>
-<p>Factor labels are switched off, so codes stay as plain text. usRds has no function that searches these files for codes, so each file is loaded whole and searched by the project’s own code. The <a href="../quarto/usrds-coverage.html">usRds coverage</a> page records this as a gap (step 4).</p>
+<p>Factor labels are switched off, so codes stay as plain text. <a href="https://vagishhemmige.github.io/usRds/">{usRds}</a> has no function that searches these files for codes, so each file is loaded whole and searched by the project’s own code. The <a href="../quarto/usrds-coverage.html">{usRds} coverage</a> page records this as a gap (step 4).</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -1248,7 +1248,7 @@ div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pen
 <span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>The cohort starts from the two USRDS hospitalization files, which hold Medicare inpatient stays (decided in <span class="co">[</span><span class="ot">#1</span><span class="co">](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues/1)</span>). Only the dates and diagnosis columns are loaded.</span>
 <span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>Factor labels are switched off, so codes stay as plain text. usRds has no function that searches these files for codes, so each file is loaded whole and searched by the project's own code. The <span class="co">[</span><span class="ot">usRds coverage</span><span class="co">](usrds-coverage.qmd)</span> page records this as a gap (step 4).</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>Factor labels are switched off, so codes stay as plain text. <span class="co">[</span><span class="ot">{usRds}</span><span class="co">](https://vagishhemmige.github.io/usRds/)</span> has no function that searches these files for codes, so each file is loaded whole and searched by the project's own code. The <span class="co">[</span><span class="ot">{usRds} coverage</span><span class="co">](usrds-coverage.qmd)</span> page records this as a gap (step 4).</span>
 <span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: cohort-load-hospitalizations</span></span>

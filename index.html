@@ -101,7 +101,7 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-66ae90e4418e9d0ac3caa4b8c3bef75c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-9c6fd4a99ff4209dd1149a1765198857.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -510,7 +510,8 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 </section>
 <section id="what-this-project-does" class="level2">
 <h2 class="anchored" data-anchor-id="what-this-project-does">What this project does</h2>
-<p>This project replicates that analysis as the paper describes it, using the <a href="https://github.com/VagishHemmige/usRds">usRds</a> R package wherever the package can do a step. Along the way it assesses how well usRds covers the paper’s methods.</p>
+<p>This project replicates that analysis as the paper describes it, using the <a href="https://github.com/VagishHemmige/usRds">{usRds}</a> R package wherever the package can do a step. Along the way it assesses how well {usRds} covers the paper’s methods.</p>
+<p><a href="https://forum.posit.co/t/curly-braces-around-package-name-convention/122547">Braces</a> identify R packages throughout this site.</p>
 <p>The original analysis was run in Stata, and that code is no longer available. The paper and its supplement are therefore the specification. The published estimates are a reference point, not a target.</p>
 </section>
 <section id="methods" class="level2">
@@ -521,7 +522,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <li>a Kaplan–Meier curve;</li>
 <li>multivariable logistic regression.</li>
 </ul>
-<p><a href="./quarto/study_methods.html">Study design and methods</a> explains the choices in plain language. The <a href="./quarto/analysis-plan.html">analysis plan</a> is the authoritative specification. The <a href="./quarto/usrds-coverage.html">usRds coverage</a> page maps each step to the package.</p>
+<p><a href="./quarto/study_methods.html">Study design and methods</a> explains the choices in plain language. The <a href="./quarto/analysis-plan.html">analysis plan</a> is the authoritative specification. The <a href="./quarto/usrds-coverage.html">{usRds} coverage</a> page maps each step to the package.</p>
 </section>
 <section id="status" class="level2">
 <h2 class="anchored" data-anchor-id="status">Status</h2>
@@ -1009,23 +1010,25 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">## What this project does</span></span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>This project replicates that analysis as the paper describes it, using the <span class="co">[</span><span class="ot">usRds</span><span class="co">](https://github.com/VagishHemmige/usRds)</span> R package wherever the package can do a step. Along the way it assesses how well usRds covers the paper's methods.</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>This project replicates that analysis as the paper describes it, using the <span class="co">[</span><span class="ot">{usRds}</span><span class="co">](https://github.com/VagishHemmige/usRds)</span> R package wherever the package can do a step. Along the way it assesses how well {usRds} covers the paper's methods.</span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>The original analysis was run in Stata, and that code is no longer available. The paper and its supplement are therefore the specification. The published estimates are a reference point, not a target.</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Braces</span><span class="co">](https://forum.posit.co/t/curly-braces-around-package-name-convention/122547)</span> identify R packages throughout this site.</span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">## Methods</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>The original analysis was run in Stata, and that code is no longer available. The paper and its supplement are therefore the specification. The published estimates are a reference point, not a target.</span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>The cohort is built from USRDS hospitalization files, Medicare claims and UNOS transplant records. The outcome is death from any cause within 180 days of the first cryptococcosis hospitalization after transplant. It is analysed with:</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">## Methods</span></span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>descriptive tables;</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>a Kaplan–Meier curve;</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>multivariable logistic regression.</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Study design and methods</span><span class="co">](quarto/study_methods.qmd)</span> explains the choices in plain language. The <span class="co">[</span><span class="ot">analysis plan</span><span class="co">](quarto/analysis-plan.qmd)</span> is the authoritative specification. The <span class="co">[</span><span class="ot">usRds coverage</span><span class="co">](quarto/usrds-coverage.qmd)</span> page maps each step to the package.</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>The cohort is built from USRDS hospitalization files, Medicare claims and UNOS transplant records. The outcome is death from any cause within 180 days of the first cryptococcosis hospitalization after transplant. It is analysed with:</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>descriptive tables;</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>a Kaplan–Meier curve;</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>multivariable logistic regression.</span>
 <span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="fu">## Status</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Study design and methods</span><span class="co">](quarto/study_methods.qmd)</span> explains the choices in plain language. The <span class="co">[</span><span class="ot">analysis plan</span><span class="co">](quarto/analysis-plan.qmd)</span> is the authoritative specification. The <span class="co">[</span><span class="ot">{usRds} coverage</span><span class="co">](quarto/usrds-coverage.qmd)</span> page maps each step to the package.</span>
 <span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>In progress; nothing on this site comes from USRDS data. The code covers every step from the cohort to the tables and figures, and runs end to end on synthetic data; it has not yet been run on the USRDS data. The paper's own results are on the <span class="co">[</span><span class="ot">Published results</span><span class="co">](quarto/results.qmd)</span> pages, and the <span class="co">[</span><span class="ot">differences from the reconstruction</span><span class="co">](quarto/differences.qmd)</span> of the original analysis are listed. Open decisions are tracked as <span class="co">[</span><span class="ot">decision issues</span><span class="co">](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues?q=is%3Aissue+label%3Adecision)</span>.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="fu">## Status</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>In progress; nothing on this site comes from USRDS data. The code covers every step from the cohort to the tables and figures, and runs end to end on synthetic data; it has not yet been run on the USRDS data. The paper's own results are on the <span class="co">[</span><span class="ot">Published results</span><span class="co">](quarto/results.qmd)</span> pages, and the <span class="co">[</span><span class="ot">differences from the reconstruction</span><span class="co">](quarto/differences.qmd)</span> of the original analysis are listed. Open decisions are tracked as <span class="co">[</span><span class="ot">decision issues</span><span class="co">](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues?q=is%3Aissue+label%3Adecision)</span>.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

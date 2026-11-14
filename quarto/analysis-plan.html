@@ -102,7 +102,7 @@ div.csl-indent {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-66ae90e4418e9d0ac3caa4b8c3bef75c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-9c6fd4a99ff4209dd1149a1765198857.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -531,7 +531,7 @@ gives this page GitHub-style IDs and those links work on both.
 <section id="scope-and-reporting-framework" class="level2">
 <h2 class="anchored" data-anchor-id="scope-and-reporting-framework">Scope and reporting framework</h2>
 <p>This document is the authoritative specification of the study’s scientific objectives, population, definitions, estimands and statistical methods. <code>ARCHITECTURE.md</code> documents the implementation, <code>AGENTS.md</code> the working conventions, and GitHub Issues the open decisions and implementation status. Neither file supersedes this plan.</p>
-<p>The analysis replicates a published study<span class="citation" data-cites="fiorica2025"><sup><a href="#ref-fiorica2025" role="doc-biblioref">1</a></sup></span> as the paper describes it, using the usRds package wherever it can do a step, to assess the package’s coverage. <strong>The paper and its Supplementary Table 1 are the specification.</strong> The original analysis was run in Stata, and that code is no longer available; a later R Markdown reconstruction (2025-03-25) is used only as secondary evidence of how a step may have been done. Where the paper is silent, the plan records an open decision rather than adopting the reconstruction’s choice unexamined. The published estimates are a reference point, not a target. How each step maps to usRds is in <code>references/usrds-coverage.md</code>.</p>
+<p>The analysis replicates a published study<span class="citation" data-cites="fiorica2025"><sup><a href="#ref-fiorica2025" role="doc-biblioref">1</a></sup></span> as the paper describes it, using the <a href="https://vagishhemmige.github.io/usRds/">{usRds}</a> package wherever it can do a step, to assess the package’s coverage. <strong>The paper and its Supplementary Table 1 are the specification.</strong> The original analysis was run in Stata, and that code is no longer available; a later R Markdown reconstruction (2025-03-25) is used only as secondary evidence of how a step may have been done. Where the paper is silent, the plan records an open decision rather than adopting the reconstruction’s choice unexamined. The published estimates are a reference point, not a target. How each step maps to {usRds} is in <code>references/usrds-coverage.md</code>.</p>
 <p>Reporting will follow STROBE<span class="citation" data-cites="vonelm2007strobe"><sup><a href="#ref-vonelm2007strobe" role="doc-biblioref">2</a></sup></span> and RECORD<span class="citation" data-cites="benchimol2015record"><sup><a href="#ref-benchimol2015record" role="doc-biblioref">3</a></sup></span>. The reporting map in §12 links each checklist item to a section of this plan.</p>
 </section>
 <section id="1-objective" class="level2">
@@ -543,7 +543,7 @@ gives this page GitHub-style IDs and those links work on both.
 <li>describe time from kidney transplant to the index hospitalization;</li>
 <li>estimate the association of clinical, transplant and immunosuppression characteristics with 6-month mortality.</li>
 </ul></li>
-<li><strong>Methodological (this project):</strong> assess, step by step, whether usRds does what the paper’s methods require (covered, partial or gap).</li>
+<li><strong>Methodological (this project):</strong> assess, step by step, whether {usRds} does what the paper’s methods require (covered, partial or gap).</li>
 </ul>
 <p>All analyses are exploratory, as in the paper. No hypotheses are tested confirmatorily.</p>
 </section>
@@ -693,7 +693,7 @@ gives this page GitHub-style IDs and those links work on both.
 <li>Backward elimination is kept to mirror the paper. Its limitations are noted in §11.</li>
 </ul></li>
 <li><strong>Missing data:</strong> complete-case, as in the paper. The number excluded from the model is reported.</li>
-<li><strong>Software:</strong> R, with usRds (version and commit recorded with each result), survival, and flowchart for Figure 1.</li>
+<li><strong>Software:</strong> R, with {usRds} (version and commit recorded with each result), <a href="https://CRAN.R-project.org/package=survival">{survival}</a>, and <a href="https://bruigtp.github.io/flowchart/">{flowchart}</a> for Figure 1.</li>
 </ul>
 </section>
 <section id="9-sensitivity-analyses" class="level2">

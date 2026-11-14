@@ -83,7 +83,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-66ae90e4418e9d0ac3caa4b8c3bef75c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-9c6fd4a99ff4209dd1149a1765198857.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -123,17 +123,6 @@ div.callout-Rcode.callout-style-default .callout-icon::before, div.callout-Rcode
   content: '💻';
   background-image: none;
 }
-div.callout-Results.callout {
-  border-left-color: #198754;
-}
-div.callout-Results.callout-style-default > .callout-header {
-  background-color: rgba(25, 135, 84, 0.13);
-}
-div.callout-Results .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-Results.callout-style-default .callout-icon::before, div.callout-Results.callout-titled .callout-icon::before {
-  content: '📊';
-  background-image: none;
-}
 div.callout-Pending.callout {
   border-left-color: #f0c400;
 }
@@ -143,6 +132,17 @@ div.callout-Pending.callout-style-default > .callout-header {
 div.callout-Pending .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
 div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pending.callout-titled .callout-icon::before {
   content: '⏳';
+  background-image: none;
+}
+div.callout-Results.callout {
+  border-left-color: #198754;
+}
+div.callout-Results.callout-style-default > .callout-header {
+  background-color: rgba(25, 135, 84, 0.13);
+}
+div.callout-Results .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-Results.callout-style-default .callout-icon::before, div.callout-Results.callout-titled .callout-icon::before {
+  content: '📊';
   background-image: none;
 }
 </style>
@@ -510,7 +510,7 @@ div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pen
 </header>
 
 
-<p>This script defines the helper functions the analysis scripts share. Three of them do work that usRds does not yet do, and are labelled “usRds gap” in the code. The <a href="../quarto/usrds-coverage.html">coverage assessment</a> explains each gap.</p>
+<p>This script defines the helper functions the analysis scripts share. Three of them do work that <a href="https://vagishhemmige.github.io/usRds/">{usRds}</a> does not yet do, and are labelled “{usRds} gap” in the code. The <a href="../quarto/usrds-coverage.html">coverage assessment</a> explains each gap.</p>
 <div class="callout callout-style-default callout-Rcode callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -563,7 +563,7 @@ div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pen
 </section>
 <section id="matching-codes" class="level2">
 <h2 class="anchored" data-anchor-id="matching-codes">Matching codes</h2>
-<p><code>code_matches()</code> compares a vector of recorded codes with a code list. It handles both exact codes and prefixes, so the diabetes stems match all their subcodes. The usRds <code>get_*_ICD()</code> functions match exactly only, which is why this exists (coverage step 6).</p>
+<p><code>code_matches()</code> compares a vector of recorded codes with a code list. It handles both exact codes and prefixes, so the diabetes stems match all their subcodes. The {usRds} <code>get_*_ICD()</code> functions match exactly only, which is why this exists (coverage step 6).</p>
 <p><strong>Used by:</strong> <a href="#searching-wide-code-columns"><code>flag_codes_wide()</code></a>.</p>
 <div class="cell">
 <details class="code-fold">
@@ -624,7 +624,7 @@ div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pen
 <section id="combining-records-into-stays" class="level2">
 <h2 class="anchored" data-anchor-id="combining-records-into-stays">Combining records into stays</h2>
 <p>A single hospital stay can appear as several hospitalization records. <code>collapse_stays()</code> puts a person’s records in date order. It starts a new stay only when a record’s admission date falls after the latest discharge date seen so far, so the stays it builds never overlap. A record admitted on the day of the previous discharge joins the same stay. The optional <code>gap_days</code> argument also joins records that start within that many days of discharge.</p>
-<p>The function adds a stay identifier and the stay’s first and last dates. The plan treats overlapping or contiguous records as one stay (§5); usRds has no equivalent (coverage step 7).</p>
+<p>The function adds a stay identifier and the stay’s first and last dates. The plan treats overlapping or contiguous records as one stay (§5); {usRds} has no equivalent (coverage step 7).</p>
 <p><strong>Used by:</strong> <a href="#cryptococcosis-stays"><code>summarise_cryptococcosis_stays()</code></a>.</p>
 <div class="cell">
 <details class="code-fold">
@@ -835,7 +835,7 @@ div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pen
 </section>
 <section id="loading-and-flagging-hospitalizations" class="level2">
 <h2 class="anchored" data-anchor-id="loading-and-flagging-hospitalizations">Loading and flagging hospitalizations</h2>
-<p><code>load_flagged_hospitalizations()</code> loads one hospitalization file for a set of people through usRds. It flags the diagnosis and procedure concepts on each record, and keeps the dates, ICU and CCU days, and the flags.</p>
+<p><code>load_flagged_hospitalizations()</code> loads one hospitalization file for a set of people through {usRds}. It flags the diagnosis and procedure concepts on each record, and keeps the dates, ICU and CCU days, and the flags.</p>
 <p><strong>Used in the analysis:</strong> 2. Covariates: <a href="../quarto/create_covariates.html#hospitalization-records">Hospitalization records</a>.</p>
 <div class="cell">
 <details class="code-fold">
@@ -1420,7 +1420,7 @@ div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pen
 </section>
 <section id="p-values-in-ama-style" class="level2">
 <h2 class="anchored" data-anchor-id="p-values-in-ama-style">P values in AMA style</h2>
-<p><code>style_pvalue_ama()</code> rounds P values as gtsummary’s JAMA theme does and drops the leading zero (“.040”, “&lt;.001”), as AMA style asks.</p>
+<p><code>style_pvalue_ama()</code> rounds P values as <a href="https://www.danieldsjoberg.com/gtsummary/">{gtsummary}</a>’s JAMA theme does and drops the leading zero (“.040”, “&lt;.001”), as AMA style asks.</p>
 <p><strong>Used in the analysis:</strong> Tables: <a href="../quarto/tables.html#journal-style">Journal style</a>.</p>
 <div class="cell">
 <details class="code-fold">
@@ -2005,7 +2005,7 @@ div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pen
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span><span class="co"> html</span></span>
 <span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>This script defines the helper functions the analysis scripts share. Three of them do work that usRds does not yet do, and are labelled "usRds gap" in the code. The <span class="co">[</span><span class="ot">coverage assessment</span><span class="co">](usrds-coverage.qmd)</span> explains each gap.</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>This script defines the helper functions the analysis scripts share. Three of them do work that <span class="co">[</span><span class="ot">{usRds}</span><span class="co">](https://vagishhemmige.github.io/usRds/)</span> does not yet do, and are labelled "{usRds} gap" in the code. The <span class="co">[</span><span class="ot">coverage assessment</span><span class="co">](usrds-coverage.qmd)</span> explains each gap.</span>
 <span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>::: {.Rcode title="Source code"}</span>
 <span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>The full R script is available at:</span>
@@ -2041,7 +2041,7 @@ div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pen
 <span id="cb33-43"><a href="#cb33-43" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-44"><a href="#cb33-44" aria-hidden="true" tabindex="-1"></a><span class="fu">## Matching codes</span></span>
 <span id="cb33-45"><a href="#cb33-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-46"><a href="#cb33-46" aria-hidden="true" tabindex="-1"></a><span class="in">`code_matches()`</span> compares a vector of recorded codes with a code list. It handles both exact codes and prefixes, so the diabetes stems match all their subcodes. The usRds <span class="in">`get_*_ICD()`</span> functions match exactly only, which is why this exists (coverage step 6).</span>
+<span id="cb33-46"><a href="#cb33-46" aria-hidden="true" tabindex="-1"></a><span class="in">`code_matches()`</span> compares a vector of recorded codes with a code list. It handles both exact codes and prefixes, so the diabetes stems match all their subcodes. The {usRds} <span class="in">`get_*_ICD()`</span> functions match exactly only, which is why this exists (coverage step 6).</span>
 <span id="cb33-47"><a href="#cb33-47" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-48"><a href="#cb33-48" aria-hidden="true" tabindex="-1"></a>**Used by:** <span class="co">[</span><span class="ot">`flag_codes_wide()`</span><span class="co">](#searching-wide-code-columns)</span>.</span>
 <span id="cb33-49"><a href="#cb33-49" aria-hidden="true" tabindex="-1"></a></span>
@@ -2071,7 +2071,7 @@ div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pen
 <span id="cb33-77"><a href="#cb33-77" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-78"><a href="#cb33-78" aria-hidden="true" tabindex="-1"></a>A single hospital stay can appear as several hospitalization records. <span class="in">`collapse_stays()`</span> puts a person's records in date order. It starts a new stay only when a record's admission date falls after the latest discharge date seen so far, so the stays it builds never overlap. A record admitted on the day of the previous discharge joins the same stay. The optional <span class="in">`gap_days`</span> argument also joins records that start within that many days of discharge.</span>
 <span id="cb33-79"><a href="#cb33-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-80"><a href="#cb33-80" aria-hidden="true" tabindex="-1"></a>The function adds a stay identifier and the stay's first and last dates. The plan treats overlapping or contiguous records as one stay (§5); usRds has no equivalent (coverage step 7).</span>
+<span id="cb33-80"><a href="#cb33-80" aria-hidden="true" tabindex="-1"></a>The function adds a stay identifier and the stay's first and last dates. The plan treats overlapping or contiguous records as one stay (§5); {usRds} has no equivalent (coverage step 7).</span>
 <span id="cb33-81"><a href="#cb33-81" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-82"><a href="#cb33-82" aria-hidden="true" tabindex="-1"></a>**Used by:** <span class="co">[</span><span class="ot">`summarise_cryptococcosis_stays()`</span><span class="co">](#cryptococcosis-stays)</span>.</span>
 <span id="cb33-83"><a href="#cb33-83" aria-hidden="true" tabindex="-1"></a></span>
@@ -2163,7 +2163,7 @@ div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pen
 <span id="cb33-185"><a href="#cb33-185" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-186"><a href="#cb33-186" aria-hidden="true" tabindex="-1"></a><span class="fu">## Loading and flagging hospitalizations</span></span>
 <span id="cb33-187"><a href="#cb33-187" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-188"><a href="#cb33-188" aria-hidden="true" tabindex="-1"></a><span class="in">`load_flagged_hospitalizations()`</span> loads one hospitalization file for a set of people through usRds. It flags the diagnosis and procedure concepts on each record, and keeps the dates, ICU and CCU days, and the flags.</span>
+<span id="cb33-188"><a href="#cb33-188" aria-hidden="true" tabindex="-1"></a><span class="in">`load_flagged_hospitalizations()`</span> loads one hospitalization file for a set of people through {usRds}. It flags the diagnosis and procedure concepts on each record, and keeps the dates, ICU and CCU days, and the flags.</span>
 <span id="cb33-189"><a href="#cb33-189" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-190"><a href="#cb33-190" aria-hidden="true" tabindex="-1"></a>**Used in the analysis:** 2. Covariates: <span class="co">[</span><span class="ot">Hospitalization records</span><span class="co">](create_covariates.qmd#hospitalization-records)</span>.</span>
 <span id="cb33-191"><a href="#cb33-191" aria-hidden="true" tabindex="-1"></a></span>
@@ -2348,7 +2348,7 @@ div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pen
 <span id="cb33-404"><a href="#cb33-404" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-405"><a href="#cb33-405" aria-hidden="true" tabindex="-1"></a><span class="fu">## P values in AMA style</span></span>
 <span id="cb33-406"><a href="#cb33-406" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-407"><a href="#cb33-407" aria-hidden="true" tabindex="-1"></a><span class="in">`style_pvalue_ama()`</span> rounds P values as gtsummary's JAMA theme does and drops the leading zero (".040", "&lt;.001"), as AMA style asks.</span>
+<span id="cb33-407"><a href="#cb33-407" aria-hidden="true" tabindex="-1"></a><span class="in">`style_pvalue_ama()`</span> rounds P values as <span class="co">[</span><span class="ot">{gtsummary}</span><span class="co">](https://www.danieldsjoberg.com/gtsummary/)</span>'s JAMA theme does and drops the leading zero (".040", "&lt;.001"), as AMA style asks.</span>
 <span id="cb33-408"><a href="#cb33-408" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-409"><a href="#cb33-409" aria-hidden="true" tabindex="-1"></a>**Used in the analysis:** Tables: <span class="co">[</span><span class="ot">Journal style</span><span class="co">](tables.qmd#journal-style)</span>.</span>
 <span id="cb33-410"><a href="#cb33-410" aria-hidden="true" tabindex="-1"></a></span>

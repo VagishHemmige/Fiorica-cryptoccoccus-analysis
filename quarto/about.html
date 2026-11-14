@@ -101,7 +101,7 @@ div.csl-indent {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-66ae90e4418e9d0ac3caa4b8c3bef75c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-9c6fd4a99ff4209dd1149a1765198857.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -130,6 +130,17 @@ div.csl-indent {
   }
 }</script>
 <style>
+div.callout-Pending.callout {
+  border-left-color: #f0c400;
+}
+div.callout-Pending.callout-style-default > .callout-header {
+  background-color: rgba(240, 196, 0, 0.13);
+}
+div.callout-Pending .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pending.callout-titled .callout-icon::before {
+  content: '⏳';
+  background-image: none;
+}
 div.callout-Rcode.callout {
   border-left-color: #d63384;
 }
@@ -150,17 +161,6 @@ div.callout-Results.callout-style-default > .callout-header {
 div.callout-Results .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
 div.callout-Results.callout-style-default .callout-icon::before, div.callout-Results.callout-titled .callout-icon::before {
   content: '📊';
-  background-image: none;
-}
-div.callout-Pending.callout {
-  border-left-color: #f0c400;
-}
-div.callout-Pending.callout-style-default > .callout-header {
-  background-color: rgba(240, 196, 0, 0.13);
-}
-div.callout-Pending .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pending.callout-titled .callout-icon::before {
-  content: '⏳';
   background-image: none;
 }
 </style>
@@ -506,7 +506,7 @@ div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pen
 
 <section id="the-study" class="level2">
 <h2 class="anchored" data-anchor-id="the-study">The study</h2>
-<p>This project replicates Fiorica et al.&nbsp;2025<span class="citation" data-cites="fiorica2025"><sup><a href="#ref-fiorica2025" role="doc-biblioref">1</a></sup></span>, a study of mortality among kidney transplant recipients hospitalized with cryptococcosis, as the paper describes it. It uses the usRds package and assesses how well that package covers the paper’s methods. The analysis is in progress, and no results from USRDS data are on this site.</p>
+<p>This project replicates Fiorica et al.&nbsp;2025<span class="citation" data-cites="fiorica2025"><sup><a href="#ref-fiorica2025" role="doc-biblioref">1</a></sup></span>, a study of mortality among kidney transplant recipients hospitalized with cryptococcosis, as the paper describes it. It uses the {usRds} package and assesses how well that package covers the paper’s methods. The analysis is in progress, and no results from USRDS data are on this site.</p>
 <ul>
 <li><strong>Vagish Hemmige</strong> (maintainer; makes the scientific decisions)</li>
 </ul>
@@ -514,7 +514,7 @@ div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pen
 </section>
 <section id="this-repository" class="level2">
 <h2 class="anchored" data-anchor-id="this-repository">This repository</h2>
-<p><code>R/main.R</code> runs the scripts in order. They reach the USRDS data through the <a href="https://github.com/VagishHemmige/usRds">usRds</a> package. The data are restricted under the USRDS data use agreement, so they are not in the repository. The analysis runs only on a machine with authorized access.</p>
+<p><code>R/main.R</code> runs the scripts in order. They reach the USRDS data through the <a href="https://github.com/VagishHemmige/usRds">{usRds}</a> package. The data are restricted under the USRDS data use agreement, so they are not in the repository. The analysis runs only on a machine with authorized access.</p>
 <p>Contributions follow the rules in <a href="../quarto/agents.html"><code>AGENTS.md</code></a>. Known issues and open decisions are tracked in <a href="https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues">Issues</a>.</p>
 </section>
 <section id="how-this-website-was-created" class="level2">
@@ -524,7 +524,7 @@ div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pen
 <p>Four documents describe the project, plus a coverage assessment:</p>
 <ul>
 <li><a href="../quarto/analysis-plan.html"><strong>Analysis plan</strong></a>: <em>what the analysis is meant to do, and why.</em></li>
-<li><a href="../quarto/usrds-coverage.html"><strong>usRds coverage</strong></a>: <em>each step of the paper mapped to usRds functions, and what is missing.</em></li>
+<li><a href="../quarto/usrds-coverage.html"><strong>{usRds} coverage</strong></a>: <em>each step of the paper mapped to {usRds} functions, and what is missing.</em></li>
 <li><a href="../quarto/architecture.html"><strong>Architecture</strong></a>: <em>how the code does it.</em></li>
 <li><a href="../quarto/agents.html"><strong>AGENTS.md</strong></a>: <em>how people and AI assistants work on the project.</em></li>
 <li><a href="../quarto/repository-blueprint.html"><strong>Repository blueprint</strong></a>: <em>the layout every project of this kind starts from.</em></li>
@@ -536,7 +536,7 @@ div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pen
 <li><strong>Background:</strong> <a href="../quarto/background.html">Clinical background</a>, <a href="../quarto/data_sources.html">Data sources</a> and <a href="../quarto/statistical_methods.html">Statistical methods</a>, for readers new to the disease, the data or the methods.</li>
 <li><a href="../quarto/study_methods.html"><strong>Study design and methods</strong></a>: the study’s choices in plain language, with the alternatives considered.</li>
 <li><a href="../quarto/differences.html"><strong>Differences from the reconstruction</strong></a>: where this analysis departs from the 2025 reconstruction of the original analysis, and why.</li>
-<li><strong>Code, setup and helpers:</strong> <a href="../quarto/setup.html">Setup</a> (packages and shared constants), <a href="../quarto/code_lists.html">Code lists</a> (the diagnosis, procedure and billing codes), <a href="../quarto/functions.html">Functions</a> (helper functions, including those that fill usRds gaps) and <a href="../quarto/plot_style.html">Figure style</a> (the house style for figures).</li>
+<li><strong>Code, setup and helpers:</strong> <a href="../quarto/setup.html">Setup</a> (packages and shared constants), <a href="../quarto/code_lists.html">Code lists</a> (the diagnosis, procedure and billing codes), <a href="../quarto/functions.html">Functions</a> (helper functions, including those that fill {usRds} gaps) and <a href="../quarto/plot_style.html">Figure style</a> (the house style for figures).</li>
 <li><strong>Code, in the order it runs:</strong> <a href="../quarto/create_cohort.html">1. Building the cohort</a>, <a href="../quarto/create_covariates.html">2. Covariates</a>, <a href="../quarto/create_outcomes.html">3. Outcomes</a> and <a href="../quarto/fit_models.html">4. Survival and models</a>, then <a href="../quarto/tables.html">Tables</a> and <a href="../quarto/figures.html">Figures</a>.</li>
 <li><strong>Published results:</strong> the paper’s <a href="../quarto/results.html">figures and tables</a> and its <a href="../quarto/supplement.html">supplement</a>, as published.</li>
 </ul>
@@ -1019,7 +1019,7 @@ div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pen
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">## The study</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>This project replicates Fiorica et al. 2025 <span class="co">[</span><span class="ot">@fiorica2025</span><span class="co">]</span>, a study of mortality among kidney transplant recipients hospitalized with cryptococcosis, as the paper describes it. It uses the usRds package and assesses how well that package covers the paper's methods. The analysis is in progress, and no results from USRDS data are on this site.</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>This project replicates Fiorica et al. 2025 <span class="co">[</span><span class="ot">@fiorica2025</span><span class="co">]</span>, a study of mortality among kidney transplant recipients hospitalized with cryptococcosis, as the paper describes it. It uses the {usRds} package and assesses how well that package covers the paper's methods. The analysis is in progress, and no results from USRDS data are on this site.</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Vagish Hemmige** (maintainer; makes the scientific decisions)</span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
@@ -1027,7 +1027,7 @@ div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pen
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">## This repository</span></span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="in">`R/main.R`</span> runs the scripts in order. They reach the USRDS data through the <span class="co">[</span><span class="ot">usRds</span><span class="co">](https://github.com/VagishHemmige/usRds)</span> package. The data are restricted under the USRDS data use agreement, so they are not in the repository. The analysis runs only on a machine with authorized access.</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="in">`R/main.R`</span> runs the scripts in order. They reach the USRDS data through the <span class="co">[</span><span class="ot">{usRds}</span><span class="co">](https://github.com/VagishHemmige/usRds)</span> package. The data are restricted under the USRDS data use agreement, so they are not in the repository. The analysis runs only on a machine with authorized access.</span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>Contributions follow the rules in <span class="co">[</span><span class="ot">`AGENTS.md`</span><span class="co">](agents.qmd)</span>. Known issues and open decisions are tracked in <span class="co">[</span><span class="ot">Issues</span><span class="co">](https://github.com/VagishHemmige/Fiorica-cryptoccoccus-analysis/issues)</span>.</span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
@@ -1040,7 +1040,7 @@ div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pen
 <span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>Four documents describe the project, plus a coverage assessment:</span>
 <span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="co">[</span><span class="ot">**Analysis plan**</span><span class="co">](analysis-plan.qmd)</span>: *what the analysis is meant to do, and why.*</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="co">[</span><span class="ot">**usRds coverage**</span><span class="co">](usrds-coverage.qmd)</span>: *each step of the paper mapped to usRds functions, and what is missing.*</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="co">[</span><span class="ot">**{usRds} coverage**</span><span class="co">](usrds-coverage.qmd)</span>: *each step of the paper mapped to {usRds} functions, and what is missing.*</span>
 <span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="co">[</span><span class="ot">**Architecture**</span><span class="co">](architecture.qmd)</span>: *how the code does it.*</span>
 <span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="co">[</span><span class="ot">**AGENTS.md**</span><span class="co">](agents.qmd)</span>: *how people and AI assistants work on the project.*</span>
 <span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="co">[</span><span class="ot">**Repository blueprint**</span><span class="co">](repository-blueprint.qmd)</span>: *the layout every project of this kind starts from.*</span>
@@ -1050,7 +1050,7 @@ div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pen
 <span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Background:** <span class="co">[</span><span class="ot">Clinical background</span><span class="co">](background.qmd)</span>, <span class="co">[</span><span class="ot">Data sources</span><span class="co">](data_sources.qmd)</span> and <span class="co">[</span><span class="ot">Statistical methods</span><span class="co">](statistical_methods.qmd)</span>, for readers new to the disease, the data or the methods.</span>
 <span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="co">[</span><span class="ot">**Study design and methods**</span><span class="co">](study_methods.qmd)</span>: the study's choices in plain language, with the alternatives considered.</span>
 <span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span><span class="co">[</span><span class="ot">**Differences from the reconstruction**</span><span class="co">](differences.qmd)</span>: where this analysis departs from the 2025 reconstruction of the original analysis, and why.</span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Code, setup and helpers:** <span class="co">[</span><span class="ot">Setup</span><span class="co">](setup.qmd)</span> (packages and shared constants), <span class="co">[</span><span class="ot">Code lists</span><span class="co">](code_lists.qmd)</span> (the diagnosis, procedure and billing codes), <span class="co">[</span><span class="ot">Functions</span><span class="co">](functions.qmd)</span> (helper functions, including those that fill usRds gaps) and <span class="co">[</span><span class="ot">Figure style</span><span class="co">](plot_style.qmd)</span> (the house style for figures).</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Code, setup and helpers:** <span class="co">[</span><span class="ot">Setup</span><span class="co">](setup.qmd)</span> (packages and shared constants), <span class="co">[</span><span class="ot">Code lists</span><span class="co">](code_lists.qmd)</span> (the diagnosis, procedure and billing codes), <span class="co">[</span><span class="ot">Functions</span><span class="co">](functions.qmd)</span> (helper functions, including those that fill {usRds} gaps) and <span class="co">[</span><span class="ot">Figure style</span><span class="co">](plot_style.qmd)</span> (the house style for figures).</span>
 <span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Code, in the order it runs:** <span class="co">[</span><span class="ot">1. Building the cohort</span><span class="co">](create_cohort.qmd)</span>, <span class="co">[</span><span class="ot">2. Covariates</span><span class="co">](create_covariates.qmd)</span>, <span class="co">[</span><span class="ot">3. Outcomes</span><span class="co">](create_outcomes.qmd)</span> and <span class="co">[</span><span class="ot">4. Survival and models</span><span class="co">](fit_models.qmd)</span>, then <span class="co">[</span><span class="ot">Tables</span><span class="co">](tables.qmd)</span> and <span class="co">[</span><span class="ot">Figures</span><span class="co">](figures.qmd)</span>.</span>
 <span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Published results:** the paper's <span class="co">[</span><span class="ot">figures and tables</span><span class="co">](results.qmd)</span> and its <span class="co">[</span><span class="ot">supplement</span><span class="co">](supplement.qmd)</span>, as published.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>

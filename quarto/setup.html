@@ -83,7 +83,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-66ae90e4418e9d0ac3caa4b8c3bef75c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-9c6fd4a99ff4209dd1149a1765198857.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -123,17 +123,6 @@ div.callout-Rcode.callout-style-default .callout-icon::before, div.callout-Rcode
   content: '💻';
   background-image: none;
 }
-div.callout-Pending.callout {
-  border-left-color: #f0c400;
-}
-div.callout-Pending.callout-style-default > .callout-header {
-  background-color: rgba(240, 196, 0, 0.13);
-}
-div.callout-Pending .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pending.callout-titled .callout-icon::before {
-  content: '⏳';
-  background-image: none;
-}
 div.callout-Results.callout {
   border-left-color: #198754;
 }
@@ -143,6 +132,17 @@ div.callout-Results.callout-style-default > .callout-header {
 div.callout-Results .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
 div.callout-Results.callout-style-default .callout-icon::before, div.callout-Results.callout-titled .callout-icon::before {
   content: '📊';
+  background-image: none;
+}
+div.callout-Pending.callout {
+  border-left-color: #f0c400;
+}
+div.callout-Pending.callout-style-default > .callout-header {
+  background-color: rgba(240, 196, 0, 0.13);
+}
+div.callout-Pending .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-Pending.callout-style-default .callout-icon::before, div.callout-Pending.callout-titled .callout-icon::before {
+  content: '⏳';
   background-image: none;
 }
 </style>
@@ -521,7 +521,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 </div>
 <section id="packages" class="level2">
 <h2 class="anchored" data-anchor-id="packages">Packages</h2>
-<p>The analysis uses the tidyverse for data handling. <strong>usRds</strong> is the access package for the USRDS files: it locates the files on the machine that holds them and loads or extracts from them. The <a href="../quarto/usrds-coverage.html">coverage assessment</a> records which steps it does. <strong>flowchart</strong> builds the cohort flow diagram (Figure 1), <strong>survival</strong> the Kaplan–Meier curve (Figure 2), and <strong>labelled</strong> the variable labels.</p>
+<p>The analysis uses the <a href="https://www.tidyverse.org/">{tidyverse}</a> for data handling. <strong><a href="https://vagishhemmige.github.io/usRds/">{usRds}</a></strong> is the access package for the USRDS files: it locates the files on the machine that holds them and loads or extracts from them. The <a href="../quarto/usrds-coverage.html">coverage assessment</a> records which steps it does. <strong><a href="https://bruigtp.github.io/flowchart/">{flowchart}</a></strong> builds the cohort flow diagram (Figure 1), <strong><a href="https://CRAN.R-project.org/package=survival">{survival}</a></strong> the Kaplan–Meier curve (Figure 2), and <strong><a href="https://larmarange.github.io/labelled/">{labelled}</a></strong> the variable labels.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Click to show/hide R Code</summary>
@@ -1198,7 +1198,7 @@ div.callout-Results.callout-style-default .callout-icon::before, div.callout-Res
 <span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="fu">## Packages</span></span>
 <span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>The analysis uses the tidyverse for data handling. **usRds** is the access package for the USRDS files: it locates the files on the machine that holds them and loads or extracts from them. The [coverage assessment](usrds-coverage.qmd) records which steps it does. **flowchart** builds the cohort flow diagram (Figure 1), **survival** the Kaplan–Meier curve (Figure 2), and **labelled** the variable labels.</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>The analysis uses the <span class="co">[</span><span class="ot">{tidyverse}</span><span class="co">](https://www.tidyverse.org/)</span> for data handling. **[{usRds}](https://vagishhemmige.github.io/usRds/)** is the access package for the USRDS files: it locates the files on the machine that holds them and loads or extracts from them. The [coverage assessment](usrds-coverage.qmd) records which steps it does. **[{flowchart}](https://bruigtp.github.io/flowchart/)** builds the cohort flow diagram (Figure 1), **[{survival}](https://CRAN.R-project.org/package=survival)** the Kaplan–Meier curve (Figure 2), and **[{labelled}](https://larmarange.github.io/labelled/)** the variable labels.</span>
 <span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: load-packages</span></span>
