@@ -6,7 +6,7 @@ Status: draft. Not locked.
 
 This document is the authoritative specification of the study's scientific objectives, population, definitions, estimands and statistical methods. `ARCHITECTURE.md` documents the implementation, `AGENTS.md` the working conventions, and GitHub Issues the open decisions and implementation status. Neither file supersedes this plan.
 
-The analysis replicates a published study [@fiorica2025] as the paper describes it, using the usRds package wherever it can do a step, to assess the package's coverage. **The paper and its Supplementary Table 1 are the specification.** The original analysis was run in Stata, and that code is no longer available; a later R Markdown reconstruction (2025-03-25) is used only as secondary evidence of how a step may have been done. Where the paper is silent, the plan records an open decision rather than adopting the reconstruction's choice unexamined. The published estimates are a reference point, not a target. How each step maps to usRds is in `references/usrds-coverage.md`.
+The analysis replicates a published study [@fiorica2025] as the paper describes it, using the [{usRds}](https://vagishhemmige.github.io/usRds/) package wherever it can do a step, to assess the package's coverage. **The paper and its Supplementary Table 1 are the specification.** The original analysis was run in Stata, and that code is no longer available; a later R Markdown reconstruction (2025-03-25) is used only as secondary evidence of how a step may have been done. Where the paper is silent, the plan records an open decision rather than adopting the reconstruction's choice unexamined. The published estimates are a reference point, not a target. How each step maps to {usRds} is in `references/usrds-coverage.md`.
 
 Reporting will follow STROBE [@vonelm2007strobe] and RECORD [@benchimol2015record]. The reporting map in §12 links each checklist item to a section of this plan.
 
@@ -16,7 +16,7 @@ Reporting will follow STROBE [@vonelm2007strobe] and RECORD [@benchimol2015recor
 - **Secondary:**
   - describe time from kidney transplant to the index hospitalization;
   - estimate the association of clinical, transplant and immunosuppression characteristics with 6-month mortality.
-- **Methodological (this project):** assess, step by step, whether usRds does what the paper's methods require (covered, partial or gap).
+- **Methodological (this project):** assess, step by step, whether {usRds} does what the paper's methods require (covered, partial or gap).
 
 All analyses are exploratory, as in the paper. No hypotheses are tested confirmatorily.
 
@@ -126,7 +126,7 @@ Not applicable. Comparisons are between people who died within 6 months and thos
   - The paper's final model is also fitted as published: its eight terms (cirrhosis, ICU admission, dialysis before transplant, not on tacrolimus at follow-up, age 60 or older, acute kidney injury, more than 2 years since transplant, and an earlier hospitalization for a transplant complication; `published_model` in `R/setup.R`) [@fiorica2025]. It uses the same people as the backward elimination, because the paper's estimates come from the end of that selection. Table 4 sets its odds ratios beside the published ones, with whether the elimination kept each term. This separates differences in the estimates from differences in which variables the selection keeps.
   - Backward elimination is kept to mirror the paper. Its limitations are noted in §11.
 - **Missing data:** complete-case, as in the paper. The number excluded from the model is reported.
-- **Software:** R, with usRds (version and commit recorded with each result), survival, and flowchart for Figure 1.
+- **Software:** R, with {usRds} (version and commit recorded with each result), [{survival}](https://CRAN.R-project.org/package=survival), and [{flowchart}](https://bruigtp.github.io/flowchart/) for Figure 1.
 
 ## 9. Sensitivity analyses
 

@@ -3,7 +3,7 @@ title: "Data sources"
 format: html
 ---
 
-This page describes where the study's data come from and what they can and cannot show. Which files each step uses is on the [Study design and methods](study_methods.qmd) page and in the [usRds coverage](usrds-coverage.qmd) assessment.
+This page describes where the study's data come from and what they can and cannot show. Which files each step uses is on the [Study design and methods](study_methods.qmd) page and in the [{usRds} coverage](usrds-coverage.qmd) assessment.
 
 ## The United States Renal Data System
 
@@ -28,7 +28,7 @@ A diagnosis in a claim means a provider billed for it, not that it was confirmed
 
 ## Access and disclosure
 
-USRDS data are released only under a data use agreement. Results may not be published if any table cell, or any number that can be worked out from others, describes fewer than 11 people [@usrdsdua]. This is why counts from 1 to 10 are hidden in this project's tables and figures, and why nothing on this site comes from the data. The data are read through the [usRds](https://github.com/VagishHemmige/usRds) package, on a machine with authorized access.
+USRDS data are released only under a data use agreement. Results may not be published if any table cell, or any number that can be worked out from others, describes fewer than 11 people [@usrdsdua]. This is why counts from 1 to 10 are hidden in this project's tables and figures, and why nothing on this site comes from the data. The data are read through the [{usRds}](https://github.com/VagishHemmige/usRds) package, on a machine with authorized access.
 
 ## References
 

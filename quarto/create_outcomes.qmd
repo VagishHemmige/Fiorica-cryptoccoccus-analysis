@@ -28,7 +28,7 @@ knitr::read_chunk("../R/create_outcomes.R")
 
 ## Dates of death
 
-Dates of death come from the USRDS patients file. Each person needs only one row, because every characteristic is fixed at the start and death is the only event. That is why the usRds cohort functions aren't used here; the [coverage assessment](usrds-coverage.qmd) records what testing them showed.
+Dates of death come from the USRDS patients file. Each person needs only one row, because every characteristic is fixed at the start and death is the only event. That is why the [{usRds}](https://vagishhemmige.github.io/usRds/) cohort functions aren't used here; the [coverage assessment](usrds-coverage.qmd) records what testing them showed.
 
 ```{r}
 #| label: outcomes-deaths

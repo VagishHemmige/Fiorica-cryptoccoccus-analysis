@@ -9,7 +9,9 @@ Cryptococcosis is an invasive fungal infection that affects people with weakened
 
 ## What this project does
 
-This project replicates that analysis as the paper describes it, using the [usRds](https://github.com/VagishHemmige/usRds) R package wherever the package can do a step. Along the way it assesses how well usRds covers the paper's methods.
+This project replicates that analysis as the paper describes it, using the [{usRds}](https://github.com/VagishHemmige/usRds) R package wherever the package can do a step. Along the way it assesses how well {usRds} covers the paper's methods.
+
+[Braces](https://forum.posit.co/t/curly-braces-around-package-name-convention/122547) identify R packages throughout this site.
 
 The original analysis was run in Stata, and that code is no longer available. The paper and its supplement are therefore the specification. The published estimates are a reference point, not a target.
 
@@ -21,7 +23,7 @@ The cohort is built from USRDS hospitalization files, Medicare claims and UNOS t
 - a Kaplan–Meier curve;
 - multivariable logistic regression.
 
-[Study design and methods](quarto/study_methods.qmd) explains the choices in plain language. The [analysis plan](quarto/analysis-plan.qmd) is the authoritative specification. The [usRds coverage](quarto/usrds-coverage.qmd) page maps each step to the package.
+[Study design and methods](quarto/study_methods.qmd) explains the choices in plain language. The [analysis plan](quarto/analysis-plan.qmd) is the authoritative specification. The [{usRds} coverage](quarto/usrds-coverage.qmd) page maps each step to the package.
 
 ## Status
 

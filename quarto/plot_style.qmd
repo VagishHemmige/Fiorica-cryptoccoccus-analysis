@@ -22,7 +22,7 @@ knitr::read_chunk("../R/plot_style.R")
 
 ## Check the ggplot2 version
 
-The theme relies on features added in ggplot2 4.0.0: a theme can carry the palettes its figures use, and labels can be looked up by variable name. On an older version the script stops with a message saying what to update, rather than failing later with a less helpful error.
+The theme relies on features added in [{ggplot2}](https://ggplot2.tidyverse.org/) 4.0.0: a theme can carry the palettes its figures use, and labels can be looked up by variable name. On an older version the script stops with a message saying what to update, rather than failing later with a less helpful error.
 
 ```{r}
 #| label: check-ggplot2-version

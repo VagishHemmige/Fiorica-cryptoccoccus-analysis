@@ -29,7 +29,7 @@ knitr::read_chunk("../R/tables.R")
 
 ## Journal style
 
-The tables follow the style shared by OFID, CID and JID, which is AMA style: gtsummary's JAMA theme, with P values shown without a leading zero (`style_pvalue_ama()` on the [Functions](functions.qmd#p-values-in-ama-style) page).
+The tables follow the style shared by OFID, CID and JID, which is AMA style: [{gtsummary}](https://www.danieldsjoberg.com/gtsummary/)'s JAMA theme, with P values shown without a leading zero (`style_pvalue_ama()` on the [Functions](functions.qmd#p-values-in-ama-style) page).
 
 **Functions used:** [`style_pvalue_ama()`](functions.qmd#p-values-in-ama-style).
 
